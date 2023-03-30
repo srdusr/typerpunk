@@ -140,7 +140,7 @@ impl GameState {
             .split(size);
 
         // Title
-        let title = "Typing Game";
+        let title = "Typerpunk";
         let title_widget = Paragraph::new(title)
             .style(Style::default().fg(Color::White))
             .block(Block::default().borders(Borders::ALL));
