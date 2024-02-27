@@ -1,17 +1,16 @@
 use crossterm::{
-    cursor::Hide,
-    cursor::Show,
+    cursor::{Hide, Show},
     event::{Event, KeyCode, KeyEvent},
     execute,
-    terminal::{self, disable_raw_mode, enable_raw_mode, ClearType},
+    terminal::{self, EnterAlternateScreen, LeaveAlternateScreen},
 };
 use rand::prelude::*;
 use std::io::{self, Write};
 use std::time::{Duration, Instant};
 use tui::{
     backend::CrosstermBackend,
-    layout::{Alignment, Constraint, Direction, Layout, Margin},
-    style::{Color, Modifier, Style},
+    layout::{Alignment, Constraint, Direction, Layout},
+    style::{Color, Style},
     widgets::{Block, Borders, Paragraph},
     Terminal,
 };
@@ -22,19 +21,18 @@ const PARAGRAPHS: [&str; 3] = [
     "To be, or not to be, that is the question:",
 ];
 
+struct GameState {
+    paragraph: String,
+    user_input: String,
+    start_time: Instant,
+    end_time: Option<Instant>,
+    current_index: usize,
+}
+
 enum AppState {
     Playing(GameState),
     Stats(f64, u64),
     Quit,
-}
-
-struct GameState {
-    paragraph: String,
-    user_input: String,
-    incorrect_chars: usize,
-    start_time: Instant,
-    end_time: Option<Instant>,
-    current_index: usize,
 }
 
 impl GameState {
@@ -43,7 +41,6 @@ impl GameState {
         GameState {
             paragraph,
             user_input: String::new(),
-            incorrect_chars: 0,
             start_time: Instant::now(),
             end_time: None,
             current_index: 0,
@@ -67,25 +64,16 @@ impl GameState {
 
     fn reset(&mut self) {
         self.user_input.clear();
-        self.incorrect_chars = 0;
         self.start_time = Instant::now();
         self.end_time = None;
         self.current_index = 0;
     }
 
     fn handle_input(&mut self, c: char) {
-        if c == '\u{8}' {
-            // Backspace
-            if self.user_input.is_empty() {
-                self.incorrect_chars += 1;
-            } else {
-                self.user_input.pop();
-            }
-        } else if !c.is_control() {
-            // Printable character
+        if !c.is_control() {
             if self.current_index < self.paragraph.len() {
                 if self.paragraph.chars().nth(self.current_index).unwrap() != c {
-                    self.incorrect_chars += 1;
+                    // Incorrect character
                 }
                 self.input(c);
             }
@@ -116,16 +104,12 @@ impl GameState {
         }
     }
 
-    fn render_widgets<W>(
+    fn render_widgets(
         &self,
-        terminal: &mut Terminal<CrosstermBackend<W>>,
-    ) -> Result<(), io::Error>
-    where
-        W: Write,
-    {
-        // Layout
-        let size = terminal.size()?;
+        terminal: &mut Terminal<CrosstermBackend<impl Write>>,
+    ) -> Result<(), io::Error> {
         terminal.draw(|mut f| {
+            let size = f.size();
             let chunks = Layout::default()
                 .direction(Direction::Vertical)
                 .margin(5)
@@ -185,14 +169,13 @@ fn main() -> Result<(), io::Error> {
     let backend = CrosstermBackend::new(stdout);
     let mut terminal = Terminal::new(backend)?;
 
-    execute!(terminal.backend_mut(), terminal::EnterAlternateScreen, Hide)?;
+    execute!(terminal.backend_mut(), EnterAlternateScreen, Hide)?;
 
     let mut app_state = AppState::Playing(GameState::new());
     let mut rng = thread_rng();
     loop {
         match app_state {
             AppState::Playing(ref mut state) => {
-                let stats = state.elapsed_time();
                 state.render_widgets(&mut terminal)?;
                 if let Ok(event) = crossterm::event::read() {
                     match event {
@@ -239,7 +222,7 @@ fn main() -> Result<(), io::Error> {
         }
     }
 
-    execute!(terminal.backend_mut(), terminal::LeaveAlternateScreen, Show)?;
+    execute!(terminal.backend_mut(), LeaveAlternateScreen, Show)?;
 
     Ok(())
 }
