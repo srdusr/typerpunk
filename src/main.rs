@@ -1,228 +1,288 @@
+// Import necessary crates
 use crossterm::{
-    cursor::{Hide, Show},
-    event::{Event, KeyCode, KeyEvent},
-    execute,
-    terminal::{self, EnterAlternateScreen, LeaveAlternateScreen},
+    event::{self, KeyCode, KeyEvent},
+    terminal::{disable_raw_mode, enable_raw_mode},
 };
-use rand::prelude::*;
-use std::io::{self, Write};
-use std::time::{Duration, Instant};
+use rand::Rng;
+use std::{
+    fs,
+    io::{self},
+    sync::{Arc, Mutex},
+    time::Instant,
+};
 use tui::{
-    backend::CrosstermBackend,
-    layout::{Alignment, Constraint, Direction, Layout},
-    style::{Color, Style},
-    widgets::{Block, Borders, Paragraph},
-    Terminal,
+    backend::{Backend, CrosstermBackend},
+    layout::{Alignment, Constraint, Direction, Layout, Rect},
+    style::{Color, Modifier, Style},
+    text::{Span, Spans},
+    widgets::Paragraph,
+    Frame, Terminal,
 };
 
-const PARAGRAPHS: [&str; 3] = [
-    "The quick brown fox jumps over the lazy dog.",
-    "In the beginning God created the heavens and the earth.",
-    "To be, or not to be, that is the question:",
-];
-
-struct GameState {
-    paragraph: String,
-    user_input: String,
-    start_time: Instant,
-    end_time: Option<Instant>,
-    current_index: usize,
+// Define the possible states of the application
+#[derive(Debug, Clone, Copy, PartialEq)]
+enum State {
+    MainMenu,
+    TypingGame,
+    EndScreen,
 }
 
-enum AppState {
-    Playing(GameState),
-    Stats(f64, u64),
-    Quit,
+// Struct to hold the application state
+struct App {
+    time_taken: u64,
+    input_string: String,
+    timer: Option<Instant>,
+    state: State,
+    should_exit: bool,
+    sentences: Vec<String>,
+    current_sentence_index: usize,
 }
 
-impl GameState {
-    fn new() -> GameState {
-        let paragraph = PARAGRAPHS.choose(&mut thread_rng()).unwrap().to_string();
-        GameState {
-            paragraph,
-            user_input: String::new(),
-            start_time: Instant::now(),
-            end_time: None,
-            current_index: 0,
-        }
+impl App {
+    // Constructor to create a new instance of the application
+    fn new() -> Result<Self, io::Error> {
+        let sentences = read_sentences("sentences.txt")?;
+        let current_sentence_index = rand::thread_rng().gen_range(0..sentences.len());
+        let app = App {
+            time_taken: 0,
+            input_string: String::new(),
+            timer: None,
+            state: State::MainMenu,
+            should_exit: false,
+            sentences,
+            current_sentence_index,
+        };
+        Ok(app)
     }
 
-    fn input(&mut self, c: char) {
-        if self.current_index < self.paragraph.len() {
-            self.user_input.push(c);
-            self.current_index += 1;
-        }
-    }
-
-    fn check_end_condition(&mut self) -> bool {
-        if self.current_index == self.paragraph.len() {
-            self.end_time = Some(Instant::now());
-            return true;
-        }
-        false
-    }
-
+    // Reset the game to its initial state
     fn reset(&mut self) {
-        self.user_input.clear();
-        self.start_time = Instant::now();
-        self.end_time = None;
-        self.current_index = 0;
+        let current_sentence_index = rand::thread_rng().gen_range(0..self.sentences.len());
+        self.current_sentence_index = current_sentence_index;
+        self.time_taken = 0;
+        self.input_string.clear();
+        self.timer = None;
+        self.state = State::TypingGame;
     }
 
-    fn handle_input(&mut self, c: char) {
-        if !c.is_control() {
-            if self.current_index < self.paragraph.len() {
-                if self.paragraph.chars().nth(self.current_index).unwrap() != c {
-                    // Incorrect character
-                }
-                self.input(c);
+    // Get the current sentence the user needs to type
+    fn current_sentence(&self) -> &str {
+        if let Some(sentence) = self.sentences.get(self.current_sentence_index) {
+            sentence
+        } else {
+            "No sentence available"
+        }
+    }
+
+    // Start the timer
+    fn start_timer(&mut self) {
+        if self.timer.is_none() {
+            self.timer = Some(Instant::now());
+        }
+    }
+
+    // Update the timer
+    fn update_timer(&mut self) {
+        if let Some(timer) = self.timer {
+            self.time_taken = timer.elapsed().as_secs();
+        }
+    }
+
+    // Calculate and return the current typing speed (Words Per Minute)
+    fn update_wpm(&self) -> f64 {
+        let time_elapsed = self.time_taken as f64;
+        if time_elapsed == 0.0 {
+            0.0
+        } else {
+            let wpm = (self.input_string.split_whitespace().count() as f64) / (time_elapsed / 60.0);
+            if wpm.is_nan() {
+                0.0
+            } else {
+                wpm
             }
         }
     }
+}
 
-    fn wpm(&self) -> f64 {
-        let elapsed_time = self.elapsed_time().as_secs_f64() / 60.0;
-        let cpm = (self.user_input.len()) as f64 / elapsed_time;
-        cpm / 5.0
+// Function to read sentences from a file
+fn read_sentences(filename: &str) -> Result<Vec<String>, io::Error> {
+    let contents = fs::read_to_string(filename)?;
+    let sentences: Vec<String> = contents.lines().map(|s| s.to_string()).collect();
+    Ok(sentences)
+}
+
+// Function to draw the typing game UI
+fn draw_typing_game(f: &mut Frame<CrosstermBackend<std::io::Stdout>>, chunk: Rect, app: &mut App) {
+    let wpm = app.update_wpm();
+    let time_used = app.time_taken as f64;
+
+    let mut colored_text: Vec<Span> = Vec::new();
+
+    // Iterate over each character in the current sentence and color it based on user input
+    for (index, c) in app.current_sentence().chars().enumerate() {
+        let color = if let Some(input_char) = app.input_string.chars().nth(index) {
+            if c == input_char {
+                Color::Green
+            } else {
+                Color::Red
+            }
+        } else {
+            Color::Gray
+        };
+
+        let span = Span::styled(c.to_string(), Style::default().fg(color));
+        colored_text.push(span);
     }
 
-    fn accuracy(&self) -> f64 {
-        let total_chars = self.user_input.len();
-        let correct_chars = self
-            .user_input
-            .chars()
-            .zip(self.paragraph.chars())
-            .filter(|&(a, b)| a == b)
-            .count();
-        (correct_chars as f64 / total_chars as f64) * 100.0
-    }
+    // Create text to be displayed
+    let text = vec![
+        Spans::from(Span::styled(
+            "Type the following sentence:",
+            Style::default().add_modifier(Modifier::BOLD),
+        )),
+        colored_text.into(),
+        Spans::from(Span::styled(format!("WPM: {:.2}", wpm), Style::default())),
+        Spans::from(Span::styled(
+            format!("Time: {:.1} seconds", time_used),
+            Style::default(),
+        )),
+    ];
 
-    fn elapsed_time(&self) -> Duration {
-        match self.end_time {
-            Some(end) => end - self.start_time,
-            None => self.start_time.elapsed(),
+    // Render the widget
+    f.render_widget(Paragraph::new(text).alignment(Alignment::Center), chunk);
+
+    app.update_timer();
+}
+
+// Function to handle user input events
+async fn input_handler(event: KeyEvent, app: &mut App, _event_tx: Arc<Mutex<()>>) {
+    match event.code {
+        KeyCode::Char(c) => {
+            if app.timer.is_none() {
+                app.timer = Some(Instant::now());
+            }
+            app.input_string.push(c);
         }
-    }
-
-    fn render_widgets(
-        &self,
-        terminal: &mut Terminal<CrosstermBackend<impl Write>>,
-    ) -> Result<(), io::Error> {
-        terminal.draw(|mut f| {
-            let size = f.size();
-            let chunks = Layout::default()
-                .direction(Direction::Vertical)
-                .margin(5)
-                .constraints(
-                    [
-                        Constraint::Percentage(10),
-                        Constraint::Percentage(10),
-                        Constraint::Percentage(80),
-                    ]
-                    .as_ref(),
-                )
-                .split(size);
-
-            // Title
-            let title = "Typerpunk";
-            let title_widget = Paragraph::new(title)
-                .style(Style::default().fg(Color::White))
-                .alignment(Alignment::Center)
-                .block(Block::default().borders(Borders::ALL));
-
-            // Stats
-            let stats_text = format!(
-                "WPM: {:.1} | Accuracy: {:.1}% | Time: {:.0}s",
-                self.wpm(),
-                self.accuracy(),
-                self.elapsed_time().as_secs()
-            );
-            let stats_widget = Paragraph::new(stats_text)
-                .style(Style::default().fg(Color::White))
-                .alignment(Alignment::Center)
-                .block(Block::default().borders(Borders::ALL));
-
-            // Paragraph
-            let paragraph_text = format!(
-                "{}\n{}",
-                self.paragraph,
-                self.user_input
-                    .chars()
-                    .map(|c| if c.is_whitespace() { ' ' } else { '_' })
-                    .collect::<String>()
-            );
-            let paragraph_widget = Paragraph::new(paragraph_text)
-                .style(Style::default().fg(Color::White))
-                .alignment(Alignment::Center)
-                .block(Block::default().borders(Borders::ALL));
-
-            f.render_widget(title_widget, chunks[0]);
-            f.render_widget(stats_widget, chunks[1]);
-            f.render_widget(paragraph_widget, chunks[2]);
-        })?;
-        Ok(())
+        KeyCode::Backspace => {
+            app.input_string.pop();
+        }
+        KeyCode::Esc => {
+            app.should_exit = true;
+        }
+        KeyCode::Enter => match app.state {
+            State::MainMenu => {
+                app.state = State::TypingGame;
+                app.start_timer();
+                app.input_string.clear();
+            }
+            State::TypingGame => {
+                if app.input_string.trim() == app.current_sentence().trim() {
+                    app.state = State::EndScreen;
+                    app.update_timer();
+                }
+            }
+            State::EndScreen => {
+                app.reset();
+            }
+        },
+        _ => {}
     }
 }
 
-fn main() -> Result<(), io::Error> {
+// Include test module
+mod test;
+
+// Main function
+#[tokio::main]
+async fn main() -> Result<(), io::Error> {
+    // Enable raw mode for terminal input
+    enable_raw_mode()?;
+
+    // Create a new instance of the App
+    let mut app = App::new().expect("Error initializing app");
+
+    // Initialize the terminal backend
     let stdout = io::stdout();
     let backend = CrosstermBackend::new(stdout);
     let mut terminal = Terminal::new(backend)?;
 
-    execute!(terminal.backend_mut(), EnterAlternateScreen, Hide)?;
+    // Clear the terminal and hide the cursor
+    terminal.clear()?;
+    terminal.hide_cursor()?;
 
-    let mut app_state = AppState::Playing(GameState::new());
-    let mut rng = thread_rng();
+    // Main event loop
     loop {
-        match app_state {
-            AppState::Playing(ref mut state) => {
-                state.render_widgets(&mut terminal)?;
-                if let Ok(event) = crossterm::event::read() {
-                    match event {
-                        Event::Key(KeyEvent {
-                            code: KeyCode::Char(c),
-                            ..
-                        }) => {
-                            state.handle_input(c);
-                            if state.check_end_condition() {
-                                app_state = AppState::Stats(state.wpm(), state.accuracy() as u64);
-                            }
-                        }
-                        Event::Key(KeyEvent {
-                            code: KeyCode::Enter,
-                            ..
-                        }) => {
-                            state.reset();
-                        }
-                        Event::Key(KeyEvent {
-                            code: KeyCode::Esc, ..
-                        }) => {
-                            app_state = AppState::Quit;
-                        }
-                        _ => {}
-                    }
+        // Get the terminal size
+        if let Ok(size) = terminal.backend().size() {
+            // Define layout for the UI
+            let chunks = Layout::default()
+                .direction(Direction::Vertical)
+                .margin(2)
+                .constraints([
+                    Constraint::Min(3),
+                    Constraint::Percentage(70),
+                    Constraint::Min(3),
+                ])
+                .split(size);
+
+            // Draw UI based on app state
+            terminal.draw(|f| match app.state {
+                State::MainMenu => {
+                    let main_menu = vec![
+                        Spans::from(Span::styled("Welcome to typerpunk!", Style::default())),
+                        Spans::from(Span::styled("Press Enter to Start", Style::default())),
+                        Spans::from(Span::styled("Press Esc to Quit", Style::default())),
+                    ];
+                    f.render_widget(
+                        Paragraph::new(main_menu).alignment(Alignment::Center),
+                        chunks[0],
+                    );
                 }
+                State::TypingGame => {
+                    draw_typing_game(f, chunks[1], &mut app);
+                }
+                State::EndScreen => {
+                    let wpm = app.update_wpm();
+                    let time_taken = app.time_taken as f64;
+                    let end_screen = vec![
+                        Spans::from(Span::styled("Game Over!", Style::default())),
+                        Spans::from(Span::styled(
+                            format!("Words Per Minute: {:.2}", wpm),
+                            Style::default(),
+                        )),
+                        Spans::from(Span::styled(
+                            format!("Time Taken: {:.1} seconds", time_taken),
+                            Style::default(),
+                        )),
+                        Spans::from(Span::styled("Press Enter to Play Again", Style::default())),
+                        Spans::from(Span::styled("Press Esc to Quit", Style::default())),
+                    ];
+                    f.render_widget(
+                        Paragraph::new(end_screen).alignment(Alignment::Center),
+                        chunks[1],
+                    );
+                }
+            })?;
+
+            // Handle input events
+            if let event::Event::Key(event) = event::read()? {
+                input_handler(event, &mut app, Arc::new(Mutex::new(()))).await;
             }
-            AppState::Stats(wpm, accuracy) => {
-                let stats_text = format!("Your WPM is {:.1} with {:.1}% accuracy!", wpm, accuracy);
-                let stats_widget = Paragraph::new(stats_text)
-                    .style(Style::default().fg(Color::White))
-                    .alignment(Alignment::Center)
-                    .block(Block::default().borders(Borders::ALL));
-                terminal.draw(|f| {
-                    let size = f.size();
-                    f.render_widget(stats_widget, size);
-                })?;
-                std::thread::sleep(rng.gen_range(Duration::from_secs(2)..Duration::from_secs(4)));
-                app_state = AppState::Playing(GameState::new());
-            }
-            AppState::Quit => {
+
+            // Check if the app should exit
+            if app.should_exit {
                 break;
             }
         }
     }
 
-    execute!(terminal.backend_mut(), LeaveAlternateScreen, Show)?;
+    // Cleanup: Show cursor, disable raw mode, and clear terminal
+    terminal.show_cursor()?;
+    disable_raw_mode()?;
+    terminal.clear()?;
+
+    // Additional clear to remove any leftover characters
+    println!();
 
     Ok(())
 }
