@@ -3,15 +3,19 @@ name = "typerpunk"
 version = "0.1.0"
 edition = "2021"
 
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
-
 [dependencies]
-#tui = { version = "0.19.0", features = ["termion"] }
-tui = "0.19.0"
-termion = "2.0.1"
-crossterm = "0.26.1"
+crossterm = "0.27.0"
+tui = { version = "0.19.0", features = ["crossterm"], default-features = false }
+termion = "3.0.0"
 rand = "0.8.5"
 paragraph = "0.0.2"
-console = "0.15.5"
+console = "0.15.8"
 ansi_term = "0.12.1"
+serde_json = "1.0.114"
+regex = "1.6.1"
+ureq = "2.9.6"
+tokio = { version = "1.36.0", features = ["full"] }
 
+[[bin]]
+name = "typerpunk"
+path = "src/main.rs"
