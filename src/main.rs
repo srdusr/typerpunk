@@ -7,6 +7,7 @@ use rand::Rng;
 use std::{
     fs,
     io::{self},
+    path::Path,
     sync::{Arc, Mutex},
     time::Instant,
 };
@@ -106,6 +107,10 @@ impl App {
 
 // Function to read sentences from a file
 fn read_sentences(filename: &str) -> Result<Vec<String>, io::Error> {
+    if !Path::new(filename).exists() {
+        return Err(io::Error::new(io::ErrorKind::NotFound, "File not found"));
+    }
+
     let contents = fs::read_to_string(filename)?;
     let sentences: Vec<String> = contents.lines().map(|s| s.to_string()).collect();
     Ok(sentences)
@@ -190,16 +195,19 @@ async fn input_handler(event: KeyEvent, app: &mut App, _event_tx: Arc<Mutex<()>>
 }
 
 // Include test module
+#[cfg(test)]
 mod test;
 
-// Main function
 #[tokio::main]
 async fn main() -> Result<(), io::Error> {
     // Enable raw mode for terminal input
     enable_raw_mode()?;
 
+    // Print current working directory
+    println!("Current working directory: {:?}", std::env::current_dir());
+
     // Create a new instance of the App
-    let mut app = App::new().expect("Error initializing app");
+    let mut app = App::new().unwrap();
 
     // Initialize the terminal backend
     let stdout = io::stdout();
@@ -276,13 +284,24 @@ async fn main() -> Result<(), io::Error> {
         }
     }
 
-    // Cleanup: Show cursor, disable raw mode, and clear terminal
+    // Cleanup: Show cursor, disable raw mode, and clear only the game UI
     terminal.show_cursor()?;
     disable_raw_mode()?;
-    terminal.clear()?;
+    let size = terminal.backend().size().unwrap();
+    let chunks = Layout::default()
+        .direction(Direction::Vertical)
+        .margin(2)
+        .constraints([
+            Constraint::Min(3),
+            Constraint::Percentage(70),
+            Constraint::Min(3),
+        ])
+        .split(size);
+    terminal
+        .draw(|f| f.render_widget(Paragraph::new("").alignment(Alignment::Center), chunks[1]))?;
 
-    // Additional clear to remove any leftover characters
-    println!();
+    // Manually clear the terminal before exiting
+    println!("\x1B[2J\x1B[1;1H");
 
     Ok(())
 }
