@@ -171,9 +171,16 @@ async fn input_handler(event: KeyEvent, app: &mut App, _event_tx: Arc<Mutex<()>>
         KeyCode::Backspace => {
             app.input_string.pop();
         }
-        KeyCode::Esc => {
-            app.should_exit = true;
-        }
+        KeyCode::Esc => match app.state {
+            State::MainMenu => {
+                app.should_exit = true;
+            }
+            State::TypingGame | State::EndScreen => {
+                app.state = State::MainMenu;
+                app.input_string.clear();
+                app.timer = None;
+            }
+        },
         KeyCode::Enter => match app.state {
             State::MainMenu => {
                 app.state = State::TypingGame;
@@ -198,13 +205,11 @@ async fn input_handler(event: KeyEvent, app: &mut App, _event_tx: Arc<Mutex<()>>
 #[cfg(test)]
 mod test;
 
+// Main function
 #[tokio::main]
 async fn main() -> Result<(), io::Error> {
     // Enable raw mode for terminal input
     enable_raw_mode()?;
-
-    // Print current working directory
-    println!("Current working directory: {:?}", std::env::current_dir());
 
     // Create a new instance of the App
     let mut app = App::new().unwrap();
