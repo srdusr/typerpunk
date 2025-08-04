@@ -122,6 +122,7 @@ fn draw_typing_game(f: &mut Frame<CrosstermBackend<std::io::Stdout>>, chunk: Rec
     let time_used = app.time_taken as f64;
 
     let mut colored_text: Vec<Span> = Vec::new();
+    let cursor_pos = app.input_string.len();
 
     // Iterate over each character in the current sentence and color it based on user input
     for (index, c) in app.current_sentence().chars().enumerate() {
@@ -135,17 +136,24 @@ fn draw_typing_game(f: &mut Frame<CrosstermBackend<std::io::Stdout>>, chunk: Rec
             Color::Gray
         };
 
-        let span = Span::styled(c.to_string(), Style::default().fg(color));
+        // cursor
+        let span = if index == cursor_pos {
+            Span::styled(
+                c.to_string(),
+                Style::default().fg(color).add_modifier(Modifier::REVERSED),
+            )
+        } else {
+            Span::styled(c.to_string(), Style::default().fg(color))
+        };
         colored_text.push(span);
     }
 
-    // Create text to be displayed
     let text = vec![
         Spans::from(Span::styled(
             "Type the following sentence:",
             Style::default().add_modifier(Modifier::BOLD),
         )),
-        colored_text.into(),
+        Spans::from(colored_text),
         Spans::from(Span::styled(format!("WPM: {:.2}", wpm), Style::default())),
         Spans::from(Span::styled(
             format!("Time: {:.1} seconds", time_used),
