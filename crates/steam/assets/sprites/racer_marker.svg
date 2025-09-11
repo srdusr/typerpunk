@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="48" height="48">
+  <!-- Shared "this one is you" marker used above the local player's lane
+       in both Signal Run and Breach Protocol. A filled downward chevron,
+       angular like every other icon in the set. -->
+  <path d="M2 4H22L12 16Z" fill="#ffffff"/>
+</svg>

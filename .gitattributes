@@ -1,0 +1,40 @@
+# Core crate
+crates/core/ export-ignore
+crates/core/** export-ignore
+
+# TUI crate
+crates/tui/ export-ignore
+crates/tui/** export-ignore
+
+# Web crate
+crates/web/ export-ignore
+crates/web/** export-ignore
+
+# Documentation
+docs/ export-ignore
+docs/** export-ignore
+
+# Web interface
+web/ export-ignore
+web/** export-ignore
+
+# Configuration
+config/ export-ignore
+config/** export-ignore
+
+# Text content
+texts/ export-ignore
+texts/** export-ignore
+
+# Build artifacts
+target/ export-ignore
+target/** export-ignore
+
+# IDE files
+.idea/ export-ignore
+.vscode/ export-ignore
+*.iml export-ignore
+
+# OS files
+.DS_Store export-ignore
+Thumbs.db export-ignore 

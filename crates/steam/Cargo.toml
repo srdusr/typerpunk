@@ -1,0 +1,21 @@
+[package]
+name = "typerpunk-steam"
+version.workspace = true
+edition.workspace = true
+authors.workspace = true
+license.workspace = true
+
+[[bin]]
+name = "typerpunk-desktop"
+path = "src/main.rs"
+
+[dependencies]
+typerpunk-core = { path = "../core", default-features = false, features = ["serde", "multiplayer"] }
+bevy = { workspace = true }
+serde.workspace = true
+serde_json.workspace = true
+rand.workspace = true
+tokio = { workspace = true, features = ["full"] }
+tokio-tungstenite.workspace = true
+futures-util.workspace = true
+reqwest.workspace = true

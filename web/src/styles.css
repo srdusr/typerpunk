@@ -1,0 +1,2440 @@
+:root {
+    --primary-color: #00ff9d;
+    --secondary-color: #00cc8f;
+    --background-color: #000000;
+    --text-color: #c8ccd0;
+    --error-color: #ca4754;
+    --correct-color: #00ff9d;
+    --neutral-color: #646669;
+    --caret-color: #00ff9d;
+    --sub-color: #8b8e92;
+    /* Unified top offset below fixed header/toggle */
+    --header-offset: 3.5rem;
+    /* App padding variable so we can compensate where needed */
+    --app-padding: 1rem;
+    --record-color: #ffd166;
+    --warning-color: #ffb454;
+    --player-2: #4ea3ff;
+    --player-3: #ff9f43;
+    --player-4: #c678dd;
+    --player-5: #ff6b8a;
+}
+
+[data-theme="light"] {
+    --primary-color: #067a4e;
+    --secondary-color: #05663f;
+    --background-color: #f6f6f4;
+    --text-color: #2b2b2b;
+    --error-color: #b3323f;
+    --correct-color: #067a4e;
+    --neutral-color: #8a8d90;
+    --caret-color: #067a4e;
+    --sub-color: #5c5f61;
+    --record-color: #9a6b00;
+    --warning-color: #a35b00;
+    --player-2: #1667c2;
+    --player-3: #b45309;
+    --player-4: #7c3aed;
+    --player-5: #be123c;
+}
+
+[data-theme="dark"] {
+    --primary-color: #00ff9d;
+    --secondary-color: #00cc8f;
+    --background-color: #000000;
+    --text-color: #c8ccd0;
+    --error-color: #ca4754;
+    --correct-color: #00ff9d;
+    --neutral-color: #646669;
+    --caret-color: #00ff9d;
+    --sub-color: #8b8e92;
+    --record-color: #ffd166;
+    --warning-color: #ffb454;
+    --player-2: #4ea3ff;
+    --player-3: #ff9f43;
+    --player-4: #c678dd;
+    --player-5: #ff6b8a;
+}
+
+[data-theme="dracula"] {
+    --primary-color: #bd93f9;
+    --secondary-color: #ff79c6;
+    --background-color: #282a36;
+    --text-color: #f8f8f2;
+    --error-color: #ff5555;
+    --correct-color: #bd93f9;
+    --neutral-color: #6272a4;
+    --caret-color: #bd93f9;
+    --sub-color: #9aa5c4;
+    --record-color: #ffd166;
+    --warning-color: #ffb454;
+    --player-2: #4ea3ff;
+    --player-3: #ff9f43;
+    --player-4: #c678dd;
+    --player-5: #ff6b8a;
+}
+
+[data-theme="nord"] {
+    --primary-color: #88c0d0;
+    --secondary-color: #81a1c1;
+    --background-color: #2e3440;
+    --text-color: #d8dee9;
+    --error-color: #bf616a;
+    --correct-color: #88c0d0;
+    --neutral-color: #4c566a;
+    --caret-color: #88c0d0;
+    --sub-color: #93a1b8;
+    --record-color: #ffd166;
+    --warning-color: #ffb454;
+    --player-2: #4ea3ff;
+    --player-3: #ff9f43;
+    --player-4: #c678dd;
+    --player-5: #ff6b8a;
+}
+
+[data-theme="solarized"] {
+    --primary-color: #268bd2;
+    --secondary-color: #2aa198;
+    --background-color: #002b36;
+    --text-color: #93a1a1;
+    --error-color: #dc322f;
+    --correct-color: #268bd2;
+    --neutral-color: #586e75;
+    --caret-color: #268bd2;
+    --sub-color: #839496;
+    --record-color: #ffd166;
+    --warning-color: #ffb454;
+    --player-2: #4ea3ff;
+    --player-3: #ff9f43;
+    --player-4: #c678dd;
+    --player-5: #ff6b8a;
+}
+
+[data-theme="gruvbox"] {
+    --primary-color: #fabd2f;
+    --secondary-color: #b8bb26;
+    --background-color: #282828;
+    --text-color: #ebdbb2;
+    --error-color: #fb4934;
+    --correct-color: #fabd2f;
+    --neutral-color: #928374;
+    --caret-color: #fabd2f;
+    --sub-color: #bdae93;
+    --record-color: #ffd166;
+    --warning-color: #ffb454;
+    --player-2: #4ea3ff;
+    --player-3: #ff9f43;
+    --player-4: #c678dd;
+    --player-5: #ff6b8a;
+}
+
+[data-theme="monokai"] {
+    --primary-color: #a6e22e;
+    --secondary-color: #66d9ef;
+    --background-color: #272822;
+    --text-color: #f8f8f2;
+    --error-color: #f92672;
+    --correct-color: #a6e22e;
+    --neutral-color: #75715e;
+    --caret-color: #a6e22e;
+    --sub-color: #b0a98d;
+    --record-color: #ffd166;
+    --warning-color: #ffb454;
+    --player-2: #4ea3ff;
+    --player-3: #ff9f43;
+    --player-4: #c678dd;
+    --player-5: #ff6b8a;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+[hidden] {
+    display: none !important;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'JetBrains Mono', monospace;
+    background-color: var(--background-color);
+    color: var(--text-color);
+    height: 100vh;
+    /* Vertical scroll is allowed (and only appears when actually needed) --
+       a fixed "overflow: hidden" here silently clipped any screen whose
+       content got taller than the viewport (a wide-but-short window, a
+       longer passage, extra stat rows) with literally no way to reach the
+       clipped part. Horizontal stays clipped since nothing should ever
+       need to scroll sideways. */
+    overflow-x: hidden;
+    overflow-y: auto;
+    /* Cursor is set per-theme in JS (theme.js) - a hardcoded green crosshair
+       here would look wrong on Dracula/Nord/etc. */
+}
+
+.app {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start; /* avoid vertical centering that pushes content down */
+    height: 100vh;
+    padding: var(--app-padding);
+    overflow: hidden;
+}
+
+.logo {
+    position: fixed;
+    top: 1rem;
+    left: 1rem;
+    font-size: 1.2rem;
+    color: var(--primary-color);
+    font-family: 'JetBrains Mono', monospace;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    cursor: pointer;
+    transition: color 0.2s ease;
+}
+
+.logo:hover {
+    color: var(--secondary-color);
+}
+
+/* Main Menu */
+.main-menu {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /* Pinned near the top rather than vertically centered - centered left
+       barely more room below the Start button than the mode popover needs,
+       so on anything but a tall viewport the list ran past the bottom edge.
+       Fixed higher, there's always real room underneath it. */
+    justify-content: flex-start;
+    padding-top: 6rem;
+    height: 100vh;
+    width: 100%;
+    max-width: 700px;
+    margin: 0 auto;
+    padding-left: 2rem;
+    padding-right: 2rem;
+    padding-bottom: 2rem;
+    overflow-y: auto;
+    box-sizing: border-box;
+}
+
+.main-menu h1 {
+    font-size: 4rem;
+    color: var(--primary-color);
+    margin-bottom: 2rem;
+    text-transform: uppercase;
+    letter-spacing: 4px;
+}
+
+.settings-row-group {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+.settings-row-group .menu-button.small {
+    width: 230px;
+}
+
+.menu-stat .stat-label {
+    font-size: 0.7rem;
+    color: var(--sub-color);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 0.2rem;
+}
+
+.menu-stat .stat-value {
+    font-size: 1.3rem;
+    color: var(--primary-color);
+    font-weight: bold;
+}
+
+/* Stats Screen */
+.stats-screen {
+    width: 100%;
+    max-width: 700px;
+    margin: 0 auto;
+    padding: 2rem;
+    margin-top: calc(var(--header-offset) - var(--app-padding));
+    min-height: calc(100vh - var(--header-offset));
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /* Vertically centred when the content is short - these screens were
+       top-heavy, ending around y=510 on a 900px viewport with the rest of
+       the page empty. "safe" keeps it flex-start once the content is taller
+       than the viewport, so a long list is never cut off above the scroll
+       origin; browsers that do not know the keyword ignore the declaration
+       and keep the old flex-start behaviour. */
+    justify-content: safe center;
+    overflow-y: auto;
+}
+
+.stats-screen h2 {
+    font-size: 1.8rem;
+    color: var(--primary-color);
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    margin: 1.5rem 0 1.5rem;
+}
+
+.stats-screen h3 {
+    font-size: 1rem;
+    color: var(--sub-color);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    align-self: flex-start;
+    margin: 2rem 0 0.75rem;
+}
+
+.stats-summary {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1.5rem;
+    border: 1px solid var(--neutral-color);
+    border-radius: 8px;
+    padding: 1.25rem 1rem;
+    text-align: center;
+}
+
+.stats-empty {
+    color: var(--sub-color);
+    font-size: 0.9rem;
+    align-self: flex-start;
+}
+
+.stats-pb-list {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.stats-pb-row {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    border: 1px solid var(--neutral-color);
+    border-radius: 6px;
+    padding: 0.6rem 1rem;
+}
+
+.stats-pb-mode {
+    flex: 1;
+    text-align: left;
+}
+
+.stats-pb-wpm {
+    color: var(--primary-color);
+    font-weight: bold;
+}
+
+.stats-pb-date {
+    color: var(--sub-color);
+    font-size: 0.8rem;
+    min-width: 90px;
+    text-align: right;
+}
+
+.leaderboard-modes {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.4rem;
+    margin-bottom: 0.5rem;
+}
+
+.leaderboard-list {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.leaderboard-row {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    border: 1px solid var(--neutral-color);
+    border-radius: 6px;
+    padding: 0.6rem 1rem;
+}
+
+.leaderboard-rank {
+    color: var(--sub-color);
+    min-width: 2.5rem;
+}
+
+.leaderboard-name {
+    flex: 1;
+    text-align: left;
+    /* A <button> now (links to the player's public profile) - reset away
+       the browser's default button chrome so it still just reads as text. */
+    background: none;
+    border: none;
+    color: inherit;
+    font: inherit;
+    padding: 0;
+    cursor: pointer;
+}
+
+.leaderboard-name:hover {
+    color: var(--primary-color);
+    text-decoration: underline;
+}
+
+.leaderboard-wpm {
+    color: var(--primary-color);
+    font-weight: bold;
+}
+
+.leaderboard-acc {
+    color: var(--sub-color);
+    min-width: 3.5rem;
+    text-align: right;
+}
+
+.leaderboard-date {
+    color: var(--sub-color);
+    font-size: 0.8rem;
+    min-width: 90px;
+    text-align: right;
+}
+
+.store-swatch {
+    flex: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.5rem;
+    height: 1.5rem;
+    border-radius: 4px;
+    border: 1px solid var(--neutral-color);
+}
+
+.store-flair-swatch {
+    color: var(--caret-color);
+    padding: 0.25rem;
+}
+
+.store-flair-swatch svg {
+    width: 100%;
+    height: 100%;
+}
+
+/* Marks a result typed on a touchscreen, which is not comparable with a
+   desktop one. It sat in the same grey as ordinary secondary text, so the
+   caveat read as decoration - this is the second and last use of
+   --warning-color. */
+.leaderboard-device-badge {
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--warning-color);
+    border: 1px solid color-mix(in srgb, var(--warning-color) 45%, transparent);
+    border-radius: 4px;
+    padding: 0.1rem 0.35rem;
+}
+
+.leaderboard-flair {
+    display: inline-flex;
+    width: 0.9em;
+    height: 0.9em;
+    margin-left: 0.35em;
+    vertical-align: -0.05em;
+    color: var(--caret-color);
+}
+
+.leaderboard-flair svg {
+    width: 100%;
+    height: 100%;
+}
+
+.stats-placeholder {
+    width: 100%;
+    border: 1px dashed var(--neutral-color);
+    border-radius: 8px;
+    padding: 2rem 1rem;
+    text-align: center;
+    color: var(--sub-color);
+    font-size: 0.85rem;
+}
+
+.stats-chart {
+    width: 100%;
+    height: 200px;
+    border: 1px solid var(--neutral-color);
+    border-radius: 8px;
+    padding: 0.5rem;
+    box-sizing: border-box;
+}
+
+.stats-chart canvas {
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+
+.stats-screen .menu-button {
+    margin-top: 2rem;
+}
+
+.menu-options {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+}
+
+.start-group {
+    position: relative;
+    /* Fixed, not content-sized - a content-sized button changed width (and
+       shifted everything else in the centered column sideways with it)
+       every time you picked a mode with a longer or shorter name. */
+    width: 360px;
+}
+
+/* Sits directly above the Start button it describes, replacing the old
+   bottom-right corner hint - the keyboard shortcut is more useful read
+   right next to the button it triggers than in a corner of the screen. */
+/* Fixed width via .start-group above - ellipsis covers a very long custom
+   text name that would otherwise force the box wider. The chevron overlays
+   the button's own right edge rather than squeezing the label into a
+   smaller box, so padding-right reserves space for it - without this, a
+   long mode name ("Start: Literature") ran its text straight under the
+   chevron instead of stopping short of it. */
+/* Bigger and bolder than the other menu buttons - now that its label is
+   just the mode name ("Timed", not "Start: Timed"), its size has to carry
+   "this is the one you click" on its own instead of the word "Start". */
+/* The two entry points. Single-line labels naming the action, nothing else
+   inside the box - what a Single Player run will actually start (mode plus
+   its rules) sits in the .mode-pill above, so the button reads as one clear
+   word and the mode stays changeable without redrawing the button. */
+.start-main {
+    width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    /* Symmetric. Nothing overlays either button now that the mode picker is
+       its own control above them, so both labels centre on the same axis. */
+    padding-left: 2rem;
+    padding-right: 2rem;
+    font-size: 1.5rem;
+    padding-top: 1.3rem;
+    padding-bottom: 1.3rem;
+    border-width: 3px;
+    letter-spacing: 3px;
+}
+
+/* Mode + rules for the Single Player button. Hidden (not removed) while the
+   mode popover is open, so the layout does not jump. */
+.start-caption {
+    font-size: 0.85rem;
+    color: var(--sub-color);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-top: -0.35rem;
+    text-align: center;
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* Split button: most of the width starts the game, the chevron on the right
+   edge (overlaid, not squeezing the label) opens the mode list. Mode used to
+   be its own separate full-width button - merged here since Start already
+   displays the current mode in its own label ("Start: Timed"). */
+/* The mode picker, above the two start buttons rather than notched into the
+   Single Player button's right edge. As a chevron inside the button it cut a
+   3px divider through the outline and made the button look clipped, and it
+   forced the label off-centre to avoid it. As its own quiet pill it also
+   removes the caption that used to sit between Single Player and Multiplayer,
+   separating the two things you actually came here to press. */
+.mode-pill {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    max-width: 360px;
+    background: none;
+    border: 1px solid color-mix(in srgb, var(--primary-color) 35%, transparent);
+    border-radius: 999px;
+    color: var(--sub-color);
+    font-family: inherit;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding: 0.45rem 0.9rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.mode-pill:hover {
+    border-color: var(--primary-color);
+    color: var(--text-color);
+}
+
+.mode-pill-label {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.mode-pill svg {
+    width: 0.9rem;
+    height: 0.9rem;
+    flex-shrink: 0;
+}
+
+
+
+
+
+/* What Start will actually generate, visible without opening Settings. */
+/* Every mode listed as a direct pick when the button is clicked, instead of
+   cycling blind through them one click at a time - Custom and the text
+   categories were otherwise invisible unless you happened to click through
+   the whole list first.
+
+   position:fixed with JS-computed coordinates (not CSS position:absolute
+   below the button) - with 8 modes listed, the panel is taller than the
+   gap between the button and the bottom of the viewport on an ordinary
+   900px-tall screen, and a fixed "opens downward" placement ran the last
+   1-2 items off the bottom edge with no way to reach them. JS picks
+   whichever of above/below actually has room, and this only falls back to
+   its own internal scroll (never the page's) if neither direction has
+   enough space at all. */
+/* Two columns, one per kind of entry (see mainMenu.js). As a single column
+   this was 585px of 18 undifferentiated rows on a 900px viewport - it ran
+   off the bottom into a scroll region and covered the Multiplayer button and
+   the icon rail. Side by side it is roughly half that and needs no scrolling
+   at any normal window height. */
+.mode-popover {
+    position: fixed;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    gap: 0.5rem;
+    background: var(--background-color);
+    border: 1px solid var(--neutral-color);
+    border-radius: 8px;
+    padding: 0.5rem;
+    z-index: 10;
+    max-height: calc(100vh - 2rem);
+    overflow-y: auto;
+}
+
+.mode-popover-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+    flex: 1 1 0;
+    min-width: 0;
+}
+
+/* Same small dim caption as the Settings panel's "Rules"/"Typing" headings,
+   so the two panels read as the same kind of surface. */
+.mode-popover-heading {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--sub-color);
+    padding: 0.25rem 0.7rem 0.35rem;
+    border-bottom: 1px solid var(--neutral-color);
+    margin-bottom: 0.25rem;
+}
+
+.mode-popover-item {
+    background: none;
+    border: none;
+    color: var(--text-color);
+    font-family: inherit;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding: 0.45rem 0.7rem;
+    border-radius: 4px;
+    cursor: pointer;
+    text-align: left;
+    flex-shrink: 0;
+}
+
+.mode-popover-item:hover {
+    background: rgba(128, 128, 128, 0.15);
+}
+
+.mode-popover-item.active {
+    color: var(--primary-color);
+    font-weight: bold;
+}
+
+.menu-button {
+    background: none;
+    border: 2px solid var(--primary-color);
+    color: var(--text-color);
+    padding: 1rem 2rem;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-family: inherit;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    min-width: 250px;
+    /* min-width has no effect on an inline element - a plain <button>
+       defaults to inline-block already, but this class is also used on the
+       Spotify "Connect" <a> link (an OAuth login has to be a real page
+       navigation, not a fetch), which needs these spelled out explicitly. */
+    display: inline-block;
+    text-align: center;
+    text-decoration: none;
+    box-sizing: border-box;
+}
+
+.menu-button:hover {
+    background-color: var(--primary-color);
+    color: var(--background-color);
+}
+
+.menu-button.small {
+    padding: 0.6rem 1.2rem;
+    font-size: 0.9rem;
+    min-width: 0;
+}
+
+/* Secondary actions. A dashed outline conventionally means "placeholder" or
+   "drop target", so Join / Create a Room / the leaderboard filter chips all
+   read as unfinished. Solid at reduced strength says "secondary" instead,
+   and still inverts to the filled state on hover like every other button. */
+.menu-button.ghost {
+    border-color: color-mix(in srgb, var(--primary-color) 45%, transparent);
+    color: var(--sub-color);
+}
+
+.menu-button.ghost:hover {
+    border-color: var(--primary-color);
+    color: var(--background-color);
+}
+
+.custom-hint {
+    font-size: 0.8rem;
+    color: var(--neutral-color);
+    text-align: center;
+    max-width: 340px;
+}
+
+.settings-panel {
+    width: 100%;
+    max-width: 620px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /* Tightened alongside the two-column split: .app is overflow:hidden, so
+       anything past the viewport bottom is clipped rather than scrollable. */
+    gap: 0.55rem;
+    border: 1px solid var(--neutral-color);
+    border-radius: 8px;
+    padding: 0.85rem;
+    margin: 1rem auto 0 auto;
+    text-align: center;
+}
+
+.settings-row {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-size: 0.9rem;
+    cursor: pointer;
+}
+
+.settings-hint {
+    font-size: 0.75rem;
+    color: var(--neutral-color);
+    max-width: 340px;
+}
+
+.theme-gallery {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(90px, 1fr));
+    gap: 0.5rem;
+    width: 100%;
+}
+
+.theme-swatch {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.35rem;
+    background: transparent;
+    border: 1px solid var(--neutral-color);
+    border-radius: 6px;
+    padding: 0.5rem;
+    cursor: pointer;
+    font-family: inherit;
+}
+
+.theme-swatch.active {
+    border-color: var(--primary-color);
+}
+
+.theme-swatch-preview {
+    display: block;
+    width: 100%;
+    height: 1.5rem;
+    border-radius: 4px;
+}
+
+.theme-swatch-label {
+    font-size: 0.7rem;
+    color: var(--text-color);
+}
+
+.theme-swatch-preview[data-swatch="dark"] { background: linear-gradient(90deg, #000000 60%, #00ff9d 60%); }
+.theme-swatch-preview[data-swatch="light"] { background: linear-gradient(90deg, #f6f6f4 60%, #067a4e 60%); }
+.theme-swatch-preview[data-swatch="dracula"] { background: linear-gradient(90deg, #282a36 60%, #bd93f9 60%); }
+.theme-swatch-preview[data-swatch="nord"] { background: linear-gradient(90deg, #2e3440 60%, #88c0d0 60%); }
+.theme-swatch-preview[data-swatch="solarized"] { background: linear-gradient(90deg, #002b36 60%, #268bd2 60%); }
+.theme-swatch-preview[data-swatch="gruvbox"] { background: linear-gradient(90deg, #282828 60%, #fabd2f 60%); }
+.theme-swatch-preview[data-swatch="monokai"] { background: linear-gradient(90deg, #272822 60%, #a6e22e 60%); }
+
+.custom-panel {
+    width: 100%;
+    max-width: 480px;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    border: 1px solid var(--neutral-color);
+    border-radius: 8px;
+    padding: 1rem;
+    margin: 1.5rem auto 0 auto;
+}
+
+.custom-textarea {
+    width: 100%;
+    min-height: 120px;
+    resize: vertical;
+    background: transparent;
+    color: var(--text-color);
+    border: 1px solid var(--neutral-color);
+    border-radius: 6px;
+    padding: 0.75rem;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.9rem;
+    transition: border-color 0.15s ease;
+}
+
+.custom-textarea.drag-over {
+    border-color: var(--primary-color);
+    border-style: dashed;
+}
+
+.custom-stats {
+    font-size: 0.8rem;
+    color: var(--sub-color);
+    text-align: center;
+}
+
+.custom-panel-row {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.file-label {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.custom-file-name {
+    font-size: 0.8rem;
+    color: var(--neutral-color);
+    word-break: break-all;
+}
+
+.custom-error {
+    font-size: 0.8rem;
+    color: var(--error-color);
+    min-height: 1em;
+}
+
+/* Account screen */
+.account-panel {
+    width: 100%;
+    max-width: 360px;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    margin: 1rem auto 0 auto;
+}
+
+.account-tabs {
+    display: flex;
+    gap: 0.5rem;
+    justify-content: center;
+}
+
+.account-form {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+}
+
+.account-input {
+    background: transparent;
+    color: var(--text-color);
+    border: 1px solid var(--neutral-color);
+    border-radius: 6px;
+    padding: 0.65rem 0.75rem;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.9rem;
+}
+
+.account-input:focus {
+    outline: none;
+    border-color: var(--primary-color);
+}
+
+.account-signed-in {
+    text-align: center;
+    font-size: 1rem;
+}
+
+.account-spotify-status {
+    font-size: 0.85rem;
+    color: var(--sub-color);
+    text-align: center;
+}
+
+/* Typing Game */
+.typing-game {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    max-width: 1300px;
+    margin: 0 auto;
+    padding: 1rem;
+    position: relative;
+    height: 100vh;
+    overflow: hidden;
+}
+
+.text-container {
+    position: relative;
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 1rem 2rem 0 2rem;
+    margin-top: var(--header-offset); /* unified: just below header/toggle */
+}
+
+.text-display {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 1.5rem;
+    line-height: 1.5;
+    min-height: 6rem;
+    color: var(--text-color);
+    position: relative;
+    white-space: pre-wrap;
+    word-break: keep-all;
+    overflow-wrap: break-word;
+    /* A whole number of characters wide, not fit-content. When the passage
+       wraps, fit-content resolves to the full available width - which was
+       78.9 character cells, so the leftover 0.9 cell could never be filled
+       and always sat on the right. The box measured perfectly centred while
+       the text inside it read as right-heavy. An exact character count means
+       a full line reaches both edges. (border-box is global, hence the
+       padding in the calc.) */
+    width: min(100%, calc(76ch + 2rem));
+    margin: 0 auto;
+    tab-size: 4;
+    hyphens: none;
+    text-align: left;
+    padding: 1rem;
+}
+
+.text-display span {
+    white-space: pre;
+    position: relative;
+    display: inline-block;
+}
+
+.text-display span.correct {
+    color: var(--correct-color);
+}
+
+.text-display span.incorrect {
+    color: var(--error-color);
+}
+
+.text-display span.neutral {
+    color: var(--neutral-color);
+}
+
+/* Blind Mode: a typed character just looks "passed", no red/green judgment
+   - distinct from .neutral (not yet reached) so the caret's progress is
+   still visible, just without correctness feedback. */
+.text-display span.typed {
+    color: var(--text-color);
+}
+
+.text-display span.current {
+    position: relative;
+}
+
+.text-display span.current::after {
+    content: '▏';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    color: var(--caret-color);
+    animation: blink 1s step-end infinite;
+}
+
+.typing-input {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    z-index: 1;
+    cursor: text;
+    caret-color: transparent;
+    background: transparent !important;
+    color: transparent !important;
+    border: none !important;
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+.typing-input:focus {
+    background: transparent !important;
+    color: transparent !important;
+    border: none !important;
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+.theme-toggle {
+    position: fixed;
+    top: 1rem;
+    right: 1rem;
+    background: transparent;
+    border: 2px solid var(--primary-color);
+    outline: none;
+    box-shadow: none;
+    color: var(--primary-color);
+    width: 2.5rem;
+    height: 2.5rem;
+    padding: 0;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 100;
+    border-radius: 4px;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+}
+
+.theme-toggle:focus,
+.theme-toggle:active {
+    outline: none;
+    box-shadow: none;
+}
+
+.theme-toggle:hover {
+    background-color: var(--primary-color);
+    color: var(--background-color);
+}
+
+/* Wrapper for themeButton.js's standalone control (every screen besides the
+   main menu, which builds its own .theme-corner-group inline). Fixed itself
+   so its child button can drop to position:static and still lay out
+   correctly as the popover's positioned ancestor - same reasoning as
+   .corner-rail-left .corner-icon-button. */
+/* Kept fixed for any caller that still mounts it standalone; inside .top-rail
+   it drops to static so the row lays it out (see .top-rail .theme-control). */
+.theme-control {
+    position: fixed;
+    top: 1rem;
+    right: 1rem;
+    z-index: 100;
+}
+
+.theme-control .theme-toggle {
+    position: static;
+}
+
+/* Same box as .theme-toggle, sitting just to its left - Tab already
+   restarts the current test, but that shortcut isn't discoverable on its
+   own, so it gets a visible button too. */
+.restart-toggle {
+    background: transparent;
+    border: 2px solid var(--primary-color);
+    outline: none;
+    box-shadow: none;
+    color: var(--primary-color);
+    width: 2.5rem;
+    height: 2.5rem;
+    padding: 0;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 100;
+    border-radius: 4px;
+    font-size: 1.3rem;
+    line-height: 1;
+    appearance: none;
+}
+
+.restart-toggle:hover {
+    background-color: var(--primary-color);
+    color: var(--background-color);
+}
+
+/* Zen has no timer and no fixed length, so unlike every other mode nothing
+   ever ends it automatically - this is the only way to finish one, so it
+   gets a real labeled button (not just another small icon square) sitting
+   in the same top-right cluster as Restart/Theme. Deliberately not placed
+   near TIME at bottom-center: that space is reserved to stay visually
+   consistent with the end screen's graph position, not a place to add
+   controls. */
+.zen-finish-button {
+    background: transparent;
+    border: 2px solid var(--primary-color);
+    outline: none;
+    box-shadow: none;
+    color: var(--primary-color);
+    height: 2.5rem;
+    padding: 0 1rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 100;
+    border-radius: 4px;
+    font-family: inherit;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    appearance: none;
+}
+
+.zen-finish-button:hover {
+    background-color: var(--primary-color);
+    color: var(--background-color);
+}
+
+.theme-toggle svg {
+    width: 1.5rem;
+    height: 1.5rem;
+    transition: color 0.2s;
+}
+
+/* Same visual language as .theme-toggle (which stays a separate,
+   self-contained class since it's also used stand-alone on the typing/end
+   screens) - these are the main menu's other two corner buttons. */
+.corner-icon-button {
+    position: fixed;
+    background: transparent;
+    border: 2px solid var(--primary-color);
+    outline: none;
+    box-shadow: none;
+    color: var(--primary-color);
+    width: 2.5rem;
+    height: 2.5rem;
+    padding: 0;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 100;
+    border-radius: 4px;
+    appearance: none;
+}
+
+.corner-icon-button:hover {
+    background-color: var(--primary-color);
+    color: var(--background-color);
+}
+
+.corner-icon-button svg {
+    width: 1.5rem;
+    height: 1.5rem;
+}
+
+/* The icon rail. Two bottom corners, identical on every screen - the main
+   menu builds the same two clusters inline (it owns its own Settings panel),
+   cornerRail.js injects them everywhere else. This used to be two different
+   layouts: bottom corners on the menu, a vertical top-right stack elsewhere,
+   so the icons jumped position on every navigation.
+
+   Left cluster is identity and behavior (Account, Settings, then Friends and
+   Store); right cluster is numbers (Stats, Leaderboard, Multiplayer).
+   Horizontal, not vertical - a bottom corner has little headroom before
+   hitting the screen edge. */
+/* Top-left, stacked under the wordmark: what customises the app. It used to
+   be a second bottom cluster, which left the bottom edge carrying navigation
+   on both sides while the top-left held nothing but the logo. A column, not a
+   row - there is vertical room here and the passage starts below it. */
+.corner-rail-left {
+    position: fixed;
+    top: 3.4rem;
+    left: 1rem;
+    z-index: 100;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
+}
+
+.corner-rail-right {
+    position: fixed;
+    bottom: 1rem;
+    right: 1rem;
+    z-index: 100;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+/* .corner-icon-button is position:fixed by default - inside these flex rows
+   it needs to drop back to a normal flow position, or every button ignores
+   the layout entirely and stacks on top of the others at whatever its
+   unstyled static position happens to be. */
+.corner-rail-left .corner-icon-button,
+.corner-rail-right .corner-icon-button {
+    position: static;
+}
+
+/* Only the main menu still draws one, between its two top-left icons. A
+   horizontal hairline, since that cluster is a column. */
+.rail-divider {
+    align-self: stretch;
+    height: 1px;
+    background: var(--neutral-color);
+    opacity: 0.4;
+}
+
+.rail-settings-group {
+    position: relative;
+}
+
+.rail-settings-panel {
+    position: absolute;
+    top: calc(100% + 0.6rem);
+    left: 0;
+    background: var(--background-color);
+    border: 1px solid var(--neutral-color);
+    border-radius: 8px;
+    padding: 0.75rem;
+    width: 280px;
+}
+
+.theme-gallery-popover {
+    position: absolute;
+    top: calc(100% + 0.6rem);
+    right: 0;
+    background: var(--background-color);
+    border: 1px solid var(--neutral-color);
+    border-radius: 8px;
+    padding: 0.75rem;
+    width: 320px;
+}
+
+/* Lifetime average over best single result, stacked so both read as one
+   figure block beside the Stats icon rather than competing for corner room. */
+.stats-corner-figures {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 0.05rem;
+    line-height: 1.2;
+}
+
+.stats-corner-avg,
+.stats-corner-pb {
+    font-size: 0.85rem;
+    color: var(--sub-color);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    white-space: nowrap;
+}
+
+
+@keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+}
+
+/* Mobile adjustments */
+@media (max-width: 768px) {
+    .main-menu h1 {
+        font-size: 2.5rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .menu-button {
+        padding: 0.8rem 1.5rem;
+        font-size: 1rem;
+        min-width: 200px;
+    }
+
+    .typing-game {
+        padding: 1rem;
+    }
+
+    .text-container {
+        padding: 1rem;
+        margin-top: var(--header-offset);
+    }
+
+    .wpm-stat {
+        left: 1rem;
+    }
+
+    .acc-stat {
+        right: 1rem;
+    }
+
+    .time-stat {
+        bottom: 0.5rem;
+        font-size: 1rem;
+    }
+
+    .text-display {
+        font-size: 1.2rem;
+    }
+
+    .graph-container {
+        height: 200px;
+        padding: 1rem;
+    }
+
+    .graph-axis.x {
+        left: 1rem;
+        right: 1rem;
+    }
+
+    .graph-axis.y {
+        bottom: 1rem;
+    }
+
+    .end-screen-buttons {
+        bottom: 1rem;
+    }
+}
+
+@media (max-height: 600px) {
+    .wpm-stat,
+    .acc-stat {
+        top: 50%;
+    }
+
+    .time-stat {
+        bottom: 0.25rem;
+        font-size: 0.9rem;
+    }
+
+    .text-container {
+        margin-top: 4.5rem;
+        padding: 1rem;
+    }
+
+    .text-display {
+        font-size: 1.2rem;
+        min-height: 4.5rem;
+    }
+
+    .graph-container {
+        height: 200px;
+    }
+}
+
+@media (max-width: 600px) {
+    .typing-game {
+        padding: 0.5rem;
+        height: 100vh;
+        min-width: 0;
+    }
+    .text-container {
+        padding: 0.5rem 0.5rem 0 0.5rem;
+        margin-top: var(--header-offset);
+        min-width: 0;
+    }
+    .text-display {
+        font-size: 1rem;
+        padding: 0.5rem;
+        min-height: 3rem;
+        max-width: 100vw;
+        word-break: break-word;
+    }
+}
+
+.attribution {
+    max-width: 700px;
+    width: 100%;
+    margin: 0.5rem auto 1.75rem auto;
+    text-align: center;
+    color: var(--neutral-color);
+    font-size: 0.95rem;
+}
+
+.segment-progress {
+    position: fixed;
+    top: 1rem;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 0.8rem;
+    color: var(--neutral-color);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.text-display.code {
+    text-align: left;
+    background: rgba(127, 127, 127, 0.06);
+    border-radius: 8px;
+}
+
+.text-display span.neutral.syn-keyword { color: var(--secondary-color); }
+.text-display span.neutral.syn-string { color: #d9a441; }
+.text-display span.neutral.syn-comment { color: var(--sub-color); font-style: italic; }
+.text-display span.neutral.syn-number { color: #6f9ee8; }
+
+/* Passive mode */
+.passive-mode {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    width: 100%;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 2rem;
+    position: relative;
+    text-align: center;
+}
+
+.passive-source {
+    color: var(--neutral-color);
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 2rem;
+}
+
+.passive-lines {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    width: 100%;
+    margin-bottom: 2rem;
+}
+
+.passive-line {
+    font-family: 'JetBrains Mono', monospace;
+    white-space: pre-wrap;
+    word-break: break-word;
+}
+
+.passive-line.prev,
+.passive-line.next {
+    color: var(--neutral-color);
+    opacity: 0.5;
+    font-size: 1.1rem;
+}
+
+.passive-line.active {
+    font-size: 1.6rem;
+    line-height: 1.5;
+    min-height: 2.4rem;
+}
+
+.passive-input {
+    position: relative;
+    width: 100%;
+    max-width: 500px;
+    background: transparent;
+    color: var(--text-color);
+    border: none;
+    border-bottom: 2px solid var(--neutral-color);
+    outline: none;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 1.1rem;
+    text-align: center;
+    padding: 0.5rem;
+    caret-color: var(--caret-color);
+}
+
+.passive-input:focus {
+    border-bottom-color: var(--primary-color);
+}
+
+.passive-stats {
+    margin-top: 1.5rem;
+}
+
+.passive-summary {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+    margin-top: 2rem;
+}
+
+.passive-summary-title {
+    font-size: 1.3rem;
+    color: var(--primary-color);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+.passive-summary-stats {
+    display: flex;
+    gap: 3rem;
+}
+
+.passive-summary-stats > div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.3rem;
+}
+
+/* Fixed, matching width on both sides - "CONSISTENCY" is a much longer
+   label than "CHARS"/"ERR", so left to auto-size these two blocks end up
+   different widths, which pushes the graph between them (a flex-grow child
+   filling the remaining space-between gap) visibly off-center. */
+.endscreen-side-stat.wpm {
+    flex: 0 0 170px;
+    text-align: left;
+}
+
+.endscreen-side-stat.acc {
+    flex: 0 0 170px;
+    text-align: right;
+}
+
+.pb-badge {
+    font-size: 0.75rem;
+    letter-spacing: 0.05em;
+    color: var(--sub-color);
+    margin: -0.1rem 0 0.3rem;
+}
+
+/* A new personal best is the payoff moment of a test and had no colour of
+   its own - it rendered in the same accent as every other figure on the
+   screen. --record-color is used here and nowhere else, so the gold reads
+   as "you beat something", not as decoration. */
+.pb-badge.pb-new {
+    color: var(--record-color);
+    font-weight: 700;
+}
+
+.loading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    font-size: 1.5rem;
+    color: var(--primary-color);
+    font-family: 'JetBrains Mono', monospace;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+#root {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+/* Typing Game */
+.stats-bar {
+    display: none;
+}
+
+.end-screen {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    width: 100%;
+    max-width: 1300px;
+    margin: 0 auto;
+    /* Same padding and same --header-offset margin as .typing-game +
+       .text-container, so the passage lands on the identical baseline on
+       both screens and does not jump when the test ends. This claimed to
+       "match .text-container exactly" while subtracting --app-padding and
+       using a 0.25rem pad, which put the end screen's passage 1.75rem
+       higher than the one the player had just been reading. */
+    padding: 1rem;
+    margin-top: var(--header-offset);
+    /* min-height must subtract the margin-top above, not just be 100vh --
+       margin sits outside the box, so 100vh + this margin always overflowed
+       the viewport by exactly the margin amount. Invisible before (body was
+       overflow:hidden), but a real, permanent scrollbar once that changed
+       to allow scrolling for genuinely tall content. */
+    min-height: calc(100vh - var(--header-offset));
+    position: relative;
+    /* Without this, Play Again sits flush against the very bottom edge of
+       the viewport whenever the passage/graph/time content happens to fill
+       most of the screen - the auto-fit cascade below still shrinks this
+       away first if a genuinely tall passage would otherwise force a
+       scrollbar, so it never fights that logic, it just guarantees normal
+       breathing room in the common case. */
+    padding-bottom: 2rem;
+    box-sizing: border-box;
+}
+
+.end-screen-buttons {
+    /* Normal flow, not fixed-to-viewport - fixed positioning stranded this
+       right at the bottom of the viewport regardless of content height,
+       leaving a large dead gap above it whenever the passage/graph/time
+       block didn't happen to fill the screen. */
+    margin-top: 1.5rem;
+    display: flex;
+    gap: 1.5rem;
+}
+
+.end-screen-button {
+    background: none;
+    border: 2px solid var(--primary-color);
+    color: var(--text-color);
+    padding: 1rem 2rem;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-family: inherit;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    min-width: 250px;
+    border-radius: 8px;
+}
+
+.end-screen-button:hover {
+    background-color: var(--primary-color);
+    color: var(--background-color);
+    transform: translateY(-2px);
+}
+
+/* Character styling */
+.correct {
+    color: var(--correct-color);
+}
+
+.incorrect {
+    color: var(--error-color);
+    text-decoration: underline;
+}
+
+.current {
+    /* A hardcoded rgba(0,0,0,...) darkening tint is a no-op against dark
+       mode's pure-black background (you can't darken black further) --
+       mixing --text-color (already the correct direction per theme: dark
+       tint on a light background, light tint on a dark one) into
+       transparent instead makes this actually visible in every theme. */
+    background-color: color-mix(in srgb, var(--text-color) 18%, transparent);
+    border-radius: 2px;
+}
+
+.error-screen {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    padding: 2rem;
+    text-align: center;
+}
+
+.error-screen h2 {
+    margin-bottom: 1rem;
+}
+
+.error-screen p {
+    margin-bottom: 2rem;
+}
+
+/* WPM/TIME/ACC used to each be position:fixed to a different edge of the
+   viewport (left-middle, bottom-center, right-middle) - three related
+   numbers scattered to opposite corners with the text floating alone above
+   a canyon of empty space between them. They're one dashboard, so they sit
+   in normal flow as one row directly under the text instead. */
+/* WPM sits left, ACC sits right, TIME sits bottom-center, leaving the
+   center/center-bottom of the screen clear - that's deliberate, not
+   incidental: it's the same zone the end screen's graph occupies (flanked
+   left/right by its own WPM/ACC), so the layout doesn't jump around when a
+   test finishes and the graph appears there. Don't "fix" this into one
+   grouped row; the empty center is reserved space, not dead space. */
+.wpm-stat {
+    position: fixed;
+    left: 2rem;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    width: 6rem;
+}
+
+/* "Live Stats: Off" - WPM/ACC hidden while typing, revealed on the end
+   screen as normal. TIME stays visible since time mode needs it to know
+   when the test ends. */
+.typing-game.hide-live-stats .wpm-stat,
+.typing-game.hide-live-stats .acc-stat {
+    display: none;
+}
+
+/* "Blink Caret: Off" - the current-character caret stays solid instead of
+   blinking (see .text-display span.current::after's animation). */
+.typing-game.no-caret-blink .text-display span.current::after {
+    animation: none;
+}
+
+.acc-stat {
+    position: fixed;
+    right: 2rem;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    width: 6rem;
+}
+
+.time-stat {
+    position: fixed;
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: 1rem;
+    z-index: 100;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+/* Multiplayer: opponents' live progress during a race. Anchored below the
+   logo (the only thing already in the top-left corner) rather than the
+   center, which the typing/end screens keep empty on purpose to match the
+   end screen's graph zone. */
+.mp-opponents {
+    position: fixed;
+    top: 4.5rem;
+    left: 1rem;
+    z-index: 100;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    width: 200px;
+}
+
+.mp-opponent-row {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.75rem;
+    color: var(--sub-color);
+}
+
+.mp-opponent-name {
+    color: var(--racer-color, var(--sub-color));
+    min-width: 4rem;
+    max-width: 4rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.mp-opponent-bar {
+    flex: 1;
+    height: 6px;
+    background: var(--neutral-color);
+    border-radius: 3px;
+    overflow: hidden;
+}
+
+/* Every racer's bar used the one accent colour, so in a five-player quick
+   match you could not tell which bar was whose. Each row carries its own
+   --racer-color (assigned in multiplayerScreen.js); you are always the theme
+   primary, opponents take the --player-N hues in join order. */
+.mp-opponent-bar-fill {
+    height: 100%;
+    background: var(--racer-color, var(--primary-color));
+    transition: width 0.15s ease;
+}
+
+/* Same colour key in the lobby list, so the mapping is learned before the
+   race starts rather than during it. */
+.leaderboard-row .mp-racer-dot {
+    display: inline-block;
+    width: 0.55rem;
+    height: 0.55rem;
+    border-radius: 2px;
+    margin-right: 0.5rem;
+    background: var(--racer-color, var(--primary-color));
+    flex-shrink: 0;
+}
+
+.mp-opponent-wpm {
+    min-width: 2rem;
+    text-align: right;
+}
+
+/* The one genuinely time-critical state in the app: seconds left to get your
+   hands on the keys. It read in the same accent as every idle figure on the
+   screen, so it carried no urgency. --warning-color is used here and on the
+   device badge, nowhere else. */
+.mp-countdown {
+    font-size: 3rem;
+    color: var(--warning-color);
+    text-align: center;
+    min-height: 4rem;
+}
+
+.stat-label {
+    font-size: 0.8rem;
+    color: var(--sub-color);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 0.5rem;
+}
+
+.stat-value {
+    font-size: 2rem;
+    color: var(--primary-color);
+    font-weight: bold;
+}
+
+/* Custom tooltip for [data-tooltip] elements (see tooltip.js) - replaces
+   the browser's own native title="" popup, which can't be styled at all and
+   reads as an unpolished default sitting next to an otherwise fully custom
+   terminal-styled UI. */
+/* Floats over the page, so it has to read as a layer rather than as part of
+   the layout. It shared the page background with a hairline border, which
+   made it look like a panel that belonged where it landed - particularly
+   when it covered the control above the one it describes. The lifted
+   background and shadow separate it from whatever it overlaps. */
+.app-tooltip {
+    position: fixed;
+    background: color-mix(in srgb, var(--text-color) 10%, var(--background-color));
+    color: var(--text-color);
+    border: 1px solid var(--primary-color);
+    border-radius: 4px;
+    padding: 0.4rem 0.6rem;
+    font-size: 0.8rem;
+    font-family: 'JetBrains Mono', monospace;
+    max-width: 260px;
+    line-height: 1.4;
+    pointer-events: none;
+    z-index: 1000;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.55);
+}
+
+.chart-tooltip {
+    position: absolute;
+    display: none;
+    transform: translate(-50%, -100%);
+    margin-top: -10px;
+    background: rgba(20, 20, 20, 0.95);
+    color: #fff;
+    border: 1px solid var(--primary-color);
+    border-radius: 4px;
+    padding: 0.3rem 0.6rem;
+    font-size: 0.8rem;
+    font-family: 'JetBrains Mono', monospace;
+    pointer-events: none;
+    white-space: nowrap;
+    z-index: 20;
+}
+
+.graph-container canvas {
+    width: 100%;
+    height: 100%;
+}
+
+.graph-axis {
+    position: absolute;
+    color: var(--text-color);
+    font-size: 0.8rem;
+    font-family: 'JetBrains Mono', monospace;
+}
+
+.graph-axis.x {
+    bottom: 0;
+    left: 2rem;
+    right: 2rem;
+    display: flex;
+    justify-content: space-between;
+    padding: 0.5rem 0;
+}
+
+.graph-axis.y {
+    top: 0;
+    bottom: 2rem;
+    left: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 0 0.5rem;
+    width: 3rem;
+    text-align: right;
+}
+
+body, .app, #root {
+    overflow-x: hidden;
+    scrollbar-width: none; /* Firefox */
+}
+body::-webkit-scrollbar, .app::-webkit-scrollbar, #root::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera */
+}
+
+.future-modes-placeholder {
+    width: 100%;
+    min-height: 3rem;
+    background: transparent;
+    margin-top: 1.5rem;
+}
+
+.end-screen-text {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto 0.5rem auto;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 1.2rem;
+    color: var(--text-color);
+    /* See .current's comment - a flat rgba(0,0,0,...) tint only darkens,
+       so it did nothing at all against dark mode's pure-black background. */
+    background: color-mix(in srgb, var(--text-color) 6%, transparent);
+    border-radius: 6px;
+    /* Side padding matches .text-container's 2rem so the centred passage
+       lands on the same left edge as it had on the typing screen. */
+    padding: 1rem 2rem;
+    text-align: left;
+    word-break: break-word;
+}
+
+.end-screen-graph-row {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto 0.5rem auto;
+    /* Matches .end-screen-text's own 2rem side padding, so the WPM/ACC
+       blocks line up with the actual text edges above them, not with the
+       text box's outer (padded) edge. Right side gets extra clearance on
+       top of that - unlike the typing screen's WPM/ACC blocks (fixed
+       position with their own deliberate margin), this row is a normal-flow
+       flex layout, so on any viewport narrower than max-width its own right
+       edge can land directly under the fixed corner icon rail otherwise. */
+    padding: 0 2rem;
+    padding-right: 4.5rem;
+}
+
+.graph-container {
+    flex: 1 1 0;
+    min-width: 0;
+    margin: 0;
+    padding: 1rem 0;
+    height: 240px;
+    position: relative;
+    background: color-mix(in srgb, var(--text-color) 3%, transparent);
+    border-radius: 8px;
+}
+
+.end-screen-graph-row.end-screen-time-row {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    margin: 0 auto 2rem auto;
+}
+
+.end-screen-rawwpm {
+    width: 100%;
+    max-width: 900px;
+    margin: 0 auto 2rem auto;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 1.5rem;
+    font-size: 1.3rem;
+}
+.end-screen-rawwpm .stat-label {
+    font-size: 1rem;
+    color: var(--sub-color);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-right: 0.5rem;
+}
+.end-screen-rawwpm .stat-value {
+    font-size: 2rem;
+    color: var(--primary-color);
+    font-weight: bold;
+}
+
+.end-screen-time {
+    width: 100%;
+    max-width: 1100px;
+    margin: 0 auto;
+    text-align: center;
+    padding: 1rem 0;
+}
+
+.end-screen-time .stat-label {
+    font-size: 0.9rem;
+    margin-bottom: 0.3rem;
+}
+
+.end-screen-time .stat-value {
+    font-size: 1.5rem;
+}
+
+/* Width-only now - this used to also trigger on short viewports (max-height:
+   800px) to keep normal-flow content clear of the Play Again button, back
+   when that button was pinned with position:fixed and could overlap it. It's
+   normal flow now (see .end-screen-buttons), and the page scrolls when
+   content is taller than the viewport, so there's nothing left for a height
+   trigger to protect against - it was only ever collapsing the side-by-side
+   stat layout on perfectly normal laptop screens (1366x768, 1280x800 both
+   hit max-height:800px despite being completely ordinary resolutions). */
+@media (max-width: 900px) {
+    .end-screen-graph-row {
+        flex-direction: column !important;
+        align-items: stretch !important;
+        max-width: 100vw !important;
+        position: relative !important;
+        /* The extra right clearance is only needed for the desktop
+           side-by-side layout sharing horizontal space with the fixed icon
+           rail - stacked vertically here, nothing competes for that
+           space, so keep it symmetric like every other stacked block. */
+        padding-right: 1.5rem !important;
+    }
+    .endscreen-side-stat {
+        position: static !important;
+        left: unset !important;
+        right: unset !important;
+        top: unset !important;
+        transform: none !important;
+        width: 100% !important;
+        margin-bottom: 0.75rem !important;
+        z-index: 10;
+        /* Each block is 3 label+value pairs (WPM/RAW/CONSISTENCY or
+           ACC/ERR/CHARS) - row direction here was flattening them into one
+           spread-out line (WPM ... 805 ... RAW ... 805 ...) edge to edge.
+           They need to stay stacked, just centered instead of the desktop
+           layout's left/right-anchored alignment. */
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        text-align: center !important;
+    }
+    .graph-container {
+        flex: none !important;
+        max-width: 100vw !important;
+        min-width: 0 !important;
+        width: 100% !important;
+        overflow-x: auto !important;
+        margin: 0 auto 1rem auto !important;
+        height: 160px !important;
+    }
+    .end-screen-buttons {
+        position: static !important;
+        left: unset !important;
+        bottom: unset !important;
+        transform: none !important;
+        width: 100% !important;
+        margin: 1.5rem 0 0 0 !important;
+        flex-direction: column !important;
+        gap: 1rem !important;
+        z-index: 10;
+    }
+    .end-screen-time {
+        position: static !important;
+        left: unset !important;
+        transform: none !important;
+        bottom: unset !important;
+        width: 100% !important;
+        margin-top: 1rem !important;
+    }
+}
+
+@media (max-width: 600px) {
+    .end-screen-graph-row {
+        padding: 0 0.5rem !important;
+    }
+    .graph-container {
+        height: 180px !important;
+        padding: 0.5rem !important;
+    }
+    .endscreen-side-stat.wpm, .endscreen-side-stat.acc {
+        font-size: 1rem !important;
+        padding: 0.5rem !important;
+    }
+    .end-screen-time .stat-value {
+        font-size: 1.2rem !important;
+    }
+}
+
+@media (max-width: 900px) {
+    .text-container {
+        padding: 0.5rem !important;
+        min-height: 120px !important;
+    }
+}
+@media (max-width: 600px) {
+    .text-container {
+        min-height: 80px !important;
+        font-size: 1rem !important;
+    }
+}
+
+@media (max-width: 700px) {
+    :root {
+        --header-offset: 2.5rem;
+    }
+    body, #root, .app, .end-screen {
+        overflow-y: auto !important;
+        overflow-x: hidden !important;
+    }
+    .end-screen {
+        min-height: 0 !important;
+        height: auto !important;
+        padding: 0.5rem 0.75rem !important;
+        padding-top: var(--header-offset) !important; /* align with game text */
+        padding-bottom: 0.5rem !important;
+        display: flex !important;
+        flex-direction: column !important;
+    }
+    .end-screen-buttons {
+        margin-top: auto !important;
+        margin-bottom: 0 !important;
+        width: 100% !important;
+    }
+}
+/* Room code + Join on one line: they are a single action split across two
+   controls, and stacking them read as two unrelated steps. */
+.mp-code-row {
+    display: flex;
+    gap: 0.5rem;
+    width: 100%;
+    align-items: stretch;
+}
+
+.mp-code-row .account-input {
+    flex: 1 1 auto;
+    min-width: 0;
+}
+
+.mp-code-row .menu-button {
+    flex: 0 0 auto;
+    white-space: nowrap;
+}
+
+/* The passage's attribution, repeated on the end screen so a quote still
+   says who wrote it once the test is over. Same centred look as the typing
+   screen's, just tighter - the graph row follows immediately below. */
+.end-screen-attribution {
+    max-width: 1200px;
+    margin: 0.4rem auto 0.5rem auto;
+    padding: 0 2rem;
+}
+
+/* Rules and Typing side by side. Stacked, the panel ran past the bottom of a
+   900px viewport and had to be scrolled to reach the last toggle, with every
+   row an identically-weighted full-width button. */
+.settings-columns {
+    display: flex;
+    gap: 1.25rem;
+    width: 100%;
+    align-items: flex-start;
+}
+
+.settings-column {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    flex: 1 1 0;
+    min-width: 0;
+}
+
+.settings-column .menu-button.small {
+    min-width: 0;
+    width: 100%;
+}
+
+/* One column on narrow windows, where side-by-side would squeeze the labels. */
+@media (max-width: 700px) {
+    .settings-columns {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+}
+
+/* Correct/incorrect split under a headline figure - the keystroke count is
+   the interesting number, the breakdown is the footnote. */
+.stat-breakdown {
+    display: block;
+    font-size: 0.7rem;
+    color: var(--sub-color);
+    letter-spacing: 1px;
+    margin-top: 0.15rem;
+}
+
+
+/* The top-right rail: typing language, theme, and identity. Everything here
+   configures the app or says who you are, as opposed to the bottom rail's
+   navigation. Screens with their own top-right controls (Restart, Zen Finish)
+   hand them in as `extras` so they join this row rather than fixed-positioning
+   themselves into it. */
+.top-rail {
+    position: fixed;
+    top: 1rem;
+    right: 1rem;
+    z-index: 100;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 0.6rem;
+}
+
+.top-rail .theme-control,
+.top-rail .corner-icon-button,
+.top-rail .restart-toggle,
+.top-rail .zen-finish-button {
+    position: static;
+}
+
+.lang-group {
+    position: relative;
+}
+
+/* Opens downward from a top-anchored control, unlike the bottom rail's
+   Settings panel which opens upward. */
+.lang-popover {
+    position: absolute;
+    top: calc(100% + 0.6rem);
+    right: 0;
+    background: var(--background-color);
+    border: 1px solid var(--neutral-color);
+    border-radius: 8px;
+    padding: 0.5rem;
+    width: 210px;
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+    z-index: 120;
+    /* Scrolls once the list outgrows the viewport - the heading and the note
+       stay put because only the item list between them scrolls. */
+    max-height: calc(100vh - 6rem);
+    overflow-y: auto;
+}
+
+.lang-heading {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--sub-color);
+    padding: 0.25rem 0.6rem 0.35rem;
+    border-bottom: 1px solid var(--neutral-color);
+    margin-bottom: 0.25rem;
+}
+
+.lang-item {
+    background: none;
+    border: none;
+    color: var(--text-color);
+    font-family: inherit;
+    font-size: 0.9rem;
+    text-align: left;
+    padding: 0.4rem 0.6rem;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.lang-item:hover {
+    background: rgba(128, 128, 128, 0.15);
+}
+
+.lang-item.active {
+    color: var(--primary-color);
+    font-weight: bold;
+}
+
+.lang-note {
+    font-size: 0.7rem;
+    color: var(--sub-color);
+    padding: 0.45rem 0.6rem 0.15rem;
+    line-height: 1.35;
+}
+
+.auth-control {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+}
+
+/* Text links, not bordered boxes - three outlined squares plus two outlined
+   buttons in one row was far too much chrome for a corner. */
+.top-rail-link {
+    background: none;
+    border: none;
+    color: var(--sub-color);
+    font-family: inherit;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    cursor: pointer;
+    padding: 0.5rem 0.4rem;
+}
+
+.top-rail-link:hover {
+    color: var(--text-color);
+}
+
+.top-rail-link.accent,
+.top-rail-link.signed-in {
+    color: var(--primary-color);
+}
+
+.top-rail-link.accent:hover,
+.top-rail-link.signed-in:hover {
+    color: var(--secondary-color);
+}
+
+/* Live counts on the Friends and Multiplayer icons. Positioned against the
+   button's own box, which is why those buttons opt in with .has-badge. */
+.corner-icon-button.has-badge {
+    position: relative;
+    overflow: visible;
+}
+
+.corner-rail-left .corner-icon-button.has-badge,
+.corner-rail-right .corner-icon-button.has-badge {
+    position: relative;
+}
+
+.rail-badge {
+    position: absolute;
+    top: -0.45rem;
+    right: -0.45rem;
+    min-width: 1.05rem;
+    height: 1.05rem;
+    padding: 0 0.2rem;
+    border-radius: 0.55rem;
+    background: var(--background-color);
+    border: 1px solid var(--neutral-color);
+    color: var(--sub-color);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.6rem;
+    line-height: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
+}
+
+/* People available to race right now is the one count worth drawing the eye. */
+.rail-badge.accent {
+    border-color: var(--primary-color);
+    color: var(--primary-color);
+}
+
+.mp-caption {
+    color: var(--primary-color);
+}
+
+
+.friends-control {
+    display: flex;
+    align-items: center;
+}
+
+
+/* Keyboard shortcuts, at the foot of the menu rather than wedged between the
+   title and the buttons where it competed with them for attention. */
+.menu-key-hint {
+    position: fixed;
+    bottom: 1.25rem;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 0.75rem;
+    color: var(--sub-color);
+    letter-spacing: 1px;
+    z-index: 90;
+}
+
+
+/* Secondary figures in one row under the graph, the way 10FastFingers and
+   MonkeyType both lay them out. Stacked in the two side columns they were a
+   dim 1.2rem list flanking the chart, competing with WPM and ACC for the same
+   space and hard to read at a glance. The side columns now carry only the two
+   headline numbers. */
+.end-screen-stat-row {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 2.5rem;
+    margin-top: 1.25rem;
+    width: 100%;
+    max-width: 1200px;
+    padding: 0 2rem;
+}
+
+.end-stat {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.25rem;
+}
+
+.end-stat .stat-label {
+    font-size: 0.7rem;
+    letter-spacing: 1px;
+    color: var(--sub-color);
+}
+
+.end-stat .stat-value {
+    font-size: 1.35rem;
+    color: var(--primary-color);
+    font-family: 'JetBrains Mono', monospace;
+}
+
+@media (max-width: 900px) {
+    .end-screen-stat-row {
+        gap: 1.25rem 1.75rem;
+        padding: 0 1rem;
+    }
+}

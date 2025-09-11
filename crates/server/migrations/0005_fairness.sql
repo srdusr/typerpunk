@@ -1,0 +1,2 @@
+ALTER TABLE test_results ADD COLUMN device_type TEXT NOT NULL DEFAULT 'desktop';
+ALTER TABLE test_results ADD COLUMN flagged INTEGER NOT NULL DEFAULT 0;

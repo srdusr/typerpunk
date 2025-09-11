@@ -1,0 +1,17 @@
+[
+  {"category":"technology","content":"The World Wide Web was invented by Tim Berners-Lee in 1989 as a way to share documents over the internet using hyperlinks.","attribution":"Technology"},
+  {"category":"technology","content":"A central processing unit executes the instructions of a computer program by performing basic arithmetic, logic, and input and output operations.","attribution":"Technology"},
+  {"category":"technology","content":"Cloud computing allows businesses and individuals to rent computing power and storage over the internet instead of maintaining their own physical servers.","attribution":"Technology"},
+  {"category":"technology","content":"Artificial intelligence refers to computer systems designed to perform tasks that normally require human intelligence, such as recognizing speech, images, or patterns in data.","attribution":"Technology"},
+  {"category":"technology","content":"A firewall monitors and controls incoming and outgoing network traffic based on predetermined security rules, acting as a barrier between a trusted network and an untrusted one.","attribution":"Technology"},
+  {"category":"technology","content":"The first practical smartphones combined a mobile phone with computing features such as email, web browsing, and applications, changing how people communicate and work.","attribution":"Technology"},
+  {"category":"technology","content":"Open source software is released with its source code publicly available, allowing anyone to view, modify, and distribute it under the terms of its license.","attribution":"Technology"},
+  {"category":"technology","content":"A blockchain is a distributed ledger that records transactions across many computers, making it difficult to alter any single record without changing every subsequent block.","attribution":"Technology"},
+  {"category":"technology","content":"Quantum computing uses the principles of quantum mechanics to process information in ways that classical computers cannot, potentially solving certain problems far faster.","attribution":"Technology"},
+  {"category":"technology","content":"The transistor, invented in 1947, replaced bulky vacuum tubes and became the foundational building block of nearly every modern electronic device.","attribution":"Technology"},
+  {"category":"technology","content":"Machine learning is a branch of artificial intelligence in which a system improves its performance on a task by learning patterns from data rather than following explicit instructions.","attribution":"Technology"},
+  {"category":"technology","content":"Fiber optic cables transmit data as pulses of light through thin strands of glass, allowing information to travel at extremely high speeds over long distances.","attribution":"Technology"},
+  {"category":"technology","content":"A virtual private network encrypts a device's internet connection, helping to protect data from being intercepted while it travels over a public or untrusted network.","attribution":"Technology"},
+  {"category":"technology","content":"Moore's Law observed that the number of transistors on a computer chip tends to double roughly every two years, driving decades of rapid improvement in computing power.","attribution":"Technology"},
+  {"category":"technology","content":"Robotics combines mechanical engineering, electronics, and computer science to design machines capable of performing tasks autonomously or with minimal human control.","attribution":"Technology"}
+]

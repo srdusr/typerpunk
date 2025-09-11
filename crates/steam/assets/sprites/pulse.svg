@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="64" height="64">
+  <!-- Angular diamond, matching the web icon set's straight-edge language.
+       Reads as a signal pulse travelling along the track. -->
+  <path d="M12 2L22 12L12 22L2 12Z" fill="#ffffff"/>
+</svg>

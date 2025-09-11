@@ -1,2 +1,16 @@
 /target
 Cargo.lock
+/archives
+/web/wasm
+/typerpunk.db
+/typerpunk.db-journal
+/crates/server/*.db
+/crates/server/*.db-journal
+/crates/server/.env
+
+# Browser console dump kept for debugging, not part of the project
+/console-export-*.txt
+
+# Python bytecode from the Playwright test suite
+__pycache__/
+*.pyc

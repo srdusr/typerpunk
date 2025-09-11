@@ -1,0 +1,13 @@
+The quick brown fox jumps over the lazy dog.
+Pack my box with five dozen liquor jugs.
+How vexingly quick daft zebras jump!
+The five boxing wizards jump quickly.
+Sphinx of black quartz, judge my vow.
+
+Programming is the art of telling another human what one wants the computer to do.
+
+Rust is a systems programming language that runs blazingly fast, prevents segfaults, and guarantees thread safety.
+
+The best way to predict the future is to implement it yourself.
+
+Code is like humor. When you have to explain it, it's bad.

@@ -1,77 +1,87 @@
-# _Typerpunk_
+# TyperPunk
 
-**_Typerpunk_** is a simple typing game written in Rust, where players are challenged to type sentences as quickly as possible. The game calculates the player's typing speed in Words Per Minute (WPM) and time taken.
+A modern typing test in your terminal (CLI) and in the browser (Web).
 
-> NOTE: Game is still in early stages of development. Plenty of features will be implemented such as programming related minigames, difficulty/custom settings and multiplayer to name a few. There are also plans to make this into not just a "cmdline" game but also have a fully fledged website and desktop gui client as well.
+## Quick Start
 
-## Features (beta)
+- **CLI (Terminal UI)**
+  ```bash
+  # Clone and enter
+  git clone https://github.com/yourusername/typerpunk.git
+  cd typerpunk
 
-- Randomly selects sentences from a provided list for the player to type.
-- Calculates typing speed in Words Per Minute (WPM).
-- Color-coded feedback on typed characters (green for correct, red for incorrect, gray for untyped).
+  # Install for CLI (builds TUI and optionally merges dataset packs)
+  ./install.sh
 
-## Installation
+  # Run CLI
+  cargo run --package typerpunk-tui
+  ```
 
-To play **_Typerpunk_**, make sure you have Rust installed on your system. You can install Rust from [rustup.rs](https://rustup.rs/).
+- **Web**
+  ```bash
+  # From repo root: builds WASM and starts the static dev server
+  ./web/launch.sh
+  ```
+  Opens http://localhost:4173
 
-- Can also use this to quickly download rust:
+## Dataset (shared by CLI and Web)
 
-```bash
-curl https://sh.rustup.rs -sSf | sh -s
+- **Offline (recommended)**
+  - Add texts to `data/packs/*.json` with fields:
+    ```json
+    { "category": "programming", "content": "80-400 chars…", "attribution": "Author" }
+    ```
+  - Merge packs into the shared `texts.json` at repo root:
+    ```bash
+    node scripts/merge_packs.js
+    ```
+
+- **Online (optional, web only)**
+  - Host a `texts.json` and set a URL in the page (e.g., `web/index.html`):
+    ```html
+    <script>window.TYPERPUNK_TEXTS_URL = "https://your.cdn/path/to/texts.json";</script>
+    ```
+  - The web app uses the online dataset if reachable; otherwise it falls back to the bundled file.
+
+Notes:
+- `web/launch.sh` copies the root `texts.json` into `web/src/data/texts.json` for local dev.
+- A small fallback dataset is kept in `web/src/data/texts.json`.
+
+## CLI Keys
+
+- Start: Enter
+- Quit: Esc
+- Change category: Left/Right
+- Delete word: Ctrl+Backspace / Alt+Backspace / Ctrl+H / Ctrl+W
+
+## Scripts Scope
+
+- `install.sh`: CLI-focused (Rust toolchain, dataset merge via Node, builds TUI)
+- `web/launch.sh`: Web dev workflow (WASM build + zero-dependency static server)
+
+No npm packages are used anywhere in this repo. Node.js is used only as a
+runtime for small built-in-module-only scripts (`scripts/merge_packs.js`,
+`web/serve.mjs`); nothing is ever installed from the npm registry.
+
+## Repo Layout
+
 ```
-
-- Clone this repository:
-
-```bash
-git clone https://github.com/srdusr/typerpunk.git
+typerpunk/
+├── Cargo.toml            # Workspace configuration
+├── crates/
+│   ├── core/            # Shared core functionality
+│   └── tui/             # Terminal UI implementation
+├── data/
+│   └── packs/           # Offline dataset packs
+├── web/                 # Web app (plain HTML/CSS/JS, no build step)
+│   ├── src/
+│   ├── index.html
+│   └── serve.mjs
+├── scripts/
+│   └── merge_packs.js   # Merge packs into texts.json
+└── README.md
 ```
-
-- Navigate to the project directory:
-
-```bash
-cd typerpunk
-```
-
-- Build and run the game:
-
-```bash
-cargo run --release
-```
-
-## How to Play
-
-- Run the executable:
-
-```bash
-./target/release/typerpunk
-```
-
-- Or put the executable into your path. Example:
-
-```bash
-sudo cp target/release/typerpunk /usr/local/bin
-```
-
-### Gameplay:
-
-When the game starts, you will see a main menu.  
-Press `Enter` to begin the typing challenge.  
-Random text will be shown and game will only start as soon as you start typing.  
-Press `Enter` when you have finished typing the sentence.  
-The game will display your Words Per Minute (WPM) and time taken.  
-To play again, press `Enter` at the End screen.  
-To quit the game, press `Esc` at any time.
-
-### Controls:
-
-`Enter`: Submit typed sentence or proceed in menus.  
-`Backspace`: Delete the last character.  
-`Esc`: Quit the game or go back to the main menu.
-
-## Contributing
-
-Contributions are welcome! If you have any ideas, bug fixes, or improvements, feel free to open an issue or submit a pull request.
 
 ## License
 
-This project is licensed under the MIT License - see the LICENSE file for details.
+MIT
