@@ -519,7 +519,7 @@ body {
    "this is the one you click" on its own instead of the word "Start". */
 /* The two entry points. Single-line labels naming the action, nothing else
    inside the box - what a Single Player run will actually start (mode plus
-   its rules) sits in the .mode-pill above, so the button reads as one clear
+   its rules) sits in the .mode-bar below, so the button reads as one clear
    word and the mode stays changeable without redrawing the button. */
 .start-main {
     width: 100%;
@@ -540,11 +540,11 @@ body {
 /* Mode + rules for the Single Player button. Hidden (not removed) while the
    mode popover is open, so the layout does not jump. */
 .start-caption {
+    margin-top: 0.6rem;
     font-size: 0.85rem;
     color: var(--sub-color);
     text-transform: uppercase;
     letter-spacing: 1px;
-    margin-top: -0.35rem;
     text-align: center;
     max-width: 100%;
     overflow: hidden;
@@ -556,46 +556,62 @@ body {
    edge (overlaid, not squeezing the label) opens the mode list. Mode used to
    be its own separate full-width button - merged here since Start already
    displays the current mode in its own label ("Start: Timed"). */
-/* The mode picker, above the two start buttons rather than notched into the
-   Single Player button's right edge. As a chevron inside the button it cut a
-   3px divider through the outline and made the button look clipped, and it
-   forced the label off-centre to avoid it. As its own quiet pill it also
-   removes the caption that used to sit between Single Player and Multiplayer,
-   separating the two things you actually came here to press. */
-.mode-pill {
-    display: inline-flex;
-    align-items: center;
+/* The mode picker, as a row of chips below both start buttons. It has now
+   been three things: a chevron notched into the Single Player button (which
+   cut a divider through its outline and shoved the label off-centre), then a
+   caption wedged between Single Player and Multi-Player (which separated the
+   two things you came here to press), then a pill sitting directly on top of
+   the button. As its own row underneath, it is clearly a setting for the run
+   rather than part of the button stack, and every common mode is one click
+   instead of a dropdown away. The eleven topic packs stay behind the "Text"
+   chip - they are a long list and a rarer choice. */
+.mode-bar {
+    display: flex;
+    flex-wrap: wrap;
     justify-content: center;
-    gap: 0.5rem;
-    max-width: 360px;
+    align-items: center;
+    gap: 0.4rem;
+    margin-top: 2.25rem;
+    /* Wide enough for all eight chips on one line; it still wraps rather than
+       overflowing on a narrow window. */
+    max-width: 660px;
+}
+
+.mode-chip {
     background: none;
-    border: 1px solid color-mix(in srgb, var(--primary-color) 35%, transparent);
+    border: 1px solid transparent;
     border-radius: 999px;
     color: var(--sub-color);
     font-family: inherit;
-    font-size: 0.8rem;
+    font-size: 0.75rem;
     text-transform: uppercase;
     letter-spacing: 1px;
-    padding: 0.45rem 0.9rem;
+    padding: 0.35rem 0.75rem;
     cursor: pointer;
-    transition: all 0.2s ease;
+    transition: all 0.15s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
 }
 
-.mode-pill:hover {
-    border-color: var(--primary-color);
+.mode-chip:hover {
     color: var(--text-color);
+    border-color: color-mix(in srgb, var(--primary-color) 35%, transparent);
 }
 
-.mode-pill-label {
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+.mode-chip.active {
+    color: var(--primary-color);
+    border-color: var(--primary-color);
 }
 
-.mode-pill svg {
-    width: 0.9rem;
-    height: 0.9rem;
-    flex-shrink: 0;
+.mode-chip svg {
+    width: 0.75rem;
+    height: 0.75rem;
+}
+
+.mode-chip-group {
+    position: relative;
+    display: inline-flex;
 }
 
 
@@ -616,11 +632,9 @@ body {
    whichever of above/below actually has room, and this only falls back to
    its own internal scroll (never the page's) if neither direction has
    enough space at all. */
-/* Two columns, one per kind of entry (see mainMenu.js). As a single column
-   this was 585px of 18 undifferentiated rows on a 900px viewport - it ran
-   off the bottom into a scroll region and covered the Multiplayer button and
-   the icon rail. Side by side it is roughly half that and needs no scrolling
-   at any normal window height. */
+/* Just the topic packs now - the generated modes are chips in .mode-bar, so
+   this is one column of eleven rather than the 585px wall of eighteen mixed
+   entries it used to be. */
 .mode-popover {
     position: fixed;
     display: flex;
@@ -1196,19 +1210,56 @@ body {
    Store); right cluster is numbers (Stats, Leaderboard, Multiplayer).
    Horizontal, not vertical - a bottom corner has little headroom before
    hitting the screen edge. */
-/* Top-left, stacked under the wordmark: what customises the app. It used to
-   be a second bottom cluster, which left the bottom edge carrying navigation
-   on both sides while the top-left held nothing but the logo. A column, not a
-   row - there is vertical room here and the passage starts below it. */
+/* Top-left, on the wordmark's own line rather than stacked beneath it --
+   below the logo they pushed into the space the passage needs, and read as a
+   second, unrelated column. `left` clears the wordmark; the buttons are
+   slightly smaller here so they sit against 1.2rem text without dwarfing it. */
 .corner-rail-left {
     position: fixed;
-    top: 3.4rem;
+    top: 0.85rem;
+    left: 11.5rem;
+    z-index: 100;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.corner-rail-left .corner-icon-button {
+    width: 2rem;
+    height: 2rem;
+}
+
+.corner-rail-left .corner-icon-button svg {
+    width: 1.15rem;
+    height: 1.15rem;
+}
+
+/* Bottom-left: Multiplayer and how many people are racing right now. The
+   count sits beside the icon as readable text instead of a corner badge --
+   as a badge it was a bare digit with nothing saying what it counted, and it
+   was competing for a corner with two other buttons. */
+.corner-rail-bottom-left {
+    position: fixed;
+    bottom: 1rem;
     left: 1rem;
     z-index: 100;
     display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 0.75rem;
+    flex-direction: row;
+    align-items: center;
+    gap: 0.6rem;
+}
+
+.corner-rail-bottom-left .corner-icon-button {
+    position: static;
+}
+
+.online-count {
+    font-size: 0.75rem;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--primary-color);
+    white-space: nowrap;
 }
 
 .corner-rail-right {

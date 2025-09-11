@@ -14,14 +14,12 @@ function soundThemeLabel(theme) {
 // the identical clusters inline (see mainMenu.js) because it owns its own
 // Settings panel, so the two must stay visually in step.
 //
-// Top-left, under the wordmark: what customises the app (Settings, Store).
-// Bottom-right: numbers and play (Stats, Leaderboard, Multiplayer). Identity
-// - Account and Friends - lives in the top-right rail beside the language
-// and theme controls (see topRail.js), and the bottom-left corner is
-// deliberately left empty so the passage and its stats have room.
-//
-// Multiplayer carries a live count, so you can see whether anyone is around
-// to race without opening the screen.
+// Top-left, on the wordmark's own line: what customises the app (Settings,
+// Store). Bottom-left: Multiplayer, carrying the live count of people racing
+// right now - a number needs room to sit beside its icon, which a corner
+// shared with two other buttons does not have. Bottom-right: your numbers
+// (Stats, Leaderboard). Identity - Account and Friends - lives in the
+// top-right rail beside the language and theme controls (see topRail.js).
 export function renderCornerRail(root, { onShowStats, onShowPlaceholder, onShowLeaderboard, onShowMultiplayer, onShowStore }) {
     const settings = getSettings();
     const left = document.createElement('div');
@@ -43,17 +41,25 @@ export function renderCornerRail(root, { onShowStats, onShowPlaceholder, onShowL
         ${onShowStore ? `<button class="corner-icon-button" data-action="rail-store" aria-label="Store" data-tooltip="Store">${STORE_ICON}</button>` : ''}
     `;
 
+    const bottomLeft = document.createElement('div');
+    bottomLeft.className = 'corner-rail-bottom-left';
+    bottomLeft.innerHTML = onShowMultiplayer
+        ? `<button class="corner-icon-button" data-action="rail-multiplayer" aria-label="Multiplayer" data-tooltip="Multiplayer">${MULTIPLAYER_ICON}</button>
+           <span class="online-count" data-badge="online" hidden></span>`
+        : '';
+
     const right = document.createElement('div');
     right.className = 'corner-rail-right';
     right.innerHTML = `
         ${onShowStats ? `<button class="corner-icon-button" data-action="rail-stats" aria-label="Stats" data-tooltip="Stats">${STATS_ICON}</button>` : ''}
         ${onShowLeaderboard ? `<button class="corner-icon-button" data-action="rail-leaderboard" aria-label="Leaderboard" data-tooltip="Leaderboard">${LEADERBOARD_ICON}</button>` : ''}
-        ${onShowMultiplayer ? `<button class="corner-icon-button has-badge" data-action="rail-multiplayer" aria-label="Multiplayer" data-tooltip="Multiplayer">${MULTIPLAYER_ICON}<span class="rail-badge accent" data-badge="online" hidden></span></button>` : ''}
     `;
 
     root.appendChild(left);
+    root.appendChild(bottomLeft);
     root.appendChild(right);
     attachTooltips(left);
+    attachTooltips(bottomLeft);
     attachTooltips(right);
 
     const statsBtn = right.querySelector('[data-action="rail-stats"]');
@@ -91,21 +97,27 @@ export function renderCornerRail(root, { onShowStats, onShowPlaceholder, onShowL
         soundThemeBtn.textContent = `Sound: ${soundThemeLabel(next)}`;
     });
 
-    const multiplayerBtn = right.querySelector('[data-action="rail-multiplayer"]');
+    const multiplayerBtn = bottomLeft.querySelector('[data-action="rail-multiplayer"]');
     if (multiplayerBtn) multiplayerBtn.addEventListener('click', onShowMultiplayer);
     const leaderboardBtn = right.querySelector('[data-action="rail-leaderboard"]');
     if (leaderboardBtn) leaderboardBtn.addEventListener('click', onShowLeaderboard);
     const storeBtn = left.querySelector('[data-action="rail-store"]');
     if (storeBtn) storeBtn.addEventListener('click', onShowStore);
 
-    // Badges -----------------------------------------------------------
-    const onlineBadge = right.querySelector('[data-badge="online"]');
+    // Live count ---------------------------------------------------------
+    // Beside the icon rather than pinned to its corner as a badge: the number
+    // has room to be read here, and it can say what it counts.
+    const onlineEl = bottomLeft.querySelector('[data-badge="online"]');
+    const mpBtn = bottomLeft.querySelector('[data-action="rail-multiplayer"]');
     function paintBadges({ online }) {
-        if (onlineBadge) {
-            onlineBadge.hidden = !online;
-            onlineBadge.textContent = String(online);
-            const btn = onlineBadge.closest('.corner-icon-button');
-            if (btn) btn.dataset.tooltip = online === 1 ? '1 player racing now' : `${online} players racing now`;
+        if (onlineEl) {
+            onlineEl.hidden = !online;
+            onlineEl.textContent = online === 1 ? '1 racing' : `${online} racing`;
+        }
+        if (mpBtn) {
+            mpBtn.dataset.tooltip = !online
+                ? 'Multiplayer'
+                : (online === 1 ? 'Multiplayer - 1 player racing now' : `Multiplayer - ${online} players racing now`);
         }
     }
     paintBadges(getCounts());
@@ -120,6 +132,7 @@ export function renderCornerRail(root, { onShowStats, onShowPlaceholder, onShowL
         unsubscribeCounts();
         document.removeEventListener('click', handleOutsideClick);
         left.remove();
+        bottomLeft.remove();
         right.remove();
     };
 }

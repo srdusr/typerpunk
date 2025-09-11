@@ -7,6 +7,7 @@ import { attachTooltips } from '../tooltip.js';
 import { wordListTiers } from '../wordGenerator.js';
 import { renderTopRail } from '../topRail.js';
 import { onCountsChange, getCounts } from '../counts.js';
+import { MULTIPLAYER_ICON } from './icons.js';
 
 function label(m) {
     if (m === 'random') return 'Random';
@@ -78,6 +79,7 @@ export function renderMainMenu(root, props) {
     const gameModes = [...GAME_MODES.filter(m => modes.includes(m)), 'custom'];
     const textCategories = modes.filter(m => !gameModes.includes(m));
     const modeItem = m => `<button class="mode-popover-item${m === currentMode ? ' active' : ''}" data-mode="${escapeHtml(m)}" data-tooltip="${escapeHtml(modeDescription(m))}">${escapeHtml(label(m))}</button>`;
+    const modeChip = m => `<button class="mode-chip${m === currentMode ? ' active' : ''}" data-mode="${escapeHtml(m)}" data-tooltip="${escapeHtml(modeDescription(m))}">${escapeHtml(label(m))}</button>`;
     const currentIndex = Math.max(0, modes.indexOf(selectedCategory || 'random'));
     const currentMode = modes[currentIndex] || 'random';
     const isCustom = currentMode === 'custom';
@@ -113,28 +115,29 @@ export function renderMainMenu(root, props) {
         <div class="main-menu">
             <h1>TyperPunk</h1>
             <div class="menu-options">
-                <button class="mode-pill sp-chevron" data-tooltip="Choose what to type">
-                    <span class="mode-pill-label">${escapeHtml(startLabel)}${rulesSummary ? ` &middot; ${escapeHtml(rulesSummary)}` : ''}</span>
-                    ${CHEVRON_DOWN_ICON}
-                </button>
                 <div class="start-group sp-group">
                     <button class="menu-button start-main" data-action="start">Single Player</button>
-                    <div class="mode-popover sp-popover" hidden>
-                        <div class="mode-popover-group">
-                            <div class="mode-popover-heading">Modes</div>
-                            ${gameModes.map(modeItem).join('')}
-                            <button class="mode-popover-item" data-action="mode-lyrics" data-tooltip="Connect Spotify and type along to whatever's playing.">Lyrics</button>
-                        </div>
-                        <div class="mode-popover-group">
-                            <div class="mode-popover-heading">Text</div>
-                            ${textCategories.map(modeItem).join('')}
+                </div>
+                <div class="start-group mp-group">
+                    <button class="menu-button start-main" data-action="mode-multiplayer" data-tooltip="Race other typists live.">Multi-Player</button>
+                </div>
+
+                <div class="mode-bar">
+                    ${gameModes.map(modeChip).join('')}
+                    <button class="mode-chip" data-action="mode-lyrics" data-tooltip="Connect Spotify and type along to whatever's playing.">Lyrics</button>
+                    <div class="mode-chip-group">
+                        <button class="mode-chip sp-chevron${textCategories.includes(currentMode) ? ' active' : ''}" data-tooltip="Passages from a topic">
+                            ${textCategories.includes(currentMode) ? escapeHtml(label(currentMode)) : 'Text'} ${CHEVRON_DOWN_ICON}
+                        </button>
+                        <div class="mode-popover sp-popover" hidden>
+                            <div class="mode-popover-group">
+                                <div class="mode-popover-heading">Text</div>
+                                ${textCategories.map(modeItem).join('')}
+                            </div>
                         </div>
                     </div>
                 </div>
-                <div class="start-group mp-group">
-                    <button class="menu-button start-main" data-action="mode-multiplayer" data-tooltip="Race other typists live.">Multiplayer</button>
-                </div>
-                <div class="start-caption mp-caption" hidden></div>
+                ${rulesSummary ? `<div class="start-caption sp-caption">${escapeHtml(rulesSummary)}</div>` : ''}
                 ${isCustom && customText && customText.timed ? `<button class="menu-button" data-action="start-passive">Passive Mode</button>` : ''}
                 ${isCustom && customText ? `<button class="menu-button" data-action="clear-custom">Clear Custom Text</button>` : ''}
             </div>
@@ -201,6 +204,11 @@ export function renderMainMenu(root, props) {
                 <button class="corner-icon-button" data-action="store" aria-label="Store" data-tooltip="Store">${STORE_ICON}</button>
             </div>
 
+            <div class="corner-rail-bottom-left">
+                <button class="corner-icon-button" data-action="mode-multiplayer" aria-label="Multiplayer" data-tooltip="Multiplayer">${MULTIPLAYER_ICON}</button>
+                <span class="online-count" data-badge="online" hidden></span>
+            </div>
+
             <div class="corner-rail-right">
                 ${profile.testsCompleted > 0 ? `<div class="stats-corner-figures" data-tooltip="Your average WPM across every test, and your best single result.">
                     <div class="stats-corner-avg">avg ${profile.averageWpm}</div>
@@ -216,13 +224,19 @@ export function renderMainMenu(root, props) {
     attachTooltips(root);
     const cleanupTheme = renderTopRail(root, { onShowAccount, onShowFriends });
 
-    // Live count under the Multiplayer button. The Friends badge is the top
-    // rail's, painted there.
-    const mpCaptionEl = root.querySelector('.mp-caption');
+    // The Friends badge belongs to the top rail. The player count is this
+    // screen's own, since the menu builds its corner clusters inline.
+    const onlineEl = root.querySelector('.corner-rail-bottom-left [data-badge="online"]');
+    const mpIconBtn = root.querySelector('.corner-rail-bottom-left [data-action="mode-multiplayer"]');
     function paintCounts({ online }) {
-        if (mpCaptionEl) {
-            mpCaptionEl.hidden = !online;
-            mpCaptionEl.textContent = online === 1 ? '1 racing now' : `${online} racing now`;
+        if (onlineEl) {
+            onlineEl.hidden = !online;
+            onlineEl.textContent = online === 1 ? '1 racing' : `${online} racing`;
+        }
+        if (mpIconBtn) {
+            mpIconBtn.dataset.tooltip = !online
+                ? 'Multiplayer'
+                : (online === 1 ? 'Multiplayer - 1 player racing now' : `Multiplayer - ${online} players racing now`);
         }
     }
     paintCounts(getCounts());
@@ -272,12 +286,14 @@ export function renderMainMenu(root, props) {
         root.querySelector('.sp-popover'),
         null,
     );
-    root.querySelectorAll('.sp-popover .mode-popover-item[data-mode]').forEach(item => {
+    root.querySelectorAll('.sp-popover .mode-popover-item[data-mode], .mode-bar .mode-chip[data-mode]').forEach(item => {
         item.addEventListener('click', () => onSelectCategory(item.dataset.mode));
     });
     root.querySelector('[data-action="mode-lyrics"]').addEventListener('click', onShowLyrics);
 
-    root.querySelector('[data-action="mode-multiplayer"]').addEventListener('click', onShowMultiplayer);
+    // Two of these now: the big button and the bottom-left icon beside the
+    // live player count.
+    root.querySelectorAll('[data-action="mode-multiplayer"]').forEach(el => el.addEventListener('click', onShowMultiplayer));
 
     const startBtn = root.querySelector('.sp-group .start-main');
     const panel = root.querySelector('.custom-panel');
@@ -342,15 +358,15 @@ export function renderMainMenu(root, props) {
     // them change the selected mode, and a full re-render was resetting
     // .settings-panel back to hidden on every single click, forcing you to
     // reopen Settings after each change.
-    // The mode pill above the buttons carries the mode name and its rules.
-    const startSubEl = root.querySelector('.mode-pill-label');
+    // The rules line under the mode bar, for the modes that have rules.
+    const startSubEl = root.querySelector('.sp-caption');
     function refreshRulesSummary() {
         if (!startSubEl) return;
         const s = getSettings();
         const parts = [isWords ? `${liveWordCount} words` : `${liveTimeDuration}s`];
         if (s.wordsPunctuation) parts.push('punctuation');
         if (s.wordsNumbers) parts.push('numbers');
-        startSubEl.textContent = `${startLabel} · ${parts.join(' · ')}`;
+        startSubEl.textContent = parts.join(' · ');
     }
 
     let liveWordCount = wordCount;
