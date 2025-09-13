@@ -6,8 +6,6 @@ import { getProfileStats } from '../profileStats.js';
 import { attachTooltips } from '../tooltip.js';
 import { wordListTiers } from '../wordGenerator.js';
 import { renderTopRail } from '../topRail.js';
-import { onCountsChange, getCounts } from '../counts.js';
-import { MULTIPLAYER_ICON } from './icons.js';
 
 function label(m) {
     if (m === 'random') return 'Random';
@@ -69,7 +67,7 @@ function wordListTierLabel(tier) {
 }
 
 export function renderMainMenu(root, props) {
-    const { onStartGame, categories, selectedCategory, onSelectCategory, customText, onLoadCustom, onClearCustom, onStartCustom, onStartPassive, onShowStats, onShowPlaceholder, onShowAccount, onShowLeaderboard, onShowFriends, onShowMultiplayer, onShowLyrics, onShowStore, onSimulateTest } = props;
+    const { onStartGame, onPickAndStart, categories, selectedCategory, onSelectCategory, customText, onLoadCustom, onClearCustom, onStartCustom, onStartPassive, onShowStats, onShowPlaceholder, onShowAccount, onShowLeaderboard, onShowFriends, onShowMultiplayer, onShowLyrics, onShowStore, onSimulateTest } = props;
     const modes = ['random', 'words', 'time', 'zen', 'practice', ...categories, 'custom'];
     // The picker used to be one flat list of 18 entries mixing two unrelated
     // things: how a test is generated (Random/Words/Timed/Zen/Practice/Custom)
@@ -79,7 +77,6 @@ export function renderMainMenu(root, props) {
     const gameModes = [...GAME_MODES.filter(m => modes.includes(m)), 'custom'];
     const textCategories = modes.filter(m => !gameModes.includes(m));
     const modeItem = m => `<button class="mode-popover-item${m === currentMode ? ' active' : ''}" data-mode="${escapeHtml(m)}" data-tooltip="${escapeHtml(modeDescription(m))}">${escapeHtml(label(m))}</button>`;
-    const modeChip = m => `<button class="mode-chip${m === currentMode ? ' active' : ''}" data-mode="${escapeHtml(m)}" data-tooltip="${escapeHtml(modeDescription(m))}">${escapeHtml(label(m))}</button>`;
     const currentIndex = Math.max(0, modes.indexOf(selectedCategory || 'random'));
     const currentMode = modes[currentIndex] || 'random';
     const isCustom = currentMode === 'custom';
@@ -116,28 +113,24 @@ export function renderMainMenu(root, props) {
             <h1>TyperPunk</h1>
             <div class="menu-options">
                 <div class="start-group sp-group">
-                    <button class="menu-button start-main" data-action="start">Single Player</button>
+                    <button class="menu-button start-main" data-action="pick-mode">Single Player</button>
+                    <div class="mode-popover sp-popover" hidden>
+                        <div class="mode-popover-group">
+                            <div class="mode-popover-heading">Modes</div>
+                            ${gameModes.map(modeItem).join('')}
+                            <button class="mode-popover-item" data-action="mode-lyrics" data-tooltip="Connect Spotify and type along to whatever's playing.">Lyrics</button>
+                        </div>
+                        <div class="mode-popover-group">
+                            <div class="mode-popover-heading">Text</div>
+                            ${textCategories.map(modeItem).join('')}
+                        </div>
+                    </div>
                 </div>
                 <div class="start-group mp-group">
                     <button class="menu-button start-main" data-action="mode-multiplayer" data-tooltip="Race other typists live.">Multi-Player</button>
                 </div>
 
-                <div class="mode-bar">
-                    ${gameModes.map(modeChip).join('')}
-                    <button class="mode-chip" data-action="mode-lyrics" data-tooltip="Connect Spotify and type along to whatever's playing.">Lyrics</button>
-                    <div class="mode-chip-group">
-                        <button class="mode-chip sp-chevron${textCategories.includes(currentMode) ? ' active' : ''}" data-tooltip="Passages from a topic">
-                            ${textCategories.includes(currentMode) ? escapeHtml(label(currentMode)) : 'Text'} ${CHEVRON_DOWN_ICON}
-                        </button>
-                        <div class="mode-popover sp-popover" hidden>
-                            <div class="mode-popover-group">
-                                <div class="mode-popover-heading">Text</div>
-                                ${textCategories.map(modeItem).join('')}
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                ${rulesSummary ? `<div class="start-caption sp-caption">${escapeHtml(rulesSummary)}</div>` : ''}
+                <div class="start-caption sp-caption">${escapeHtml(label(currentMode))}${rulesSummary ? ` &middot; ${escapeHtml(rulesSummary)}` : ''}</div>
                 ${isCustom && customText && customText.timed ? `<button class="menu-button" data-action="start-passive">Passive Mode</button>` : ''}
                 ${isCustom && customText ? `<button class="menu-button" data-action="clear-custom">Clear Custom Text</button>` : ''}
             </div>
@@ -204,11 +197,6 @@ export function renderMainMenu(root, props) {
                 <button class="corner-icon-button" data-action="store" aria-label="Store" data-tooltip="Store">${STORE_ICON}</button>
             </div>
 
-            <div class="corner-rail-bottom-left">
-                <button class="corner-icon-button" data-action="mode-multiplayer" aria-label="Multiplayer" data-tooltip="Multiplayer">${MULTIPLAYER_ICON}</button>
-                <span class="online-count" data-badge="online" hidden></span>
-            </div>
-
             <div class="corner-rail-right">
                 ${profile.testsCompleted > 0 ? `<div class="stats-corner-figures" data-tooltip="Your average WPM across every test, and your best single result.">
                     <div class="stats-corner-avg">avg ${profile.averageWpm}</div>
@@ -224,23 +212,7 @@ export function renderMainMenu(root, props) {
     attachTooltips(root);
     const cleanupTheme = renderTopRail(root, { onShowAccount, onShowFriends });
 
-    // The Friends badge belongs to the top rail. The player count is this
-    // screen's own, since the menu builds its corner clusters inline.
-    const onlineEl = root.querySelector('.corner-rail-bottom-left [data-badge="online"]');
-    const mpIconBtn = root.querySelector('.corner-rail-bottom-left [data-action="mode-multiplayer"]');
-    function paintCounts({ online }) {
-        if (onlineEl) {
-            onlineEl.hidden = !online;
-            onlineEl.textContent = online === 1 ? '1 racing' : `${online} racing`;
-        }
-        if (mpIconBtn) {
-            mpIconBtn.dataset.tooltip = !online
-                ? 'Multiplayer'
-                : (online === 1 ? 'Multiplayer - 1 player racing now' : `Multiplayer - ${online} players racing now`);
-        }
-    }
-    paintCounts(getCounts());
-    const unsubscribeCounts = onCountsChange(paintCounts);
+    // Friends-online lives in the top rail beside the Friends control.
 
     // Clicking a chevron reveals every mode as a direct pick, rather than
     // cycling blind through them one click at a time - Custom and the text
@@ -282,32 +254,34 @@ export function renderMainMenu(root, props) {
 
     setupDropdown(
         root.querySelector('.sp-group'),
-        root.querySelector('.sp-chevron'),
+        root.querySelector('[data-action="pick-mode"]'),
         root.querySelector('.sp-popover'),
-        null,
+        root.querySelector('.sp-caption'),
     );
-    root.querySelectorAll('.sp-popover .mode-popover-item[data-mode], .mode-bar .mode-chip[data-mode]').forEach(item => {
-        item.addEventListener('click', () => onSelectCategory(item.dataset.mode));
+    root.querySelectorAll('.sp-popover .mode-popover-item[data-mode]').forEach(item => {
+        item.addEventListener('click', () => {
+            const mode = item.dataset.mode;
+            // Custom needs its text before it can start: with none loaded the
+            // picker hands off to the paste/upload panel instead.
+            if (mode === 'custom') {
+                onSelectCategory(mode);
+                return;
+            }
+            onPickAndStart(mode);
+        });
     });
     root.querySelector('[data-action="mode-lyrics"]').addEventListener('click', onShowLyrics);
 
-    // Two of these now: the big button and the bottom-left icon beside the
-    // live player count.
-    root.querySelectorAll('[data-action="mode-multiplayer"]').forEach(el => el.addEventListener('click', onShowMultiplayer));
+    root.querySelector('[data-action="mode-multiplayer"]').addEventListener('click', onShowMultiplayer);
 
     const startBtn = root.querySelector('.sp-group .start-main');
     const panel = root.querySelector('.custom-panel');
-    startBtn.addEventListener('click', () => {
-        if (isCustom && !customText) {
-            panel.hidden = false;
-            return;
-        }
-        if (isCustom) {
-            onStartCustom();
-        } else {
-            onStartGame();
-        }
-    });
+    // No click handler of its own: setupDropdown above owns this button and
+    // opens the mode picker with it. Starting happens when a mode is chosen.
+
+    // Landing on Custom with nothing loaded goes straight to the paste/upload
+    // panel - there is nothing to start until text exists.
+    if (isCustom && !customText) panel.hidden = false;
 
     // Matches the "Enter to start" hint in the bottom-right corner. Skipped
     // while typing into a text field or with any popover/panel open, so it
@@ -540,7 +514,6 @@ export function renderMainMenu(root, props) {
 
     return () => {
         cleanupTheme();
-        unsubscribeCounts();
         document.removeEventListener('keydown', handleEnterToStart);
         outsideClickHandlers.forEach(h => document.removeEventListener('click', h));
     };

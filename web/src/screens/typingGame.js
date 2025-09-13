@@ -10,7 +10,7 @@ import { recordKeystroke } from '../keyStats.js';
 import { getUser } from '../auth.js';
 import { api } from '../api.js';
 
-export function renderTypingGame(root, { game, text, attribution, language, progress, timeLimit, modeKey, zenMode, multiplayer, onFinish, onMainMenu, onRestart, onShowStats, onShowPlaceholder, onShowAccount, onShowLeaderboard, onShowFriends, onShowMultiplayer, onShowStore }) {
+export function renderTypingGame(root, { game, text, attribution, explanation, language, progress, timeLimit, modeKey, zenMode, multiplayer, onFinish, onMainMenu, onRestart, onShowStats, onShowPlaceholder, onShowAccount, onShowLeaderboard, onShowFriends, onShowMultiplayer, onShowStore }) {
     const syntaxClasses = language ? highlightClasses(text, language) : null;
     const { hideLiveStats, caretBlink, blindMode } = getSettings();
     root.innerHTML = `
@@ -22,6 +22,7 @@ export function renderTypingGame(root, { game, text, attribution, language, prog
                 <input class="typing-input" type="text" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" />
             </div>
             ${attribution ? `<div class="attribution">- ${escapeHtml(attribution)}</div>` : ''}
+            ${explanation && !multiplayer ? `<div class="code-explainer"><span class="code-explainer-label">What this does</span>${escapeHtml(explanation)}</div>` : ''}
             <div class="wpm-stat"><div class="stat-label">WPM</div><div class="stat-value" data-field="wpm">0</div></div>
             <div class="acc-stat"><div class="stat-label">ACC</div><div class="stat-value" data-field="acc">100%</div></div>
             <div class="time-stat"><div class="stat-label">TIME</div><div class="stat-value" data-field="time">0.0</div></div>
@@ -179,7 +180,7 @@ export function renderTypingGame(root, { game, text, attribution, language, prog
         stats.accuracy = accuracy;
         stats.incorrectChars = mistakes;
         if (multiplayer) multiplayer.connection.sendFinish(stats.wpm, accuracy, elapsed);
-        onFinish({ stats, text: finalText, attribution, userInput: finalInput, charTimings, keypressHistory: keystrokes, modeKey });
+        onFinish({ stats, text: finalText, attribution, explanation, userInput: finalInput, charTimings, keypressHistory: keystrokes, modeKey });
     }
 
     function handleChange() {

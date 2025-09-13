@@ -25,6 +25,9 @@ struct FriendEntry {
     friendship_id: String,
     user_id: String,
     username: String,
+    /// Only meaningful for accepted friends; a pending request has no
+    /// presence worth reporting, so it is always false there.
+    online: bool,
 }
 
 #[derive(Debug, Serialize)]
@@ -39,6 +42,8 @@ fn row_to_entry(row: &sqlx::sqlite::SqliteRow, friendship_id_col: &str, user_id_
         friendship_id: row.try_get(friendship_id_col).unwrap_or_default(),
         user_id: row.try_get(user_id_col).unwrap_or_default(),
         username: row.try_get(username_col).unwrap_or_default(),
+        // Absent on the pending-request queries, which do not select it.
+        online: row.try_get::<i64, _>("online").unwrap_or(0) != 0,
     }
 }
 
@@ -48,12 +53,19 @@ async fn list_friends(State(state): State<Arc<AppState>>, jar: CookieJar, header
     // Accepted, in either direction - the "other" user is whichever side
     // isn't us, so this always returns the friend's identity regardless of
     // who originally sent the request.
+    // last_seen within the presence window marks a friend as online. Compared
+    // in SQL rather than in Rust so the list arrives ready to render.
+    let presence_cutoff = crate::auth::format_timestamp(
+        time::OffsetDateTime::now_utc() - time::Duration::seconds(crate::auth::PRESENCE_WINDOW_SECS),
+    );
     let accepted = sqlx::query(
-        "SELECT friendships.id as friendship_id, users.id as user_id, users.username as username
+        "SELECT friendships.id as friendship_id, users.id as user_id, users.username as username,
+                (users.last_seen IS NOT NULL AND users.last_seen > ?) as online
          FROM friendships
          JOIN users ON users.id = CASE WHEN friendships.requester_id = ? THEN friendships.addressee_id ELSE friendships.requester_id END
          WHERE friendships.status = 'accepted' AND (friendships.requester_id = ? OR friendships.addressee_id = ?)",
     )
+    .bind(&presence_cutoff)
     .bind(&user.id).bind(&user.id).bind(&user.id)
     .fetch_all(&state.db)
     .await?;

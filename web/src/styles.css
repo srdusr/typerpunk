@@ -556,63 +556,12 @@ body {
    edge (overlaid, not squeezing the label) opens the mode list. Mode used to
    be its own separate full-width button - merged here since Start already
    displays the current mode in its own label ("Start: Timed"). */
-/* The mode picker, as a row of chips below both start buttons. It has now
-   been three things: a chevron notched into the Single Player button (which
-   cut a divider through its outline and shoved the label off-centre), then a
-   caption wedged between Single Player and Multi-Player (which separated the
-   two things you came here to press), then a pill sitting directly on top of
-   the button. As its own row underneath, it is clearly a setting for the run
-   rather than part of the button stack, and every common mode is one click
-   instead of a dropdown away. The eleven topic packs stay behind the "Text"
-   chip - they are a long list and a rarer choice. */
-.mode-bar {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    align-items: center;
-    gap: 0.4rem;
-    margin-top: 2.25rem;
-    /* Wide enough for all eight chips on one line; it still wraps rather than
-       overflowing on a narrow window. */
-    max-width: 660px;
-}
-
-.mode-chip {
-    background: none;
-    border: 1px solid transparent;
-    border-radius: 999px;
-    color: var(--sub-color);
-    font-family: inherit;
-    font-size: 0.75rem;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    padding: 0.35rem 0.75rem;
-    cursor: pointer;
-    transition: all 0.15s ease;
-    display: inline-flex;
-    align-items: center;
-    gap: 0.35rem;
-}
-
-.mode-chip:hover {
-    color: var(--text-color);
-    border-color: color-mix(in srgb, var(--primary-color) 35%, transparent);
-}
-
-.mode-chip.active {
-    color: var(--primary-color);
-    border-color: var(--primary-color);
-}
-
-.mode-chip svg {
-    width: 0.75rem;
-    height: 0.75rem;
-}
-
-.mode-chip-group {
-    position: relative;
-    display: inline-flex;
-}
+/* The mode picker opens from the Single Player button itself: choosing what
+   to type and starting it are one action. This control has been through a
+   chevron notched into that button, a caption between the two buttons, a pill
+   above them and a chip row below them - as the button's own menu it needs
+   no separate real estate at all, and the grouped two-column list stays
+   scannable. */
 
 
 
@@ -1210,36 +1159,10 @@ body {
    Store); right cluster is numbers (Stats, Leaderboard, Multiplayer).
    Horizontal, not vertical - a bottom corner has little headroom before
    hitting the screen edge. */
-/* Top-left, on the wordmark's own line rather than stacked beneath it --
-   below the logo they pushed into the space the passage needs, and read as a
-   second, unrelated column. `left` clears the wordmark; the buttons are
-   slightly smaller here so they sit against 1.2rem text without dwarfing it. */
+/* Bottom-left: what customises the app (Settings, Store). The top-left is the
+   wordmark's alone - beside it these read as part of the branding, and under
+   it they pushed into the space the passage needs. */
 .corner-rail-left {
-    position: fixed;
-    top: 0.85rem;
-    left: 11.5rem;
-    z-index: 100;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    gap: 0.5rem;
-}
-
-.corner-rail-left .corner-icon-button {
-    width: 2rem;
-    height: 2rem;
-}
-
-.corner-rail-left .corner-icon-button svg {
-    width: 1.15rem;
-    height: 1.15rem;
-}
-
-/* Bottom-left: Multiplayer and how many people are racing right now. The
-   count sits beside the icon as readable text instead of a corner badge --
-   as a badge it was a bare digit with nothing saying what it counted, and it
-   was competing for a corner with two other buttons. */
-.corner-rail-bottom-left {
     position: fixed;
     bottom: 1rem;
     left: 1rem;
@@ -1247,13 +1170,12 @@ body {
     display: flex;
     flex-direction: row;
     align-items: center;
-    gap: 0.6rem;
+    gap: 0.75rem;
 }
 
-.corner-rail-bottom-left .corner-icon-button {
-    position: static;
-}
-
+/* How many friends are online, beside the Friends control in the top-right
+   rail. Readable text rather than a corner badge, so it can say what it
+   counts. */
 .online-count {
     font-size: 0.75rem;
     letter-spacing: 1px;
@@ -1297,7 +1219,7 @@ body {
 
 .rail-settings-panel {
     position: absolute;
-    top: calc(100% + 0.6rem);
+    bottom: calc(100% + 0.6rem);
     left: 0;
     background: var(--background-color);
     border: 1px solid var(--neutral-color);
@@ -1582,30 +1504,13 @@ body {
    label than "CHARS"/"ERR", so left to auto-size these two blocks end up
    different widths, which pushes the graph between them (a flex-grow child
    filling the remaining space-between gap) visibly off-center. */
-.endscreen-side-stat.wpm {
-    flex: 0 0 170px;
-    text-align: left;
-}
-
+.endscreen-side-stat.wpm,
 .endscreen-side-stat.acc {
     flex: 0 0 170px;
-    text-align: right;
-}
-
-.pb-badge {
-    font-size: 0.75rem;
-    letter-spacing: 0.05em;
-    color: var(--sub-color);
-    margin: -0.1rem 0 0.3rem;
-}
-
-/* A new personal best is the payoff moment of a test and had no colour of
-   its own - it rendered in the same accent as every other figure on the
-   screen. --record-color is used here and nowhere else, so the gold reads
-   as "you beat something", not as decoration. */
-.pb-badge.pb-new {
-    color: var(--record-color);
-    font-weight: 700;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.9rem;
 }
 
 .loading {
@@ -1798,50 +1703,64 @@ body {
    logo (the only thing already in the top-left corner) rather than the
    center, which the typing/end screens keep empty on purpose to match the
    end screen's graph zone. */
-.mp-opponents {
+/* The live standings, in the middle of the screen below the passage - the
+   space the end screen's graph occupies, kept clear for exactly this. It used
+   to be a 200px strip pinned to the top-left corner showing opponents only,
+   which put the thing you are racing against in your peripheral vision and
+   left out the one bar you most need to see: your own. */
+.mp-racers {
     position: fixed;
-    top: 4.5rem;
-    left: 1rem;
-    z-index: 100;
+    top: 58%;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 90;
     display: flex;
     flex-direction: column;
-    gap: 0.4rem;
-    width: 200px;
+    gap: 0.5rem;
+    width: min(680px, 80vw);
 }
 
-.mp-opponent-row {
+.mp-racer-row {
     display: flex;
     align-items: center;
-    gap: 0.5rem;
-    font-size: 0.75rem;
-    color: var(--sub-color);
+    gap: 0.75rem;
+    font-size: 0.8rem;
+    color: var(--racer-color, var(--sub-color));
 }
 
-.mp-opponent-name {
-    color: var(--racer-color, var(--sub-color));
-    min-width: 4rem;
-    max-width: 4rem;
+/* Your own row reads a step louder than the rest. */
+.mp-racer-row.me .mp-racer-name,
+.mp-racer-row.me .mp-racer-wpm {
+    font-weight: 700;
+}
+
+.mp-racer-name {
+    min-width: 7rem;
+    max-width: 7rem;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+    text-align: right;
 }
 
-.mp-opponent-bar {
-    flex: 1;
-    height: 6px;
-    background: var(--neutral-color);
-    border-radius: 3px;
+.mp-racer-bar {
+    flex: 1 1 auto;
+    height: 0.4rem;
+    background: color-mix(in srgb, var(--neutral-color) 45%, transparent);
+    border-radius: 999px;
     overflow: hidden;
 }
 
-/* Every racer's bar used the one accent colour, so in a five-player quick
-   match you could not tell which bar was whose. Each row carries its own
-   --racer-color (assigned in multiplayerScreen.js); you are always the theme
-   primary, opponents take the --player-N hues in join order. */
-.mp-opponent-bar-fill {
+.mp-racer-bar-fill {
     height: 100%;
     background: var(--racer-color, var(--primary-color));
     transition: width 0.15s ease;
+}
+
+.mp-racer-wpm {
+    min-width: 2.5rem;
+    text-align: left;
+    font-family: 'JetBrains Mono', monospace;
 }
 
 /* Same colour key in the lobby list, so the mapping is learned before the
@@ -1854,11 +1773,6 @@ body {
     margin-right: 0.5rem;
     background: var(--racer-color, var(--primary-color));
     flex-shrink: 0;
-}
-
-.mp-opponent-wpm {
-    min-width: 2rem;
-    text-align: right;
 }
 
 /* The one genuinely time-critical state in the app: seconds left to get your
@@ -2447,40 +2361,82 @@ body::-webkit-scrollbar, .app::-webkit-scrollbar, #root::-webkit-scrollbar {
 }
 
 
-/* Secondary figures in one row under the graph, the way 10FastFingers and
-   MonkeyType both lay them out. Stacked in the two side columns they were a
-   dim 1.2rem list flanking the chart, competing with WPM and ACC for the same
-   space and hard to read at a glance. The side columns now carry only the two
-   headline numbers. */
-.end-screen-stat-row {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    align-items: flex-start;
-    gap: 2.5rem;
-    margin-top: 1.25rem;
-    width: 100%;
-    max-width: 1200px;
-    padding: 0 2rem;
-}
-
+/* Every figure on this screen is the same shape: a dim label directly over
+   its value, the two centred on each other. Grouped by what they qualify --
+   RAW and PB under WPM, ERR and CONSISTENCY under ACC, KEYSTROKES and
+   CHARACTERS either side of TIME - so each secondary number sits with the
+   headline it belongs to instead of in an undifferentiated row. */
 .end-stat {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 0.25rem;
+    gap: 0.2rem;
 }
 
 .end-stat .stat-label {
     font-size: 0.7rem;
     letter-spacing: 1px;
     color: var(--sub-color);
+    text-align: center;
 }
 
 .end-stat .stat-value {
-    font-size: 1.35rem;
+    font-size: 1.25rem;
     color: var(--primary-color);
     font-family: 'JetBrains Mono', monospace;
+    line-height: 1.15;
+    text-align: center;
+}
+
+/* The three figures that lead their group. */
+.end-stat.headline .stat-value {
+    font-size: 2.75rem;
+}
+
+.end-stat.headline .stat-label {
+    font-size: 0.8rem;
+}
+
+.end-stat.pb-new .stat-value {
+    color: var(--record-color);
+    font-weight: 700;
+    font-size: 1rem;
+}
+
+/* KEYSTROKES and CHARACTERS flank TIME, which leads them, and the whole group
+   is centred under the graph. */
+.end-screen-stat-row {
+    /* A grid, not a flex row: equal side columns put TIME on the exact centre
+       line of the graph above it. Flexed, its position drifted with however
+       wide KEYSTROKES and CHARACTERS happened to be. */
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    column-gap: 3rem;
+    margin-top: 1.25rem;
+    width: 100%;
+    max-width: 1200px;
+    padding: 0 2rem;
+}
+
+.end-screen-stat-row > .end-stat:first-child {
+    justify-self: end;
+}
+
+.end-screen-stat-row > .end-stat:last-child {
+    justify-self: start;
+}
+
+@media (max-width: 700px) {
+    .end-screen-stat-row {
+        grid-template-columns: 1fr;
+        row-gap: 1rem;
+        justify-items: center;
+    }
+    .end-screen-stat-row > .end-stat:first-child,
+    .end-screen-stat-row > .end-stat:last-child {
+        justify-self: center;
+    }
 }
 
 @media (max-width: 900px) {
@@ -2488,4 +2444,29 @@ body::-webkit-scrollbar, .app::-webkit-scrollbar, #root::-webkit-scrollbar {
         gap: 1.25rem 1.75rem;
         padding: 0 1rem;
     }
+}
+
+/* What a code snippet actually does. Shown under the passage while you type in
+   single player - the middle of the screen is free there, and reading the
+   explanation as you work through the line is the point of the mode. In
+   multiplayer that space belongs to the live standings, so it waits for the
+   end screen instead, where it appears in both cases. */
+.code-explainer {
+    max-width: 640px;
+    margin: 0.75rem auto 0 auto;
+    padding: 0.75rem 1rem;
+    border-left: 2px solid color-mix(in srgb, var(--primary-color) 45%, transparent);
+    font-size: 0.85rem;
+    line-height: 1.5;
+    color: var(--sub-color);
+    text-align: left;
+}
+
+.code-explainer-label {
+    display: block;
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--primary-color);
+    margin-bottom: 0.3rem;
 }

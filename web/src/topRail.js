@@ -40,7 +40,8 @@ export function renderTopRail(root, { onShowAccount, onShowFriends, extras = [] 
     const friends = document.createElement('div');
     friends.className = 'friends-control';
     if (onShowFriends) {
-        friends.innerHTML = `<button class="corner-icon-button has-badge" data-action="rail-friends" aria-label="Friends" data-tooltip="Friends">${FRIENDS_ICON}<span class="rail-badge" data-badge="friends" hidden></span></button>`;
+        friends.innerHTML = `<button class="corner-icon-button" data-action="rail-friends" aria-label="Friends" data-tooltip="Friends">${FRIENDS_ICON}</button>
+                             <span class="online-count" data-badge="friends-online" hidden></span>`;
     }
     wrap.appendChild(friends);
 
@@ -90,11 +91,18 @@ export function renderTopRail(root, { onShowAccount, onShowFriends, extras = [] 
     // Friends ------------------------------------------------------------
     const friendsBtn = friends.querySelector('[data-action="rail-friends"]');
     if (friendsBtn) friendsBtn.addEventListener('click', onShowFriends);
-    const friendsBadge = friends.querySelector('[data-badge="friends"]');
-    function paintCounts({ friends: friendCount }) {
-        if (!friendsBadge) return;
-        friendsBadge.hidden = !friendCount;
-        friendsBadge.textContent = String(friendCount);
+    // How many friends are online, not how many you have - a total is a fact
+    // about your account, whereas "2 online" is a reason to open the screen.
+    const friendsOnlineEl = friends.querySelector('[data-badge="friends-online"]');
+    function paintCounts({ friends: friendCount, friendsOnline }) {
+        if (friendsBtn) {
+            friendsBtn.dataset.tooltip = !friendCount
+                ? 'Friends'
+                : (friendsOnline ? `Friends - ${friendsOnline} of ${friendCount} online` : `Friends - ${friendCount}, none online`);
+        }
+        if (!friendsOnlineEl) return;
+        friendsOnlineEl.hidden = !friendsOnline;
+        friendsOnlineEl.textContent = `${friendsOnline} online`;
     }
     paintCounts(getCounts());
     const unsubscribeCounts = onCountsChange(paintCounts);

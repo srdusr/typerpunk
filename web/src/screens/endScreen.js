@@ -8,7 +8,7 @@ import { renderTopRail } from '../topRail.js';
 import { submitTestResult } from '../auth.js';
 import { detectDeviceType } from '../deviceDetect.js';
 
-export function renderEndScreen(root, { stats, text, attribution, userInput, charTimings, keypressHistory, modeKey, onPlayAgain, onMainMenu, onShowStats, onShowPlaceholder, onShowAccount, onShowLeaderboard, onShowFriends, onShowMultiplayer, onShowStore }) {
+export function renderEndScreen(root, { stats, text, attribution, explanation, userInput, charTimings, keypressHistory, modeKey, onPlayAgain, onMainMenu, onShowStats, onShowPlaceholder, onShowAccount, onShowLeaderboard, onShowFriends, onShowMultiplayer, onShowStore }) {
     // Monkeytype's four-way split. "Extra" is anything typed past the end of
     // the passage, "missed" is passage left untyped - neither is visible in
     // a plain correct/incorrect pair, and the two mean very different things
@@ -43,33 +43,37 @@ export function renderEndScreen(root, { stats, text, attribution, userInput, cha
     }
     // Don't announce "new best" on a mode's very first-ever run - there's
     // nothing to have beaten yet, so it just silently becomes the baseline.
+    // Sits under WPM alongside RAW, in the same label-over-value shape as
+    // every other secondary figure rather than as a floating badge.
     const pbLine = !modeKey || previous == null ? '' : isNewBest
-        ? '<div class="pb-badge pb-new">NEW BEST</div>'
-        : `<div class="pb-badge">PB ${Math.round(previous)}</div>`;
+        ? '<div class="end-stat pb-new"><div class="stat-label">PB</div><div class="stat-value">NEW BEST</div></div>'
+        : `<div class="end-stat"><div class="stat-label">PB</div><div class="stat-value">${Math.round(previous)}</div></div>`;
 
     root.innerHTML = `
         <div class="end-screen">
             <div class="logo" data-action="menu">TyperPunk</div>
             <div class="end-screen-text"><div class="text-display"></div></div>
             ${attribution ? `<div class="attribution end-screen-attribution">&mdash; ${escapeHtml(attribution)}</div>` : ''}
+            ${explanation ? `<div class="code-explainer"><span class="code-explainer-label">What this does</span>${escapeHtml(explanation)}</div>` : ''}
             <div class="end-screen-graph-row">
                 <div class="endscreen-side-stat wpm">
-                    <div class="stat-label">WPM</div><div class="stat-value">${Math.round(stats.wpm)}</div>
+                    <div class="end-stat headline"><div class="stat-label">WPM</div><div class="stat-value">${Math.round(stats.wpm)}</div></div>
+                    <div class="end-stat"><div class="stat-label">RAW</div><div class="stat-value">${Math.round(stats.rawWpm)}</div></div>
                     ${pbLine}
                 </div>
                 <div class="graph-container"><canvas></canvas></div>
                 <div class="endscreen-side-stat acc">
-                    <div class="stat-label">ACC</div><div class="stat-value">${Math.round(stats.accuracy)}%</div>
+                    <div class="end-stat headline"><div class="stat-label">ACC</div><div class="stat-value">${Math.round(stats.accuracy)}%</div></div>
+                    <div class="end-stat"><div class="stat-label">ERR</div><div class="stat-value">${stats.incorrectChars}</div></div>
+                    <div class="end-stat"><div class="stat-label">CONSISTENCY</div><div class="stat-value">${consistency}%</div></div>
                 </div>
             </div>
             <div class="end-screen-stat-row">
-                <div class="end-stat"><div class="stat-label">RAW</div><div class="stat-value">${Math.round(stats.rawWpm)}</div></div>
-                <div class="end-stat"><div class="stat-label">CONSISTENCY</div><div class="stat-value">${consistency}%</div></div>
                 <div class="end-stat"><div class="stat-label">KEYSTROKES</div><div class="stat-value">${stats.keystrokes}</div></div>
+                <div class="end-stat headline"><div class="stat-label">TIME</div><div class="stat-value">${stats.time.toFixed(1)}s</div></div>
                 <div class="end-stat" data-tooltip="Correct / wrong / typed past the end / left untyped">
                     <div class="stat-label">CHARACTERS</div><div class="stat-value">${stats.correctChars}/${stats.incorrectChars}/${extraChars}/${missedChars}</div>
                 </div>
-                <div class="end-stat"><div class="stat-label">TIME</div><div class="stat-value">${stats.time.toFixed(1)}s</div></div>
             </div>
             <div class="end-screen-buttons">
                 <button class="end-screen-button" data-action="again">Play Again</button>
@@ -182,7 +186,9 @@ export function renderEndScreen(root, { stats, text, attribution, userInput, cha
         const linePoint = hitTestLine(canvas, graphPoints, xMax, mx);
         if (linePoint) {
             canvas.style.cursor = 'crosshair';
-            tooltip.textContent = `${linePoint.time}s · wpm ${Math.round(linePoint.wpm)} · raw ${Math.round(linePoint.raw)}`;
+            // Time last: the figures are what you are reading for, and the
+            // second it happened is the qualifier on them.
+            tooltip.textContent = `wpm ${Math.round(linePoint.wpm)} · raw ${Math.round(linePoint.raw)} · ${linePoint.time}s`;
             tooltip.style.left = `${mx}px`;
             tooltip.style.top = `${my}px`;
             tooltip.style.display = 'block';

@@ -210,17 +210,25 @@ export function renderMultiplayerScreen(root, { onBack, onFinish, onShowStats, o
         }
 
         const opponents = document.createElement('div');
-        opponents.className = 'mp-opponents';
+        opponents.className = 'mp-racers';
         const progressById = {};
+        // Everyone in the room, yourself included. Showing only opponents left
+        // you guessing where you actually stood: your own bar is the one you
+        // are measuring the others against. The server echoes your Progress
+        // back to you along with everyone else's, so your row is fed the same
+        // way theirs are.
         function paintOpponents() {
             const colors = racerColors(players, myId);
-            opponents.innerHTML = players.filter(p => p.id !== myId).map(p => `
-                <div class="mp-opponent-row" style="--racer-color: ${colors[p.id]}">
-                    <span class="mp-opponent-name">${escapeHtml(p.name)}</span>
-                    <div class="mp-opponent-bar"><div class="mp-opponent-bar-fill" style="width:${(progressById[p.id]?.percent || 0)}%"></div></div>
-                    <span class="mp-opponent-wpm">${Math.round(progressById[p.id]?.wpm || 0)}</span>
-                </div>
-            `).join('');
+            opponents.innerHTML = players.map(p => {
+                const me = p.id === myId;
+                const prog = progressById[p.id] || {};
+                return `
+                <div class="mp-racer-row${me ? ' me' : ''}" style="--racer-color: ${colors[p.id]}">
+                    <span class="mp-racer-name">${escapeHtml(p.name)}${me ? ' (you)' : ''}</span>
+                    <div class="mp-racer-bar"><div class="mp-racer-bar-fill" style="width:${prog.percent || 0}%"></div></div>
+                    <span class="mp-racer-wpm">${Math.round(prog.wpm || 0)}</span>
+                </div>`;
+            }).join('');
         }
         paintOpponents();
 

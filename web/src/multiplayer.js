@@ -14,13 +14,6 @@ export async function createRoom(deviceFilter) {
     return room_code;
 }
 
-// Live count of people sitting in multiplayer rooms, for the header's
-// ambient "is anyone around to race" indicator. Unauthenticated, like the
-// endpoint behind it.
-export async function getOnlineCount() {
-    return api.get('/api/multiplayer/online');
-}
-
 // Auto-matchmaking. The server hands back whichever room is still filling,
 // or opens a new one when none is - so the player never sees a room code.
 // createRoom stays for the deliberate "race my friends on this code" path.

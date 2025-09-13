@@ -250,12 +250,38 @@ pub async fn user_from_token(db: &sqlx::SqlitePool, token: &str) -> Option<UserV
 /// Cookie session first (the browser's path), then an `Authorization:
 /// Bearer <token>` header (the CLI's path) - lets a handler serve both
 /// kinds of client without needing to know which one it's talking to.
+/// How stale a user's last_seen may be before they stop counting as online.
+pub const PRESENCE_WINDOW_SECS: i64 = 300;
+/// How often a single user's last_seen is actually written. Every
+/// authenticated request touching the row would be a write per request, which
+/// SQLite's single writer would not thank us for; once a minute is plenty for
+/// a five-minute window.
+const PRESENCE_WRITE_INTERVAL_SECS: i64 = 60;
+
+/// Records that this user is around. Cheap enough to call on every
+/// authenticated request: the WHERE clause skips the write unless the stored
+/// value is already stale, so it is one no-op UPDATE a minute per active user
+/// rather than one per request.
+async fn touch_last_seen(db: &sqlx::SqlitePool, user_id: &str) {
+    let now = OffsetDateTime::now_utc();
+    let cutoff = now - TimeDuration::seconds(PRESENCE_WRITE_INTERVAL_SECS);
+    let _ = sqlx::query(
+        "UPDATE users SET last_seen = ? WHERE id = ? AND (last_seen IS NULL OR last_seen < ?)",
+    )
+    .bind(format_timestamp(now))
+    .bind(user_id)
+    .bind(format_timestamp(cutoff))
+    .execute(db)
+    .await;
+}
+
 pub async fn current_user_or_token(
     db: &sqlx::SqlitePool,
     jar: &CookieJar,
     headers: &axum::http::HeaderMap,
 ) -> Option<UserView> {
     if let Some(user) = current_user(db, jar).await {
+        touch_last_seen(db, &user.id).await;
         return Some(user);
     }
     let token = headers
@@ -263,7 +289,9 @@ pub async fn current_user_or_token(
         .to_str()
         .ok()?
         .strip_prefix("Bearer ")?;
-    user_from_token(db, token).await
+    let user = user_from_token(db, token).await?;
+    touch_last_seen(db, &user.id).await;
+    Some(user)
 }
 
 async fn logout(State(state): State<Arc<AppState>>, jar: CookieJar) -> Result<impl IntoResponse, AppError> {

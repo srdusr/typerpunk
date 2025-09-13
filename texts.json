@@ -1,131 +1,32 @@
 [
   {
-    "category": "history",
-    "content": "The Cold War divided much of the world into two opposing blocs for nearly half a century, one aligned with the United States and the other with the Soviet Union.",
-    "attribution": "History"
-  },
-  {
-    "category": "philosophy",
-    "content": "Existentialism explores questions about individual freedom, choice, and meaning, arguing that people must create their own purpose in a universe that does not provide one automatically.",
-    "attribution": "Philosophy"
-  },
-  {
-    "category": "business",
-    "content": "The man who dies rich, dies disgraced.",
-    "attribution": "Andrew Carnegie"
-  },
-  {
-    "category": "movies",
-    "content": "Stop motion animation creates the illusion of movement by photographing physical objects one frame at a time and repositioning them slightly between each shot.",
-    "attribution": "Film"
-  },
-  {
     "category": "technology",
-    "content": "A blockchain is a distributed ledger that records transactions across many computers, making it difficult to alter any single record without changing every subsequent block.",
+    "content": "The transistor, invented in 1947, replaced bulky vacuum tubes and became the foundational building block of nearly every modern electronic device.",
     "attribution": "Technology"
   },
   {
-    "category": "nature",
-    "content": "Bees pollinate roughly a third of the crops humans rely on for food, making them essential to global agriculture despite their small size.",
-    "attribution": "Nature"
-  },
-  {
-    "category": "business",
-    "content": "A balance sheet summarizes what a company owns and owes at a single point in time, split into assets, liabilities, and shareholders' equity.",
-    "attribution": "Business"
-  },
-  {
-    "category": "history",
-    "content": "The Industrial Revolution transformed economies across Europe and North America during the eighteenth and nineteenth centuries, shifting production from hand tools to machines.",
-    "attribution": "History"
-  },
-  {
-    "category": "literature",
-    "content": "In my younger and more vulnerable years my father gave me some advice that I've been turning over in my mind ever since. Whenever you feel like criticizing anyone, he told me, just remember that all the people in this world haven't had the advantages that you've had.",
-    "attribution": "F. Scott Fitzgerald, The Great Gatsby"
-  },
-  {
-    "category": "movies",
-    "content": "Method acting, popularized in the mid twentieth century, encourages performers to draw on personal memories and emotions to portray a character as realistically as possible.",
-    "attribution": "Film"
-  },
-  {
-    "category": "quotes",
-    "content": "Whatever you are, be a good one.",
-    "attribution": "Abraham Lincoln"
-  },
-  {
-    "category": "general",
-    "content": "A day on Venus is longer than its year. The planet rotates so slowly on its axis that it takes longer to spin around once than it does to complete an entire orbit around the sun.",
-    "attribution": "General knowledge"
-  },
-  {
-    "category": "quotes",
-    "content": "If there is no struggle, there is no progress. Those who profess to favor freedom, and yet depreciate agitation, are men who want crops without plowing up the ground.",
-    "attribution": "Frederick Douglass"
-  },
-  {
     "category": "programming",
-    "content": "def fib(n): return n if n < 2 else fib(n - 1) + fib(n - 2)",
-    "attribution": "Python",
-    "language": "python"
-  },
-  {
-    "category": "general",
-    "content": "The Great Wall of China was not built all at once. It was constructed and extended over many centuries by different dynasties, each adding new sections and rebuilding older ones to defend against invasions from the north.",
-    "attribution": "General knowledge"
-  },
-  {
-    "category": "programming",
-    "content": "struct node { int value; struct node *next; };",
-    "attribution": "C",
-    "language": "clike"
-  },
-  {
-    "category": "general",
-    "content": "The Pacific Ocean covers more of the planet than all the continents combined. It stretches from the icy waters near Antarctica to the Arctic Circle, and its deepest point, the Mariana Trench, plunges nearly eleven kilometers below the surface.",
-    "attribution": "General knowledge"
+    "content": "public static void main(String[] args) { System.out.println(\"ready\"); }",
+    "attribution": "Java",
+    "language": "clike",
+    "explanation": "Java's entry point. The signature is fixed: static so it runs without an instance, and taking the command-line arguments."
   },
   {
     "category": "science",
-    "content": "Marie Curie remains the only person to win Nobel Prizes in two different sciences, physics and chemistry, for her pioneering research into radioactivity.",
+    "content": "Water is one of the few substances that becomes less dense as it freezes, which is why ice floats on top of liquid water instead of sinking to the bottom.",
     "attribution": "Science"
   },
   {
-    "category": "literature",
-    "content": "Call me Ishmael. Some years ago, never mind how long precisely, having little or no money in my purse, and nothing particular to interest me on shore, I thought I would sail about a little and see the watery part of the world.",
-    "attribution": "Herman Melville, Moby-Dick"
-  },
-  {
-    "category": "technology",
-    "content": "A virtual private network encrypts a device's internet connection, helping to protect data from being intercepted while it travels over a public or untrusted network.",
-    "attribution": "Technology"
+    "category": "programming",
+    "content": "impl Display for Token { fn fmt(&self, f: &mut Formatter) -> Result { write!(f, \"{}\", self.0) } }",
+    "attribution": "Rust",
+    "language": "rust",
+    "explanation": "Implementing Display is what makes a type usable in {}. self.0 is the first field of a tuple struct."
   },
   {
     "category": "philosophy",
-    "content": "It is not that we have a short time to live, but that we waste a lot of it.",
-    "attribution": "Seneca, On the Shortness of Life"
-  },
-  {
-    "category": "nature",
-    "content": "Deserts are defined by low precipitation rather than temperature, which is why some of the coldest places on Earth, including parts of Antarctica, are technically deserts.",
-    "attribution": "Nature"
-  },
-  {
-    "category": "science",
-    "content": "Sound travels as a wave of pressure through a medium such as air or water, and it cannot travel through the vacuum of space, since there are no particles to carry the vibration.",
-    "attribution": "Science"
-  },
-  {
-    "category": "nature",
-    "content": "The Amazon rainforest is home to an estimated ten percent of all known species on Earth, making it one of the most biodiverse regions on the planet.",
-    "attribution": "Nature"
-  },
-  {
-    "category": "programming",
-    "content": "with open('data.csv', encoding='utf-8') as f: rows = [line.split(',') for line in f]",
-    "attribution": "Python",
-    "language": "python"
+    "content": "I think, therefore I am.",
+    "attribution": "Rene Descartes, Discourse on the Method"
   },
   {
     "category": "quotes",
@@ -134,18 +35,18 @@
   },
   {
     "category": "quotes",
-    "content": "Genius is one percent inspiration and ninety-nine percent perspiration.",
-    "attribution": "Thomas Edison"
+    "content": "It always seems impossible until it's done.",
+    "attribution": "Nelson Mandela"
   },
   {
-    "category": "technology",
-    "content": "Cloud computing allows businesses and individuals to rent computing power and storage over the internet instead of maintaining their own physical servers.",
-    "attribution": "Technology"
+    "category": "quotes",
+    "content": "Failure is impossible.",
+    "attribution": "Susan B. Anthony"
   },
   {
-    "category": "movies",
-    "content": "Silent films relied on live musicians and title cards to convey dialogue and emotion, since synchronized sound was not introduced into feature films until the late 1920s.",
-    "attribution": "Film"
+    "category": "history",
+    "content": "The Roman Empire at its height stretched from Britain in the north to Egypt in the south, connected by a vast network of roads that still exist in parts of Europe today.",
+    "attribution": "History"
   },
   {
     "category": "literature",
@@ -153,140 +54,41 @@
     "attribution": "Charles Dickens, A Tale of Two Cities"
   },
   {
-    "category": "quotes",
-    "content": "It always seems impossible until it's done.",
-    "attribution": "Nelson Mandela"
-  },
-  {
     "category": "general",
-    "content": "Bamboo is one of the fastest growing plants on Earth. Some species can grow nearly a meter in a single day under the right conditions, which is why it is used so widely in construction and manufacturing across Asia.",
+    "content": "Sharks existed long before trees. Fossil evidence suggests that sharks have been swimming in the oceans for more than four hundred million years, while the earliest trees did not appear until tens of millions of years later.",
     "attribution": "General knowledge"
   },
   {
-    "category": "programming",
-    "content": "const unique = [...new Set(values)].sort((a, b) => a - b);",
-    "attribution": "JavaScript",
-    "language": "javascript"
-  },
-  {
     "category": "nature",
-    "content": "The Sahara Desert was once a green landscape with lakes and grasslands, before a shift in the Earth's orbit altered rainfall patterns thousands of years ago.",
+    "content": "The Amazon rainforest is home to an estimated ten percent of all known species on Earth, making it one of the most biodiverse regions on the planet.",
     "attribution": "Nature"
   },
   {
     "category": "movies",
-    "content": "Alfred Hitchcock was known for making brief cameo appearances in nearly all of his own films, a habit that became something of a signature.",
+    "content": "A film's runtime is typically decided during editing, where an editor works with hours of raw footage to shape a coherent story within a manageable length.",
     "attribution": "Film"
   },
   {
-    "category": "general",
-    "content": "The invention of the printing press in the fifteenth century transformed how knowledge spread across Europe. Books that once took months to copy by hand could suddenly be reproduced by the hundreds, making literacy far more accessible.",
-    "attribution": "General knowledge"
-  },
-  {
     "category": "science",
-    "content": "Genetics research has shown that humans share about ninety-nine percent of their DNA with chimpanzees, the closest living relative to our species.",
-    "attribution": "Science"
-  },
-  {
-    "category": "programming",
-    "content": "if err != nil { return fmt.Errorf(\"read config: %w\", err) }",
-    "attribution": "Go",
-    "language": "clike"
-  },
-  {
-    "category": "history",
-    "content": "The fall of the Berlin Wall in 1989 marked a turning point in the Cold War, as East and West Germany moved toward reunification the following year.",
-    "attribution": "History"
+    "content": "Evolution by natural selection describes how organisms with traits better suited to their environment tend to survive and reproduce more successfully, gradually shaping a population over many generations.",
+    "attribution": "Science, after Charles Darwin"
   },
   {
     "category": "business",
-    "content": "The purpose of a business is to create and keep a customer.",
-    "attribution": "Peter Drucker"
-  },
-  {
-    "category": "technology",
-    "content": "Open source software is released with its source code publicly available, allowing anyone to view, modify, and distribute it under the terms of its license.",
-    "attribution": "Technology"
-  },
-  {
-    "category": "business",
-    "content": "A startup's burn rate measures how quickly it spends its available cash, an important number for founders trying to plan how long the company can operate before running out of money.",
+    "content": "Branding is the practice of shaping how customers perceive a company, going beyond a logo to include tone, values, and the overall experience of using a product.",
     "attribution": "Business"
   },
   {
-    "category": "philosophy",
-    "content": "I think, therefore I am.",
-    "attribution": "Rene Descartes, Discourse on the Method"
-  },
-  {
     "category": "programming",
-    "content": "export PATH=\"$HOME/.local/bin:$PATH\" && command -v rg >/dev/null || echo missing",
-    "attribution": "Shell",
-    "language": "shell"
-  },
-  {
-    "category": "programming",
-    "content": "if (typeof value !== 'string' || value.length === 0) { return null; }",
-    "attribution": "JavaScript",
-    "language": "javascript"
-  },
-  {
-    "category": "philosophy",
-    "content": "Every new beginning comes from some other beginning's end.",
-    "attribution": "Seneca, Letters from a Stoic"
-  },
-  {
-    "category": "history",
-    "content": "Ancient Egyptian civilization flourished along the Nile River for thousands of years, leaving behind monuments such as the pyramids of Giza and the temples of Luxor.",
-    "attribution": "History"
-  },
-  {
-    "category": "literature",
-    "content": "To Sherlock Holmes she is always the woman. I have seldom heard him mention her under any other name. In his eyes she eclipses and predominates the whole of her sex.",
-    "attribution": "Arthur Conan Doyle, A Scandal in Bohemia"
-  },
-  {
-    "category": "literature",
-    "content": "My father's family name being Pirrip, and my Christian name Philip, my infant tongue could make of both names nothing longer or more explicit than Pip. So, I called myself Pip, and came to be called Pip.",
-    "attribution": "Charles Dickens, Great Expectations"
-  },
-  {
-    "category": "literature",
-    "content": "It is a truth universally acknowledged, that a single man in possession of a good fortune, must be in want of a wife. However little known the feelings or views of such a man may be on his first entering a neighbourhood, this truth is so well fixed in the minds of the surrounding families.",
-    "attribution": "Jane Austen, Pride and Prejudice"
-  },
-  {
-    "category": "technology",
-    "content": "The World Wide Web was invented by Tim Berners-Lee in 1989 as a way to share documents over the internet using hyperlinks.",
-    "attribution": "Technology"
-  },
-  {
-    "category": "movies",
-    "content": "The highest grossing films of all time are dominated by franchises built around superheroes, fantasy worlds, and long running science fiction universes.",
-    "attribution": "Film"
-  },
-  {
-    "category": "programming",
-    "content": "match result { Ok(v) => println!(\"{v}\"), Err(e) => eprintln!(\"error: {e}\") }",
+    "content": "let mut counts: HashMap<String, usize> = HashMap::new();",
     "attribution": "Rust",
-    "language": "rust"
+    "language": "rust",
+    "explanation": "mut because inserting mutates it. The type annotation is needed here since nothing yet tells the compiler what it holds."
   },
   {
-    "category": "programming",
-    "content": "let total: i64 = values.iter().filter(|v| **v > 0).sum();",
-    "attribution": "Rust",
-    "language": "rust"
-  },
-  {
-    "category": "science",
-    "content": "Water is one of the few substances that becomes less dense as it freezes, which is why ice floats on top of liquid water instead of sinking to the bottom.",
-    "attribution": "Science"
-  },
-  {
-    "category": "movies",
-    "content": "The Academy Awards, commonly known as the Oscars, have been presented annually since 1929 to honor achievements in the film industry.",
-    "attribution": "Film"
+    "category": "business",
+    "content": "Henry Ford, founder of the Ford Motor Company, is credited with popularizing the moving assembly line, which dramatically reduced the time needed to build an automobile.",
+    "attribution": "History of Business"
   },
   {
     "category": "literature",
@@ -294,30 +96,19 @@
     "attribution": "J.R.R. Tolkien, The Fellowship of the Ring"
   },
   {
-    "category": "business",
-    "content": "Market research helps a business understand its customers' needs and preferences before committing resources to a new product or service.",
-    "attribution": "Business"
+    "category": "literature",
+    "content": "Mr. Sherlock Holmes, who was usually very late in the mornings, save upon those not infrequent occasions when he was up all night, was seated at the breakfast table.",
+    "attribution": "Arthur Conan Doyle, The Hound of the Baskervilles"
   },
   {
-    "category": "general",
-    "content": "A group of flamingos is called a flamboyance. The birds get their pink color from the pigments in the shrimp and algae they eat.",
-    "attribution": "General knowledge"
+    "category": "literature",
+    "content": "The year 1866 was signalised by a remarkable incident, a mysterious and inexplicable phenomenon, which doubtless no one has yet forgotten. Ships had met with a huge thing, a long object, spindle-shaped, and at times phosphorescent.",
+    "attribution": "Jules Verne, Twenty Thousand Leagues Under the Sea"
   },
   {
-    "category": "programming",
-    "content": "for f in *.log; do gzip -9 \"$f\" && echo \"packed $f\"; done",
-    "attribution": "Shell",
-    "language": "shell"
-  },
-  {
-    "category": "business",
-    "content": "Customer obsession, rather than competitor focus, is the surest path to long term success.",
-    "attribution": "Jeff Bezos"
-  },
-  {
-    "category": "technology",
-    "content": "A central processing unit executes the instructions of a computer program by performing basic arithmetic, logic, and input and output operations.",
-    "attribution": "Technology"
+    "category": "literature",
+    "content": "A throng of bearded men, in sad-colored garments and gray, steeple-crowned hats, intermixed with women, some wearing hoods, and others bareheaded, was assembled in front of a wooden edifice.",
+    "attribution": "Nathaniel Hawthorne, The Scarlet Letter"
   },
   {
     "category": "science",
@@ -326,8 +117,43 @@
   },
   {
     "category": "science",
-    "content": "The human body contains roughly thirty seven trillion cells, each one specialized to carry out one of hundreds of different jobs inside the body.",
+    "content": "Photosynthesis is the process by which plants convert light energy into chemical energy, using carbon dioxide and water to produce glucose and release oxygen as a byproduct.",
     "attribution": "Science"
+  },
+  {
+    "category": "history",
+    "content": "The invention of the wheel around 3500 BCE is considered one of the most important technological breakthroughs in human history, transforming transportation and trade.",
+    "attribution": "History"
+  },
+  {
+    "category": "movies",
+    "content": "Citizen Kane, released in 1941, is frequently cited by critics and filmmakers as one of the greatest films ever made, praised for its innovative camera work and narrative structure.",
+    "attribution": "Film"
+  },
+  {
+    "category": "science",
+    "content": "Sound travels as a wave of pressure through a medium such as air or water, and it cannot travel through the vacuum of space, since there are no particles to carry the vibration.",
+    "attribution": "Science"
+  },
+  {
+    "category": "quotes",
+    "content": "Success is to be measured not so much by the position that one has reached in life as by the obstacles which he has overcome while trying to succeed.",
+    "attribution": "Booker T. Washington"
+  },
+  {
+    "category": "literature",
+    "content": "There was no possibility of taking a walk that day. We had been wandering, indeed, in the leafless shrubbery an hour in the morning, but since dinner the cold winter wind had brought with it clouds so sombre, and a rain so penetrating.",
+    "attribution": "Charlotte Bronte, Jane Eyre"
+  },
+  {
+    "category": "literature",
+    "content": "Not all those who wander are lost.",
+    "attribution": "J.R.R. Tolkien"
+  },
+  {
+    "category": "technology",
+    "content": "A central processing unit executes the instructions of a computer program by performing basic arithmetic, logic, and input and output operations.",
+    "attribution": "Technology"
   },
   {
     "category": "nature",
@@ -335,59 +161,151 @@
     "attribution": "John Muir"
   },
   {
-    "category": "business",
-    "content": "Branding is the practice of shaping how customers perceive a company, going beyond a logo to include tone, values, and the overall experience of using a product.",
-    "attribution": "Business"
+    "category": "literature",
+    "content": "The Nellie, a cruising yawl, swung to her anchor without a flutter of the sails, and was at rest. The flood had made, the wind was nearly calm, and being bound down the river, the only thing for it was to come to and wait for the turn of the tide.",
+    "attribution": "Joseph Conrad, Heart of Darkness"
   },
   {
     "category": "technology",
-    "content": "The transistor, invented in 1947, replaced bulky vacuum tubes and became the foundational building block of nearly every modern electronic device.",
+    "content": "A firewall monitors and controls incoming and outgoing network traffic based on predetermined security rules, acting as a barrier between a trusted network and an untrusted one.",
     "attribution": "Technology"
+  },
+  {
+    "category": "quotes",
+    "content": "Whatever you are, be a good one.",
+    "attribution": "Abraham Lincoln"
+  },
+  {
+    "category": "philosophy",
+    "content": "A journey of a thousand miles begins with a single step.",
+    "attribution": "Lao Tzu, Tao Te Ching"
+  },
+  {
+    "category": "movies",
+    "content": "Alfred Hitchcock was known for making brief cameo appearances in nearly all of his own films, a habit that became something of a signature.",
+    "attribution": "Film"
+  },
+  {
+    "category": "general",
+    "content": "Bamboo is one of the fastest growing plants on Earth. Some species can grow nearly a meter in a single day under the right conditions, which is why it is used so widely in construction and manufacturing across Asia.",
+    "attribution": "General knowledge"
   },
   {
     "category": "programming",
     "content": "pub struct Point { pub x: f64, pub y: f64 }",
     "attribution": "Rust",
-    "language": "rust"
+    "language": "rust",
+    "explanation": "Fields are private by default in Rust, so each one needs its own pub - making the struct public does not publish its contents."
   },
   {
-    "category": "general",
-    "content": "Octopuses have three hearts and blue blood. Two of the hearts pump blood to the gills, while the third circulates it to the rest of the body, and the blue color comes from a copper-based protein instead of iron.",
-    "attribution": "General knowledge"
+    "category": "nature",
+    "content": "Migratory birds can travel thousands of miles between breeding and wintering grounds, navigating using the sun, stars, and the Earth's magnetic field.",
+    "attribution": "Nature"
   },
   {
-    "category": "general",
-    "content": "The Amazon rainforest produces roughly twenty percent of the oxygen found in the planet's atmosphere, earning it the nickname the lungs of the Earth.",
-    "attribution": "General knowledge"
+    "category": "nature",
+    "content": "The world is big and I want to have a good look at it before it gets dark.",
+    "attribution": "John Muir"
   },
   {
-    "category": "quotes",
-    "content": "If I have seen further, it is by standing on the shoulders of giants.",
-    "attribution": "Isaac Newton"
+    "category": "literature",
+    "content": "It was the best of times, it was the worst of times.",
+    "attribution": "Charles Dickens, A Tale of Two Cities"
   },
   {
-    "category": "general",
-    "content": "A single bolt of lightning can heat the surrounding air to temperatures hotter than the surface of the sun. The rapid expansion of that superheated air is what produces the crack of thunder we hear moments later.",
-    "attribution": "General knowledge"
-  },
-  {
-    "category": "business",
-    "content": "Henry Ford, founder of the Ford Motor Company, is credited with popularizing the moving assembly line, which dramatically reduced the time needed to build an automobile.",
-    "attribution": "History of Business"
+    "category": "technology",
+    "content": "Artificial intelligence refers to computer systems designed to perform tasks that normally require human intelligence, such as recognizing speech, images, or patterns in data.",
+    "attribution": "Technology"
   },
   {
     "category": "business",
-    "content": "A merger combines two companies into one, while an acquisition occurs when one company purchases and absorbs another, though the two terms are often used loosely in everyday conversation.",
+    "content": "Supply and demand describes how the price of a good tends to rise when demand exceeds supply, and fall when supply exceeds demand.",
     "attribution": "Business"
   },
   {
+    "category": "general",
+    "content": "The quick brown fox jumps over the lazy dog.",
+    "attribution": "Traditional pangram"
+  },
+  {
     "category": "movies",
-    "content": "The special effects in the original Star Wars trilogy were largely achieved with physical models and practical effects, long before computer generated imagery became common.",
+    "content": "The Academy Awards, commonly known as the Oscars, have been presented annually since 1929 to honor achievements in the film industry.",
     "attribution": "Film"
   },
   {
+    "category": "general",
+    "content": "Venus is the hottest planet in the solar system, even though Mercury sits closer to the sun. A thick blanket of carbon dioxide traps heat at the surface.",
+    "attribution": "General knowledge"
+  },
+  {
     "category": "history",
-    "content": "The printing press, developed by Johannes Gutenberg in the fifteenth century, made it possible to produce books far more quickly and cheaply than copying them by hand.",
+    "content": "The Wright brothers achieved the first powered, controlled flight in 1903 near Kitty Hawk, North Carolina, a flight that lasted only twelve seconds.",
+    "attribution": "History"
+  },
+  {
+    "category": "technology",
+    "content": "Fiber optic cables transmit data as pulses of light through thin strands of glass, allowing information to travel at extremely high speeds over long distances.",
+    "attribution": "Technology"
+  },
+  {
+    "category": "programming",
+    "content": "if err != nil { return fmt.Errorf(\"read config: %w\", err) }",
+    "attribution": "Go",
+    "language": "clike",
+    "explanation": "Go's error convention. %w wraps the original so errors.Is and errors.As can still see it further up."
+  },
+  {
+    "category": "business",
+    "content": "A balance sheet summarizes what a company owns and owes at a single point in time, split into assets, liabilities, and shareholders' equity.",
+    "attribution": "Business"
+  },
+  {
+    "category": "programming",
+    "content": "export PATH=\"$HOME/.local/bin:$PATH\" && command -v rg >/dev/null || echo missing",
+    "attribution": "Shell",
+    "language": "shell",
+    "explanation": "Prepending puts your own binaries ahead of the system ones. command -v is the portable test for whether something is installed."
+  },
+  {
+    "category": "movies",
+    "content": "The first feature length narrative film, The Story of the Kelly Gang, was made in Australia in 1906 and ran for about an hour.",
+    "attribution": "Film"
+  },
+  {
+    "category": "nature",
+    "content": "The Sahara Desert was once a green landscape with lakes and grasslands, before a shift in the Earth's orbit altered rainfall patterns thousands of years ago.",
+    "attribution": "Nature"
+  },
+  {
+    "category": "general",
+    "content": "Antarctica is technically the largest desert on the planet. Despite being covered in ice, it receives very little precipitation each year, which is the defining characteristic of a desert rather than temperature alone.",
+    "attribution": "General knowledge"
+  },
+  {
+    "category": "history",
+    "content": "The signing of the Magna Carta in 1215 limited the power of the English king and established the principle that even a monarch was subject to the law.",
+    "attribution": "History"
+  },
+  {
+    "category": "programming",
+    "content": "const { id, name = 'anonymous', ...rest } = await request.json();",
+    "attribution": "JavaScript",
+    "language": "javascript",
+    "explanation": "Destructuring with a default and a rest property. The default applies only when the value is undefined, not when it is null."
+  },
+  {
+    "category": "history",
+    "content": "The Industrial Revolution transformed economies across Europe and North America during the eighteenth and nineteenth centuries, shifting production from hand tools to machines.",
+    "attribution": "History"
+  },
+  {
+    "category": "general",
+    "content": "The Great Wall of China was not built all at once. It was constructed and extended over many centuries by different dynasties, each adding new sections and rebuilding older ones to defend against invasions from the north.",
+    "attribution": "General knowledge"
+  },
+  {
+    "category": "history",
+    "content": "The Cold War divided much of the world into two opposing blocs for nearly half a century, one aligned with the United States and the other with the Soviet Union.",
     "attribution": "History"
   },
   {
@@ -396,19 +314,31 @@
     "attribution": "Science"
   },
   {
-    "category": "nature",
-    "content": "Wolves live and hunt in structured packs, usually led by a breeding pair, and communicate through howls that can be heard for several kilometers.",
-    "attribution": "Nature"
+    "category": "science",
+    "content": "A black hole forms when a massive star collapses under its own gravity, packing so much mass into so small a space that not even light can escape its pull.",
+    "attribution": "Science"
   },
   {
-    "category": "business",
-    "content": "Supply and demand describes how the price of a good tends to rise when demand exceeds supply, and fall when supply exceeds demand.",
-    "attribution": "Business"
+    "category": "programming",
+    "content": "for i, v := range items { fmt.Printf(\"%d: %v\\n\", i, v) }",
+    "attribution": "Go",
+    "language": "clike",
+    "explanation": "range yields index and value. In Go before 1.22 the loop variable was reused each iteration, which surprised anyone capturing it in a closure."
   },
   {
-    "category": "nature",
-    "content": "The deepest part of the ocean, the Mariana Trench, plunges nearly eleven kilometers below the surface, deeper than Mount Everest is tall.",
-    "attribution": "Nature"
+    "category": "quotes",
+    "content": "Genius is one percent inspiration and ninety-nine percent perspiration.",
+    "attribution": "Thomas Edison"
+  },
+  {
+    "category": "general",
+    "content": "The Pacific Ocean covers more of the planet than all the continents combined. It stretches from the icy waters near Antarctica to the Arctic Circle, and its deepest point, the Mariana Trench, plunges nearly eleven kilometers below the surface.",
+    "attribution": "General knowledge"
+  },
+  {
+    "category": "philosophy",
+    "content": "It's not what happens to you, but how you react to it that matters.",
+    "attribution": "Epictetus"
   },
   {
     "category": "literature",
@@ -416,45 +346,63 @@
     "attribution": "Bram Stoker, Dracula"
   },
   {
+    "category": "programming",
+    "content": "const unique = [...new Set(values)].sort((a, b) => a - b);",
+    "attribution": "JavaScript",
+    "language": "javascript",
+    "explanation": "A Set discards duplicates. Spreading it back to an array allows sorting; the comparator is required or numbers sort as text."
+  },
+  {
+    "category": "technology",
+    "content": "Quantum computing uses the principles of quantum mechanics to process information in ways that classical computers cannot, potentially solving certain problems far faster.",
+    "attribution": "Technology"
+  },
+  {
+    "category": "quotes",
+    "content": "Our greatest glory is not in never falling, but in rising every time we fall.",
+    "attribution": "Confucius"
+  },
+  {
     "category": "general",
     "content": "The human brain generates enough electricity to power a small light bulb. Billions of neurons firing electrical signals at once produce roughly the same wattage as a dim household lamp.",
     "attribution": "General knowledge"
   },
   {
-    "category": "quotes",
-    "content": "Four score and seven years ago our fathers brought forth on this continent a new nation, conceived in Liberty, and dedicated to the proposition that all men are created equal.",
-    "attribution": "Abraham Lincoln, The Gettysburg Address"
+    "category": "literature",
+    "content": "Christmas won't be Christmas without any presents, grumbled Jo, lying on the rug. It's so dreadful to be poor, sighed Meg, looking down at her old dress.",
+    "attribution": "Louisa May Alcott, Little Women"
+  },
+  {
+    "category": "history",
+    "content": "The Silk Road was not a single road but a network of trade routes connecting China to the Mediterranean, carrying silk, spices, and ideas across the ancient world.",
+    "attribution": "History"
+  },
+  {
+    "category": "literature",
+    "content": "Call me Ishmael. Some years ago, never mind how long precisely, having little or no money in my purse, and nothing particular to interest me on shore, I thought I would sail about a little and see the watery part of the world.",
+    "attribution": "Herman Melville, Moby-Dick"
   },
   {
     "category": "programming",
     "content": "export async function load(url) { const res = await fetch(url); return res.json(); }",
     "attribution": "JavaScript",
-    "language": "javascript"
-  },
-  {
-    "category": "science",
-    "content": "Mitochondria convert nutrients into a usable form of energy for the cell, which is why biology textbooks often call them the powerhouse of the cell.",
-    "attribution": "Science"
+    "language": "javascript",
+    "explanation": "fetch resolves as soon as headers arrive, so .json() is a second await for the body. It does not throw on a 404 - check res.ok."
   },
   {
     "category": "history",
-    "content": "The Wright brothers achieved the first powered, controlled flight in 1903 near Kitty Hawk, North Carolina, a flight that lasted only twelve seconds.",
+    "content": "The printing press, developed by Johannes Gutenberg in the fifteenth century, made it possible to produce books far more quickly and cheaply than copying them by hand.",
     "attribution": "History"
   },
   {
-    "category": "literature",
-    "content": "It was the best of times, it was the worst of times.",
-    "attribution": "Charles Dickens, A Tale of Two Cities"
+    "category": "quotes",
+    "content": "Stay hungry, stay foolish.",
+    "attribution": "Steve Jobs"
   },
   {
-    "category": "movies",
-    "content": "Pixar's first feature film, Toy Story, released in 1995, was the first full length movie created entirely with computer animation.",
-    "attribution": "Film"
-  },
-  {
-    "category": "business",
-    "content": "Diversification spreads investment risk across different assets, so that a poor outcome in one area does not sink an entire portfolio.",
-    "attribution": "Business"
+    "category": "nature",
+    "content": "Bees pollinate roughly a third of the crops humans rely on for food, making them essential to global agriculture despite their small size.",
+    "attribution": "Nature"
   },
   {
     "category": "quotes",
@@ -462,47 +410,85 @@
     "attribution": "Theodore Roosevelt, Citizenship in a Republic"
   },
   {
-    "category": "programming",
-    "content": "let mut counts: HashMap<String, usize> = HashMap::new();",
-    "attribution": "Rust",
-    "language": "rust"
+    "category": "business",
+    "content": "Market research helps a business understand its customers' needs and preferences before committing resources to a new product or service.",
+    "attribution": "Business"
   },
   {
-    "category": "quotes",
-    "content": "The two most important days in your life are the day you are born and the day you find out why.",
-    "attribution": "Mark Twain"
+    "category": "nature",
+    "content": "A single mature tree can absorb around twenty two kilograms of carbon dioxide per year, making forests an important part of regulating the planet's climate.",
+    "attribution": "Nature"
   },
   {
-    "category": "philosophy",
-    "content": "The Socratic method uses a series of questions and answers to expose contradictions in a person's beliefs, encouraging deeper critical thinking rather than simply providing answers.",
-    "attribution": "Philosophy"
+    "category": "science",
+    "content": "The theory of plate tectonics explains how the Earth's outer shell is broken into large plates that slowly drift over the mantle, causing earthquakes, volcanoes, and mountain formation.",
+    "attribution": "Science"
   },
   {
-    "category": "programming",
-    "content": "const total = items.reduce((acc, item) => acc + item.price, 0);",
-    "attribution": "JavaScript",
-    "language": "javascript"
+    "category": "business",
+    "content": "Customer obsession, rather than competitor focus, is the surest path to long term success.",
+    "attribution": "Jeff Bezos"
   },
   {
-    "category": "programming",
-    "content": "counts = {word: text.count(word) for word in set(text.split())}",
-    "attribution": "Python",
-    "language": "python"
+    "category": "movies",
+    "content": "The special effects in the original Star Wars trilogy were largely achieved with physical models and practical effects, long before computer generated imagery became common.",
+    "attribution": "Film"
   },
   {
     "category": "general",
-    "content": "Honey never spoils if it is stored properly. Archaeologists have found pots of honey in ancient Egyptian tombs that are thousands of years old and still perfectly edible, preserved by its low moisture content and natural acidity.",
+    "content": "A group of flamingos is called a flamboyance. The birds get their pink color from the pigments in the shrimp and algae they eat.",
     "attribution": "General knowledge"
   },
   {
-    "category": "quotes",
-    "content": "Failure is impossible.",
-    "attribution": "Susan B. Anthony"
+    "category": "technology",
+    "content": "Open source software is released with its source code publicly available, allowing anyone to view, modify, and distribute it under the terms of its license.",
+    "attribution": "Technology"
+  },
+  {
+    "category": "programming",
+    "content": "match result { Ok(v) => println!(\"{v}\"), Err(e) => eprintln!(\"error: {e}\") }",
+    "attribution": "Rust",
+    "language": "rust",
+    "explanation": "match on a Result must cover both arms - the compiler rejects it otherwise, which is how Rust stops an error going unhandled."
+  },
+  {
+    "category": "programming",
+    "content": "struct node { int value; struct node *next; };",
+    "attribution": "C",
+    "language": "clike",
+    "explanation": "A linked-list node. It refers to its own type through a pointer, which is legal because a pointer has a known size."
+  },
+  {
+    "category": "programming",
+    "content": "int *buf = malloc(len * sizeof(int)); if (!buf) return -1;",
+    "attribution": "C",
+    "language": "clike",
+    "explanation": "malloc returns NULL when it fails, and checking is not optional. sizeof(int) rather than 4 keeps it correct across platforms."
   },
   {
     "category": "literature",
-    "content": "Mr. Sherlock Holmes, who was usually very late in the mornings, save upon those not infrequent occasions when he was up all night, was seated at the breakfast table.",
-    "attribution": "Arthur Conan Doyle, The Hound of the Baskervilles"
+    "content": "It is a truth universally acknowledged, that a single man in possession of a good fortune, must be in want of a wife. However little known the feelings or views of such a man may be on his first entering a neighbourhood, this truth is so well fixed in the minds of the surrounding families.",
+    "attribution": "Jane Austen, Pride and Prejudice"
+  },
+  {
+    "category": "science",
+    "content": "Mitochondria convert nutrients into a usable form of energy for the cell, which is why biology textbooks often call them the powerhouse of the cell.",
+    "attribution": "Science"
+  },
+  {
+    "category": "nature",
+    "content": "Rivers shape the landscape around them over thousands of years, carving canyons and depositing sediment that forms fertile floodplains.",
+    "attribution": "Nature"
+  },
+  {
+    "category": "nature",
+    "content": "The deepest part of the ocean, the Mariana Trench, plunges nearly eleven kilometers below the surface, deeper than Mount Everest is tall.",
+    "attribution": "Nature"
+  },
+  {
+    "category": "quotes",
+    "content": "If there is no struggle, there is no progress. Those who profess to favor freedom, and yet depreciate agitation, are men who want crops without plowing up the ground.",
+    "attribution": "Frederick Douglass"
   },
   {
     "category": "general",
@@ -510,35 +496,241 @@
     "attribution": "General knowledge"
   },
   {
-    "category": "science",
-    "content": "Evolution by natural selection describes how organisms with traits better suited to their environment tend to survive and reproduce more successfully, gradually shaping a population over many generations.",
-    "attribution": "Science, after Charles Darwin"
-  },
-  {
-    "category": "quotes",
-    "content": "Success is to be measured not so much by the position that one has reached in life as by the obstacles which he has overcome while trying to succeed.",
-    "attribution": "Booker T. Washington"
-  },
-  {
     "category": "programming",
-    "content": "impl Display for Token { fn fmt(&self, f: &mut Formatter) -> Result { write!(f, \"{}\", self.0) } }",
-    "attribution": "Rust",
-    "language": "rust"
-  },
-  {
-    "category": "history",
-    "content": "The invention of the wheel around 3500 BCE is considered one of the most important technological breakthroughs in human history, transforming transportation and trade.",
-    "attribution": "History"
+    "content": "with open('data.csv', encoding='utf-8') as f: rows = [line.split(',') for line in f]",
+    "attribution": "Python",
+    "language": "python",
+    "explanation": "with closes the file even if the body raises. Iterating a file yields lines without loading it all into memory."
   },
   {
     "category": "nature",
-    "content": "The world is big and I want to have a good look at it before it gets dark.",
-    "attribution": "John Muir"
+    "content": "Wolves live and hunt in structured packs, usually led by a breeding pair, and communicate through howls that can be heard for several kilometers.",
+    "attribution": "Nature"
+  },
+  {
+    "category": "science",
+    "content": "The human body contains roughly thirty seven trillion cells, each one specialized to carry out one of hundreds of different jobs inside the body.",
+    "attribution": "Science"
+  },
+  {
+    "category": "philosophy",
+    "content": "Every new beginning comes from some other beginning's end.",
+    "attribution": "Seneca, Letters from a Stoic"
+  },
+  {
+    "category": "history",
+    "content": "The fall of the Berlin Wall in 1989 marked a turning point in the Cold War, as East and West Germany moved toward reunification the following year.",
+    "attribution": "History"
+  },
+  {
+    "category": "movies",
+    "content": "The word cinema comes from the Greek word for movement, reflecting how early filmmakers were fascinated by the illusion of motion created by a sequence of still images.",
+    "attribution": "Film"
+  },
+  {
+    "category": "nature",
+    "content": "Mycorrhizal fungi form partnerships with the roots of most plants, helping them absorb water and nutrients in exchange for sugars produced by photosynthesis.",
+    "attribution": "Nature"
+  },
+  {
+    "category": "programming",
+    "content": "counts = {word: text.count(word) for word in set(text.split())}",
+    "attribution": "Python",
+    "language": "python",
+    "explanation": "A dict comprehension. Note it is quadratic: count rescans the whole string per word. collections.Counter is the right tool."
   },
   {
     "category": "general",
     "content": "The first computer programmer is widely considered to be Ada Lovelace, who wrote an algorithm for an early mechanical computer in the eighteen forties, decades before any machine capable of running it was ever built.",
     "attribution": "General knowledge"
+  },
+  {
+    "category": "technology",
+    "content": "Robotics combines mechanical engineering, electronics, and computer science to design machines capable of performing tasks autonomously or with minimal human control.",
+    "attribution": "Technology"
+  },
+  {
+    "category": "literature",
+    "content": "You don't know about me without you have read a book by the name of The Adventures of Tom Sawyer, but that ain't no matter. That book was made by Mr. Mark Twain, and he told the truth, mainly.",
+    "attribution": "Mark Twain, Adventures of Huckleberry Finn"
+  },
+  {
+    "category": "movies",
+    "content": "The highest grossing films of all time are dominated by franchises built around superheroes, fantasy worlds, and long running science fiction universes.",
+    "attribution": "Film"
+  },
+  {
+    "category": "technology",
+    "content": "Cloud computing allows businesses and individuals to rent computing power and storage over the internet instead of maintaining their own physical servers.",
+    "attribution": "Technology"
+  },
+  {
+    "category": "technology",
+    "content": "Moore's Law observed that the number of transistors on a computer chip tends to double roughly every two years, driving decades of rapid improvement in computing power.",
+    "attribution": "Technology"
+  },
+  {
+    "category": "movies",
+    "content": "Stop motion animation creates the illusion of movement by photographing physical objects one frame at a time and repositioning them slightly between each shot.",
+    "attribution": "Film"
+  },
+  {
+    "category": "nature",
+    "content": "Heaven is under our feet as well as over our heads.",
+    "attribution": "Henry David Thoreau, Walden"
+  },
+  {
+    "category": "business",
+    "content": "A merger combines two companies into one, while an acquisition occurs when one company purchases and absorbs another, though the two terms are often used loosely in everyday conversation.",
+    "attribution": "Business"
+  },
+  {
+    "category": "science",
+    "content": "The periodic table arranges chemical elements by increasing atomic number, grouping elements with similar properties into the same columns.",
+    "attribution": "Science"
+  },
+  {
+    "category": "nature",
+    "content": "Deserts are defined by low precipitation rather than temperature, which is why some of the coldest places on Earth, including parts of Antarctica, are technically deserts.",
+    "attribution": "Nature"
+  },
+  {
+    "category": "business",
+    "content": "A monopoly exists when a single company dominates an entire market with no significant competition, often leading regulators to intervene to protect consumers.",
+    "attribution": "Business"
+  },
+  {
+    "category": "movies",
+    "content": "The Wizard of Oz was one of the first major films to use Technicolor extensively, transitioning from black and white to vivid color once Dorothy arrives in Oz.",
+    "attribution": "Film"
+  },
+  {
+    "category": "science",
+    "content": "Newton's first law of motion states that an object at rest stays at rest, and an object in motion stays in motion, unless acted on by an outside force.",
+    "attribution": "Science"
+  },
+  {
+    "category": "programming",
+    "content": "let total: i64 = values.iter().filter(|v| **v > 0).sum();",
+    "attribution": "Rust",
+    "language": "rust",
+    "explanation": "iter() borrows rather than consuming. The double deref is because filter hands you a reference to the iterator's own reference."
+  },
+  {
+    "category": "technology",
+    "content": "Machine learning is a branch of artificial intelligence in which a system improves its performance on a task by learning patterns from data rather than following explicit instructions.",
+    "attribution": "Technology"
+  },
+  {
+    "category": "general",
+    "content": "The invention of the printing press in the fifteenth century transformed how knowledge spread across Europe. Books that once took months to copy by hand could suddenly be reproduced by the hundreds, making literacy far more accessible.",
+    "attribution": "General knowledge"
+  },
+  {
+    "category": "science",
+    "content": "DNA carries the genetic instructions for every living organism, encoded in a sequence of four chemical bases that pair together to form the famous double helix shape.",
+    "attribution": "Science"
+  },
+  {
+    "category": "business",
+    "content": "A startup's burn rate measures how quickly it spends its available cash, an important number for founders trying to plan how long the company can operate before running out of money.",
+    "attribution": "Business"
+  },
+  {
+    "category": "philosophy",
+    "content": "Waste no more time arguing about what a good man should be. Be one.",
+    "attribution": "Marcus Aurelius, Meditations"
+  },
+  {
+    "category": "literature",
+    "content": "To Sherlock Holmes she is always the woman. I have seldom heard him mention her under any other name. In his eyes she eclipses and predominates the whole of her sex.",
+    "attribution": "Arthur Conan Doyle, A Scandal in Bohemia"
+  },
+  {
+    "category": "programming",
+    "content": "const total = items.reduce((acc, item) => acc + item.price, 0);",
+    "attribution": "JavaScript",
+    "language": "javascript",
+    "explanation": "reduce walks the array carrying a running value. The 0 is the starting total; drop it and an empty array throws."
+  },
+  {
+    "category": "literature",
+    "content": "Buck did not read the newspapers, or he would have known that trouble was brewing, not alone for himself, but for every tide-water dog, strong of muscle and with warm, long hair, from Puget Sound to San Diego.",
+    "attribution": "Jack London, The Call of the Wild"
+  },
+  {
+    "category": "general",
+    "content": "A day on Venus is longer than its year. The planet rotates so slowly on its axis that it takes longer to spin around once than it does to complete an entire orbit around the sun.",
+    "attribution": "General knowledge"
+  },
+  {
+    "category": "programming",
+    "content": "try: value = int(raw) except ValueError: value = 0",
+    "attribution": "Python",
+    "language": "python",
+    "explanation": "Catching the specific exception, not a bare except - a bare one would also swallow KeyboardInterrupt."
+  },
+  {
+    "category": "history",
+    "content": "I will fight no more forever.",
+    "attribution": "Chief Joseph, Nez Perce, 1877"
+  },
+  {
+    "category": "nature",
+    "content": "Coral reefs cover less than one percent of the ocean floor, yet they support roughly a quarter of all marine species.",
+    "attribution": "Nature"
+  },
+  {
+    "category": "quotes",
+    "content": "The two most important days in your life are the day you are born and the day you find out why.",
+    "attribution": "Mark Twain"
+  },
+  {
+    "category": "business",
+    "content": "Price is what you pay, and value is what you get.",
+    "attribution": "Warren Buffett"
+  },
+  {
+    "category": "programming",
+    "content": "fn main() { println!(\"{}\", args().skip(1).collect::<Vec<_>>().join(\" \")); }",
+    "attribution": "Rust",
+    "language": "rust",
+    "explanation": "skip(1) drops the program name, which is always the first argument. Vec<_> lets the compiler infer the element type."
+  },
+  {
+    "category": "literature",
+    "content": "The Time Traveller, for so it will be convenient to speak of him, was expounding a recondite matter to us. His grey eyes shone and twinkled, and his usually pale face was flushed and animated.",
+    "attribution": "H.G. Wells, The Time Machine"
+  },
+  {
+    "category": "general",
+    "content": "The Eiffel Tower grows about six inches taller in the summer, as the iron structure expands slightly in the heat and contracts again once the weather cools.",
+    "attribution": "General knowledge"
+  },
+  {
+    "category": "quotes",
+    "content": "To be great is to be misunderstood.",
+    "attribution": "Ralph Waldo Emerson, Self-Reliance"
+  },
+  {
+    "category": "philosophy",
+    "content": "The only true wisdom is in knowing you know nothing.",
+    "attribution": "Socrates"
+  },
+  {
+    "category": "movies",
+    "content": "The Cannes Film Festival, held annually in France since 1946, is considered one of the most prestigious film festivals in the world.",
+    "attribution": "Film"
+  },
+  {
+    "category": "quotes",
+    "content": "That man over there says that women need to be helped into carriages, and lifted over ditches, and to have the best place everywhere. Nobody ever helps me into carriages, or over mud puddles, or gives me any best place, and ain't I a woman?",
+    "attribution": "Sojourner Truth, Ain't I a Woman?"
+  },
+  {
+    "category": "technology",
+    "content": "A virtual private network encrypts a device's internet connection, helping to protect data from being intercepted while it travels over a public or untrusted network.",
+    "attribution": "Technology"
   },
   {
     "category": "philosophy",
@@ -547,14 +739,10 @@
   },
   {
     "category": "programming",
-    "content": "grep -rn \"TODO\" src/ | awk -F: '{print $1}' | sort -u",
+    "content": "for f in *.log; do gzip -9 \"$f\" && echo \"packed $f\"; done",
     "attribution": "Shell",
-    "language": "shell"
-  },
-  {
-    "category": "general",
-    "content": "Antarctica is technically the largest desert on the planet. Despite being covered in ice, it receives very little precipitation each year, which is the defining characteristic of a desert rather than temperature alone.",
-    "attribution": "General knowledge"
+    "language": "shell",
+    "explanation": "The quotes around $f matter: without them a filename containing a space becomes two arguments."
   },
   {
     "category": "general",
@@ -562,35 +750,167 @@
     "attribution": "General knowledge"
   },
   {
-    "category": "nature",
-    "content": "A single mature tree can absorb around twenty two kilograms of carbon dioxide per year, making forests an important part of regulating the planet's climate.",
-    "attribution": "Nature"
+    "category": "business",
+    "content": "The man who dies rich, dies disgraced.",
+    "attribution": "Andrew Carnegie"
   },
   {
-    "category": "business",
-    "content": "Cash flow tracks the actual movement of money into and out of a business, which can differ significantly from reported profit due to timing differences in payments.",
-    "attribution": "Business"
+    "category": "quotes",
+    "content": "You have power over your mind, not outside events. Realize this, and you will find strength.",
+    "attribution": "Marcus Aurelius, Meditations"
   },
   {
     "category": "programming",
     "content": "for (int i = 0; i < n; i++) { sum += a[i] * b[i]; }",
     "attribution": "C",
-    "language": "clike"
+    "language": "clike",
+    "explanation": "A dot product. The bound is < n, not <= n; off-by-one here reads past the end of the array."
   },
   {
-    "category": "business",
-    "content": "Price is what you pay, and value is what you get.",
-    "attribution": "Warren Buffett"
+    "category": "technology",
+    "content": "The World Wide Web was invented by Tim Berners-Lee in 1989 as a way to share documents over the internet using hyperlinks.",
+    "attribution": "Technology"
   },
   {
-    "category": "philosophy",
-    "content": "The only true wisdom is in knowing you know nothing.",
-    "attribution": "Socrates"
+    "category": "literature",
+    "content": "My father's family name being Pirrip, and my Christian name Philip, my infant tongue could make of both names nothing longer or more explicit than Pip. So, I called myself Pip, and came to be called Pip.",
+    "attribution": "Charles Dickens, Great Expectations"
+  },
+  {
+    "category": "programming",
+    "content": "if (typeof value !== 'string' || value.length === 0) { return null; }",
+    "attribution": "JavaScript",
+    "language": "javascript",
+    "explanation": "A guard clause: reject the bad input first and return, instead of nesting the real work inside an if."
+  },
+  {
+    "category": "movies",
+    "content": "A film's score is often composed after the movie has been edited, allowing the composer to match the music precisely to the pacing and mood of each scene.",
+    "attribution": "Film"
+  },
+  {
+    "category": "history",
+    "content": "The Apollo 11 mission landed the first humans on the Moon in July of 1969, when astronauts Neil Armstrong and Buzz Aldrin walked on the lunar surface.",
+    "attribution": "History"
+  },
+  {
+    "category": "movies",
+    "content": "Method acting, popularized in the mid twentieth century, encourages performers to draw on personal memories and emotions to portray a character as realistically as possible.",
+    "attribution": "Film"
+  },
+  {
+    "category": "technology",
+    "content": "A blockchain is a distributed ledger that records transactions across many computers, making it difficult to alter any single record without changing every subsequent block.",
+    "attribution": "Technology"
   },
   {
     "category": "general",
-    "content": "The Eiffel Tower grows about six inches taller in the summer, as the iron structure expands slightly in the heat and contracts again once the weather cools.",
+    "content": "A single bolt of lightning can heat the surrounding air to temperatures hotter than the surface of the sun. The rapid expansion of that superheated air is what produces the crack of thunder we hear moments later.",
     "attribution": "General knowledge"
+  },
+  {
+    "category": "science",
+    "content": "Genetics research has shown that humans share about ninety-nine percent of their DNA with chimpanzees, the closest living relative to our species.",
+    "attribution": "Science"
+  },
+  {
+    "category": "literature",
+    "content": "The studio was filled with the rich odour of roses, and when the light summer wind stirred amidst the trees of the garden, there came through the open door the heavy scent of the lilac, or the more delicate perfume of the pink-flowering thorn.",
+    "attribution": "Oscar Wilde, The Picture of Dorian Gray"
+  },
+  {
+    "category": "literature",
+    "content": "In my younger and more vulnerable years my father gave me some advice that I've been turning over in my mind ever since. Whenever you feel like criticizing anyone, he told me, just remember that all the people in this world haven't had the advantages that you've had.",
+    "attribution": "F. Scott Fitzgerald, The Great Gatsby"
+  },
+  {
+    "category": "quotes",
+    "content": "Four score and seven years ago our fathers brought forth on this continent a new nation, conceived in Liberty, and dedicated to the proposition that all men are created equal.",
+    "attribution": "Abraham Lincoln, The Gettysburg Address"
+  },
+  {
+    "category": "history",
+    "content": "The Great Depression of the 1930s began with the stock market crash of 1929 and led to widespread unemployment and economic hardship across the globe.",
+    "attribution": "History"
+  },
+  {
+    "category": "literature",
+    "content": "Alice was beginning to get very tired of sitting by her sister on the bank, and of having nothing to do. Once or twice she had peeped into the book her sister was reading, but it had no pictures or conversations in it.",
+    "attribution": "Lewis Carroll, Alice's Adventures in Wonderland"
+  },
+  {
+    "category": "philosophy",
+    "content": "Existentialism explores questions about individual freedom, choice, and meaning, arguing that people must create their own purpose in a universe that does not provide one automatically.",
+    "attribution": "Philosophy"
+  },
+  {
+    "category": "science",
+    "content": "Marie Curie remains the only person to win Nobel Prizes in two different sciences, physics and chemistry, for her pioneering research into radioactivity.",
+    "attribution": "Science"
+  },
+  {
+    "category": "quotes",
+    "content": "If I have seen further, it is by standing on the shoulders of giants.",
+    "attribution": "Isaac Newton"
+  },
+  {
+    "category": "literature",
+    "content": "1801. I have just returned from a visit to my landlord, the solitary neighbour that I shall be troubled with. This is certainly a beautiful country. In all England, I do not believe that I could have fixed on a situation so completely removed from the stir of society.",
+    "attribution": "Emily Bronte, Wuthering Heights"
+  },
+  {
+    "category": "nature",
+    "content": "A rainforest canopy can be so dense that less than two percent of sunlight reaches the forest floor below.",
+    "attribution": "Nature"
+  },
+  {
+    "category": "programming",
+    "content": "def fib(n): return n if n < 2 else fib(n - 1) + fib(n - 2)",
+    "attribution": "Python",
+    "language": "python",
+    "explanation": "Recursion with a base case. Correct but exponential - each call spawns two more, so it recomputes the same values repeatedly."
+  },
+  {
+    "category": "general",
+    "content": "The Amazon rainforest produces roughly twenty percent of the oxygen found in the planet's atmosphere, earning it the nickname the lungs of the Earth.",
+    "attribution": "General knowledge"
+  },
+  {
+    "category": "philosophy",
+    "content": "Utilitarianism holds that the right action is the one that produces the greatest good for the greatest number of people, judging morality by outcomes rather than intentions.",
+    "attribution": "Philosophy"
+  },
+  {
+    "category": "business",
+    "content": "The purpose of a business is to create and keep a customer.",
+    "attribution": "Peter Drucker"
+  },
+  {
+    "category": "philosophy",
+    "content": "The impediment to action advances action. What stands in the way becomes the way.",
+    "attribution": "Marcus Aurelius, Meditations"
+  },
+  {
+    "category": "programming",
+    "content": "document.querySelectorAll('.row').forEach(el => el.classList.toggle('active'));",
+    "attribution": "JavaScript",
+    "language": "javascript",
+    "explanation": "querySelectorAll returns a static NodeList, so it will not change as you mutate the elements in it."
+  },
+  {
+    "category": "technology",
+    "content": "The first practical smartphones combined a mobile phone with computing features such as email, web browsing, and applications, changing how people communicate and work.",
+    "attribution": "Technology"
+  },
+  {
+    "category": "history",
+    "content": "Ancient Egyptian civilization flourished along the Nile River for thousands of years, leaving behind monuments such as the pyramids of Giza and the temples of Luxor.",
+    "attribution": "History"
+  },
+  {
+    "category": "philosophy",
+    "content": "It is not that we have a short time to live, but that we waste a lot of it.",
+    "attribution": "Seneca, On the Shortness of Life"
   },
   {
     "category": "business",
@@ -598,18 +918,43 @@
     "attribution": "Business"
   },
   {
+    "category": "quotes",
+    "content": "I went to the woods because I wished to live deliberately, to front only the essential facts of life, and see if I could not learn what it had to teach, and not, when I came to die, discover that I had not lived.",
+    "attribution": "Henry David Thoreau, Walden"
+  },
+  {
+    "category": "general",
+    "content": "Simplicity is the soul of efficiency.",
+    "attribution": "Austin Freeman"
+  },
+  {
+    "category": "general",
+    "content": "Honey never spoils if it is stored properly. Archaeologists have found pots of honey in ancient Egyptian tombs that are thousands of years old and still perfectly edible, preserved by its low moisture content and natural acidity.",
+    "attribution": "General knowledge"
+  },
+  {
     "category": "movies",
-    "content": "The Cannes Film Festival, held annually in France since 1946, is considered one of the most prestigious film festivals in the world.",
+    "content": "Silent films relied on live musicians and title cards to convey dialogue and emotion, since synchronized sound was not introduced into feature films until the late 1920s.",
     "attribution": "Film"
   },
   {
-    "category": "history",
-    "content": "The signing of the Magna Carta in 1215 limited the power of the English king and established the principle that even a monarch was subject to the law.",
-    "attribution": "History"
+    "category": "general",
+    "content": "Octopuses have three hearts and blue blood. Two of the hearts pump blood to the gills, while the third circulates it to the rest of the body, and the blue color comes from a copper-based protein instead of iron.",
+    "attribution": "General knowledge"
+  },
+  {
+    "category": "philosophy",
+    "content": "The beginning is the most important part of the work.",
+    "attribution": "Plato, The Republic"
+  },
+  {
+    "category": "business",
+    "content": "Diversification spreads investment risk across different assets, so that a poor outcome in one area does not sink an entire portfolio.",
+    "attribution": "Business"
   },
   {
     "category": "movies",
-    "content": "A film's runtime is typically decided during editing, where an editor works with hours of raw footage to shape a coherent story within a manageable length.",
+    "content": "Pixar's first feature film, Toy Story, released in 1995, was the first full length movie created entirely with computer animation.",
     "attribution": "Film"
   },
   {
@@ -619,299 +964,15 @@
   },
   {
     "category": "philosophy",
-    "content": "Waste no more time arguing about what a good man should be. Be one.",
-    "attribution": "Marcus Aurelius, Meditations"
-  },
-  {
-    "category": "technology",
-    "content": "A firewall monitors and controls incoming and outgoing network traffic based on predetermined security rules, acting as a barrier between a trusted network and an untrusted one.",
-    "attribution": "Technology"
-  },
-  {
-    "category": "science",
-    "content": "The theory of plate tectonics explains how the Earth's outer shell is broken into large plates that slowly drift over the mantle, causing earthquakes, volcanoes, and mountain formation.",
-    "attribution": "Science"
-  },
-  {
-    "category": "history",
-    "content": "The Great Depression of the 1930s began with the stock market crash of 1929 and led to widespread unemployment and economic hardship across the globe.",
-    "attribution": "History"
-  },
-  {
-    "category": "movies",
-    "content": "The Wizard of Oz was one of the first major films to use Technicolor extensively, transitioning from black and white to vivid color once Dorothy arrives in Oz.",
-    "attribution": "Film"
-  },
-  {
-    "category": "quotes",
-    "content": "You have power over your mind, not outside events. Realize this, and you will find strength.",
-    "attribution": "Marcus Aurelius, Meditations"
-  },
-  {
-    "category": "literature",
-    "content": "The studio was filled with the rich odour of roses, and when the light summer wind stirred amidst the trees of the garden, there came through the open door the heavy scent of the lilac, or the more delicate perfume of the pink-flowering thorn.",
-    "attribution": "Oscar Wilde, The Picture of Dorian Gray"
-  },
-  {
-    "category": "science",
-    "content": "The periodic table arranges chemical elements by increasing atomic number, grouping elements with similar properties into the same columns.",
-    "attribution": "Science"
-  },
-  {
-    "category": "programming",
-    "content": "for i, v := range items { fmt.Printf(\"%d: %v\\n\", i, v) }",
-    "attribution": "Go",
-    "language": "clike"
-  },
-  {
-    "category": "history",
-    "content": "I will fight no more forever.",
-    "attribution": "Chief Joseph, Nez Perce, 1877"
-  },
-  {
-    "category": "programming",
-    "content": "try: value = int(raw) except ValueError: value = 0",
-    "attribution": "Python",
-    "language": "python"
-  },
-  {
-    "category": "programming",
-    "content": "fn main() { println!(\"{}\", args().skip(1).collect::<Vec<_>>().join(\" \")); }",
-    "attribution": "Rust",
-    "language": "rust"
-  },
-  {
-    "category": "technology",
-    "content": "Machine learning is a branch of artificial intelligence in which a system improves its performance on a task by learning patterns from data rather than following explicit instructions.",
-    "attribution": "Technology"
-  },
-  {
-    "category": "programming",
-    "content": "document.querySelectorAll('.row').forEach(el => el.classList.toggle('active'));",
-    "attribution": "JavaScript",
-    "language": "javascript"
-  },
-  {
-    "category": "nature",
-    "content": "Heaven is under our feet as well as over our heads.",
-    "attribution": "Henry David Thoreau, Walden"
-  },
-  {
-    "category": "business",
-    "content": "A monopoly exists when a single company dominates an entire market with no significant competition, often leading regulators to intervene to protect consumers.",
-    "attribution": "Business"
-  },
-  {
-    "category": "philosophy",
-    "content": "Utilitarianism holds that the right action is the one that produces the greatest good for the greatest number of people, judging morality by outcomes rather than intentions.",
+    "content": "The Socratic method uses a series of questions and answers to expose contradictions in a person's beliefs, encouraging deeper critical thinking rather than simply providing answers.",
     "attribution": "Philosophy"
   },
   {
-    "category": "history",
-    "content": "The Roman Empire at its height stretched from Britain in the north to Egypt in the south, connected by a vast network of roads that still exist in parts of Europe today.",
-    "attribution": "History"
-  },
-  {
-    "category": "literature",
-    "content": "Christmas won't be Christmas without any presents, grumbled Jo, lying on the rug. It's so dreadful to be poor, sighed Meg, looking down at her old dress.",
-    "attribution": "Louisa May Alcott, Little Women"
-  },
-  {
-    "category": "technology",
-    "content": "Artificial intelligence refers to computer systems designed to perform tasks that normally require human intelligence, such as recognizing speech, images, or patterns in data.",
-    "attribution": "Technology"
-  },
-  {
-    "category": "literature",
-    "content": "Alice was beginning to get very tired of sitting by her sister on the bank, and of having nothing to do. Once or twice she had peeped into the book her sister was reading, but it had no pictures or conversations in it.",
-    "attribution": "Lewis Carroll, Alice's Adventures in Wonderland"
-  },
-  {
-    "category": "literature",
-    "content": "A throng of bearded men, in sad-colored garments and gray, steeple-crowned hats, intermixed with women, some wearing hoods, and others bareheaded, was assembled in front of a wooden edifice.",
-    "attribution": "Nathaniel Hawthorne, The Scarlet Letter"
-  },
-  {
-    "category": "movies",
-    "content": "A film's score is often composed after the movie has been edited, allowing the composer to match the music precisely to the pacing and mood of each scene.",
-    "attribution": "Film"
-  },
-  {
-    "category": "technology",
-    "content": "The first practical smartphones combined a mobile phone with computing features such as email, web browsing, and applications, changing how people communicate and work.",
-    "attribution": "Technology"
-  },
-  {
-    "category": "quotes",
-    "content": "To be great is to be misunderstood.",
-    "attribution": "Ralph Waldo Emerson, Self-Reliance"
-  },
-  {
-    "category": "technology",
-    "content": "Robotics combines mechanical engineering, electronics, and computer science to design machines capable of performing tasks autonomously or with minimal human control.",
-    "attribution": "Technology"
-  },
-  {
-    "category": "movies",
-    "content": "The word cinema comes from the Greek word for movement, reflecting how early filmmakers were fascinated by the illusion of motion created by a sequence of still images.",
-    "attribution": "Film"
-  },
-  {
-    "category": "literature",
-    "content": "Not all those who wander are lost.",
-    "attribution": "J.R.R. Tolkien"
-  },
-  {
-    "category": "nature",
-    "content": "A rainforest canopy can be so dense that less than two percent of sunlight reaches the forest floor below.",
-    "attribution": "Nature"
-  },
-  {
-    "category": "literature",
-    "content": "Buck did not read the newspapers, or he would have known that trouble was brewing, not alone for himself, but for every tide-water dog, strong of muscle and with warm, long hair, from Puget Sound to San Diego.",
-    "attribution": "Jack London, The Call of the Wild"
-  },
-  {
-    "category": "literature",
-    "content": "The Nellie, a cruising yawl, swung to her anchor without a flutter of the sails, and was at rest. The flood had made, the wind was nearly calm, and being bound down the river, the only thing for it was to come to and wait for the turn of the tide.",
-    "attribution": "Joseph Conrad, Heart of Darkness"
-  },
-  {
-    "category": "general",
-    "content": "Sharks existed long before trees. Fossil evidence suggests that sharks have been swimming in the oceans for more than four hundred million years, while the earliest trees did not appear until tens of millions of years later.",
-    "attribution": "General knowledge"
-  },
-  {
-    "category": "history",
-    "content": "The Renaissance began in Italy in the fourteenth century, sparking a renewed interest in classical art, science, and learning that eventually spread across Europe.",
-    "attribution": "History"
-  },
-  {
-    "category": "philosophy",
-    "content": "The beginning is the most important part of the work.",
-    "attribution": "Plato, The Republic"
-  },
-  {
-    "category": "quotes",
-    "content": "I went to the woods because I wished to live deliberately, to front only the essential facts of life, and see if I could not learn what it had to teach, and not, when I came to die, discover that I had not lived.",
-    "attribution": "Henry David Thoreau, Walden"
-  },
-  {
-    "category": "history",
-    "content": "The Silk Road was not a single road but a network of trade routes connecting China to the Mediterranean, carrying silk, spices, and ideas across the ancient world.",
-    "attribution": "History"
-  },
-  {
-    "category": "nature",
-    "content": "Migratory birds can travel thousands of miles between breeding and wintering grounds, navigating using the sun, stars, and the Earth's magnetic field.",
-    "attribution": "Nature"
-  },
-  {
-    "category": "literature",
-    "content": "You don't know about me without you have read a book by the name of The Adventures of Tom Sawyer, but that ain't no matter. That book was made by Mr. Mark Twain, and he told the truth, mainly.",
-    "attribution": "Mark Twain, Adventures of Huckleberry Finn"
-  },
-  {
-    "category": "philosophy",
-    "content": "The impediment to action advances action. What stands in the way becomes the way.",
-    "attribution": "Marcus Aurelius, Meditations"
-  },
-  {
-    "category": "nature",
-    "content": "Rivers shape the landscape around them over thousands of years, carving canyons and depositing sediment that forms fertile floodplains.",
-    "attribution": "Nature"
-  },
-  {
-    "category": "movies",
-    "content": "The first feature length narrative film, The Story of the Kelly Gang, was made in Australia in 1906 and ran for about an hour.",
-    "attribution": "Film"
-  },
-  {
     "category": "programming",
-    "content": "const { id, name = 'anonymous', ...rest } = await request.json();",
-    "attribution": "JavaScript",
-    "language": "javascript"
-  },
-  {
-    "category": "science",
-    "content": "DNA carries the genetic instructions for every living organism, encoded in a sequence of four chemical bases that pair together to form the famous double helix shape.",
-    "attribution": "Science"
-  },
-  {
-    "category": "literature",
-    "content": "The Time Traveller, for so it will be convenient to speak of him, was expounding a recondite matter to us. His grey eyes shone and twinkled, and his usually pale face was flushed and animated.",
-    "attribution": "H.G. Wells, The Time Machine"
-  },
-  {
-    "category": "quotes",
-    "content": "Stay hungry, stay foolish.",
-    "attribution": "Steve Jobs"
-  },
-  {
-    "category": "technology",
-    "content": "Moore's Law observed that the number of transistors on a computer chip tends to double roughly every two years, driving decades of rapid improvement in computing power.",
-    "attribution": "Technology"
-  },
-  {
-    "category": "science",
-    "content": "Photosynthesis is the process by which plants convert light energy into chemical energy, using carbon dioxide and water to produce glucose and release oxygen as a byproduct.",
-    "attribution": "Science"
-  },
-  {
-    "category": "philosophy",
-    "content": "A journey of a thousand miles begins with a single step.",
-    "attribution": "Lao Tzu, Tao Te Ching"
-  },
-  {
-    "category": "literature",
-    "content": "1801. I have just returned from a visit to my landlord, the solitary neighbour that I shall be troubled with. This is certainly a beautiful country. In all England, I do not believe that I could have fixed on a situation so completely removed from the stir of society.",
-    "attribution": "Emily Bronte, Wuthering Heights"
-  },
-  {
-    "category": "literature",
-    "content": "There was no possibility of taking a walk that day. We had been wandering, indeed, in the leafless shrubbery an hour in the morning, but since dinner the cold winter wind had brought with it clouds so sombre, and a rain so penetrating.",
-    "attribution": "Charlotte Bronte, Jane Eyre"
-  },
-  {
-    "category": "general",
-    "content": "Simplicity is the soul of efficiency.",
-    "attribution": "Austin Freeman"
-  },
-  {
-    "category": "nature",
-    "content": "Mycorrhizal fungi form partnerships with the roots of most plants, helping them absorb water and nutrients in exchange for sugars produced by photosynthesis.",
-    "attribution": "Nature"
-  },
-  {
-    "category": "science",
-    "content": "A black hole forms when a massive star collapses under its own gravity, packing so much mass into so small a space that not even light can escape its pull.",
-    "attribution": "Science"
-  },
-  {
-    "category": "quotes",
-    "content": "That man over there says that women need to be helped into carriages, and lifted over ditches, and to have the best place everywhere. Nobody ever helps me into carriages, or over mud puddles, or gives me any best place, and ain't I a woman?",
-    "attribution": "Sojourner Truth, Ain't I a Woman?"
-  },
-  {
-    "category": "general",
-    "content": "The quick brown fox jumps over the lazy dog.",
-    "attribution": "Traditional pangram"
-  },
-  {
-    "category": "general",
-    "content": "Venus is the hottest planet in the solar system, even though Mercury sits closer to the sun. A thick blanket of carbon dioxide traps heat at the surface.",
-    "attribution": "General knowledge"
-  },
-  {
-    "category": "programming",
-    "content": "int *buf = malloc(len * sizeof(int)); if (!buf) return -1;",
-    "attribution": "C",
-    "language": "clike"
-  },
-  {
-    "category": "movies",
-    "content": "Citizen Kane, released in 1941, is frequently cited by critics and filmmakers as one of the greatest films ever made, praised for its innovative camera work and narrative structure.",
-    "attribution": "Film"
+    "content": "grep -rn \"TODO\" src/ | awk -F: '{print $1}' | sort -u",
+    "attribution": "Shell",
+    "language": "shell",
+    "explanation": "grep -n prints file:line:text, awk splits on the colon to take the filename, sort -u removes the duplicates."
   },
   {
     "category": "literature",
@@ -919,60 +980,25 @@
     "attribution": "Mary Shelley, Frankenstein"
   },
   {
-    "category": "technology",
-    "content": "Quantum computing uses the principles of quantum mechanics to process information in ways that classical computers cannot, potentially solving certain problems far faster.",
-    "attribution": "Technology"
-  },
-  {
     "category": "philosophy",
     "content": "It does not matter how slowly you go as long as you do not stop.",
     "attribution": "Confucius, Analects"
   },
   {
-    "category": "programming",
-    "content": "public static void main(String[] args) { System.out.println(\"ready\"); }",
-    "attribution": "Java",
-    "language": "clike"
-  },
-  {
-    "category": "quotes",
-    "content": "Our greatest glory is not in never falling, but in rising every time we fall.",
-    "attribution": "Confucius"
-  },
-  {
     "category": "history",
-    "content": "The Apollo 11 mission landed the first humans on the Moon in July of 1969, when astronauts Neil Armstrong and Buzz Aldrin walked on the lunar surface.",
+    "content": "The Renaissance began in Italy in the fourteenth century, sparking a renewed interest in classical art, science, and learning that eventually spread across Europe.",
     "attribution": "History"
   },
   {
-    "category": "literature",
-    "content": "The year 1866 was signalised by a remarkable incident, a mysterious and inexplicable phenomenon, which doubtless no one has yet forgotten. Ships had met with a huge thing, a long object, spindle-shaped, and at times phosphorescent.",
-    "attribution": "Jules Verne, Twenty Thousand Leagues Under the Sea"
+    "category": "business",
+    "content": "Cash flow tracks the actual movement of money into and out of a business, which can differ significantly from reported profit due to timing differences in payments.",
+    "attribution": "Business"
   },
   {
     "category": "programming",
     "content": "squares = [n * n for n in range(1, 21) if n % 3 != 0]",
     "attribution": "Python",
-    "language": "python"
-  },
-  {
-    "category": "philosophy",
-    "content": "It's not what happens to you, but how you react to it that matters.",
-    "attribution": "Epictetus"
-  },
-  {
-    "category": "nature",
-    "content": "Coral reefs cover less than one percent of the ocean floor, yet they support roughly a quarter of all marine species.",
-    "attribution": "Nature"
-  },
-  {
-    "category": "science",
-    "content": "Newton's first law of motion states that an object at rest stays at rest, and an object in motion stays in motion, unless acted on by an outside force.",
-    "attribution": "Science"
-  },
-  {
-    "category": "technology",
-    "content": "Fiber optic cables transmit data as pulses of light through thin strands of glass, allowing information to travel at extremely high speeds over long distances.",
-    "attribution": "Technology"
+    "language": "python",
+    "explanation": "A list comprehension: the expression, the loop, then the filter. Faster and clearer than appending in a for loop."
   }
 ]

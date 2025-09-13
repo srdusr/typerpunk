@@ -79,10 +79,10 @@ export function calculateConsistency(graphPoints) {
 export function buildErrorPoints(graphPoints, keypressHistory, charTimings) {
     const source = (keypressHistory && keypressHistory.length > 0) ? keypressHistory : charTimings;
     if (!source || source.length === 0 || graphPoints.length === 0) return [];
-    // One marker per bucket carrying how many errors landed in it, rather
-    // than one marker per error sitting on top of the wpm line. Two mistakes
-    // in the same second used to draw two dots at the same coordinates, so
-    // the graph could not show that a moment was worse than another.
+    // One marker per bucket, sitting on the wpm line at the moment the mistake
+    // happened. `count` is carried for the hover text only - errors are not
+    // plotted against a scale of their own, because their height would then
+    // imply a magnitude that a mistake does not have.
     const byBucket = new Map();
     for (const { time, isCorrect, index } of source) {
         if (isCorrect) continue;
@@ -90,7 +90,7 @@ export function buildErrorPoints(graphPoints, keypressHistory, charTimings) {
             Math.abs(curr.time - time) < Math.abs(prev.time - time) ? curr : prev, graphPoints[0]);
         const entry = byBucket.get(closest.time);
         if (entry) entry.count += 1;
-        else byBucket.set(closest.time, { x: closest.time, count: 1, index });
+        else byBucket.set(closest.time, { x: closest.time, y: closest.wpm, count: 1, index });
     }
     return [...byBucket.values()].sort((a, b) => a.x - b.x);
 }
@@ -106,33 +106,22 @@ export function niceStep(maxValue, plotSize, pxPerLabel) {
 
 /// Shared plot geometry so hit-testing (hover) can map mouse coordinates the
 /// same way drawChart maps data coordinates.
-export function getPlotGeometry(canvas, graphPoints, xMax, errorPoints = []) {
+export function getPlotGeometry(canvas, graphPoints, xMax) {
     const width = canvas.clientWidth;
     const height = canvas.clientHeight;
-    // Room on both sides for a rotated axis title plus its tick labels.
-    const margin = { top: 14, right: 52, bottom: 42, left: 52 };
+    // Room on the left for the rotated axis title plus its tick labels, and
+    // at the bottom for the seconds label.
+    const margin = { top: 14, right: 20, bottom: 42, left: 52 };
     const plotW = Math.max(1, width - margin.left - margin.right);
     const plotH = Math.max(1, height - margin.top - margin.bottom);
     const maxWpm = Math.max(1, ...graphPoints.map(p => Math.max(p.wpm, p.raw)), 1);
     const yStep = niceStep(maxWpm, plotH, 28);
     const yMax = Math.max(yStep, Math.ceil(maxWpm / yStep) * yStep);
 
-    // Errors get their own scale. Plotted against the WPM axis they were
-    // pinned to whatever the line happened to be doing, which said nothing
-    // about how many errors there were - and on a fast test they all bunched
-    // near the top of the chart.
-    const maxErrors = Math.max(1, ...errorPoints.map(p => p.count || 1));
-    // Whole numbers only: half an error does not exist.
-    const errStep = Math.max(1, Math.ceil(maxErrors / 4));
-    // One step of headroom above the worst bucket, so the tallest marker never
-    // sits on the top edge of the plot or underneath the legend.
-    const errMax = Math.max(errStep, (Math.ceil(maxErrors / errStep) + 1) * errStep);
-
     return {
         xToPx: t => margin.left + (t / (xMax || 1)) * plotW,
         yToPx: v => margin.top + plotH - (v / yMax) * plotH,
-        yErrToPx: v => margin.top + plotH - (v / errMax) * plotH,
-        margin, plotW, plotH, yMax, errMax, errStep,
+        margin, plotW, plotH, yMax,
     };
 }
 
@@ -164,7 +153,7 @@ export function drawChart(canvas, { graphPoints, errorPoints, xMax }) {
     ctx.clearRect(0, 0, width, height);
     if (graphPoints.length === 0) return;
 
-    const { xToPx, yToPx, yErrToPx, margin, yMax, errMax, errStep } = getPlotGeometry(canvas, graphPoints, xMax, errorPoints);
+    const { xToPx, yToPx, margin, yMax } = getPlotGeometry(canvas, graphPoints, xMax);
     const yStep = niceStep(yMax, canvas.clientHeight - margin.top - margin.bottom, 28);
     const colors = themeColors();
 
@@ -193,18 +182,9 @@ export function drawChart(canvas, { graphPoints, errorPoints, xMax }) {
         ctx.fillText(String(t), xToPx(t), height - margin.bottom + 6);
     }
 
-    // Right-hand error axis. Its own scale, so a spike in mistakes is legible
-    // regardless of how fast the run was.
-    ctx.textAlign = 'left';
-    ctx.textBaseline = 'middle';
-    for (let v = 0; v <= errMax; v += errStep) {
-        ctx.fillText(String(v), width - margin.right + 6, yErrToPx(v));
-    }
-
     // Axis titles. The x axis had none at all, so its numbers could have been
     // seconds, words or buckets.
     drawAxisTitle(ctx, 'words per minute', 12, margin.top + (height - margin.top - margin.bottom) / 2, -Math.PI / 2, colors.sub);
-    drawAxisTitle(ctx, 'errors', width - 10, margin.top + (height - margin.top - margin.bottom) / 2, Math.PI / 2, colors.sub);
     drawAxisTitle(ctx, 'seconds', margin.left + (width - margin.left - margin.right) / 2, height - 6, 0, colors.sub);
 
     const drawLine = (key, color, dashed) => {
@@ -220,22 +200,11 @@ export function drawChart(canvas, { graphPoints, errorPoints, xMax }) {
     drawLine('raw', colors.secondary, true);
     drawLine('wpm', colors.primary, false);
 
-    const baselineY = yErrToPx(0);
+    // On the line, at the moment the mistake happened.
+    ctx.fillStyle = colors.error;
     for (const p of errorPoints) {
-        const ex = xToPx(p.x);
-        const ey = yErrToPx(p.count || 1);
-        // Stem first, so the dot sits on top of it.
         ctx.beginPath();
-        ctx.strokeStyle = colors.error;
-        ctx.globalAlpha = 0.45;
-        ctx.lineWidth = 1;
-        ctx.moveTo(ex, baselineY);
-        ctx.lineTo(ex, ey);
-        ctx.stroke();
-        ctx.globalAlpha = 1;
-        ctx.beginPath();
-        ctx.fillStyle = colors.error;
-        ctx.arc(ex, ey, 3, 0, Math.PI * 2);
+        ctx.arc(xToPx(p.x), yToPx(p.y), 3.5, 0, Math.PI * 2);
         ctx.fill();
     }
 
@@ -404,12 +373,12 @@ export function hitTestLine(canvas, graphPoints, xMax, mouseX) {
 /// respond to hover instead of being purely decorative.
 export function hitTestError(canvas, errorPoints, graphPoints, xMax, mouseX, mouseY, radius = 8) {
     if (errorPoints.length === 0) return null;
-    const { xToPx, yErrToPx } = getPlotGeometry(canvas, graphPoints, xMax, errorPoints);
+    const { xToPx, yToPx } = getPlotGeometry(canvas, graphPoints, xMax);
     let closest = null;
     let closestDist = radius;
     for (const p of errorPoints) {
         const px = xToPx(p.x);
-        const py = yErrToPx(p.count || 1);
+        const py = yToPx(p.y);
         const dist = Math.hypot(px - mouseX, py - mouseY);
         if (dist <= closestDist) {
             closestDist = dist;

@@ -40,7 +40,11 @@ def run():
             # typing screen itself, not just in the store's own UI.
             page.click('[data-action="menu"]')
             page.wait_for_timeout(300)
-            page.click('[data-action="start"]')
+            # Single Player opens the mode picker; choosing a mode starts the
+            # test. It used to start the last-used mode on one click.
+            page.click('[data-action="pick-mode"]')
+            page.wait_for_selector('.sp-popover .mode-popover-item[data-mode="quotes"]', timeout=10000)
+            page.click('.sp-popover .mode-popover-item[data-mode="quotes"]')
             page.wait_for_timeout(500)
             caret_color = page.evaluate(
                 "() => getComputedStyle(document.querySelector('.typing-game')).getPropertyValue('--caret-color').trim()"

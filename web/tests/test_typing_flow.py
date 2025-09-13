@@ -19,7 +19,11 @@ def run():
             # asserting on the exact source casing.
             assert "typerpunk" in page.locator(".main-menu h1").inner_text().lower()
 
-            page.click('[data-action="start"]')
+            # Single Player opens the mode picker; choosing a mode starts the
+            # test. It used to start the last-used mode on one click.
+            page.click('[data-action="pick-mode"]')
+            page.wait_for_selector('.sp-popover .mode-popover-item[data-mode="quotes"]', timeout=10000)
+            page.click('.sp-popover .mode-popover-item[data-mode="quotes"]')
             page.wait_for_selector(".typing-game", timeout=10000)
 
             input_el = page.locator(".typing-input")

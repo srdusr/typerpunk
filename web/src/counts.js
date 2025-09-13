@@ -1,17 +1,15 @@
 import { api } from './api.js';
-import { getOnlineCount } from './multiplayer.js';
 import { getUser, onAuthChange } from './auth.js';
 
-// Live counts for the badges on the Friends and Multiplayer controls: how
-// many people you can race right now, and how many friends you have.
+// How many of your friends are around right now, for the count beside the
+// Friends control.
 //
-// Shared and cached rather than fetched per control. The rail is rebuilt on
-// every screen change, and without this each navigation fired a fresh pair of
-// requests - and the main menu's Multiplayer button would have fired its own
-// on top of that, asking the server the same question twice per screen.
+// Shared and cached rather than fetched per control: the rail is rebuilt on
+// every screen change, and without this each navigation fired a fresh
+// request.
 const REFRESH_MS = 30000;
 
-let cache = { online: 0, friends: 0 };
+let cache = { friends: 0, friendsOnline: 0 };
 const listeners = new Set();
 let timer = null;
 let inFlight = false;
@@ -20,13 +18,17 @@ async function refresh() {
     if (inFlight) return;
     inFlight = true;
     try {
-        const online = await getOnlineCount().then(r => r.players).catch(() => cache.online);
         // Friends only exist for a signed-in user; asking while signed out is
         // a guaranteed 401, so skip it rather than log noise on every poll.
-        const friends = getUser()
-            ? await api.get('/api/friends').then(r => (r.friends || []).length).catch(() => cache.friends)
-            : 0;
-        cache = { online, friends };
+        if (!getUser()) {
+            cache = { friends: 0, friendsOnline: 0 };
+        } else {
+            const list = await api.get('/api/friends').catch(() => null);
+            if (list) {
+                const friends = list.friends || [];
+                cache = { friends: friends.length, friendsOnline: friends.filter(f => f.online).length };
+            }
+        }
         for (const fn of listeners) fn(cache);
     } finally {
         inFlight = false;

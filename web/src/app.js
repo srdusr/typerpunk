@@ -104,6 +104,15 @@ export function startApp(root, localTexts) {
                 try { localStorage.setItem('typerpunk:last_mode', cat); } catch {}
                 showMainMenu();
             },
+            // Picking a mode from the Single Player menu starts that mode --
+            // choosing what to type and starting it are one action now, not a
+            // selection followed by a second click on the same button.
+            onPickAndStart: cat => {
+                selectedCategory = cat;
+                try { localStorage.setItem('typerpunk:last_mode', cat); } catch {}
+                session = { type: 'random', customIndex: 0 };
+                startGame();
+            },
             customText,
             onLoadCustom: loaded => {
                 customText = loaded;
@@ -228,6 +237,7 @@ export function startApp(root, localTexts) {
         teardown();
         let content;
         let attribution;
+        let explanation;
         let language;
         let progress;
         let timeLimit;
@@ -272,6 +282,7 @@ export function startApp(root, localTexts) {
             // Code snippets highlight themselves; prose packs have no language
             // and fall through as plain text.
             language = item.language || undefined;
+            explanation = item.explanation || undefined;
             modeKey = `quote-${selectedCategory || 'random'}`;
         }
 
@@ -288,6 +299,7 @@ export function startApp(root, localTexts) {
             game,
             text: content,
             attribution,
+            explanation,
             language,
             progress,
             timeLimit,

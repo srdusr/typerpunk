@@ -1,28 +1,184 @@
 [
-  {"category":"programming","language":"javascript","attribution":"JavaScript","content":"const total = items.reduce((acc, item) => acc + item.price, 0);"},
-  {"category":"programming","language":"javascript","attribution":"JavaScript","content":"const unique = [...new Set(values)].sort((a, b) => a - b);"},
-  {"category":"programming","language":"javascript","attribution":"JavaScript","content":"export async function load(url) { const res = await fetch(url); return res.json(); }"},
-  {"category":"programming","language":"javascript","attribution":"JavaScript","content":"document.querySelectorAll('.row').forEach(el => el.classList.toggle('active'));"},
-  {"category":"programming","language":"javascript","attribution":"JavaScript","content":"if (typeof value !== 'string' || value.length === 0) { return null; }"},
-  {"category":"programming","language":"javascript","attribution":"JavaScript","content":"const { id, name = 'anonymous', ...rest } = await request.json();"},
-  {"category":"programming","language":"python","attribution":"Python","content":"squares = [n * n for n in range(1, 21) if n % 3 != 0]"},
-  {"category":"programming","language":"python","attribution":"Python","content":"def fib(n): return n if n < 2 else fib(n - 1) + fib(n - 2)"},
-  {"category":"programming","language":"python","attribution":"Python","content":"with open('data.csv', encoding='utf-8') as f: rows = [line.split(',') for line in f]"},
-  {"category":"programming","language":"python","attribution":"Python","content":"counts = {word: text.count(word) for word in set(text.split())}"},
-  {"category":"programming","language":"python","attribution":"Python","content":"try: value = int(raw) except ValueError: value = 0"},
-  {"category":"programming","language":"rust","attribution":"Rust","content":"let mut counts: HashMap<String, usize> = HashMap::new();"},
-  {"category":"programming","language":"rust","attribution":"Rust","content":"fn main() { println!(\"{}\", args().skip(1).collect::<Vec<_>>().join(\" \")); }"},
-  {"category":"programming","language":"rust","attribution":"Rust","content":"let total: i64 = values.iter().filter(|v| **v > 0).sum();"},
-  {"category":"programming","language":"rust","attribution":"Rust","content":"match result { Ok(v) => println!(\"{v}\"), Err(e) => eprintln!(\"error: {e}\") }"},
-  {"category":"programming","language":"rust","attribution":"Rust","content":"pub struct Point { pub x: f64, pub y: f64 }"},
-  {"category":"programming","language":"rust","attribution":"Rust","content":"impl Display for Token { fn fmt(&self, f: &mut Formatter) -> Result { write!(f, \"{}\", self.0) } }"},
-  {"category":"programming","language":"clike","attribution":"C","content":"int *buf = malloc(len * sizeof(int)); if (!buf) return -1;"},
-  {"category":"programming","language":"clike","attribution":"C","content":"for (int i = 0; i < n; i++) { sum += a[i] * b[i]; }"},
-  {"category":"programming","language":"clike","attribution":"C","content":"struct node { int value; struct node *next; };"},
-  {"category":"programming","language":"clike","attribution":"Go","content":"for i, v := range items { fmt.Printf(\"%d: %v\\n\", i, v) }"},
-  {"category":"programming","language":"clike","attribution":"Go","content":"if err != nil { return fmt.Errorf(\"read config: %w\", err) }"},
-  {"category":"programming","language":"clike","attribution":"Java","content":"public static void main(String[] args) { System.out.println(\"ready\"); }"},
-  {"category":"programming","language":"shell","attribution":"Shell","content":"grep -rn \"TODO\" src/ | awk -F: '{print $1}' | sort -u"},
-  {"category":"programming","language":"shell","attribution":"Shell","content":"for f in *.log; do gzip -9 \"$f\" && echo \"packed $f\"; done"},
-  {"category":"programming","language":"shell","attribution":"Shell","content":"export PATH=\"$HOME/.local/bin:$PATH\" && command -v rg >/dev/null || echo missing"}
+  {
+    "category": "programming",
+    "language": "javascript",
+    "attribution": "JavaScript",
+    "content": "const total = items.reduce((acc, item) => acc + item.price, 0);",
+    "explanation": "reduce walks the array carrying a running value. The 0 is the starting total; drop it and an empty array throws."
+  },
+  {
+    "category": "programming",
+    "language": "javascript",
+    "attribution": "JavaScript",
+    "content": "const unique = [...new Set(values)].sort((a, b) => a - b);",
+    "explanation": "A Set discards duplicates. Spreading it back to an array allows sorting; the comparator is required or numbers sort as text."
+  },
+  {
+    "category": "programming",
+    "language": "javascript",
+    "attribution": "JavaScript",
+    "content": "export async function load(url) { const res = await fetch(url); return res.json(); }",
+    "explanation": "fetch resolves as soon as headers arrive, so .json() is a second await for the body. It does not throw on a 404 - check res.ok."
+  },
+  {
+    "category": "programming",
+    "language": "javascript",
+    "attribution": "JavaScript",
+    "content": "document.querySelectorAll('.row').forEach(el => el.classList.toggle('active'));",
+    "explanation": "querySelectorAll returns a static NodeList, so it will not change as you mutate the elements in it."
+  },
+  {
+    "category": "programming",
+    "language": "javascript",
+    "attribution": "JavaScript",
+    "content": "if (typeof value !== 'string' || value.length === 0) { return null; }",
+    "explanation": "A guard clause: reject the bad input first and return, instead of nesting the real work inside an if."
+  },
+  {
+    "category": "programming",
+    "language": "javascript",
+    "attribution": "JavaScript",
+    "content": "const { id, name = 'anonymous', ...rest } = await request.json();",
+    "explanation": "Destructuring with a default and a rest property. The default applies only when the value is undefined, not when it is null."
+  },
+  {
+    "category": "programming",
+    "language": "python",
+    "attribution": "Python",
+    "content": "squares = [n * n for n in range(1, 21) if n % 3 != 0]",
+    "explanation": "A list comprehension: the expression, the loop, then the filter. Faster and clearer than appending in a for loop."
+  },
+  {
+    "category": "programming",
+    "language": "python",
+    "attribution": "Python",
+    "content": "def fib(n): return n if n < 2 else fib(n - 1) + fib(n - 2)",
+    "explanation": "Recursion with a base case. Correct but exponential - each call spawns two more, so it recomputes the same values repeatedly."
+  },
+  {
+    "category": "programming",
+    "language": "python",
+    "attribution": "Python",
+    "content": "with open('data.csv', encoding='utf-8') as f: rows = [line.split(',') for line in f]",
+    "explanation": "with closes the file even if the body raises. Iterating a file yields lines without loading it all into memory."
+  },
+  {
+    "category": "programming",
+    "language": "python",
+    "attribution": "Python",
+    "content": "counts = {word: text.count(word) for word in set(text.split())}",
+    "explanation": "A dict comprehension. Note it is quadratic: count rescans the whole string per word. collections.Counter is the right tool."
+  },
+  {
+    "category": "programming",
+    "language": "python",
+    "attribution": "Python",
+    "content": "try: value = int(raw) except ValueError: value = 0",
+    "explanation": "Catching the specific exception, not a bare except - a bare one would also swallow KeyboardInterrupt."
+  },
+  {
+    "category": "programming",
+    "language": "rust",
+    "attribution": "Rust",
+    "content": "let mut counts: HashMap<String, usize> = HashMap::new();",
+    "explanation": "mut because inserting mutates it. The type annotation is needed here since nothing yet tells the compiler what it holds."
+  },
+  {
+    "category": "programming",
+    "language": "rust",
+    "attribution": "Rust",
+    "content": "fn main() { println!(\"{}\", args().skip(1).collect::<Vec<_>>().join(\" \")); }",
+    "explanation": "skip(1) drops the program name, which is always the first argument. Vec<_> lets the compiler infer the element type."
+  },
+  {
+    "category": "programming",
+    "language": "rust",
+    "attribution": "Rust",
+    "content": "let total: i64 = values.iter().filter(|v| **v > 0).sum();",
+    "explanation": "iter() borrows rather than consuming. The double deref is because filter hands you a reference to the iterator's own reference."
+  },
+  {
+    "category": "programming",
+    "language": "rust",
+    "attribution": "Rust",
+    "content": "match result { Ok(v) => println!(\"{v}\"), Err(e) => eprintln!(\"error: {e}\") }",
+    "explanation": "match on a Result must cover both arms - the compiler rejects it otherwise, which is how Rust stops an error going unhandled."
+  },
+  {
+    "category": "programming",
+    "language": "rust",
+    "attribution": "Rust",
+    "content": "pub struct Point { pub x: f64, pub y: f64 }",
+    "explanation": "Fields are private by default in Rust, so each one needs its own pub - making the struct public does not publish its contents."
+  },
+  {
+    "category": "programming",
+    "language": "rust",
+    "attribution": "Rust",
+    "content": "impl Display for Token { fn fmt(&self, f: &mut Formatter) -> Result { write!(f, \"{}\", self.0) } }",
+    "explanation": "Implementing Display is what makes a type usable in {}. self.0 is the first field of a tuple struct."
+  },
+  {
+    "category": "programming",
+    "language": "clike",
+    "attribution": "C",
+    "content": "int *buf = malloc(len * sizeof(int)); if (!buf) return -1;",
+    "explanation": "malloc returns NULL when it fails, and checking is not optional. sizeof(int) rather than 4 keeps it correct across platforms."
+  },
+  {
+    "category": "programming",
+    "language": "clike",
+    "attribution": "C",
+    "content": "for (int i = 0; i < n; i++) { sum += a[i] * b[i]; }",
+    "explanation": "A dot product. The bound is < n, not <= n; off-by-one here reads past the end of the array."
+  },
+  {
+    "category": "programming",
+    "language": "clike",
+    "attribution": "C",
+    "content": "struct node { int value; struct node *next; };",
+    "explanation": "A linked-list node. It refers to its own type through a pointer, which is legal because a pointer has a known size."
+  },
+  {
+    "category": "programming",
+    "language": "clike",
+    "attribution": "Go",
+    "content": "for i, v := range items { fmt.Printf(\"%d: %v\\n\", i, v) }",
+    "explanation": "range yields index and value. In Go before 1.22 the loop variable was reused each iteration, which surprised anyone capturing it in a closure."
+  },
+  {
+    "category": "programming",
+    "language": "clike",
+    "attribution": "Go",
+    "content": "if err != nil { return fmt.Errorf(\"read config: %w\", err) }",
+    "explanation": "Go's error convention. %w wraps the original so errors.Is and errors.As can still see it further up."
+  },
+  {
+    "category": "programming",
+    "language": "clike",
+    "attribution": "Java",
+    "content": "public static void main(String[] args) { System.out.println(\"ready\"); }",
+    "explanation": "Java's entry point. The signature is fixed: static so it runs without an instance, and taking the command-line arguments."
+  },
+  {
+    "category": "programming",
+    "language": "shell",
+    "attribution": "Shell",
+    "content": "grep -rn \"TODO\" src/ | awk -F: '{print $1}' | sort -u",
+    "explanation": "grep -n prints file:line:text, awk splits on the colon to take the filename, sort -u removes the duplicates."
+  },
+  {
+    "category": "programming",
+    "language": "shell",
+    "attribution": "Shell",
+    "content": "for f in *.log; do gzip -9 \"$f\" && echo \"packed $f\"; done",
+    "explanation": "The quotes around $f matter: without them a filename containing a space becomes two arguments."
+  },
+  {
+    "category": "programming",
+    "language": "shell",
+    "attribution": "Shell",
+    "content": "export PATH=\"$HOME/.local/bin:$PATH\" && command -v rg >/dev/null || echo missing",
+    "explanation": "Prepending puts your own binaries ahead of the system ones. command -v is the portable test for whether something is installed."
+  }
 ]
