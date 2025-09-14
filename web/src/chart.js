@@ -109,9 +109,11 @@ export function niceStep(maxValue, plotSize, pxPerLabel) {
 export function getPlotGeometry(canvas, graphPoints, xMax) {
     const width = canvas.clientWidth;
     const height = canvas.clientHeight;
-    // Room on the left for the rotated axis title plus its tick labels, and
-    // at the bottom for the seconds label.
-    const margin = { top: 14, right: 20, bottom: 42, left: 52 };
+    // Left and right match. The left needs 52px for the rotated axis title and
+    // its tick labels; leaving the right at 20 centred the plot inside the
+    // canvas but not inside .graph-container's visible panel, which read as a
+    // wider empty margin down the left-hand side.
+    const margin = { top: 14, right: 52, bottom: 42, left: 52 };
     const plotW = Math.max(1, width - margin.left - margin.right);
     const plotH = Math.max(1, height - margin.top - margin.bottom);
     const maxWpm = Math.max(1, ...graphPoints.map(p => Math.max(p.wpm, p.raw)), 1);

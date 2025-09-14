@@ -1916,15 +1916,13 @@ body::-webkit-scrollbar, .app::-webkit-scrollbar, #root::-webkit-scrollbar {
     width: 100%;
     max-width: 1200px;
     margin: 0 auto 0.5rem auto;
-    /* Matches .end-screen-text's own 2rem side padding, so the WPM/ACC
-       blocks line up with the actual text edges above them, not with the
-       text box's outer (padded) edge. Right side gets extra clearance on
-       top of that - unlike the typing screen's WPM/ACC blocks (fixed
-       position with their own deliberate margin), this row is a normal-flow
-       flex layout, so on any viewport narrower than max-width its own right
-       edge can land directly under the fixed corner icon rail otherwise. */
+    /* Matches .end-screen-text's own 2rem side padding, so the WPM/ACC blocks
+       line up with the actual text edges above them rather than with the text
+       box's outer padded edge. Symmetric: the extra 4.5rem that used to sit
+       on the right cleared a fixed icon rail that ran up the right edge, and
+       that rail now lives in the bottom corners. The asymmetry was pulling
+       the whole graph 20px left of centre. */
     padding: 0 2rem;
-    padding-right: 4.5rem;
 }
 
 .graph-container {
