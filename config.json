@@ -1,0 +1,12 @@
+{
+    "texts_path": "texts.json",
+    "default_text": "The quick brown fox jumps over the lazy dog.",
+    "theme": {
+        "name": "default",
+        "background": "Black",
+        "foreground": "White",
+        "accent": "Blue",
+        "error": "Red",
+        "success": "Green"
+    }
+}

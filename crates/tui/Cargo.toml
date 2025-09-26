@@ -1,0 +1,32 @@
+[package]
+name = "typerpunk-tui"
+version.workspace = true
+edition.workspace = true
+authors.workspace = true
+description.workspace = true
+license.workspace = true
+
+[[bin]]
+name = "typerpunk"
+path = "src/main.rs"
+
+[features]
+default = ["tui"]
+tui = ["typerpunk-core/tui"]
+multiplayer = ["typerpunk-core/multiplayer"]
+
+[dependencies]
+typerpunk-core = { path = "../core", features = ["tui"] }
+crossterm.workspace = true
+ratatui.workspace = true
+tokio = { workspace = true, features = ["full"] }
+anyhow.workspace = true
+config.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+thiserror.workspace = true
+dirs.workspace = true
+rlua.workspace = true
+rand.workspace = true
+tokio-tungstenite = { workspace = true, optional = true }
+futures-util = { workspace = true, optional = true } 

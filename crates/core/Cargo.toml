@@ -1,0 +1,52 @@
+[package]
+name = "typerpunk-core"
+version = "0.1.0"
+edition = "2021"
+
+[lib]
+name = "typerpunk_core"
+path = "src/lib.rs"
+crate-type = ["cdylib", "rlib"]
+
+[features]
+default = ["full", "serde", "wasm"]
+full = ["dirs", "tui"]
+wasm = ["getrandom/js", "dep:wasm-bindgen", "dep:js-sys", "dep:web-sys", "dep:wasm-bindgen-futures", "serde"]
+tui = ["dep:crossterm", "dep:ratatui"]
+web = ["dep:wasm-bindgen", "dep:web-sys"]
+multiplayer = ["dep:tokio-tungstenite", "dep:futures-util", "dep:tokio"]
+serde = ["dep:serde", "dep:serde_json"]
+
+[dependencies]
+# Core dependencies
+tokio = { workspace = true, optional = true, features = ["full"] }
+serde = { workspace = true, features = ["derive"], optional = true }
+serde_json = { workspace = true, optional = true }
+anyhow = { workspace = true }
+thiserror = { workspace = true }
+config = { workspace = true, optional = true }
+dirs = { workspace = true, optional = true }
+rand = { workspace = true }
+getrandom = { version = "0.2", optional = true }
+
+# Optional TUI dependencies
+crossterm = { version = "0.27", optional = true }
+ratatui = { version = "0.24", optional = true }
+
+# Optional Web dependencies
+wasm-bindgen = { workspace = true, optional = true }
+web-sys = { workspace = true, optional = true }
+js-sys = { workspace = true, optional = true }
+
+# Optional Multiplayer dependencies
+tokio-tungstenite = { version = "0.20", optional = true }
+futures-util = { version = "0.3", optional = true }
+
+# WASM dependencies
+wasm-bindgen-futures = { workspace = true, optional = true }
+serde-wasm-bindgen = "0.6"
+
+[dev-dependencies]
+criterion = "0.5"
+mockall = "0.12"
+proptest = "1.3" 

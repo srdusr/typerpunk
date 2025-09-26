@@ -1,76 +1,122 @@
-# _Typerpunk_
+# TyperPunk
 
-**_Typerpunk_** is a simple typing game written in Rust, where players are challenged to type sentences as quickly as possible. The game calculates the player's typing speed in Words Per Minute (WPM) and time taken.
+A modern typing test application available in both terminal (TUI) and web versions.
 
-> NOTE: Game is still in early stages of development. Plenty of features will be implemented such as programming related minigames, difficulty/custom settings and multiplayer to name a few. There are also plans to make this into not just a "cmdline" game but also have a fully fledged website and desktop gui client as well.
+## Project Structure
 
-## Features (beta)
+This is a monorepo containing two main parts:
 
-- Randomly selects sentences from a provided list for the player to type.
-- Calculates typing speed in Words Per Minute (WPM).
-- Color-coded feedback on typed characters (green for correct, red for incorrect, gray for untyped).
+1. **TUI Version** (`crates/tui`): A terminal-based typing test application
+2. **Web Version** (`web/`): A web-based version for typerpunk.com
 
-## Installation
 
-To play **_Typerpunk_**, make sure you have Rust installed on your system. You can install Rust from [rustup.rs](https://rustup.rs/).
+- `texts.json`: Shared dataset consumed by both CLI and Web (auto-generated).
+- `data/packs/`: Offline pack files you can edit to add more texts.
+- `scripts/merge_packs.js`: Merges all packs into `texts.json`.
 
-- Can also use this to quickly download rust:
+## Prerequisites
+
+- Rust toolchain (`rustup`, `cargo`)
+- Node.js + npm
+- For web: `wasm-pack` (install via `cargo install wasm-pack` or see https://rustwasm.github.io/wasm-pack/installer/)
+
+## Running the TUI Version
 
 ```bash
-curl https://sh.rustup.rs -sSf | sh -s
-```
-
-- Clone this repository:
-
-```bash
+# Clone and enter the repo
 git clone https://github.com/srdusr/typerpunk.git
-```
-
-- Navigate to the project directory:
-
-```bash
 cd typerpunk
+
+# Generate dataset from offline packs (recommended)
+npm install
+npm run merge-packs
+
+# Run the TUI
+cargo run --package typerpunk-tui
 ```
 
-- Build and run the game:
+## Running the Website
 
 ```bash
-cargo run --release
+# From repo root, ensure dataset exists
+npm install
+npm run merge-packs
+
+# Launch the web dev server (builds WASM and starts Vite)
+./web/launch.sh
 ```
+The website will be available at http://localhost:3000
 
-## How to Play
-
-- Run the executable:
+## Testing the Website
 
 ```bash
-./target/release/typerpunk
+cd web
+npm test
+# or
+npm test -- --watch
+# or
+npm test -- --coverage
 ```
 
-- Or put the executable into your path. Example:
+## Building for Production (Web)
 
 ```bash
-sudo cp target/release/typerpunk /usr/local/bin
+cd web
+npm run build
+npm run preview
 ```
+The production build will be in the `web/dist` directory.
 
-### Gameplay:
+## Common Development Tasks (Web)
 
-When the game starts, you will see a main menu.  
-Press `Enter` to begin the typing challenge.  
-Random text will be shown and game will only start as soon as you start typing.  
-Press `Enter` when you have finished typing the sentence.  
-The game will display your Words Per Minute (WPM) and time taken.  
-To play again, press `Enter` at the End screen.  
-To quit the game, press `Esc` at any time.
+```bash
+cd web
+npm run lint
+## Text Dataset (Offline Packs + Online)
 
-### Controls:
+TyperPunk uses a shared dataset `texts.json` for both CLI and Web.
 
-`Enter`: Submit typed sentence or proceed in menus.  
-`Backspace`: Delete the last character.  
-`Esc`: Quit the game or go back to the main menu.
+- Offline (recommended):
+  - Add files to `data/packs/*.json` with entries of the form:
+    ```json
+    {
+      "category": "programming",
+      "content": "A paragraph of 80–400 characters…",
+      "attribution": "Author or Source"
+    }
+    ```
+  - Merge all packs into `texts.json` at repo root:
+    ```bash
+    npm install
+    npm run merge-packs
+    ```
+- Online (optional, web only):
+  - Host a `texts.json` and set a URL in the page (e.g., `web/index.html`):
+    ```html
+    <script>
+      window.TYPERPUNK_TEXTS_URL = "https://your.cdn/path/to/texts.json";
+    </script>
+    ```
+  - The app will fetch the online dataset on load; if unavailable, it falls back to the bundled local file.
 
-## Contributing
+Notes:
+- `web/launch.sh` copies the root `texts.json` to `web/src/data/texts.json` for local dev.
+- A small fallback is checked into `web/src/data/texts.json` to ensure imports resolve.
 
-Contributions are welcome! If you have any ideas, bug fixes, or improvements, feel free to open an issue or submit a pull request.
+## Category Filters
+
+- Web UI (`web/src/components/MainMenu.tsx`):
+  - A Category dropdown is available on the main menu.
+  - Default is **Random**; selecting a category restricts the text pool to that category.
+
+- CLI/TUI (`crates/core/src/ui.rs`, `crates/core/src/app.rs`):
+  - On the main menu, use **Left/Right** arrows to cycle categories.
+  - Display shows: `Category: Random (←/→ to change)` or the selected category name.
+  - Press **Enter** to start; **Esc** to quit.
+
+- Attribution:
+  - Web shows attribution under the text.
+  - CLI shows attribution below the typing area.
 
 ## License
 

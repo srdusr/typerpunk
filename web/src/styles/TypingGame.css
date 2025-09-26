@@ -1,0 +1,19 @@
+.space {
+    color: #666;
+    opacity: 0.7;
+}
+
+.space.correct {
+    color: #4CAF50;
+    opacity: 1;
+}
+
+.space.incorrect {
+    color: #f44336;
+    opacity: 1;
+}
+
+.space.current {
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 2px;
+} 
