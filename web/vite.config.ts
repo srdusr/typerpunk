@@ -12,16 +12,15 @@ export default defineConfig({
   ],
   resolve: {
     alias: {
-      '@': path.resolve(__dirname, 'src'),
+      '@': path.resolve(__dirname, 'web/src'),
       '@typerpunk/wasm': path.resolve(__dirname, '../crates/wasm/pkg')
     }
-  },
+  }
   server: {
     port: 3000,
     fs: {
       allow: [
-        path.resolve(__dirname, 'src'),
-        path.resolve(__dirname, 'node_modules'),
+        path.resolve(__dirname, 'web'),
         path.resolve(__dirname, '../crates/wasm/pkg'),
         path.resolve(__dirname, '../crates/wasm/target'),
       ]
@@ -40,4 +39,4 @@ export default defineConfig({
       }
     }
   }
-}); 
+});
