@@ -1,6 +1,6 @@
 # TyperPunk
 
-A modern typing test in your terminal (TUI) and in the browser (Web).
+A modern typing game for terminal (TUI) and in the browser (Web).
 
 ## Quick Start
 
@@ -62,4 +62,4 @@ Notes:
 
 ## License
 
-MIT
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
