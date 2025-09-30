@@ -8,35 +8,34 @@ export default defineConfig({
   plugins: [
     react(),
     wasm(),
-    topLevelAwait()
+    topLevelAwait(),
   ],
   resolve: {
     alias: {
-      '@': path.resolve(__dirname, 'web/src'),
-      '@typerpunk/wasm': path.resolve(__dirname, '../crates/wasm/pkg')
-    }
-  }
+      '@': path.resolve(__dirname, 'src'),
+      '@typerpunk/wasm': path.resolve(__dirname, '../crates/wasm/pkg'),
+    },
+  },
   server: {
     port: 3000,
     fs: {
       allow: [
-        path.resolve(__dirname, 'web'),
+        path.resolve(__dirname),
         path.resolve(__dirname, '../crates/wasm/pkg'),
-        path.resolve(__dirname, '../crates/wasm/target'),
-      ]
-    }
+      ],
+    },
   },
   optimizeDeps: {
-    exclude: ['@typerpunk/wasm']
+    exclude: ['@typerpunk/wasm'],
   },
   build: {
     target: 'esnext',
     rollupOptions: {
       output: {
         manualChunks: {
-          'wasm': ['@typerpunk/wasm']
-        }
-      }
-    }
-  }
+          wasm: ['@typerpunk/wasm'],
+        },
+      },
+    },
+  },
 });
