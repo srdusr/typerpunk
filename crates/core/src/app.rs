@@ -24,6 +24,7 @@ pub struct App {
     pub current_text_index: usize,
     pub should_exit: bool,
     pub state: State,
+    pub wpm_history: Vec<u64>,
 }
 
 impl App {
@@ -64,7 +65,57 @@ impl App {
             current_text_index,
             should_exit,
             state,
+            wpm_history: Vec::new(),
         })
+    }
+
+    fn handle_backspace_with_rules(&mut self, ctrl: bool) {
+        if self.input.is_empty() { return; }
+        let current_text = &self.texts[self.current_text_index].content;
+        if ctrl {
+            // Delete to start of current word
+            let word_start = self.get_current_word_start();
+            if word_start < self.input.len() {
+                self.input.truncate(word_start);
+                self.update_stats();
+            }
+            return;
+        }
+
+        // Deleting one character. Only allow crossing into previous word if there are errors before.
+        let target_pos = self.input.len().saturating_sub(1);
+        let current_word_start = self.get_current_word_start();
+        if target_pos < current_word_start {
+            if !self.has_errors_before_position(current_text, current_word_start) {
+                // No errors before; do not allow moving back into previous words
+                return;
+            }
+        }
+        self.input.pop();
+        self.update_stats();
+    }
+
+    fn get_current_word_start(&self) -> usize {
+        let mut word_start = 0;
+        let mut in_word = false;
+        for (i, c) in self.input.chars().enumerate() {
+            if c.is_whitespace() {
+                if in_word { word_start = i + 1; }
+                in_word = false;
+            } else {
+                in_word = true;
+            }
+        }
+        word_start
+    }
+
+    fn has_errors_before_position(&self, text: &str, position: usize) -> bool {
+        let compare_len = self.input.len().min(text.len());
+        for (i, (ic, tc)) in self.input.chars().zip(text.chars()).take(compare_len).enumerate() {
+            if i >= position { break; }
+            if ic != tc { return true; }
+        }
+        false
     }
 
     pub fn new_with_config(config: Config) -> Result<Self, Box<dyn std::error::Error + Send + Sync>> {
@@ -97,6 +148,7 @@ impl App {
             current_text_index,
             stats: Stats::new(),
             config,
+            wpm_history: Vec::new(),
         })
     }
 
@@ -104,6 +156,7 @@ impl App {
         self.input.clear();
         self.stats.reset();
         self.current_text_index = self.pick_random_index();
+        self.wpm_history.clear();
     }
 
     fn pick_random_index(&self) -> usize {
@@ -162,15 +215,45 @@ impl App {
             State::TypingGame => {
                 match key.code {
                     crossterm::event::KeyCode::Char(c) => {
-                        if !self.stats.is_running() {
-                            self.stats.start();
+                        // Handle control-word delete (Ctrl+W)
+                        if key.modifiers.contains(crossterm::event::KeyModifiers::CONTROL)
+                            && (c == 'w' || c == 'W')
+                        {
+                            self.handle_backspace_with_rules(true);
+                            return;
                         }
+                        // Don't insert invisible control chars; only insert when no CTRL/ALT (SHIFT ok)
+                        if key.modifiers.intersects(crossterm::event::KeyModifiers::CONTROL | crossterm::event::KeyModifiers::ALT) {
+                            return;
+                        }
+                        if !self.stats.is_running() { self.stats.start(); }
+                        // Record keystroke correctness before mutating input
+                        let was_correct = {
+                            let pos = self.input.len();
+                            let current_text = &self.texts[self.current_text_index].content;
+                            if pos < current_text.len() {
+                                // Compare with target at this position
+                                current_text.chars().nth(pos).map(|tc| tc == c).unwrap_or(false)
+                            } else {
+                                false // extra chars are considered incorrect
+                            }
+                        };
+                        self.stats.note_keypress(was_correct);
                         self.input.push(c);
                         self.update_stats();
                     }
                     crossterm::event::KeyCode::Backspace => {
-                        self.input.pop();
-                        self.update_stats();
+                        // Treat Ctrl or Alt modified Backspace as word delete for tmux/screen/terms
+                        let ctrl_or_alt = key.modifiers.intersects(
+                            crossterm::event::KeyModifiers::CONTROL | crossterm::event::KeyModifiers::ALT,
+                        );
+                        self.handle_backspace_with_rules(ctrl_or_alt);
+                    }
+                    // Some terminals send Ctrl+H instead of Ctrl+Backspace
+                    crossterm::event::KeyCode::Char('h') | crossterm::event::KeyCode::Char('H')
+                        if key.modifiers.contains(crossterm::event::KeyModifiers::CONTROL) =>
+                    {
+                        self.handle_backspace_with_rules(true);
                     }
                     crossterm::event::KeyCode::Esc => {
                         self.state = State::MainMenu;
@@ -270,6 +353,11 @@ impl App {
     pub fn update(&mut self) {
         if self.state == State::TypingGame {
             self.update_stats();
+            // Sample WPM once per elapsed second to build a compact sparkline
+            let secs = self.stats.elapsed_time().as_secs() as usize;
+            while self.wpm_history.len() < secs {
+                self.wpm_history.push(self.stats.wpm().round() as u64);
+            }
         }
     }
 } 

@@ -1,22 +1,13 @@
-#[cfg(feature = "tui")]
-use std::io;
-
-#[cfg(feature = "tui")]
 use ratatui::{
-    backend::Backend,
     layout::{Constraint, Direction, Layout},
     style::{Color, Modifier, Style},
-    text::{Span},
-    widgets::{Block, Borders, Paragraph, Wrap},
+    text::Span,
+    widgets::{Block, Paragraph, Wrap},
     Frame,
 };
+use ratatui::prelude::{Alignment, Line};
 
-#[cfg(feature = "tui")]
-use crate::app::App;
-
-#[cfg(feature = "tui")]
-use ratatui::prelude::{Line, Alignment};
-use crate::app::State;
+use crate::app::{App, State};
 
 pub fn draw(f: &mut Frame, app: &App) {
     match app.state {
@@ -26,61 +17,58 @@ pub fn draw(f: &mut Frame, app: &App) {
     }
 }
 
-pub fn draw_main_menu(f: &mut Frame, _app: &App) {
+pub fn draw_main_menu(f: &mut Frame, app: &App) {
     let chunks = Layout::default()
         .direction(Direction::Vertical)
-        .margin(2)
+        .margin(1)
         .constraints([Constraint::Min(0)])
         .split(f.size());
 
     let category_label = {
-        let cat = _app.selected_category.as_ref().map(String::as_str).unwrap_or("Random");
-        format!("Category: {}  (←/→ to change)", cat)
+        let cat = app
+            .selected_category
+            .as_ref()
+            .map(String::as_str)
+            .unwrap_or("Random");
+        format!("Category: {}  (\u{2190}/\u{2192} to change)", cat)
     };
-    let main_menu = vec![
-        Line::from(Span::styled("Welcome to Typerpunk!", Style::default().add_modifier(Modifier::BOLD))),
-        Line::from(Span::styled(category_label, Style::default().fg(Color::Cyan))),
-        Line::from(Span::styled("Press Enter to Start", Style::default())),
-        Line::from(Span::styled("Press Esc to Quit", Style::default())),
+
+    let mut lines: Vec<Line> = vec![
+        Line::from(Span::styled(
+            "TYPERPUNK",
+            Style::default().fg(Color::Green).add_modifier(Modifier::BOLD),
+        )),
+        Line::from(Span::from("")),
+        Line::from(Span::styled(
+            category_label,
+            Style::default().fg(Color::Cyan),
+        )),
+        Line::from(Span::from("")),
+        Line::from(Span::styled("Start: Enter", Style::default())),
+        Line::from(Span::styled(
+            "Change Category: \u{2190} / \u{2192}",
+            Style::default(),
+        )),
+        Line::from(Span::styled("Quit: Esc", Style::default())),
     ];
 
     f.render_widget(
-        Paragraph::new(main_menu)
+        Paragraph::new(lines)
             .alignment(Alignment::Center)
-            .block(Block::default().borders(Borders::ALL)),
+            .block(Block::default()),
         chunks[0],
     );
 }
 
 pub fn draw_typing_game(f: &mut Frame, app: &App) {
+    let area = f.size();
     let chunks = Layout::default()
         .direction(Direction::Vertical)
-        .margin(2)
-        .constraints([
-            Constraint::Length(3), // Stats
-            Constraint::Min(0),    // Text
-        ])
-        .split(f.size());
+        .margin(1)
+        .constraints([Constraint::Min(0)])
+        .split(area);
 
-    // Draw stats
-    let stats = vec![
-        Line::from(vec![
-            Span::styled(format!("WPM: {:.1}", app.stats.wpm()), Style::default().fg(Color::Yellow)),
-            Span::styled(" | ", Style::default()),
-            Span::styled(format!("Time: {:.1}s", app.stats.elapsed_time().as_secs_f64()), Style::default().fg(Color::Cyan)),
-            Span::styled(" | ", Style::default()),
-            Span::styled(format!("Accuracy: {:.1}%", app.stats.accuracy()), Style::default().fg(Color::Green)),
-        ]),
-    ];
-
-    f.render_widget(
-        Paragraph::new(stats)
-            .alignment(Alignment::Center)
-            .block(Block::default().borders(Borders::ALL)),
-        chunks[0],
-    );
-
-    // Draw text
+    // Build colored text
     let text_chars: Vec<char> = app.current_text().content.chars().collect();
     let input_chars: Vec<char> = app.input.chars().collect();
     let mut colored_text: Vec<Span> = Vec::new();
@@ -96,7 +84,6 @@ pub fn draw_typing_game(f: &mut Frame, app: &App) {
         } else {
             Style::default().fg(Color::Gray)
         };
-
         let span = if i == cursor_pos {
             Span::styled(c.to_string(), style.add_modifier(Modifier::REVERSED))
         } else {
@@ -105,83 +92,125 @@ pub fn draw_typing_game(f: &mut Frame, app: &App) {
         colored_text.push(span);
     }
 
-    // Add any remaining incorrect characters
     if input_chars.len() > text_chars.len() {
         for &c in &input_chars[text_chars.len()..] {
-            colored_text.push(Span::styled(
-                c.to_string(),
-                Style::default().fg(Color::Red),
-            ));
+            colored_text.push(Span::styled(c.to_string(), Style::default().fg(Color::Red)));
         }
     }
 
-    let text = vec![
-        Line::from(Span::styled(
-            "Type the following text:",
-            Style::default().add_modifier(Modifier::BOLD),
-        )),
-        Line::from(colored_text),
-    ];
+    let lines = vec![Line::from(Span::from("")), Line::from(colored_text)];
 
     f.render_widget(
-        Paragraph::new(text)
-            .alignment(Alignment::Left)
-            .block(Block::default().borders(Borders::ALL))
+        Paragraph::new(lines)
+            .alignment(Alignment::Center)
+            .block(Block::default())
             .wrap(Wrap { trim: true }),
-        chunks[1],
+        chunks[0],
     );
 
-    // Render attribution beneath the text box
-    let attribution = app.current_text().source.clone();
-    if !attribution.is_empty() {
-        let area = ratatui::layout::Rect {
-            x: chunks[1].x,
-            y: chunks[1].y.saturating_add(chunks[1].height.saturating_sub(2)),
-            width: chunks[1].width,
+    // Attribution under text
+    if !app.current_text().source.is_empty() {
+        let att_area = ratatui::layout::Rect {
+            x: chunks[0].x,
+            y: chunks[0].y.saturating_add(chunks[0].height.saturating_sub(5)),
+            width: chunks[0].width,
             height: 2,
         };
         let attribution_line = Line::from(Span::styled(
-            format!("— {}", attribution),
+            format!("— {}", app.current_text().source),
             Style::default().fg(Color::Gray),
         ));
         f.render_widget(
             Paragraph::new(vec![attribution_line])
-                .alignment(Alignment::Right)
+                .alignment(Alignment::Center)
                 .wrap(Wrap { trim: true }),
-            area,
+            att_area,
         );
     }
+
+    // Anchored stats: WPM (left), ACC (right), TIME (bottom center)
+    let wpm_rect = ratatui::layout::Rect { x: area.x + 1, y: area.y + area.height.saturating_sub(3), width: 20, height: 3 };
+    let acc_rect = ratatui::layout::Rect { x: area.x + area.width.saturating_sub(21), y: area.y + area.height.saturating_sub(3), width: 20, height: 3 };
+    let time_rect = ratatui::layout::Rect { x: area.x + area.width / 2 - 10, y: area.y + area.height.saturating_sub(2), width: 20, height: 2 };
+
+    let wpm_widget = Paragraph::new(vec![
+        Line::from(Span::styled("WPM", Style::default().fg(Color::Gray))),
+        Line::from(Span::styled(
+            format!("{:.0}", app.stats.wpm()),
+            Style::default().fg(Color::Green).add_modifier(Modifier::BOLD),
+        )),
+    ])
+    .alignment(Alignment::Left);
+
+    let acc_widget = Paragraph::new(vec![
+        Line::from(Span::styled("ACC", Style::default().fg(Color::Gray))),
+        Line::from(Span::styled(
+            format!("{:.0}%", app.stats.accuracy()),
+            Style::default().fg(Color::Green).add_modifier(Modifier::BOLD),
+        )),
+    ])
+    .alignment(Alignment::Right);
+
+    let time_widget = Paragraph::new(vec![
+        Line::from(Span::styled("TIME", Style::default().fg(Color::Gray))),
+        Line::from(Span::styled(
+            format!("{:.1}", app.stats.elapsed_time().as_secs_f64()),
+            Style::default().fg(Color::Green).add_modifier(Modifier::BOLD),
+        )),
+    ])
+    .alignment(Alignment::Center);
+
+    f.render_widget(wpm_widget, wpm_rect);
+    f.render_widget(acc_widget, acc_rect);
+    f.render_widget(time_widget, time_rect);
 }
 
 pub fn draw_end_screen(f: &mut Frame, app: &App) {
-    let chunks = Layout::default()
-        .direction(Direction::Vertical)
-        .margin(2)
-        .constraints([Constraint::Min(0)])
-        .split(f.size());
+    let area = f.size();
+    // We don't render a central RESULTS section to avoid duplication.
+    // We only render anchored stats and bottom buttons.
 
-    let end_screen = vec![
-        Line::from(Span::styled("Game Over!", Style::default().add_modifier(Modifier::BOLD))),
-        Line::from(Span::styled(
-            format!("Words Per Minute: {:.1}", app.stats.wpm()),
-            Style::default(),
-        )),
-        Line::from(Span::styled(
-            format!("Time Taken: {:.1} seconds", app.stats.elapsed_time().as_secs_f64()),
-            Style::default(),
-        )),
-        Line::from(Span::styled(
-            format!("Accuracy: {:.1}%", app.stats.accuracy()),
-            Style::default(),
-        )),
-        Line::from(Span::styled("Press Enter to Play Again", Style::default())),
-        Line::from(Span::styled("Press Esc to Quit", Style::default())),
-    ];
+    // Anchored stats at the edges
+    let wpm_rect = ratatui::layout::Rect { x: area.x + 1, y: area.y + area.height.saturating_sub(6), width: 20, height: 3 };
+    let acc_rect = ratatui::layout::Rect { x: area.x + area.width.saturating_sub(21), y: area.y + area.height.saturating_sub(6), width: 20, height: 3 };
+    let time_rect = ratatui::layout::Rect { x: area.x + area.width / 2 - 10, y: area.y + area.height.saturating_sub(5), width: 20, height: 2 };
+    let buttons_rect = ratatui::layout::Rect { x: area.x + area.width / 2 - 20, y: area.y + area.height.saturating_sub(2), width: 40, height: 2 };
 
-    f.render_widget(
-        Paragraph::new(end_screen)
-            .alignment(Alignment::Center)
-            .block(Block::default().borders(Borders::ALL)),
-        chunks[0],
-    );
-} 
+    let wpm_widget = Paragraph::new(vec![
+        Line::from(Span::styled("WPM", Style::default().fg(Color::Gray))),
+        Line::from(Span::styled(
+            format!("{:.0}", app.stats.wpm()),
+            Style::default().fg(Color::Green).add_modifier(Modifier::BOLD),
+        )),
+    ])
+    .alignment(Alignment::Left);
+
+    let acc_widget = Paragraph::new(vec![
+        Line::from(Span::styled("ACC", Style::default().fg(Color::Gray))),
+        Line::from(Span::styled(
+            format!("{:.0}%", app.stats.accuracy()),
+            Style::default().fg(Color::Green).add_modifier(Modifier::BOLD),
+        )),
+    ])
+    .alignment(Alignment::Right);
+
+    let time_widget = Paragraph::new(vec![
+        Line::from(Span::styled("TIME", Style::default().fg(Color::Gray))),
+        Line::from(Span::styled(
+            format!("{:.1}", app.stats.elapsed_time().as_secs_f64()),
+            Style::default().fg(Color::Green).add_modifier(Modifier::BOLD),
+        )),
+    ])
+    .alignment(Alignment::Center);
+
+    let buttons = Paragraph::new(vec![
+        Line::from(Span::styled("Enter: Play Again", Style::default())),
+        Line::from(Span::styled("Esc: Main Menu", Style::default())),
+    ])
+    .alignment(Alignment::Center);
+
+    f.render_widget(wpm_widget, wpm_rect);
+    f.render_widget(acc_widget, acc_rect);
+    f.render_widget(time_widget, time_rect);
+    f.render_widget(buttons, buttons_rect);
+}

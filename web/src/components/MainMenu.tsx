@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { useTheme } from '../contexts/ThemeContext';
 import { Theme } from '../types';
 
@@ -11,33 +11,28 @@ interface Props {
 
 const MainMenu: React.FC<Props> = ({ onStartGame, categories = [], selectedCategory = 'random', onSelectCategory }) => {
     const { theme, toggleTheme } = useTheme();
+    const modes = useMemo(() => ['random', ...categories], [categories]);
+    const currentIndex = Math.max(0, modes.findIndex(m => (selectedCategory || 'random') === m));
+    const currentMode = modes[currentIndex] || 'random';
+    const nextMode = modes[(currentIndex + 1) % modes.length] || 'random';
 
     return (
         <div className="main-menu">
-            <h1>TyperPunk</h1>
-            <div className="menu-options">
-                <div style={{ marginBottom: '0.75rem' }}>
-                    <label htmlFor="category" style={{ marginRight: 8 }}>Category:</label>
-                    <select
-                        id="category"
-                        value={selectedCategory}
-                        onChange={(e) => onSelectCategory && onSelectCategory(e.target.value)}
-                        style={{ padding: '0.4rem 0.6rem' }}
-                    >
-                        <option value="random">Random</option>
-                        {categories.map((c) => (
-                            <option key={c} value={c}>{c}</option>
-                        ))}
-                    </select>
-                </div>
-                <button className="menu-button" onClick={onStartGame}>
-                    Start Typing Test
+            <h1 style={{ marginTop: '-0.25rem', marginBottom: '0.8rem' }}>TyperPunk</h1>
+            <div className="menu-options" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.6rem' }}>
+                <button className="menu-button" onClick={onStartGame} style={{ width: 220, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>Start</button>
+                <button
+                    className="menu-button"
+                    onClick={() => onSelectCategory && onSelectCategory(nextMode)}
+                    style={{ width: 220, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}
+                >
+                    {`Mode: ${currentMode === 'random' ? 'Random' : currentMode.charAt(0).toUpperCase() + currentMode.slice(1)}`}
                 </button>
-                <button className="menu-button" onClick={toggleTheme}>
-                    Toggle {theme === Theme.Dark ? 'Light' : 'Dark'} Mode
+                <button className="menu-button" onClick={toggleTheme} style={{ width: 220, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                    Toggle Theme
                 </button>
             </div>
-            <button onClick={toggleTheme} className="theme-toggle">
+            <button onClick={toggleTheme} className="theme-toggle" style={{ background: 'transparent', border: 'none', boxShadow: 'none', backdropFilter: 'none' }}>
                 {theme === Theme.Dark ? (
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                         <circle cx="12" cy="12" r="5"/>

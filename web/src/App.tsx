@@ -108,7 +108,10 @@ function App() {
     const { game, resetGame, cleanupGame } = useCoreGame();
     const [allTexts, setAllTexts] = useState<TextItem[]>(LOCAL_TEXTS);
     const [categories, setCategories] = useState<string[]>(uniqueCategories(LOCAL_TEXTS));
-    const [selectedCategory, setSelectedCategory] = useState<string>('random');
+    const [selectedCategory, setSelectedCategory] = useState<string>(() => {
+        const saved = localStorage.getItem('typerpunk:last_mode');
+        return saved || 'random';
+    });
     const [gameState, setGameState] = useState<GameState>({
         screen: 'main-menu',
         currentText: '',
@@ -140,12 +143,7 @@ function App() {
     }));
     const testText = "This is a test sentence for the end screen. It has some text to display and check for errors.";
     const testUserInput = "This is a test sentance for the end screen. It has sone text to display and check for erors.";
-    const _testCharTimings = testText.split('').map((char, i) => ({
-        time: (i / testText.length) * 60,
-        isCorrect: char === (testUserInput[i] || ''),
-        char: char,
-        index: i
-    }));
+    // removed unused _testCharTimings
     const [lastTest, setLastTest] = useState<{ stats: Stats; wpmHistory: Array<{ time: number; wpm: number; raw: number; isError: boolean }>; text: string; userInput: string; charTimings?: Array<{ time: number; isCorrect: boolean; char: string; index: number }>; keypressHistory?: Array<{ time: number; index: number; isCorrect: boolean }> } | null>(null);
 
     // Removed unused Enter key end-screen toggle handler
@@ -166,6 +164,10 @@ function App() {
             } catch {}
         })();
     }, []);
+
+    useEffect(() => {
+        try { localStorage.setItem('typerpunk:last_mode', selectedCategory); } catch {}
+    }, [selectedCategory]);
 
     const handleStartGame = async () => {
         try {
@@ -402,6 +404,7 @@ function App() {
                         categories={categories}
                         selectedCategory={selectedCategory}
                         onSelectCategory={setSelectedCategory}
+                        startLabel={`Start: ${selectedCategory === 'random' ? 'Random' : selectedCategory.charAt(0).toUpperCase() + selectedCategory.slice(1)}`}
                     />
                 ) : gameState.screen === 'end-screen' ? (
                     <EndScreen

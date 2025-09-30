@@ -42,14 +42,8 @@ export function useCoreGame() {
     }, []);
 
     const resetGame = async () => {
-        if (gameRef.current) {
-            try {
-                gameRef.current.free();
-            } catch (err) {
-                console.error('Error freeing old game:', err);
-            }
-        }
-        
+        // Do NOT free() here to avoid freeing while React components may still reference it.
+        // Create a fresh instance and replace the ref.
         try {
             const game = new Game();
             gameRef.current = game;
@@ -60,14 +54,15 @@ export function useCoreGame() {
     };
 
     const cleanupGame = () => {
-        if (gameRef.current) {
+        const inst = gameRef.current;
+        if (inst) {
             try {
-                gameRef.current.free();
+                inst.free();
             } catch (err) {
                 console.error('Error cleaning up game:', err);
             }
-            gameRef.current = null;
         }
+        gameRef.current = null;
     };
 
     return {

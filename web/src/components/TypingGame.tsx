@@ -52,7 +52,7 @@ export const TypingGame: React.FC<Props> = React.memo((props: Props): JSX.Elemen
     const [localInput, setLocalInput] = useState<string>('');
     const inputRef = useRef<HTMLInputElement>(null);
     const [wasmAccuracy, setWasmAccuracy] = useState<number>(100);
-    const [wasmMistakes, setWasmMistakes] = useState<number>(0);
+    const [_wasmMistakes, setWasmMistakes] = useState<number>(0);
     const gameRef = useRef(game);
     const isInitialized = useRef(false);
     const lastInputRef = useRef('');
@@ -63,7 +63,7 @@ export const TypingGame: React.FC<Props> = React.memo((props: Props): JSX.Elemen
     const [finalCharTimings, setFinalCharTimings] = useState<Array<{ time: number; isCorrect: boolean; char: string; index: number }>>([]);
     // Persistent mistake tracking
     const [allMistakes, setAllMistakes] = useState<Array<{ time: number; index: number }>>([]);
-    const [finalAllMistakes, setFinalAllMistakes] = useState<Array<{ time: number; index: number }>>([]);
+    const [_finalAllMistakes, setFinalAllMistakes] = useState<Array<{ time: number; index: number }>>([]);
     // Persistent keypress history tracking
     const [keypressHistory, setKeypressHistory] = useState<Array<{ time: number, index: number, isCorrect: boolean }>>([]);
     const [finalKeypressHistory, setFinalKeypressHistory] = useState<Array<{ time: number, index: number, isCorrect: boolean }>>([]);
@@ -164,7 +164,7 @@ export const TypingGame: React.FC<Props> = React.memo((props: Props): JSX.Elemen
             // Track error positions for this input
             let isError = false;
             if (typeof game.get_stats_and_input === 'function') {
-                const [wasmInput, accuracy, mistakes] = game.get_stats_and_input();
+                const [, , mistakes] = game.get_stats_and_input();
                 // If mistakes increased, mark as error
                 if (mistakes > 0) isError = true;
             }
@@ -504,7 +504,7 @@ export const TypingGame: React.FC<Props> = React.memo((props: Props): JSX.Elemen
                         />
                     </div>
                     {attribution && (
-                        <div style={{ maxWidth: 700, width: '100%', margin: '0 auto 1.5rem auto', textAlign: 'right', color: 'var(--neutral-color)', fontSize: '0.9rem' }}>
+                        <div style={{ maxWidth: 700, width: '100%', margin: '0.5rem auto 1.75rem auto', textAlign: 'center', color: 'var(--neutral-color)', fontSize: '0.95rem' }}>
                             — {attribution}
                         </div>
                     )}
@@ -527,7 +527,7 @@ export const TypingGame: React.FC<Props> = React.memo((props: Props): JSX.Elemen
                         </div>
                         {/* Graph center, take all available space with margin for stats */}
                         <div style={{ margin: '0 auto 1.5rem auto', width: '100%', maxWidth: 900, display: 'flex', flexDirection: 'column', alignItems: 'center', minWidth: 0 }}>
-                          <div className="graph-container" style={{ flex: '1 1 0', minWidth: 0, width: '100%', maxWidth: '100%', maxHeight: 220, minHeight: 220, height: 220, margin: '0 auto', position: 'relative', background: 'rgba(0,0,0,0.02)', borderRadius: 8, display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden' }} />
+                          <div className="graph-container" style={{ flex: '1 1 0', minWidth: 0, width: '100%', maxWidth: '100%', maxHeight: 160, minHeight: 160, height: 160, margin: '0 auto', position: 'relative', background: 'rgba(0,0,0,0.02)', borderRadius: 8, display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden' }} />
                           {/* TIME stat below graph */}
                           <div className="stat-label" style={{ fontSize: '0.8rem', color: 'var(--neutral-color)', textAlign: 'center', width: '100%', marginTop: 12 }}>TIME</div>
                           <div className="stat-value" style={{ color: '#00ff9d', fontSize: '2.5rem', fontWeight: 700, letterSpacing: '0.05em', lineHeight: 1.1, textAlign: 'center', width: '100%' }}>{stats.time.toFixed(1)}</div>
@@ -537,36 +537,37 @@ export const TypingGame: React.FC<Props> = React.memo((props: Props): JSX.Elemen
                     {/* Mobile: Graph at top, then WPM & ACC in a row, then TIME below */}
                     {isMobileScreen && (
                       <>
-                        <div className="graph-container" style={{ flex: 'none', minWidth: 0, width: '100%', maxWidth: '100%', maxHeight: 220, minHeight: 220, height: 220, margin: '0 auto 0.5rem auto', position: 'relative', background: 'rgba(0,0,0,0.02)', borderRadius: 8, display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden' }} />
+                        <div className="graph-container" style={{ flex: 'none', minWidth: 0, width: '100%', maxWidth: '100%', maxHeight: 220, minHeight: 220, height: 220, margin: '0 auto 0.35rem auto', position: 'relative', background: 'rgba(0,0,0,0.02)', borderRadius: 8, display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden' }} />
                         <div className="end-screen-stats" style={{
                             display: 'grid',
                             gridTemplateColumns: '1fr 1fr',
                             alignItems: 'center',
                             width: '100%',
                             maxWidth: 700,
-                            margin: '0.5rem auto 0.2rem auto',
-                            gap: '0.3rem',
+                            margin: '0.35rem auto 0.15rem auto',
+                            padding: '0 0.6rem',
+                            gap: '0.2rem',
                         }}>
-                            {/* WPM (left) */}
-                            <div className="end-screen-stat wpm" style={{ textAlign: 'left', alignItems: 'flex-start', justifyContent: 'center' }}>
+                            {/* WPM (left, close to edge) */}
+                            <div className="end-screen-stat wpm" style={{ textAlign: 'left', alignItems: 'flex-start', justifyContent: 'center', paddingLeft: '0.2rem' }}>
                                 <div className="stat-label" style={{ textAlign: 'left', width: '100%' }}>WPM</div>
                                 <div className="stat-value" style={{ color: '#00ff9d', fontSize: '1.5rem', fontWeight: 700, letterSpacing: '0.05em', lineHeight: 1.1, textAlign: 'left', width: '100%' }}>{Math.round(stats.wpm)}</div>
                             </div>
-                            {/* ACC (right) */}
-                            <div className="end-screen-stat acc" style={{ textAlign: 'right', alignItems: 'flex-end', justifyContent: 'center' }}>
+                            {/* ACC (right, close to edge) */}
+                            <div className="end-screen-stat acc" style={{ textAlign: 'right', alignItems: 'flex-end', justifyContent: 'center', paddingRight: '0.2rem' }}>
                                 <div className="stat-label" style={{ textAlign: 'right', width: '100%' }}>ACC</div>
                                 <div className="stat-value" style={{ color: '#00ff9d', fontSize: '1.5rem', fontWeight: 700, letterSpacing: '0.05em', lineHeight: 1.1, textAlign: 'right', width: '100%' }}>{Math.round(wasmAccuracy)}%</div>
                             </div>
                         </div>
                         {/* TIME stat below WPM/ACC */}
-                        <div className="stat-label" style={{ fontSize: '0.8rem', color: 'var(--neutral-color)', textAlign: 'center', width: '100%', marginTop: 8 }}>TIME</div>
+                        <div className="stat-label" style={{ fontSize: '0.8rem', color: 'var(--neutral-color)', textAlign: 'center', width: '100%', marginTop: 12 }}>TIME</div>
                         <div className="stat-value" style={{ color: '#00ff9d', fontSize: '1.5rem', fontWeight: 700, letterSpacing: '0.05em', lineHeight: 1.1, textAlign: 'center', width: '100%' }}>{stats.time.toFixed(1)}</div>
                       </>
                     )}
                 </div>
                 {/* Empty space for future game modes, matches EndScreen */}
                 <div className="future-modes-placeholder" />
-                <button onClick={toggleTheme} className="theme-toggle">
+                <button onClick={toggleTheme} className="theme-toggle" style={{ background: 'transparent', border: 'none', boxShadow: 'none', backdropFilter: 'none' }}>
                     {theme === Theme.Dark ? (
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                             <circle cx="12" cy="12" r="5"/>

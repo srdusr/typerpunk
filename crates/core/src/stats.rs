@@ -14,6 +14,10 @@ pub struct Stats {
     total_words: usize,
     correct_words: usize,
     errors: usize,
+    // Persistent keystroke-level tracking (CLI):
+    // counts every typed character (excluding control sequences) and how many were incorrect at time of keypress
+    keystrokes_total: usize,
+    keystrokes_incorrect: usize,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
@@ -81,6 +85,8 @@ impl Stats {
             total_words: 0,
             correct_words: 0,
             errors: 0,
+            keystrokes_total: 0,
+            keystrokes_incorrect: 0,
         }
     }
 
@@ -96,6 +102,8 @@ impl Stats {
         self.total_words = 0;
         self.correct_words = 0;
         self.errors = 0;
+        self.keystrokes_total = 0;
+        self.keystrokes_incorrect = 0;
     }
 
     pub fn start(&mut self) {
@@ -147,6 +155,15 @@ impl Stats {
         self.best_streak = self.best_streak.max(best_streak_local);
     }
 
+    // Record a single keypress for persistent accuracy tracking (CLI only).
+    // If the typed char at the time of keypress was incorrect, mark it as incorrect permanently.
+    pub fn note_keypress(&mut self, was_correct: bool) {
+        self.keystrokes_total = self.keystrokes_total.saturating_add(1);
+        if !was_correct {
+            self.keystrokes_incorrect = self.keystrokes_incorrect.saturating_add(1);
+        }
+    }
+
     pub fn finish(&mut self) {
         self.end_time = Some(Instant::now());
     }
@@ -178,11 +195,14 @@ impl Stats {
     }
 
     pub fn get_accuracy(&self) -> f64 {
+        // Prefer persistent keystroke accuracy for CLI to avoid resetting to 100% after fixes.
+        if self.keystrokes_total > 0 {
+            let correct = (self.keystrokes_total - self.keystrokes_incorrect) as f64;
+            return (correct / self.keystrokes_total as f64) * 100.0;
+        }
         if self.total_chars > 0 {
             (self.correct_chars as f64 / self.total_chars as f64) * 100.0
-        } else {
-            0.0
-        }
+        } else { 0.0 }
     }
 
     pub fn get_time_elapsed(&self) -> Duration {

@@ -12,6 +12,8 @@
     --neutral-color: #646669;
     --caret-color: #00ff9d;
     --sub-color: #646669;
+    --header-offset: 3.5rem;
+    --app-padding: 1rem;
 }
 
 [data-theme="light"] {
@@ -58,9 +60,9 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-start; /* avoid vertical centering that pushes content down */
     height: 100vh;
-    padding: 1rem;
+    padding: var(--app-padding);
     overflow: hidden;
 }
 
@@ -145,7 +147,7 @@ body {
     max-width: 800px;
     margin: 0 auto;
     padding: 1rem 2rem 0 2rem;
-    margin-top: 2.5rem;
+    margin-top: var(--header-offset); /* unified: just below header/toggle */
     display: flex;
     justify-content: center;
     align-items: flex-start;
@@ -227,37 +229,40 @@ body {
     position: fixed;
     top: 1rem;
     right: 1rem;
-    background: rgba(255,255,255,0.08);
+    background: transparent !important;
     border: none !important;
     outline: none !important;
-    box-shadow: 0 2px 12px 0 rgba(0,0,0,0.12), 0 1.5px 4px 0 rgba(0,0,0,0.10);
+    box-shadow: none !important;
     color: var(--primary-color);
-    padding: 0.7rem 1rem;
+    padding: 0;
     font-size: 1.2rem;
     cursor: pointer;
-    transition: all 0.2s cubic-bezier(.4,0,.2,1);
+    transition: color 0.2s ease;
     display: flex;
     align-items: center;
     gap: 0.5rem;
     z-index: 100;
-    border-radius: 1.5rem;
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
+    border-radius: 0;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
 }
 
 .theme-toggle:focus,
 .theme-toggle:active {
     border: none !important;
     outline: none !important;
-    box-shadow: 0 4px 16px 0 rgba(0,0,0,0.18);
-    background: rgba(255,255,255,0.16);
+    box-shadow: none !important;
+    background: transparent !important;
 }
 
 .theme-toggle:hover {
     color: var(--secondary-color);
-    background: rgba(255,255,255,0.18);
-    box-shadow: 0 6px 24px 0 rgba(0,0,0,0.18);
-    transform: scale(1.06);
+    background: transparent !important;
+    box-shadow: none !important;
+    transform: none;
 }
 
 .theme-toggle svg {
@@ -291,7 +296,7 @@ body {
 
     .text-container {
         padding: 1rem;
-        margin-top: 5rem;
+        margin-top: var(--header-offset);
     }
 
     .stats-container {
@@ -403,7 +408,7 @@ body {
     }
     .text-container {
         padding: 0.5rem 0.5rem 0 0.5rem;
-        margin-top: 1.5rem;
+        margin-top: var(--header-offset);
         min-width: 0;
     }
     .text-display {
@@ -446,8 +451,8 @@ body {
     width: 100%;
     max-width: 800px;
     margin: 0 auto;
-    padding: 2rem;
-    padding-top: 6rem;
+    padding: 0.25rem;
+    margin-top: calc(var(--header-offset) - var(--app-padding)); /* match .text-container exactly */
     min-height: 100vh;
     position: relative;
 }
@@ -683,7 +688,7 @@ body::-webkit-scrollbar, .app::-webkit-scrollbar, #root::-webkit-scrollbar {
 .end-screen-text {
     width: 100%;
     max-width: 800px;
-    margin: 0 auto 2rem auto;
+    margin: 0 auto 0.5rem auto;
     font-family: 'JetBrains Mono', monospace;
     font-size: 1.2rem;
     color: var(--text-color);
@@ -728,7 +733,7 @@ body::-webkit-scrollbar, .app::-webkit-scrollbar, #root::-webkit-scrollbar {
     flex: 1 1 0;
     min-width: 0;
     margin: 0;
-    padding: 2rem 0;
+    padding: 1rem 0;
     height: 300px;
     position: relative;
     background: rgba(0,0,0,0.02);
@@ -880,6 +885,9 @@ body::-webkit-scrollbar, .app::-webkit-scrollbar, #root::-webkit-scrollbar {
 }
 
 @media (max-width: 700px) {
+    :root {
+        --header-offset: 2.5rem;
+    }
     body, #root, .app, .end-screen {
         overflow-y: auto !important;
         overflow-x: hidden !important;
@@ -887,7 +895,8 @@ body::-webkit-scrollbar, .app::-webkit-scrollbar, #root::-webkit-scrollbar {
     .end-screen {
         min-height: 0 !important;
         height: auto !important;
-        padding-top: 1.5rem !important;
+        padding: 0.5rem 0.75rem !important;
+        padding-top: var(--header-offset) !important; /* align with game text */
         padding-bottom: 0.5rem !important;
         display: flex !important;
         flex-direction: column !important;
@@ -895,16 +904,6 @@ body::-webkit-scrollbar, .app::-webkit-scrollbar, #root::-webkit-scrollbar {
     .end-screen-buttons {
         margin-top: auto !important;
         margin-bottom: 0 !important;
-    }
-    .end-screen-main-content {
-        flex: 1 0 auto !important;
-        width: 100% !important;
-        display: flex !important;
-        flex-direction: column !important;
-    }
-    .end-screen-buttons {
-        margin-top: auto !important;
-        margin-bottom: 0 !important;
         width: 100% !important;
     }
-} 
+}
