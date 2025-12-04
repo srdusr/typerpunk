@@ -1780,10 +1780,13 @@ body {
    screen, so it carried no urgency. --warning-color is used here and on the
    device badge, nowhere else. */
 .mp-countdown {
-    font-size: 3rem;
+    font-size: 6rem;
+    line-height: 1;
+    font-weight: 700;
     color: var(--warning-color);
     text-align: center;
-    min-height: 4rem;
+    margin: 0.5rem 0 1rem;
+    font-family: 'JetBrains Mono', monospace;
 }
 
 .stat-label {
@@ -2467,4 +2470,150 @@ body::-webkit-scrollbar, .app::-webkit-scrollbar, #root::-webkit-scrollbar {
     letter-spacing: 1px;
     color: var(--primary-color);
     margin-bottom: 0.3rem;
+}
+
+
+/* A disabled control must not still look like the live primary action. The
+   lobby's "Waiting for players..." button kept the filled hover state and
+   read as the thing to press. */
+.menu-button:disabled,
+.menu-button[disabled] {
+    opacity: 0.55;
+    cursor: default;
+}
+
+.menu-button:disabled:hover,
+.menu-button[disabled]:hover {
+    background: none;
+    color: var(--sub-color);
+}
+
+/* Where everyone placed, on the end screen after a race. A multiplayer result
+   used to end on your own numbers alone, with no way to see who beat you or
+   by how much. */
+.mp-standings {
+    width: 100%;
+    max-width: 460px;
+    margin: 1.75rem auto 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+}
+
+.mp-standings-heading {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--sub-color);
+    text-align: center;
+    margin-bottom: 0.35rem;
+}
+
+.mp-standings-row {
+    display: grid;
+    grid-template-columns: 1.75rem 1fr auto auto;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.4rem 0.75rem;
+    border: 1px solid transparent;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    color: var(--sub-color);
+}
+
+/* Your own row is the one being looked for. */
+.mp-standings-row.me {
+    border-color: color-mix(in srgb, var(--primary-color) 45%, transparent);
+    color: var(--text-color);
+}
+
+.mp-standings-place {
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--primary-color);
+    text-align: center;
+}
+
+.mp-standings-name {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.mp-standings-wpm,
+.mp-standings-acc {
+    font-family: 'JetBrains Mono', monospace;
+    white-space: nowrap;
+}
+
+/* Still typing: no place yet, so the row shows how far along they are. */
+.mp-standings-row.racing {
+    opacity: 0.65;
+}
+
+.mp-standings-place {
+    color: var(--racer-color, var(--primary-color));
+}
+
+/* ---- Interactive control polish -------------------------------------
+   Focus was invisible almost everywhere: only the two text inputs and the
+   theme toggle had a :focus rule, while .corner-icon-button, .theme-toggle,
+   .restart-toggle and .zen-finish-button all set `outline: none` outright.
+   Tabbing through the app showed nothing at all.
+
+   A box-shadow ring rather than an outline, so it works regardless of those
+   existing `outline: none` declarations, and :focus-visible rather than
+   :focus so it appears for keyboard users without ringing every mouse
+   click. */
+.menu-button:focus-visible,
+.corner-icon-button:focus-visible,
+.theme-toggle:focus-visible,
+.restart-toggle:focus-visible,
+.zen-finish-button:focus-visible,
+.top-rail-link:focus-visible,
+.mode-popover-item:focus-visible,
+.lang-item:focus-visible,
+.theme-swatch:focus-visible,
+.end-screen-button:focus-visible,
+.account-input:focus-visible,
+.custom-textarea:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 2px var(--background-color), 0 0 0 4px var(--primary-color);
+    border-radius: 6px;
+}
+
+/* Placeholders were inheriting the input's own text colour at whatever
+   opacity the browser chose, which differed between engines. */
+.account-input::placeholder,
+.custom-textarea::placeholder {
+    color: var(--sub-color);
+    opacity: 1;
+}
+
+.account-input:hover:not(:focus),
+.custom-textarea:hover:not(:focus) {
+    border-color: color-mix(in srgb, var(--primary-color) 45%, var(--neutral-color));
+}
+
+/* Inputs sat at whatever width their container gave them, which left the
+   multiplayer name field and its Join row on different widths. */
+.account-input {
+    width: 100%;
+    box-sizing: border-box;
+    transition: border-color 0.15s ease;
+}
+
+/* A pressed control should acknowledge the press. Nothing in the app moved
+   on :active, so a click on a button that opens a panel elsewhere on screen
+   gave no feedback at the point of contact. */
+.menu-button:active:not(:disabled),
+.corner-icon-button:active,
+.end-screen-button:active {
+    transform: translateY(1px);
+}
+
+/* Popover rows are buttons but read as list items; they need the same hover
+   affordance the chips and menu buttons have. */
+.mode-popover-item,
+.lang-item {
+    transition: background-color 0.12s ease, color 0.12s ease;
 }

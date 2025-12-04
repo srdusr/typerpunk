@@ -8,7 +8,7 @@ import { renderTopRail } from '../topRail.js';
 import { submitTestResult } from '../auth.js';
 import { detectDeviceType } from '../deviceDetect.js';
 
-export function renderEndScreen(root, { stats, text, attribution, explanation, userInput, charTimings, keypressHistory, modeKey, onPlayAgain, onMainMenu, onShowStats, onShowPlaceholder, onShowAccount, onShowLeaderboard, onShowFriends, onShowMultiplayer, onShowStore }) {
+export function renderEndScreen(root, { stats, text, attribution, explanation, standings, onStandingsUpdate, onLeaveRace, userInput, charTimings, keypressHistory, modeKey, onPlayAgain, onMainMenu, onShowStats, onShowPlaceholder, onShowAccount, onShowLeaderboard, onShowFriends, onShowMultiplayer, onShowStore }) {
     // Monkeytype's four-way split. "Extra" is anything typed past the end of
     // the passage, "missed" is passage left untyped - neither is visible in
     // a plain correct/incorrect pair, and the two mean very different things
@@ -75,11 +75,34 @@ export function renderEndScreen(root, { stats, text, attribution, explanation, u
                     <div class="stat-label">CHARACTERS</div><div class="stat-value">${stats.correctChars}/${stats.incorrectChars}/${extraChars}/${missedChars}</div>
                 </div>
             </div>
+            ${standings && standings.length ? `
+            <div class="mp-standings">
+                <div class="mp-standings-heading">Standings</div>
+                <div class="mp-standings-rows"></div>
+            </div>` : ''}
             <div class="end-screen-buttons">
                 <button class="end-screen-button" data-action="again">Play Again</button>
             </div>
         </div>
     `;
+
+    // Rendered separately from the markup above because it keeps changing:
+    // finishing first leaves the rest of the field still typing, and their
+    // rows fill in as they come home.
+    const standingsRows = root.querySelector('.mp-standings-rows');
+    function paintStandings(list) {
+        if (!standingsRows) return;
+        standingsRows.innerHTML = list.map(r => `
+            <div class="mp-standings-row${r.me ? ' me' : ''}${r.place ? '' : ' racing'}" style="--racer-color: ${r.color || 'var(--primary-color)'}">
+                <span class="mp-standings-place">${r.place ? r.place : '&middot;'}</span>
+                <span class="mp-standings-name">${escapeHtml(r.name)}${r.me ? ' (you)' : ''}</span>
+                <span class="mp-standings-wpm">${Math.round(r.wpm)} wpm</span>
+                <span class="mp-standings-acc">${r.place ? `${Math.round(r.accuracy)}%` : `${Math.round(r.percent)}%`}</span>
+            </div>
+        `).join('');
+    }
+    if (standings && standings.length) paintStandings(standings);
+    const offStandings = onStandingsUpdate ? onStandingsUpdate(paintStandings) : null;
 
     const textDisplay = root.querySelector('.text-display');
     const inputChars = userInput ? userInput.split('') : [];
@@ -214,6 +237,10 @@ export function renderEndScreen(root, { stats, text, attribution, explanation, u
     const cleanupRail = renderCornerRail(root, { onShowStats, onShowPlaceholder, onShowAccount, onShowLeaderboard, onShowFriends, onShowMultiplayer, onShowStore });
 
     return () => {
+        // Leaving the end screen is what finally drops the race connection --
+        // it was kept open so the remaining racers could still come in.
+        offStandings?.();
+        onLeaveRace?.();
         cleanupTheme();
         window.removeEventListener('resize', redraw);
         canvas.removeEventListener('mousemove', handleMove);

@@ -40,11 +40,16 @@ const BOT_SLOW_WPM: (f32, f32) = (34.0, 48.0);
 const BOT_FAST_WPM: (f32, f32) = (72.0, 88.0);
 // Nobody types perfectly. A bot's accuracy sets both what it reports at the
 // finish and how often it stalls mid-race to "correct" itself.
+// No two bots in a room may land within this of each other.
+const BOT_MIN_SEPARATION_WPM: f32 = 9.0;
 const BOT_MIN_ACCURACY: f32 = 88.0;
 const BOT_MAX_ACCURACY: f32 = 99.0;
 // How long a correction costs, in ticks.
 const BOT_CORRECTION_TICKS: u32 = 2;
-const MAX_BOTS_PER_ROOM: usize = 2;
+// Enough for a race that feels like a field rather than a duel. Bots are
+// still capped below QUICK_MATCH_CAPACITY so a real player arriving always
+// has a slot.
+const MAX_BOTS_PER_ROOM: usize = 4;
 const BOT_NAMES: &[&str] = &[
     "Ghostwire", "NullPointer", "Kanji", "Sable", "Vex", "Orbit", "Static",
     "Halcyon", "Nyx", "Drift", "Ember", "Kilo", "Rune", "Zephyr", "Onyx",
@@ -454,7 +459,9 @@ async fn maybe_add_bot(room_arc: Arc<Mutex<Room>>, state: Arc<AppState>) {
         if free == 0 {
             return;
         }
-        let wanted = rand::thread_rng().gen_range(1..=free);
+        // Biased towards a fuller room: one opponent is a duel, and the point
+        // of filling an empty lobby is that it feels populated.
+        let wanted = rand::thread_rng().gen_range(free.min(2)..=free);
 
         for _ in 0..wanted {
             let taken: Vec<String> = room.players.values().map(|p| p.name.clone()).collect();
@@ -467,25 +474,24 @@ async fn maybe_add_bot(room_arc: Arc<Mutex<Room>>, state: Arc<AppState>) {
             }
             let name = available[rand::thread_rng().gen_range(0..available.len())];
 
-            // Take whichever tier is not already represented, so the room's
-            // bots never sit at similar speeds. With none present, pick at
-            // random.
-            let has_fast = room
+            // Spread across the whole slow-to-fast span, keeping a clear gap
+            // from every bot already in the room. Two tiers were enough when
+            // there were at most two bots; with four, picking a tier would put
+            // pairs on top of each other.
+            let existing: Vec<f32> = room
                 .players
                 .values()
-                .any(|p| p.is_bot && p.target_wpm >= BOT_FAST_WPM.0);
-            let has_slow = room
-                .players
-                .values()
-                .any(|p| p.is_bot && p.target_wpm <= BOT_SLOW_WPM.1);
-            let fast = if has_fast {
-                false
-            } else if has_slow {
-                true
-            } else {
-                rand::thread_rng().gen_bool(0.5)
-            };
-            let (lo, hi) = if fast { BOT_FAST_WPM } else { BOT_SLOW_WPM };
+                .filter(|p| p.is_bot)
+                .map(|p| p.target_wpm)
+                .collect();
+            let mut target = rand::thread_rng().gen_range(BOT_SLOW_WPM.0..BOT_FAST_WPM.1);
+            for _ in 0..12 {
+                if existing.iter().all(|w| (w - target).abs() >= BOT_MIN_SEPARATION_WPM) {
+                    break;
+                }
+                target = rand::thread_rng().gen_range(BOT_SLOW_WPM.0..BOT_FAST_WPM.1);
+            }
+            let lo = target;
 
             // The receiver is dropped immediately: a bot has no socket, and
             // every send to it fails silently, which is what broadcast expects.
@@ -498,8 +504,16 @@ async fn maybe_add_bot(room_arc: Arc<Mutex<Room>>, state: Arc<AppState>) {
                     ready: true,
                     sender: tx,
                     is_bot: true,
-                    target_wpm: rand::thread_rng().gen_range(lo..hi),
-                    target_accuracy: rand::thread_rng().gen_range(BOT_MIN_ACCURACY..BOT_MAX_ACCURACY),
+                    target_wpm: lo,
+                    target_accuracy: {
+                        // Faster bots are also the more accurate ones, which
+                        // is how real typists distribute - a random pairing
+                        // produced 80wpm at 88% and 35wpm at 99%.
+                        let span = BOT_FAST_WPM.1 - BOT_SLOW_WPM.0;
+                        let t = ((lo - BOT_SLOW_WPM.0) / span).clamp(0.0, 1.0);
+                        let base = BOT_MIN_ACCURACY + t * (BOT_MAX_ACCURACY - BOT_MIN_ACCURACY);
+                        (base + rand::thread_rng().gen_range(-2.0..2.0)).clamp(BOT_MIN_ACCURACY, BOT_MAX_ACCURACY)
+                    },
                 },
             );
         }

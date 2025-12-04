@@ -33,6 +33,13 @@ function racerColors(players, myId) {
 export function renderMultiplayerScreen(root, { onBack, onFinish, onShowStats, onShowPlaceholder, onShowAccount, onShowLeaderboard, onShowFriends, onShowStore }) {
     let connection = null;
     let cleanupInner = null;
+    // Set when the end screen takes over the live race feed. Both this
+    // screen's teardown paths check it: app.js tears the race screen down
+    // before rendering the end screen, and the outer cleanup closes the
+    // socket - which killed the feed the standings are built from, including
+    // your own PlayerFinished, which the server sends back a moment after you
+    // finish.
+    let handedOff = false;
     let players = [];
     let myId = null;
     let game = null;
@@ -133,12 +140,14 @@ export function renderMultiplayerScreen(root, { onBack, onFinish, onShowStats, o
         root.innerHTML = `
             <div class="stats-screen">
                 <div class="logo" data-action="menu">TyperPunk</div>
-                <h2>Room ${escapeHtml(roomCode)}</h2>
-                <div class="settings-hint">Share this code with whoever you're racing.</div>
+                <h2>${auto ? 'Finding a race' : `Room ${escapeHtml(roomCode)}`}</h2>
+                <div class="settings-hint">${auto
+                    ? 'Racing whoever else is looking right now.'
+                    : `Share the code <strong>${escapeHtml(roomCode)}</strong> with whoever you're racing.`}</div>
+                <div class="mp-countdown" hidden></div>
                 <div class="leaderboard-list mp-player-list"></div>
                 <button class="menu-button" data-action="ready">Ready</button>
-                <div class="mp-countdown"></div>
-                <button class="menu-button ghost" data-action="leave">Leave Room</button>
+                <button class="menu-button small ghost" data-action="leave">Leave Room</button>
             </div>
         `;
         root.querySelector('[data-action="menu"]').addEventListener('click', () => { leaveRoom(); onBack(); });
@@ -169,11 +178,18 @@ export function renderMultiplayerScreen(root, { onBack, onFinish, onShowStats, o
                 connection.ready();
                 readyBtn.textContent = 'Waiting for players...';
                 readyBtn.disabled = true;
+                readyBtn.classList.add('ghost');
             }
         });
         const offPlayerList = connection.on('playerList', list => { players = list; paintPlayers(); });
+        const countdownEl = root.querySelector('.mp-countdown');
         const offCountdown = connection.on('countdown', s => {
-            root.querySelector('.mp-countdown').textContent = s;
+            // Takes over the lobby while it runs: it is the only thing that
+            // matters in those three seconds, and it used to be a small number
+            // tucked underneath a large disabled button.
+            countdownEl.hidden = false;
+            countdownEl.textContent = s;
+            readyBtn.hidden = true;
         });
         const offStart = connection.on('start', text => startRace(text));
         // The server closes the connection right after an Error (e.g. a
@@ -189,6 +205,7 @@ export function renderMultiplayerScreen(root, { onBack, onFinish, onShowStats, o
             connection.ready();
             readyBtn.textContent = 'Waiting for players...';
             readyBtn.disabled = true;
+            readyBtn.classList.add('ghost');
         });
         root.querySelector('[data-action="leave"]').addEventListener('click', () => { leaveRoom(); renderLanding(); });
 
@@ -235,21 +252,70 @@ export function renderMultiplayerScreen(root, { onBack, onFinish, onShowStats, o
         const offProgress = connection.on('playerProgress', (id, percent, wpm) => {
             progressById[id] = { percent, wpm };
             paintOpponents();
+            emitStandings();
         });
-        // Reserved for a future shared-standings view - for now the local
-        // player just falls through to the normal end screen on their own
-        // finish, same as any other mode.
-        const offFinished = connection.on('playerFinished', () => {});
+        // The whole field, so the end screen can show where everyone placed.
+        // Finishing first means the others are still typing, so this keeps
+        // filling in after your own race is over rather than freezing on
+        // whoever happened to be done at that instant.
+        const results = new Map();
+        const standingsListeners = new Set();
+        function buildStandings() {
+            const colors = racerColors(players, myId);
+            return players.map(p => {
+                const done = results.get(p.id);
+                return {
+                    id: p.id,
+                    name: p.name,
+                    me: p.id === myId,
+                    color: colors[p.id],
+                    place: done ? done.place : null,
+                    wpm: done ? done.wpm : (progressById[p.id]?.wpm || 0),
+                    accuracy: done ? done.accuracy : null,
+                    percent: done ? 100 : (progressById[p.id]?.percent || 0),
+                };
+            }).sort((a, b) => {
+                // Finishers first in placing order, then whoever is furthest along.
+                if (a.place && b.place) return a.place - b.place;
+                if (a.place) return -1;
+                if (b.place) return 1;
+                return b.percent - a.percent;
+            });
+        }
+        function emitStandings() {
+            const snapshot = buildStandings();
+            for (const fn of standingsListeners) fn(snapshot);
+        }
+        const offFinished = connection.on('playerFinished', (id, wpm, accuracy, time, place) => {
+            results.set(id, { wpm, accuracy, time, place });
+            paintOpponents();
+            emitStandings();
+        });
 
         const cleanupTyping = renderTypingGame(root, {
             game, text, modeKey: undefined,
             multiplayer: { connection },
             onFinish: result => {
-                offProgress(); offFinished();
                 freeGame(game);
                 game = null;
-                leaveRoom();
-                onFinish(result);
+                // The end screen takes ownership of these subscriptions, so
+                // this screen's own teardown must stop dropping them: app.js
+                // tears the race screen down before rendering the end screen,
+                // which was unsubscribing the very feed the standings need --
+                // including your own PlayerFinished, which arrives from the
+                // server a moment after this callback runs.
+                handedOff = true;
+                // The connection stays open: the rest of the field is still
+                // typing, and the end screen keeps showing them come in.
+                onFinish({
+                    ...result,
+                    standings: buildStandings(),
+                    onStandingsUpdate: fn => {
+                        standingsListeners.add(fn);
+                        return () => standingsListeners.delete(fn);
+                    },
+                    onLeaveRace: () => { offProgress(); offFinished(); leaveRoom(); },
+                });
             },
             onMainMenu: () => { leaveRoom(); onBack(); },
             onRestart: null,
@@ -258,7 +324,7 @@ export function renderMultiplayerScreen(root, { onBack, onFinish, onShowStats, o
         root.appendChild(opponents);
 
         cleanupInner = () => {
-            offProgress(); offFinished();
+            if (!handedOff) { offProgress(); offFinished(); }
             cleanupTyping();
             opponents.remove();
         };
@@ -267,7 +333,7 @@ export function renderMultiplayerScreen(root, { onBack, onFinish, onShowStats, o
     renderLanding();
     return () => {
         teardownInner();
-        leaveRoom();
+        if (!handedOff) leaveRoom();
         freeGame(game);
     };
 }
