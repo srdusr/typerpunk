@@ -15,7 +15,7 @@ export function renderPlaceholderScreen(root, { title, description, onBack, onSh
             <button class="screen-close" data-action="menu" aria-label="Close" data-tooltip="Close (Esc)">${CLOSE_ICON}</button>
                 <div class="logo" data-action="menu">TyperPunk</div>
             <h2>${escapeHtml(title)}</h2>
-            <div class="stats-placeholder">${escapeHtml(description)}</div>
+            <div class="stats-placeholder prose">${escapeHtml(description)}</div>
         </div>
     `;
 

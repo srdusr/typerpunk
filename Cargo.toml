@@ -13,7 +13,7 @@ version = "0.1.0"
 edition = "2021"
 authors = ["Your Name <your.email@example.com>"]
 license = "MIT"
-description = "A modern typing test application with TUI and web interfaces"
+description = "Competitive typing - solo practice, live races and code drills, in the terminal and the browser"
 
 [workspace.dependencies]
 # Core dependencies

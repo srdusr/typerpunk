@@ -223,6 +223,10 @@ pub struct LeaderboardEntry {
     pub date: String,
     pub device_type: String,
     pub flair: Option<String>,
+    /// Surfaced so the client can label the row. A board that mixes synthetic
+    /// scores into human ones without saying which is which is lying to the
+    /// people reading it.
+    pub is_bot: bool,
 }
 
 async fn leaderboard(State(state): State<Arc<AppState>>, Query(q): Query<LeaderboardQuery>) -> Result<impl IntoResponse, AppError> {
@@ -239,10 +243,11 @@ async fn leaderboard(State(state): State<Arc<AppState>>, Query(q): Query<Leaderb
     // Same reasoning as public_profile: join through to the flair's value,
     // not the raw cosmetic id.
     let rows = sqlx::query(
-        "SELECT username, wpm, accuracy, created_at, device_type, flair_value FROM (
+        "SELECT username, wpm, accuracy, created_at, device_type, flair_value, is_bot FROM (
             SELECT users.username as username, test_results.wpm as wpm,
                    test_results.accuracy as accuracy, test_results.created_at as created_at,
                    test_results.device_type as device_type, cosmetics.value as flair_value,
+                   users.is_bot as is_bot,
                    ROW_NUMBER() OVER (PARTITION BY test_results.user_id ORDER BY test_results.wpm DESC) as rn
             FROM test_results
             JOIN users ON users.id = test_results.user_id
@@ -268,6 +273,7 @@ async fn leaderboard(State(state): State<Arc<AppState>>, Query(q): Query<Leaderb
             date: row.try_get("created_at").unwrap_or_default(),
             device_type: row.try_get("device_type").unwrap_or_default(),
             flair: row.try_get::<Option<String>, _>("flair_value").unwrap_or(None),
+            is_bot: row.try_get::<i64, _>("is_bot").unwrap_or(0) != 0,
         })
         .collect();
 

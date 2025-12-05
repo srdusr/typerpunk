@@ -135,6 +135,7 @@ export function startApp(root, localTexts) {
             onShowMultiplayer: showMultiplayer,
             onShowStore: showStore,
             onShowLyrics: showLyrics,
+            onShowPrivacy: showPrivacy,
             onSimulateTest: simulateTest,
         });
     }
@@ -169,6 +170,21 @@ export function startApp(root, localTexts) {
         teardown();
         setScreen('stats');
         cleanupScreen = renderStatsScreen(root, { onBack: showMainMenu, onShowPlaceholder: showPlaceholder, onShowAccount: showAccount, onShowLeaderboard: showLeaderboard, onShowFriends: showFriends, onShowMultiplayer: showMultiplayer, onShowStore: showStore });
+    }
+
+    // Written from what the code actually does, not from a template: this app
+    // has no analytics, no third-party scripts and no npm runtime dependencies,
+    // so there is genuinely very little to disclose.
+    function showPrivacy() {
+        showPlaceholder('Privacy', [
+            'On this device, in your browser: your theme, typing settings, personal bests, lifetime stats and per-key accuracy. Clearing site data removes all of it. Nothing here is sent anywhere unless you sign in.',
+            '',
+            'On the server, only if you create an account: your username, a hash of your password (never the password), your completed results, your friendships, and anything you equip from the store. Sessions expire. If you connect Spotify, its access token is stored so Lyrics mode can read what is playing.',
+            '',
+            'Multiplayer sends the name you race under, your live progress and your final result to the other people in your room, for as long as the race lasts.',
+            '',
+            'There are no analytics, no advertising and no third-party scripts - the site loads no code it does not ship itself. Nothing is sold or shared.',
+        ].join('\n'));
     }
 
     function showPlaceholder(title, description) {
@@ -315,6 +331,7 @@ export function startApp(root, localTexts) {
             onShowFriends: showFriends,
             onShowMultiplayer: showMultiplayer,
             onShowStore: showStore,
+            onShowPrivacy: showPrivacy,
         });
     }
 

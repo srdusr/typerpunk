@@ -1,6 +1,6 @@
 # TyperPunk Web
 
-A modern web-based typing test application, in plain HTML, CSS, and JavaScript, backed by the shared Rust/WASM game core. No npm packages, no bundler, no build step. This avoids pulling in the npm dependency tree entirely, which removes the main supply-chain attack surface a typical React/Vite frontend carries.
+The TyperPunk web client, in plain HTML, CSS, and JavaScript, backed by the shared Rust/WASM game core. No npm packages, no bundler, no build step. This avoids pulling in the npm dependency tree entirely, which removes the main supply-chain attack surface a typical React/Vite frontend carries.
 
 Features:
 

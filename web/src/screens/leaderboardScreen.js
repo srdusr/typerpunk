@@ -34,7 +34,8 @@ export function renderLeaderboardScreen(root, { onBack, onShowPublicProfile, onS
                 ${state.entries.map((e, i) => `
                     <div class="leaderboard-row">
                         <div class="leaderboard-rank">#${i + 1}</div>
-                        <button class="leaderboard-name" data-username="${escapeHtml(e.username)}">${escapeHtml(e.username)}${e.flair && FLAIR_ICONS[e.flair] ? `<span class="leaderboard-flair" data-tooltip="Equipped flair">${FLAIR_ICONS[e.flair]}</span>` : ''}</button>
+                        <button class="leaderboard-name"${e.is_bot ? ' disabled' : ` data-username="${escapeHtml(e.username)}"`}>${escapeHtml(e.username)}${e.flair && FLAIR_ICONS[e.flair] ? `<span class="leaderboard-flair" data-tooltip="Equipped flair">${FLAIR_ICONS[e.flair]}</span>` : ''}</button>
+                        ${e.is_bot ? `<span class="leaderboard-bot-badge" data-tooltip="A practice opponent, not a human result">bot</span>` : ''}
                         ${e.device_type === 'mobile' ? `<span class="leaderboard-device-badge" data-tooltip="Typed on a touchscreen device">mobile</span>` : ''}
                         <div class="leaderboard-wpm">${Math.round(e.wpm)} wpm</div>
                         <div class="leaderboard-acc">${Math.round(e.accuracy)}%</div>
@@ -51,9 +52,9 @@ export function renderLeaderboardScreen(root, { onBack, onShowPublicProfile, onS
                 <div class="logo" data-action="menu">TyperPunk</div>
             <h2>Leaderboard</h2>
             <div class="leaderboard-modes">
-                ${MODES.map(m => `<button class="menu-button small${m.key === selectedMode ? '' : ' ghost'}" data-mode="${m.key}">${escapeHtml(m.label)}</button>`).join('')}
+                ${MODES.map(m => `<button class="menu-button small quiet${m.key === selectedMode ? ' active' : ''}" data-mode="${m.key}">${escapeHtml(m.label)}</button>`).join('')}
             </div>
-            <button class="menu-button small ghost" data-action="toggle-device-filter" data-tooltip="Mobile results still count for personal stats - this only filters what's shown here.">Devices: All</button>
+            <button class="menu-button small quiet" data-action="toggle-device-filter" data-tooltip="Mobile results still count for personal stats - this only filters what's shown here.">Devices: All</button>
             <div class="leaderboard-results"></div>
         </div>
     `;
@@ -97,6 +98,8 @@ export function renderLeaderboardScreen(root, { onBack, onShowPublicProfile, onS
     deviceFilterBtn.addEventListener('click', () => {
         desktopOnly = !desktopOnly;
         deviceFilterBtn.textContent = `Devices: ${desktopOnly ? 'Desktop only' : 'All'}`;
+        // A filter that is doing something should look like it is.
+        deviceFilterBtn.classList.toggle('active', desktopOnly);
         deviceFilterBtn.classList.toggle('ghost', !desktopOnly);
         load();
     });

@@ -28,10 +28,10 @@ export function renderCornerRail(root, { onShowStats, onShowPlaceholder, onShowL
             <div class="rail-settings-panel" hidden>
                 <div class="settings-hint">Typing</div>
                 <div class="settings-row-group">
-                    <button class="menu-button small" data-action="rail-toggle-live-stats" data-tooltip="Show WPM/ACC while you type, or only reveal them on the end screen.">Live Stats: ${settings.hideLiveStats ? 'Off' : 'On'}</button>
-                    <button class="menu-button small" data-action="rail-toggle-caret-blink" data-tooltip="Make the current-character caret blink, or keep it solid.">Blink Caret: ${settings.caretBlink ? 'On' : 'Off'}</button>
-                    <button class="menu-button small" data-action="rail-toggle-blind-mode" data-tooltip="Hide correct/incorrect coloring while typing - only revealed on the end screen.">Blind Mode: ${settings.blindMode ? 'On' : 'Off'}</button>
-                    <button class="menu-button small" data-action="rail-cycle-sound-theme" data-tooltip="Play a sound on each keystroke. Click to cycle.">Sound: ${soundThemeLabel(settings.soundTheme)}</button>
+                    <button class="menu-button small quiet" data-action="rail-toggle-live-stats" data-tooltip="Show WPM/ACC while you type, or only reveal them on the end screen.">Live Stats: ${settings.hideLiveStats ? 'Off' : 'On'}</button>
+                    <button class="menu-button small quiet" data-action="rail-toggle-caret-blink" data-tooltip="Make the current-character caret blink, or keep it solid.">Blink Caret: ${settings.caretBlink ? 'On' : 'Off'}</button>
+                    <button class="menu-button small quiet" data-action="rail-toggle-blind-mode" data-tooltip="Hide correct/incorrect coloring while typing - only revealed on the end screen.">Blind Mode: ${settings.blindMode ? 'On' : 'Off'}</button>
+                    <button class="menu-button small quiet" data-action="rail-cycle-sound-theme" data-tooltip="Play a sound on each keystroke. Click to cycle.">Sound: ${soundThemeLabel(settings.soundTheme)}</button>
                 </div>
             </div>
         </div>

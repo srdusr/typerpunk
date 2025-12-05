@@ -37,12 +37,17 @@ export function recordKeystroke(char, isCorrect, latencyMs) {
 // rate weighted heaviest, since a mistake matters more than being merely
 // slow) and returns the worst `limit`. Empty until enough real typing has
 // happened - callers should fall back to plain random text until then.
-export function getWeakChars(limit = 12) {
+// The scoring behind both the practice generator and the stats screen. Split
+// out because the screen needs the numbers, not just which characters won --
+// they were being computed and thrown away.
+function scoreChars() {
     const data = load();
     const scored = Object.entries(data)
         .filter(([, e]) => e.attempts >= MIN_SAMPLES)
         .map(([char, e]) => ({
             char,
+            attempts: e.attempts,
+            errors: e.errors,
             errorRate: e.errors / e.attempts,
             avgLatency: e.totalLatency / e.attempts,
         }));
@@ -51,7 +56,23 @@ export function getWeakChars(limit = 12) {
     const maxLatency = Math.max(...scored.map(s => s.avgLatency), 1);
     scored.forEach(s => { s.score = s.errorRate * 0.7 + (s.avgLatency / maxLatency) * 0.3; });
     scored.sort((a, b) => b.score - a.score);
-    return scored.slice(0, limit).map(s => s.char);
+    return scored;
+}
+
+export function getWeakChars(limit = 12) {
+    return scoreChars().slice(0, limit).map(s => s.char);
+}
+
+/// The same ranking with the figures kept, for showing the player *why* a key
+/// is considered weak rather than only that it is.
+export function getWeakCharDetails(limit = 8) {
+    return scoreChars().slice(0, limit);
+}
+
+/// The steadiest keys, for the other end of the same list.
+export function getStrongCharDetails(limit = 4) {
+    const scored = scoreChars();
+    return scored.slice(-limit).reverse();
 }
 
 export function hasEnoughData() {

@@ -6,6 +6,7 @@ import { getProfileStats } from '../profileStats.js';
 import { attachTooltips } from '../tooltip.js';
 import { wordListTiers } from '../wordGenerator.js';
 import { renderTopRail } from '../topRail.js';
+import { renderSiteFooter } from '../siteFooter.js';
 
 function label(m) {
     if (m === 'random') return 'Random';
@@ -67,7 +68,7 @@ function wordListTierLabel(tier) {
 }
 
 export function renderMainMenu(root, props) {
-    const { onStartGame, onPickAndStart, categories, selectedCategory, onSelectCategory, customText, onLoadCustom, onClearCustom, onStartCustom, onStartPassive, onShowStats, onShowPlaceholder, onShowAccount, onShowLeaderboard, onShowFriends, onShowMultiplayer, onShowLyrics, onShowStore, onSimulateTest } = props;
+    const { onStartGame, onPickAndStart, onShowPrivacy, categories, selectedCategory, onSelectCategory, customText, onLoadCustom, onClearCustom, onStartCustom, onStartPassive, onShowStats, onShowPlaceholder, onShowAccount, onShowLeaderboard, onShowFriends, onShowMultiplayer, onShowLyrics, onShowStore, onSimulateTest } = props;
     const modes = ['random', 'words', 'time', 'zen', 'practice', ...categories, 'custom'];
     // The picker used to be one flat list of 18 entries mixing two unrelated
     // things: how a test is generated (Random/Words/Timed/Zen/Practice/Custom)
@@ -140,7 +141,7 @@ export function renderMainMenu(root, props) {
                     <input type="checkbox" class="settings-skip-menu"${settings.skipMenu ? ' checked' : ''} />
                     Start directly into a game, skip this menu
                 </label>
-                <button class="menu-button small" data-action="toggle-favorite">
+                <button class="menu-button small quiet" data-action="toggle-favorite">
                     ${isFavorite ? `★ Favorite (${escapeHtml(label(currentMode))})` : `☆ Set "${escapeHtml(label(currentMode))}" as favorite`}
                 </button>
                 <div class="settings-columns">
@@ -148,20 +149,20 @@ export function renderMainMenu(root, props) {
                 <div class="settings-column">
                 <div class="settings-hint">Rules</div>
                 <div class="settings-row-group">
-                    ${isWords ? `<button class="menu-button small" data-action="cycle-word-count" data-tooltip="How many words the Words mode generates. Click to cycle.">Words: ${wordCount}</button>` : ''}
-                    ${isTime ? `<button class="menu-button small" data-action="cycle-time-duration" data-tooltip="How long the clock runs in Timed mode. Click to cycle.">Time: ${timeDuration}s</button>` : ''}
-                    <button class="menu-button small" data-action="toggle-punctuation" data-tooltip="Include punctuation (commas, periods) in generated text.">Punctuation: ${settings.wordsPunctuation ? 'On' : 'Off'}</button>
-                    <button class="menu-button small" data-action="toggle-numbers" data-tooltip="Include numbers in generated text.">Numbers: ${settings.wordsNumbers ? 'On' : 'Off'}</button>
-                    <button class="menu-button small" data-action="cycle-word-list-tier" data-tooltip="Common (short, everyday words), Extended (adds longer/less frequent words), or Hard (technical and irregularly-spelled words). Click to cycle.">Word List: ${wordListTierLabel(settings.wordListTier)}</button>
+                    ${isWords ? `<button class="menu-button small quiet" data-action="cycle-word-count" data-tooltip="How many words the Words mode generates. Click to cycle.">Words: ${wordCount}</button>` : ''}
+                    ${isTime ? `<button class="menu-button small quiet" data-action="cycle-time-duration" data-tooltip="How long the clock runs in Timed mode. Click to cycle.">Time: ${timeDuration}s</button>` : ''}
+                    <button class="menu-button small quiet" data-action="toggle-punctuation" data-tooltip="Include punctuation (commas, periods) in generated text.">Punctuation: ${settings.wordsPunctuation ? 'On' : 'Off'}</button>
+                    <button class="menu-button small quiet" data-action="toggle-numbers" data-tooltip="Include numbers in generated text.">Numbers: ${settings.wordsNumbers ? 'On' : 'Off'}</button>
+                    <button class="menu-button small quiet" data-action="cycle-word-list-tier" data-tooltip="Common (short, everyday words), Extended (adds longer/less frequent words), or Hard (technical and irregularly-spelled words). Click to cycle.">Word List: ${wordListTierLabel(settings.wordListTier)}</button>
                 </div>
                 </div>` : ''}
                 <div class="settings-column">
                 <div class="settings-hint">Typing</div>
                 <div class="settings-row-group">
-                    <button class="menu-button small" data-action="toggle-live-stats" data-tooltip="Show WPM/ACC while you type, or only reveal them on the end screen.">Live Stats: ${settings.hideLiveStats ? 'Off' : 'On'}</button>
-                    <button class="menu-button small" data-action="toggle-caret-blink" data-tooltip="Make the current-character caret blink, or keep it solid.">Blink Caret: ${settings.caretBlink ? 'On' : 'Off'}</button>
-                    <button class="menu-button small" data-action="toggle-blind-mode" data-tooltip="Hide correct/incorrect coloring while typing - only revealed on the end screen.">Blind Mode: ${settings.blindMode ? 'On' : 'Off'}</button>
-                    <button class="menu-button small" data-action="cycle-sound-theme" data-tooltip="Play a sound on each keystroke. Click to cycle.">Sound: ${escapeHtml(soundThemeLabel(settings.soundTheme))}</button>
+                    <button class="menu-button small quiet" data-action="toggle-live-stats" data-tooltip="Show WPM/ACC while you type, or only reveal them on the end screen.">Live Stats: ${settings.hideLiveStats ? 'Off' : 'On'}</button>
+                    <button class="menu-button small quiet" data-action="toggle-caret-blink" data-tooltip="Make the current-character caret blink, or keep it solid.">Blink Caret: ${settings.caretBlink ? 'On' : 'Off'}</button>
+                    <button class="menu-button small quiet" data-action="toggle-blind-mode" data-tooltip="Hide correct/incorrect coloring while typing - only revealed on the end screen.">Blind Mode: ${settings.blindMode ? 'On' : 'Off'}</button>
+                    <button class="menu-button small quiet" data-action="cycle-sound-theme" data-tooltip="Play a sound on each keystroke. Click to cycle.">Sound: ${escapeHtml(soundThemeLabel(settings.soundTheme))}</button>
                 </div>
                 </div>
                 </div>
@@ -211,6 +212,7 @@ export function renderMainMenu(root, props) {
 
     attachTooltips(root);
     const cleanupTheme = renderTopRail(root, { onShowAccount, onShowFriends });
+    const cleanupFooter = renderSiteFooter(root, { onShowPrivacy });
 
     // Friends-online lives in the top rail beside the Friends control.
 
@@ -514,6 +516,7 @@ export function renderMainMenu(root, props) {
 
     return () => {
         cleanupTheme();
+        cleanupFooter();
         document.removeEventListener('keydown', handleEnterToStart);
         outsideClickHandlers.forEach(h => document.removeEventListener('click', h));
     };

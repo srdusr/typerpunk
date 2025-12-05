@@ -1,4 +1,5 @@
 mod anticheat;
+mod bot_results;
 mod auth;
 mod cosmetics;
 mod error;
@@ -109,6 +110,7 @@ async fn main() -> anyhow::Result<()> {
 
     let race_texts = load_race_texts();
     let app_state = Arc::new(AppState::new(db, cookie_secure, race_texts, spotify_config, frontend_origin.clone()));
+    bot_results::spawn(app_state.clone());
 
     let app = build_app(app_state).layer(cors).layer(TraceLayer::new_for_http());
 

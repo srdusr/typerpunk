@@ -2,6 +2,7 @@ import { buildGraphPoints, buildErrorPoints, drawChart, hitTestError, hitTestLin
 import { escapeHtml } from '../util.js';
 import { attachTooltips } from '../tooltip.js';
 import { onThemeChange } from '../theme.js';
+import { renderSiteFooter } from '../siteFooter.js';
 import { recordResult } from '../pb.js';
 import { recordTest } from '../profileStats.js';
 import { renderCornerRail } from '../cornerRail.js';
@@ -9,7 +10,7 @@ import { renderTopRail } from '../topRail.js';
 import { submitTestResult } from '../auth.js';
 import { detectDeviceType } from '../deviceDetect.js';
 
-export function renderEndScreen(root, { stats, text, attribution, explanation, standings, onStandingsUpdate, onLeaveRace, userInput, charTimings, keypressHistory, modeKey, onPlayAgain, onMainMenu, onShowStats, onShowPlaceholder, onShowAccount, onShowLeaderboard, onShowFriends, onShowMultiplayer, onShowStore }) {
+export function renderEndScreen(root, { stats, text, attribution, explanation, standings, onShowPrivacy, onStandingsUpdate, onLeaveRace, userInput, charTimings, keypressHistory, modeKey, onPlayAgain, onMainMenu, onShowStats, onShowPlaceholder, onShowAccount, onShowLeaderboard, onShowFriends, onShowMultiplayer, onShowStore }) {
     // Monkeytype's four-way split. "Extra" is anything typed past the end of
     // the passage, "missed" is passage left untyped - neither is visible in
     // a plain correct/incorrect pair, and the two mean very different things
@@ -82,7 +83,7 @@ export function renderEndScreen(root, { stats, text, attribution, explanation, s
                 <div class="mp-standings-rows"></div>
             </div>` : ''}
             <div class="end-screen-buttons">
-                <button class="end-screen-button" data-action="again">Play Again</button>
+                <button class="end-screen-button primary" data-action="again">Play Again</button>
             </div>
         </div>
     `;
@@ -93,12 +94,20 @@ export function renderEndScreen(root, { stats, text, attribution, explanation, s
     const standingsRows = root.querySelector('.mp-standings-rows');
     function paintStandings(list) {
         if (!standingsRows) return;
-        standingsRows.innerHTML = list.map(r => `
+        // Place, who, speed, accuracy, time - the columns TypeRacer and
+        // 10FastFingers both show after a race. Anyone still typing has no
+        // place or time yet, so their row carries how far along they are.
+        standingsRows.innerHTML = `
+            <div class="mp-standings-row mp-standings-head">
+                <span></span><span>Racer</span><span>WPM</span><span>Acc</span><span>Time</span>
+            </div>
+        ` + list.map(r => `
             <div class="mp-standings-row${r.me ? ' me' : ''}${r.place ? '' : ' racing'}" style="--racer-color: ${r.color || 'var(--primary-color)'}">
                 <span class="mp-standings-place">${r.place ? r.place : '&middot;'}</span>
                 <span class="mp-standings-name">${escapeHtml(r.name)}${r.me ? ' (you)' : ''}</span>
-                <span class="mp-standings-wpm">${Math.round(r.wpm)} wpm</span>
+                <span class="mp-standings-wpm">${Math.round(r.wpm)}</span>
                 <span class="mp-standings-acc">${r.place ? `${Math.round(r.accuracy)}%` : `${Math.round(r.percent)}%`}</span>
+                <span class="mp-standings-time">${r.place && r.time != null ? `${r.time.toFixed(1)}s` : 'racing'}</span>
             </div>
         `).join('');
     }
@@ -129,6 +138,8 @@ export function renderEndScreen(root, { stats, text, attribution, explanation, s
 
     attachTooltips(root.querySelector('.end-screen-stat-row'));
     const cleanupTheme = renderTopRail(root, { onShowAccount, onShowFriends });
+    // Share here carries the result just achieved, not just the site.
+    const cleanupFooter = renderSiteFooter(root, { result: stats, onShowPrivacy });
     root.querySelectorAll('[data-action="menu"]').forEach(el => el.addEventListener('click', onMainMenu));
     root.querySelector('[data-action="again"]').addEventListener('click', onPlayAgain);
 
@@ -247,6 +258,7 @@ export function renderEndScreen(root, { stats, text, attribution, explanation, s
         offStandings?.();
         onLeaveRace?.();
         cleanupTheme();
+        cleanupFooter();
         window.removeEventListener('resize', redraw);
         offTheme();
         canvas.removeEventListener('mousemove', handleMove);

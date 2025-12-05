@@ -63,7 +63,7 @@ export function renderMultiplayerScreen(root, { onBack, onFinish, onShowStats, o
                 <div class="account-panel">
                     <input class="account-input" type="text" id="mp-name" placeholder="Your name" value="${escapeHtml(getUser()?.username || '')}">
                     <button class="menu-button small ghost" data-action="toggle-device-filter" data-tooltip="Who you get matched with, and the setting any room you open uses. Joining by code always uses that room's setting.">Match: Everyone</button>
-                    <button class="menu-button" data-action="quick" data-tooltip="Drops you straight into a race with whoever else is looking. No code to share.">Find a Race</button>
+                    <button class="menu-button primary" data-action="quick" data-tooltip="Drops you straight into a race with whoever else is looking. No code to share.">Find a Race</button>
 
                     <div class="mp-divider"><span>or race friends</span></div>
 
@@ -283,6 +283,7 @@ export function renderMultiplayerScreen(root, { onBack, onFinish, onShowStats, o
                     place: done ? done.place : null,
                     wpm: done ? done.wpm : (progressById[p.id]?.wpm || 0),
                     accuracy: done ? done.accuracy : null,
+                    time: done ? done.time : null,
                     percent: done ? 100 : (progressById[p.id]?.percent || 0),
                 };
             }).sort((a, b) => {

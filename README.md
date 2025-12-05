@@ -1,6 +1,6 @@
 # TyperPunk
 
-A modern typing test in your terminal (CLI) and in the browser (Web).
+Competitive typing in your terminal (CLI) and in the browser (Web): solo practice, live multiplayer races, code drills and adaptive weak-key training.
 
 ## Quick Start
 
