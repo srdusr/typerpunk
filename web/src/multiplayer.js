@@ -47,6 +47,7 @@ export function connectToRoom(roomCode, playerName) {
         switch (msg.type) {
             case 'Joined': connection.playerId = msg.player_id; emit('joined', msg.player_id); break;
             case 'PlayerList': emit('playerList', msg.players); break;
+            case 'RaceText': emit('raceText', msg.text, msg.attribution); break;
             case 'Countdown': emit('countdown', msg.seconds); break;
             case 'Start': emit('start', msg.text); break;
             case 'PlayerProgress': emit('playerProgress', msg.player_id, msg.percent, msg.wpm); break;

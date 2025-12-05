@@ -308,10 +308,16 @@ body {
     text-align: center;
 }
 
+/* Centred, not flex-start. These screens are a centred column, so a
+   left-hugging empty state sat out of line with the button underneath it --
+   most visible on Friends, where "Sign in to add friends" and its Sign In
+   button were on two different axes. */
 .stats-empty {
     color: var(--sub-color);
     font-size: 0.9rem;
-    align-self: flex-start;
+    align-self: center;
+    text-align: center;
+    max-width: 32rem;
 }
 
 .stats-pb-list {
@@ -2123,9 +2129,48 @@ body::-webkit-scrollbar, .app::-webkit-scrollbar, #root::-webkit-scrollbar {
     min-width: 0;
 }
 
+/* Sized to the five characters a room code actually is, rather than eating
+   whatever width was going. The Join button matches the field's height and
+   the weight of the other actions on the screen - as a `small ghost` it
+   read as an afterthought next to the field it belongs to. */
+.mp-code-row .account-input {
+    flex: 1 1 auto;
+    min-width: 0;
+    text-align: center;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    font-size: 1.1rem;
+}
+
 .mp-code-row .menu-button {
     flex: 0 0 auto;
+    min-width: 0;
     white-space: nowrap;
+    padding-left: 1.75rem;
+    padding-right: 1.75rem;
+}
+
+/* A labelled rule, so the two ways into a race read as alternatives rather
+   than a list of buttons. */
+.mp-divider {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    width: 100%;
+    margin: 0.5rem 0;
+    color: var(--sub-color);
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.mp-divider::before,
+.mp-divider::after {
+    content: '';
+    flex: 1 1 auto;
+    height: 1px;
+    background: var(--neutral-color);
+    opacity: 0.4;
 }
 
 /* The passage's attribution, repeated on the end screen so a quote still
@@ -2616,4 +2661,87 @@ body::-webkit-scrollbar, .app::-webkit-scrollbar, #root::-webkit-scrollbar {
 .mode-popover-item,
 .lang-item {
     transition: background-color 0.12s ease, color 0.12s ease;
+}
+
+/* The count, over the passage, while typing is locked. Sits above the text so
+   the seconds before a race are spent reading the opening words - the lobby
+   used to hold the count on a screen with nothing to read. */
+.mp-race-gate {
+    position: fixed;
+    inset: 0;
+    z-index: 95;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    pointer-events: none;
+    background: color-mix(in srgb, var(--background-color) 55%, transparent);
+}
+
+.mp-race-gate-count {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 7rem;
+    line-height: 1;
+    font-weight: 700;
+    color: var(--warning-color);
+}
+
+.mp-race-gate-label {
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    color: var(--sub-color);
+}
+
+/* Shown above the catalogue when signed out. The store used to be replaced
+   entirely by a sign-in prompt, so nobody could see what signing in would get
+   them. */
+.store-signin-note {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-bottom: 1rem;
+    padding: 0.75rem 1rem;
+    border: 1px solid color-mix(in srgb, var(--primary-color) 35%, transparent);
+    border-radius: 8px;
+    font-size: 0.85rem;
+    color: var(--sub-color);
+}
+
+/* Close, at the top-right of the content. Replaces the full-width "Back"
+   button every screen carried at the bottom - a third way to do what the
+   wordmark and Escape already did, and the least reachable of the three. */
+.screen-close {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 2.25rem;
+    height: 2.25rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: none;
+    border: none;
+    color: var(--sub-color);
+    cursor: pointer;
+    border-radius: 6px;
+    transition: color 0.15s ease, background-color 0.15s ease;
+}
+
+.screen-close:hover {
+    color: var(--text-color);
+    background: color-mix(in srgb, var(--text-color) 10%, transparent);
+}
+
+.screen-close svg {
+    width: 1.1rem;
+    height: 1.1rem;
+}
+
+/* The close button anchors to the content column. */
+.stats-screen {
+    position: relative;
 }

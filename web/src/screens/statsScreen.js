@@ -1,3 +1,4 @@
+import { CLOSE_ICON } from './icons.js';
 import { getProfileStats } from '../profileStats.js';
 import { getAllPersonalBests } from '../pb.js';
 import { escapeHtml } from '../util.js';
@@ -26,7 +27,8 @@ export function renderStatsScreen(root, { onBack, onShowPlaceholder, onShowAccou
 
     root.innerHTML = `
         <div class="stats-screen">
-            <div class="logo" data-action="menu">TyperPunk</div>
+            <button class="screen-close" data-action="menu" aria-label="Close" data-tooltip="Close (Esc)">${CLOSE_ICON}</button>
+                <div class="logo" data-action="menu">TyperPunk</div>
             <h2>Stats</h2>
 
             ${profile.testsCompleted > 0 ? `
@@ -58,7 +60,6 @@ export function renderStatsScreen(root, { onBack, onShowPlaceholder, onShowAccou
                 ? `<div class="stats-chart"><canvas></canvas></div>`
                 : `<div class="stats-placeholder">Complete a few more tests to see a progress chart.</div>`}
 
-            <button class="menu-button small ghost" data-action="menu">Back</button>
         </div>
     `;
 

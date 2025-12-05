@@ -1,3 +1,4 @@
+import { CLOSE_ICON } from './icons.js';
 import { renderCornerRail } from '../cornerRail.js';
 import { attachTooltips } from '../tooltip.js';
 import { renderTopRail } from '../topRail.js';
@@ -30,12 +31,12 @@ export function renderLyricsScreen(root, { onBack, onLyricsReady, onShowStats, o
     function render() {
         root.innerHTML = `
             <div class="stats-screen">
+                <button class="screen-close" data-action="menu" aria-label="Close" data-tooltip="Close (Esc)">${CLOSE_ICON}</button>
                 <div class="logo" data-action="menu">TyperPunk</div>
                 <h2>Lyrics</h2>
                 <div class="stats-placeholder">${escapeHtml(bodyText())}</div>
                 ${status === 'signed-out' ? `<button class="menu-button" data-action="go-account">Sign In</button>` : ''}
                 ${status === 'not-connected' ? `<a class="menu-button" href="${apiUrl('/api/spotify/login')}">Connect Spotify</a>` : ''}
-                <button class="menu-button small ghost" data-action="menu">Back</button>
             </div>
         `;
         root.querySelectorAll('[data-action="menu"]').forEach(el => el.addEventListener('click', () => { stopped = true; onBack(); }));

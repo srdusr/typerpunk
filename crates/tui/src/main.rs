@@ -104,6 +104,7 @@ fn merge_player_list(existing: &[MpPlayer], incoming: Vec<typerpunk_core::multip
 
 fn apply_mp_event(app: &mut App, event: MpNetEvent) {
     match event {
+        MpNetEvent::Ignored => {}
         MpNetEvent::RoomCreated { code } => app.set_mp_room_created(code),
         MpNetEvent::Joined { player_id } => app.set_mp_joined(player_id),
         MpNetEvent::PlayerList(players) => {

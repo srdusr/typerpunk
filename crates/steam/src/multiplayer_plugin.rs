@@ -80,6 +80,7 @@ fn poll_events(
 ) {
     while let Some(event) = net.0.try_recv() {
         match event {
+            NetEvent::Ignored => {}
             NetEvent::RoomCreated { code } => {
                 info!("multiplayer room created - join it from the web app with code: {code}");
             }

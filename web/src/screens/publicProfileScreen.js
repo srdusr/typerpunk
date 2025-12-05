@@ -3,7 +3,7 @@ import { renderCornerRail } from '../cornerRail.js';
 import { attachTooltips } from '../tooltip.js';
 import { renderTopRail } from '../topRail.js';
 import { api, ApiError } from '../api.js';
-import { FLAIR_ICONS } from './icons.js';
+import { FLAIR_ICONS, CLOSE_ICON } from './icons.js';
 
 // modeKey format is set in app.js: "words-25", "time-30", "quote-<category>".
 function modeLabel(modeKey) {
@@ -52,10 +52,10 @@ export function renderPublicProfileScreen(root, { username, onBack, onShowStats,
 
     root.innerHTML = `
         <div class="stats-screen">
-            <div class="logo" data-action="menu">TyperPunk</div>
+            <button class="screen-close" data-action="menu" aria-label="Close" data-tooltip="Close (Esc)">${CLOSE_ICON}</button>
+                <div class="logo" data-action="menu">TyperPunk</div>
             <h2 class="public-profile-heading">${escapeHtml(username)}</h2>
             <div class="public-profile-body"></div>
-            <button class="menu-button small ghost" data-action="menu">Back</button>
         </div>
     `;
 

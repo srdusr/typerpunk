@@ -64,15 +64,16 @@ export function renderMultiplayerScreen(root, { onBack, onFinish, onShowStats, o
                     <input class="account-input" type="text" id="mp-name" placeholder="Your name" value="${escapeHtml(getUser()?.username || '')}">
                     <button class="menu-button small ghost" data-action="toggle-device-filter" data-tooltip="Who you get matched with, and the setting any room you open uses. Joining by code always uses that room's setting.">Match: Everyone</button>
                     <button class="menu-button" data-action="quick" data-tooltip="Drops you straight into a race with whoever else is looking. No code to share.">Find a Race</button>
-                    <div class="settings-hint">or race specific people</div>
+
+                    <div class="mp-divider"><span>or race friends</span></div>
+
                     <div class="mp-code-row">
-                        <input class="account-input" type="text" id="mp-room-code" placeholder="Room code">
-                        <button class="menu-button small ghost" data-action="join">Join</button>
+                        <input class="account-input" type="text" id="mp-room-code" placeholder="Enter a room code" maxlength="5" autocomplete="off" spellcheck="false">
+                        <button class="menu-button" data-action="join">Join</button>
                     </div>
-                    <button class="menu-button small ghost" data-action="create" data-tooltip="Opens an empty room and gives you a code to share.">Create a Room</button>
+                    <button class="menu-button ghost" data-action="create" data-tooltip="Opens an empty room and gives you a code to share.">Create a Room</button>
                     <div class="custom-error mp-error">${escapeHtml(landingError || '')}</div>
                 </div>
-                <button class="menu-button small ghost" data-action="menu">Back</button>
             </div>
         `;
         root.querySelectorAll('[data-action="menu"]').forEach(el => el.addEventListener('click', onBack));
@@ -136,6 +137,11 @@ export function renderMultiplayerScreen(root, { onBack, onFinish, onShowStats, o
         renderLobby(roomCode, auto);
     }
 
+    // Set by startRace so the lobby's countdown handler can hand off to the
+    // race view once the passage is on screen.
+    let showCountdown = null;
+    let releaseRace = null;
+
     function renderLobby(roomCode, auto = false) {
         root.innerHTML = `
             <div class="stats-screen">
@@ -184,14 +190,19 @@ export function renderMultiplayerScreen(root, { onBack, onFinish, onShowStats, o
         const offPlayerList = connection.on('playerList', list => { players = list; paintPlayers(); });
         const countdownEl = root.querySelector('.mp-countdown');
         const offCountdown = connection.on('countdown', s => {
-            // Takes over the lobby while it runs: it is the only thing that
-            // matters in those three seconds, and it used to be a small number
-            // tucked underneath a large disabled button.
+            // Once the race view exists the count belongs over the passage, so
+            // players read the opening words while it runs. Before that (a
+            // slow RaceText) it still shows in the lobby rather than nowhere.
+            if (showCountdown) { showCountdown(s); return; }
             countdownEl.hidden = false;
             countdownEl.textContent = s;
             readyBtn.hidden = true;
         });
-        const offStart = connection.on('start', text => startRace(text));
+        // The passage arrives before the countdown so it can be read while the
+        // numbers run. The race view is built here, with typing locked; Start
+        // only unlocks it.
+        const offRaceText = connection.on('raceText', (text, attribution) => startRace(text, attribution));
+        const offStart = connection.on('start', () => releaseRace?.());
         // The server closes the connection right after an Error (e.g. a
         // desktop-only room rejecting a mobile joiner) - 'close' always
         // follows, so it's what actually routes back to the landing screen;
@@ -210,12 +221,12 @@ export function renderMultiplayerScreen(root, { onBack, onFinish, onShowStats, o
         root.querySelector('[data-action="leave"]').addEventListener('click', () => { leaveRoom(); renderLanding(); });
 
         cleanupInner = () => {
-            offJoined(); offPlayerList(); offCountdown(); offStart(); offError(); offClose();
+            offJoined(); offPlayerList(); offCountdown(); offRaceText(); offStart(); offError(); offClose();
             cleanupTheme(); cleanupRail();
         };
     }
 
-    async function startRace(text) {
+    async function startRace(text, attribution) {
         teardownInner();
         try {
             game = await createGame();
@@ -293,7 +304,7 @@ export function renderMultiplayerScreen(root, { onBack, onFinish, onShowStats, o
         });
 
         const cleanupTyping = renderTypingGame(root, {
-            game, text, modeKey: undefined,
+            game, text, attribution, modeKey: undefined,
             multiplayer: { connection },
             onFinish: result => {
                 freeGame(game);
@@ -323,8 +334,40 @@ export function renderMultiplayerScreen(root, { onBack, onFinish, onShowStats, o
         });
         root.appendChild(opponents);
 
+        // The passage is on screen but locked until Start. The count sits over
+        // it, so the seconds are spent reading the opening words rather than
+        // staring at an empty lobby.
+        const input = root.querySelector('.typing-input');
+        if (input) input.disabled = true;
+        const gate = document.createElement('div');
+        gate.className = 'mp-race-gate';
+        gate.innerHTML = '<div class="mp-race-gate-count"></div><div class="mp-race-gate-label">Get ready</div>';
+        root.appendChild(gate);
+        const gateCount = gate.querySelector('.mp-race-gate-count');
+        // Its own subscription: building this view tears the lobby down, and
+        // the lobby owned the only countdown handler - so the count stopped
+        // arriving exactly when it was needed on screen.
+        const offGateCountdown = connection.on('countdown', seconds => { gateCount.textContent = seconds; });
+        // Start has the same problem the countdown did: the lobby's handler is
+        // gone by the time this view exists, so the gate would never lift.
+        const offGateStart = connection.on('start', () => releaseRace?.());
+        showCountdown = seconds => { gateCount.textContent = seconds; };
+        releaseRace = () => {
+            offGateCountdown();
+            offGateStart();
+            gate.remove();
+            if (input) { input.disabled = false; input.focus(); }
+            showCountdown = null;
+            releaseRace = null;
+        };
+
         cleanupInner = () => {
             if (!handedOff) { offProgress(); offFinished(); }
+            showCountdown = null;
+            releaseRace = null;
+            offGateCountdown();
+            offGateStart();
+            gate.remove();
             cleanupTyping();
             opponents.remove();
         };

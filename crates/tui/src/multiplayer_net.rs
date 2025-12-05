@@ -11,6 +11,10 @@ use typerpunk_core::multiplayer::{ClientMessage, PlayerInfo, ServerMessage};
 
 #[derive(Debug, Clone)]
 pub enum NetEvent {
+    /// A protocol message this client has no use for. Delivered rather than
+    /// dropped so the match on ServerMessage stays exhaustive and adding a
+    /// variant is a compile-time prompt rather than a silent parse failure.
+    Ignored,
     RoomCreated { code: String },
     Joined { player_id: String },
     PlayerList(Vec<PlayerInfo>),
@@ -81,6 +85,11 @@ fn to_event(msg: ServerMessage) -> NetEvent {
     match msg {
         ServerMessage::Joined { player_id } => NetEvent::Joined { player_id },
         ServerMessage::PlayerList { players } => NetEvent::PlayerList(players),
+        // The passage ahead of the countdown, so a client can show it while
+        // players wait. This one does not yet, and Start still carries the
+        // text, so it is accepted and ignored rather than dropped as an
+        // unparseable message.
+        ServerMessage::RaceText { .. } => NetEvent::Ignored,
         ServerMessage::Countdown { seconds } => NetEvent::Countdown(seconds),
         ServerMessage::Start { text } => NetEvent::Start(text),
         ServerMessage::PlayerProgress { player_id, percent, wpm } => NetEvent::PlayerProgress { player_id, percent, wpm },

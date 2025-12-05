@@ -3,7 +3,7 @@ import { renderCornerRail } from '../cornerRail.js';
 import { attachTooltips } from '../tooltip.js';
 import { renderTopRail } from '../topRail.js';
 import { api, ApiError } from '../api.js';
-import { FLAIR_ICONS } from './icons.js';
+import { FLAIR_ICONS, CLOSE_ICON } from './icons.js';
 
 const WORD_COUNTS = [10, 25, 50, 100];
 const TIME_DURATIONS = [15, 30, 60, 120];
@@ -47,14 +47,14 @@ export function renderLeaderboardScreen(root, { onBack, onShowPublicProfile, onS
 
     root.innerHTML = `
         <div class="stats-screen">
-            <div class="logo" data-action="menu">TyperPunk</div>
+            <button class="screen-close" data-action="menu" aria-label="Close" data-tooltip="Close (Esc)">${CLOSE_ICON}</button>
+                <div class="logo" data-action="menu">TyperPunk</div>
             <h2>Leaderboard</h2>
             <div class="leaderboard-modes">
                 ${MODES.map(m => `<button class="menu-button small${m.key === selectedMode ? '' : ' ghost'}" data-mode="${m.key}">${escapeHtml(m.label)}</button>`).join('')}
             </div>
             <button class="menu-button small ghost" data-action="toggle-device-filter" data-tooltip="Mobile results still count for personal stats - this only filters what's shown here.">Devices: All</button>
             <div class="leaderboard-results"></div>
-            <button class="menu-button small ghost" data-action="menu">Back</button>
         </div>
     `;
 

@@ -17,6 +17,15 @@ impl SpotifyConfig {
     }
 }
 
+/// A passage a race can be run on, with whoever wrote it. The attribution
+/// travels with the text so every racer can see where the passage came from,
+/// the same way single player does.
+#[derive(Debug, Clone)]
+pub struct RaceText {
+    pub text: String,
+    pub attribution: Option<String>,
+}
+
 #[derive(Clone)]
 pub struct AppState {
     pub db: SqlitePool,
@@ -33,7 +42,7 @@ pub struct AppState {
     /// Race passages every multiplayer room draws from, so every player in
     /// a room types the identical text - loaded once at startup rather
     /// than per-room, since the pool itself never changes at runtime.
-    pub race_texts: Vec<String>,
+    pub race_texts: Vec<RaceText>,
     pub spotify: SpotifyConfig,
     pub frontend_origin: String,
     pub http: Client,
@@ -43,7 +52,7 @@ impl AppState {
     pub fn new(
         db: SqlitePool,
         cookie_secure: bool,
-        race_texts: Vec<String>,
+        race_texts: Vec<RaceText>,
         spotify: SpotifyConfig,
         frontend_origin: String,
     ) -> Self {

@@ -107,3 +107,10 @@ export const LANGUAGE_ICON = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0
     <path d="M13 21L17 11L21 21"/>
     <path d="M14.4 18H19.6"/>
 </svg>`;
+
+// Close. A plain X drawn as two strokes rather than a "×" glyph, so it
+// matches the weight and corner style of the rest of this set at any size.
+export const CLOSE_ICON = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="square">
+    <path d="M5 5L19 19"/>
+    <path d="M19 5L5 19"/>
+</svg>`;

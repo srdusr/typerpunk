@@ -1,3 +1,4 @@
+import { CLOSE_ICON } from './icons.js';
 import { escapeHtml } from '../util.js';
 import { renderCornerRail } from '../cornerRail.js';
 import { attachTooltips } from '../tooltip.js';
@@ -11,10 +12,10 @@ import { renderTopRail } from '../topRail.js';
 export function renderPlaceholderScreen(root, { title, description, onBack, onShowStats, onShowPlaceholder, onShowAccount, onShowLeaderboard, onShowFriends, onShowMultiplayer, onShowStore }) {
     root.innerHTML = `
         <div class="stats-screen">
-            <div class="logo" data-action="menu">TyperPunk</div>
+            <button class="screen-close" data-action="menu" aria-label="Close" data-tooltip="Close (Esc)">${CLOSE_ICON}</button>
+                <div class="logo" data-action="menu">TyperPunk</div>
             <h2>${escapeHtml(title)}</h2>
             <div class="stats-placeholder">${escapeHtml(description)}</div>
-            <button class="menu-button small ghost" data-action="menu">Back</button>
         </div>
     `;
 

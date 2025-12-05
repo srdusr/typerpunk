@@ -1,6 +1,7 @@
 import { buildGraphPoints, buildErrorPoints, drawChart, hitTestError, hitTestLine, calculateConsistency } from '../chart.js';
 import { escapeHtml } from '../util.js';
 import { attachTooltips } from '../tooltip.js';
+import { onThemeChange } from '../theme.js';
 import { recordResult } from '../pb.js';
 import { recordTest } from '../profileStats.js';
 import { renderCornerRail } from '../cornerRail.js';
@@ -137,6 +138,10 @@ export function renderEndScreen(root, { stats, text, attribution, explanation, s
     const redraw = () => drawChart(canvas, { graphPoints, errorPoints, xMax });
     redraw();
     window.addEventListener('resize', redraw);
+    // The chart is drawn into a canvas, so it cannot inherit a theme change
+    // the way the rest of the page does - it has to be redrawn. Without this
+    // switching theme on the end screen left the graph in the old palette.
+    const offTheme = onThemeChange(redraw);
 
     // A long passage wraps to more lines than a short one, growing
     // .end-screen-text's height by an amount no fixed CSS margin/graph-height
@@ -243,6 +248,7 @@ export function renderEndScreen(root, { stats, text, attribution, explanation, s
         onLeaveRace?.();
         cleanupTheme();
         window.removeEventListener('resize', redraw);
+        offTheme();
         canvas.removeEventListener('mousemove', handleMove);
         canvas.removeEventListener('mouseleave', handleLeave);
         document.removeEventListener('keydown', handleKeydown);

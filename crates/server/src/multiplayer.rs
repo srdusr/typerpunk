@@ -56,6 +56,10 @@ const BOT_NAMES: &[&str] = &[
     "Pixel", "Quartz", "Sigil", "Tessa", "Umbra",
 ];
 
+// Long enough to read the passage's opening words and get your hands in
+// position. Three seconds was barely enough to register that a race had
+// started, let alone look at the text.
+const COUNTDOWN_SECONDS: u32 = 5;
 const ROOM_CODE_CHARS: &[u8] = b"ABCDEFGHJKLMNPQRSTUVWXYZ23456789"; // no 0/O/1/I - easy to misread aloud
 
 #[derive(Debug, Clone, PartialEq)]
@@ -318,16 +322,30 @@ async fn start_race(room_arc: Arc<Mutex<Room>>, state: Arc<AppState>) {
             return;
         }
         room.status = RoomStatus::Countdown;
-        let text = state
+        let picked = state
             .race_texts
             .get(rand::thread_rng().gen_range(0..state.race_texts.len()))
             .cloned()
-            .unwrap_or_default();
-        room.text = Some(text.clone());
-        text
+            .unwrap_or_else(|| crate::state::RaceText {
+                text: String::new(),
+                attribution: None,
+            });
+        room.text = Some(picked.text.clone());
+        // Sent before the countdown so every client can put the passage on
+        // screen and let players read it while they wait, the way TypeRacer
+        // and 10FastFingers both do.
+        broadcast(
+            &room,
+            &ServerMessage::RaceText {
+                text: picked.text.clone(),
+                attribution: picked.attribution.clone(),
+            },
+        )
+        .await;
+        picked.text
     };
 
-    for seconds in (1..=3).rev() {
+    for seconds in (1..=COUNTDOWN_SECONDS).rev() {
         {
             let room = room_arc.lock().await;
             broadcast(&room, &ServerMessage::Countdown { seconds }).await;

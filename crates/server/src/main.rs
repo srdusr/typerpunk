@@ -10,6 +10,7 @@ mod spotify;
 mod state;
 mod stats;
 
+use crate::state::RaceText;
 use axum::http::{HeaderValue, Method};
 use axum::routing::get;
 use axum::Router;
@@ -24,6 +25,8 @@ use tower_http::trace::TraceLayer;
 #[derive(Deserialize)]
 struct TextEntry {
     content: String,
+    #[serde(default)]
+    attribution: Option<String>,
 }
 
 // Every multiplayer room draws from this same pool so every player in a
@@ -32,15 +35,18 @@ struct TextEntry {
 // falls back to a couple of plain sentences if the file isn't reachable
 // (e.g. the server binary run from somewhere other than the repo root),
 // so a room can still start rather than erroring on an empty pool.
-fn load_race_texts() -> Vec<String> {
+fn load_race_texts() -> Vec<RaceText> {
     let path = std::env::var("TEXTS_JSON_PATH").unwrap_or_else(|_| "texts.json".to_string());
     match std::fs::read_to_string(&path).ok().and_then(|raw| serde_json::from_str::<Vec<TextEntry>>(&raw).ok()) {
-        Some(entries) if !entries.is_empty() => entries.into_iter().map(|e| e.content).collect(),
+        Some(entries) if !entries.is_empty() => entries
+            .into_iter()
+            .map(|e| RaceText { text: e.content, attribution: e.attribution })
+            .collect(),
         _ => {
             tracing::warn!("could not load race texts from {path} - using a small built-in fallback pool");
             vec![
-                "The quick brown fox jumps over the lazy dog.".to_string(),
-                "Pack my box with five dozen liquor jugs.".to_string(),
+                RaceText { text: "The quick brown fox jumps over the lazy dog.".to_string(), attribution: None },
+                RaceText { text: "Pack my box with five dozen liquor jugs.".to_string(), attribution: None },
             ]
         }
     }
@@ -136,7 +142,10 @@ mod tests {
         let app_state = Arc::new(AppState::new(
             db,
             false,
-            vec!["The quick brown fox jumps over the lazy dog.".to_string()],
+            vec![RaceText {
+                text: "The quick brown fox jumps over the lazy dog.".to_string(),
+                attribution: None,
+            }],
             SpotifyConfig::default(),
             "http://localhost:4173".to_string(),
         ));

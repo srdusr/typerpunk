@@ -4,7 +4,7 @@ import { attachTooltips } from '../tooltip.js';
 import { renderTopRail } from '../topRail.js';
 import { api, ApiError } from '../api.js';
 import { getUser } from '../auth.js';
-import { FLAIR_ICONS } from './icons.js';
+import { FLAIR_ICONS, CLOSE_ICON } from './icons.js';
 
 function formatPrice(cents) {
     return `$${(cents / 100).toFixed(2)}`;
@@ -27,8 +27,9 @@ export function renderStoreScreen(root, { onBack, onShowStats, onShowPlaceholder
     let stopped = false;
 
     function itemMarkup(item) {
-        const owned = mine.owned.includes(item.id);
-        const equipped = mine.equipped_caret === item.id || mine.equipped_flair === item.id;
+        const signedOut = status === 'signed-out';
+        const owned = !signedOut && mine.owned.includes(item.id);
+        const equipped = !signedOut && (mine.equipped_caret === item.id || mine.equipped_flair === item.id);
         const swatch = item.category === 'caret'
             ? `<span class="store-swatch" style="background:${escapeHtml(item.value)}"></span>`
             : `<span class="store-swatch store-flair-swatch">${FLAIR_ICONS[item.value] || ''}</span>`;
@@ -39,18 +40,22 @@ export function renderStoreScreen(root, { onBack, onShowStats, onShowPlaceholder
                 ${!owned ? `<div class="leaderboard-acc">${formatPrice(item.price_cents)}</div>` : ''}
                 ${owned
                     ? `<button class="menu-button small${equipped ? '' : ' ghost'}" data-action="${equipped ? 'unequip' : 'equip'}" data-id="${item.id}" data-category="${item.category}" data-tooltip="${equipped ? 'Unequip - back to the default look' : `Replaces whichever ${categoryLabel(item.category).toLowerCase()} you have equipped now`}">${equipped ? 'Equipped' : 'Equip'}</button>`
-                    : `<button class="menu-button small" data-action="buy" data-id="${item.id}">Buy</button>`}
+                    : `<button class="menu-button small${signedOut ? ' ghost' : ''}" data-action="${signedOut ? 'go-account' : 'buy'}" data-id="${item.id}"${signedOut ? ' data-tooltip="Sign in to buy this"' : ''}>Buy</button>`}
             </div>
         `;
     }
 
     function bodyMarkup() {
-        if (status === 'signed-out') return `<div class="stats-empty">Sign in to buy and equip cosmetics.</div><button class="menu-button" data-action="go-account">Sign In</button>`;
         if (status === 'loading') return `<div class="stats-empty">Loading...</div>`;
         if (status === 'error') return `<div class="stats-empty">${escapeHtml(message)}</div>`;
 
+        const signedOut = status === 'signed-out';
+        const banner = signedOut
+            ? `<div class="store-signin-note">Sign in to buy and equip these.
+                 <button class="menu-button small" data-action="go-account">Sign In</button></div>`
+            : '';
         const categories = ['caret', 'flair'];
-        return categories.map(cat => {
+        return banner + categories.map(cat => {
             const items = catalog.filter(i => i.category === cat);
             if (items.length === 0) return '';
             return `<h3>${categoryLabel(cat)}</h3><div class="leaderboard-list">${items.map(itemMarkup).join('')}</div>`;
@@ -60,10 +65,10 @@ export function renderStoreScreen(root, { onBack, onShowStats, onShowPlaceholder
     function render() {
         root.innerHTML = `
             <div class="stats-screen">
+                <button class="screen-close" data-action="menu" aria-label="Close" data-tooltip="Close (Esc)">${CLOSE_ICON}</button>
                 <div class="logo" data-action="menu">TyperPunk</div>
                 <h2>Store</h2>
                 ${bodyMarkup()}
-                <button class="menu-button small ghost" data-action="menu">Back</button>
             </div>
         `;
         root.querySelectorAll('[data-action="menu"]').forEach(el => el.addEventListener('click', onBack));
@@ -121,7 +126,12 @@ export function renderStoreScreen(root, { onBack, onShowStats, onShowPlaceholder
     }
 
     async function loadMine() {
-        if (!getUser()) { status = 'signed-out'; return; }
+        if (!getUser()) {
+            // The catalogue still renders - only ownership needs an account.
+            status = 'signed-out';
+            mine = { owned: [], equipped_caret: null, equipped_flair: null };
+            return;
+        }
         try {
             mine = await api.get('/api/cosmetics/me');
             status = 'ok';
