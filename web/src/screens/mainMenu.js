@@ -263,10 +263,13 @@ export function renderMainMenu(root, props) {
     root.querySelectorAll('.sp-popover .mode-popover-item[data-mode]').forEach(item => {
         item.addEventListener('click', () => {
             const mode = item.dataset.mode;
-            // Custom needs its text before it can start: with none loaded the
-            // picker hands off to the paste/upload panel instead.
+            // Custom is the one mode that cannot always start on being picked:
+            // with no text loaded it hands off to the paste/upload panel, and
+            // only starts once there is something to type. Selecting it
+            // without either of those left it unstartable.
             if (mode === 'custom') {
-                onSelectCategory(mode);
+                if (customText) onStartCustom();
+                else onSelectCategory(mode);
                 return;
             }
             onPickAndStart(mode);

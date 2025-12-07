@@ -79,13 +79,18 @@ async fn main() -> anyhow::Result<()> {
         .with_env_filter(tracing_subscriber::EnvFilter::try_from_default_env().unwrap_or_else(|_| "info".into()))
         .init();
 
-    let database_url = std::env::var("DATABASE_URL").unwrap_or_else(|_| "sqlite://typerpunk.db".to_string());
+    let database_url = std::env::var("DATABASE_URL")
+        .unwrap_or_else(|_| "postgres://typerpunk:typerpunk_dev@127.0.0.1/typerpunk".to_string());
     let cookie_secure = std::env::var("COOKIE_SECURE").map(|v| v == "1" || v == "true").unwrap_or(false);
     let frontend_origin = std::env::var("FRONTEND_ORIGIN").unwrap_or_else(|_| "http://localhost:4173".to_string());
     let port: u16 = std::env::var("PORT").ok().and_then(|p| p.parse().ok()).unwrap_or(8787);
 
-    let connect_options = sqlx::sqlite::SqliteConnectOptions::from_str(&database_url)?.create_if_missing(true);
-    let db = sqlx::sqlite::SqlitePoolOptions::new().max_connections(10).connect_with(connect_options).await?;
+    // No create_if_missing: Postgres databases are created by an administrator,
+    // not by the application on first connect the way a SQLite file was.
+    let db = sqlx::postgres::PgPoolOptions::new()
+        .max_connections(10)
+        .connect(&database_url)
+        .await?;
     sqlx::migrate!("./migrations").run(&db).await?;
 
     if !cookie_secure {
@@ -134,11 +139,47 @@ mod tests {
     use state::SpotifyConfig;
 
     async fn spawn_test_server() -> String {
-        let db = sqlx::sqlite::SqlitePoolOptions::new()
-            .max_connections(1)
-            .connect("sqlite::memory:")
+        // Postgres has no in-memory mode, so these run against a real database.
+        // Each test gets its own schema inside it: a shared one would let two
+        // tests running concurrently see each other's rows, and DROP SCHEMA
+        // cleans up without coordinating table lists.
+        let url = std::env::var("TEST_DATABASE_URL").unwrap_or_else(|_| {
+            "postgres://typerpunk:typerpunk_dev@127.0.0.1/typerpunk_test".to_string()
+        });
+        let schema = format!("t{}", uuid::Uuid::new_v4().simple());
+
+        // Created over a one-shot connection first, because the pool below
+        // pins every connection to this schema and it has to exist by then.
+        {
+            let setup = sqlx::postgres::PgPoolOptions::new()
+                .max_connections(1)
+                .connect(&url)
+                .await
+                .expect("failed to connect to the test database - is Postgres running, and does typerpunk_test exist?");
+            sqlx::query(&format!("CREATE SCHEMA {schema}"))
+                .execute(&setup)
+                .await
+                .expect("failed to create test schema");
+            setup.close().await;
+        }
+
+        // search_path is per-session, so it is set on every connection the
+        // pool opens rather than once on whichever one happened to be first.
+        let schema_for_hook = schema.clone();
+        let db = sqlx::postgres::PgPoolOptions::new()
+            .max_connections(2)
+            .after_connect(move |conn, _meta| {
+                let schema = schema_for_hook.clone();
+                Box::pin(async move {
+                    sqlx::query(&format!("SET search_path TO {schema}"))
+                        .execute(conn)
+                        .await
+                        .map(|_| ())
+                })
+            })
+            .connect(&url)
             .await
-            .expect("failed to open in-memory test database");
+            .expect("failed to connect to the test database");
         sqlx::migrate!("./migrations").run(&db).await.expect("failed to run migrations");
 
         let app_state = Arc::new(AppState::new(

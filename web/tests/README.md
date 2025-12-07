@@ -15,8 +15,8 @@ can be re-run for regressions.
   `cd web && node serve.mjs`
 - The backend running on port 8787, pointed at a throwaway database (do not
   run tests against a production database):
-  `DATABASE_URL="sqlite:///tmp/typerpunk_test.db" PORT=8787 COOKIE_SECURE=0 \
-    cargo run --package typerpunk-server`
+  `DATABASE_URL="postgres://typerpunk:typerpunk_dev@127.0.0.1/typerpunk_test" \
+    PORT=8787 COOKIE_SECURE=0 cargo run --package typerpunk-server`
 
 Both servers must already be running before starting the suite - it does
 not launch or manage them itself.

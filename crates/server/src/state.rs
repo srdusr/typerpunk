@@ -1,7 +1,7 @@
 use crate::multiplayer::{new_registry, RoomRegistry};
 use crate::rate_limit::RateLimiter;
 use reqwest::Client;
-use sqlx::SqlitePool;
+use sqlx::PgPool;
 use std::time::Duration;
 
 #[derive(Clone, Default)]
@@ -28,13 +28,17 @@ pub struct RaceText {
 
 #[derive(Clone)]
 pub struct AppState {
-    pub db: SqlitePool,
+    pub db: PgPool,
     pub auth_rate_limiter: RateLimiter,
     /// Keyed by user id, not IP - this guards an authenticated endpoint
     /// (stats submission) against a single compromised/scripted account
     /// hammering it, which an IP-keyed limiter wouldn't catch behind NAT or
     /// a VPN and would over-punish for a shared IP.
     pub stats_rate_limiter: RateLimiter<String>,
+    /// /api/lyrics forwards to a third party on the caller's behalf, so it is
+    /// an open proxy unless it is bounded. Keyed by IP, since the endpoint is
+    /// reachable without an account.
+    pub lyrics_rate_limiter: RateLimiter,
     /// Set from COOKIE_SECURE. Off for plain-HTTP local dev, must be on
     /// behind TLS in production or browsers silently drop the cookie.
     pub cookie_secure: bool,
@@ -50,7 +54,7 @@ pub struct AppState {
 
 impl AppState {
     pub fn new(
-        db: SqlitePool,
+        db: PgPool,
         cookie_secure: bool,
         race_texts: Vec<RaceText>,
         spotify: SpotifyConfig,
@@ -63,6 +67,7 @@ impl AppState {
             // seconds; 60 submissions in 5 minutes is generous headroom for
             // rapid Words-10 sessions while still capping scripted spam.
             stats_rate_limiter: RateLimiter::new(60, Duration::from_secs(5 * 60)),
+            lyrics_rate_limiter: RateLimiter::new(30, Duration::from_secs(60)),
             cookie_secure,
             rooms: new_registry(),
             race_texts,

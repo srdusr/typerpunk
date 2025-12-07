@@ -37,13 +37,13 @@ struct FriendsList {
     outgoing_requests: Vec<FriendEntry>,
 }
 
-fn row_to_entry(row: &sqlx::sqlite::SqliteRow, friendship_id_col: &str, user_id_col: &str, username_col: &str) -> FriendEntry {
+fn row_to_entry(row: &sqlx::postgres::PgRow, friendship_id_col: &str, user_id_col: &str, username_col: &str) -> FriendEntry {
     FriendEntry {
         friendship_id: row.try_get(friendship_id_col).unwrap_or_default(),
         user_id: row.try_get(user_id_col).unwrap_or_default(),
         username: row.try_get(username_col).unwrap_or_default(),
         // Absent on the pending-request queries, which do not select it.
-        online: row.try_get::<i64, _>("online").unwrap_or(0) != 0,
+        online: row.try_get::<bool, _>("online").unwrap_or(false),
     }
 }
 
@@ -60,10 +60,10 @@ async fn list_friends(State(state): State<Arc<AppState>>, jar: CookieJar, header
     );
     let accepted = sqlx::query(
         "SELECT friendships.id as friendship_id, users.id as user_id, users.username as username,
-                (users.last_seen IS NOT NULL AND users.last_seen > ?) as online
+                (users.last_seen IS NOT NULL AND users.last_seen > $1) as online
          FROM friendships
-         JOIN users ON users.id = CASE WHEN friendships.requester_id = ? THEN friendships.addressee_id ELSE friendships.requester_id END
-         WHERE friendships.status = 'accepted' AND (friendships.requester_id = ? OR friendships.addressee_id = ?)",
+         JOIN users ON users.id = CASE WHEN friendships.requester_id = $2 THEN friendships.addressee_id ELSE friendships.requester_id END
+         WHERE friendships.status = 'accepted' AND (friendships.requester_id = $3 OR friendships.addressee_id = $4)",
     )
     .bind(&presence_cutoff)
     .bind(&user.id).bind(&user.id).bind(&user.id)
@@ -73,7 +73,7 @@ async fn list_friends(State(state): State<Arc<AppState>>, jar: CookieJar, header
     let incoming = sqlx::query(
         "SELECT friendships.id as friendship_id, users.id as user_id, users.username as username
          FROM friendships JOIN users ON users.id = friendships.requester_id
-         WHERE friendships.status = 'pending' AND friendships.addressee_id = ?",
+         WHERE friendships.status = 'pending' AND friendships.addressee_id = $1",
     )
     .bind(&user.id)
     .fetch_all(&state.db)
@@ -82,7 +82,7 @@ async fn list_friends(State(state): State<Arc<AppState>>, jar: CookieJar, header
     let outgoing = sqlx::query(
         "SELECT friendships.id as friendship_id, users.id as user_id, users.username as username
          FROM friendships JOIN users ON users.id = friendships.addressee_id
-         WHERE friendships.status = 'pending' AND friendships.requester_id = ?",
+         WHERE friendships.status = 'pending' AND friendships.requester_id = $1",
     )
     .bind(&user.id)
     .fetch_all(&state.db)
@@ -108,7 +108,7 @@ async fn send_request(
 ) -> Result<impl IntoResponse, AppError> {
     let user = current_user_or_token(&state.db, &jar, &headers).await.ok_or(AppError::Unauthorized)?;
 
-    let target = sqlx::query("SELECT id FROM users WHERE username = ?")
+    let target = sqlx::query("SELECT id FROM users WHERE username = $1")
         .bind(&body.username)
         .fetch_optional(&state.db)
         .await?
@@ -121,7 +121,7 @@ async fn send_request(
 
     let existing = sqlx::query(
         "SELECT id, requester_id, status FROM friendships
-         WHERE (requester_id = ? AND addressee_id = ?) OR (requester_id = ? AND addressee_id = ?)",
+         WHERE (requester_id = $1 AND addressee_id = $2) OR (requester_id = $3 AND addressee_id = $4)",
     )
     .bind(&user.id).bind(&target_id)
     .bind(&target_id).bind(&user.id)
@@ -138,7 +138,7 @@ async fn send_request(
         // creating a second, redundant pending row in the opposite direction.
         if requester_id == target_id {
             let id: String = row.try_get("id").map_err(|e| AppError::Internal(e.into()))?;
-            sqlx::query("UPDATE friendships SET status = 'accepted' WHERE id = ?")
+            sqlx::query("UPDATE friendships SET status = 'accepted' WHERE id = $1")
                 .bind(&id)
                 .execute(&state.db)
                 .await?;
@@ -147,7 +147,7 @@ async fn send_request(
         return Err(AppError::InvalidInput("request already pending".into()));
     }
 
-    sqlx::query("INSERT INTO friendships (id, requester_id, addressee_id, status, created_at) VALUES (?, ?, ?, 'pending', ?)")
+    sqlx::query("INSERT INTO friendships (id, requester_id, addressee_id, status, created_at) VALUES ($1, $2, $3, 'pending', $4)")
         .bind(uuid::Uuid::new_v4().to_string())
         .bind(&user.id)
         .bind(&target_id)
@@ -167,7 +167,7 @@ async fn accept_request(
     let user = current_user_or_token(&state.db, &jar, &headers).await.ok_or(AppError::Unauthorized)?;
 
     let result = sqlx::query(
-        "UPDATE friendships SET status = 'accepted' WHERE id = ? AND addressee_id = ? AND status = 'pending'",
+        "UPDATE friendships SET status = 'accepted' WHERE id = $1 AND addressee_id = $2 AND status = 'pending'",
     )
     .bind(&id)
     .bind(&user.id)
@@ -191,7 +191,7 @@ async fn remove_friendship(
 ) -> Result<impl IntoResponse, AppError> {
     let user = current_user_or_token(&state.db, &jar, &headers).await.ok_or(AppError::Unauthorized)?;
 
-    let result = sqlx::query("DELETE FROM friendships WHERE id = ? AND (requester_id = ? OR addressee_id = ?)")
+    let result = sqlx::query("DELETE FROM friendships WHERE id = $1 AND (requester_id = $2 OR addressee_id = $3)")
         .bind(&id)
         .bind(&user.id)
         .bind(&user.id)

@@ -68,7 +68,7 @@ async fn ensure_bot_users(state: &AppState) -> Result<(), sqlx::Error> {
         // into, and the auth path compares against a hash that cannot match.
         sqlx::query(
             "INSERT INTO users (id, username, password_hash, created_at, is_bot)
-             VALUES (?, ?, '!', ?, 1)
+             VALUES ($1, $2, '!', $3, TRUE)
              ON CONFLICT(username) DO NOTHING",
         )
         .bind(format!("bot-{name}"))
@@ -95,7 +95,7 @@ async fn post_one_result(state: &AppState) -> Result<(), sqlx::Error> {
 
     sqlx::query(
         "INSERT INTO test_results (id, user_id, mode_key, wpm, raw_wpm, accuracy, time_seconds, created_at, device_type, flagged)
-         VALUES (?, ?, ?, ?, ?, ?, ?, ?, 'desktop', 0)",
+         VALUES ($1, $2, $3, $4, $5, $6, $7, $8, 'desktop', FALSE)",
     )
     .bind(uuid::Uuid::new_v4().to_string())
     .bind(format!("bot-{name}"))
@@ -122,7 +122,7 @@ async fn seed_backlog(state: &AppState) -> Result<(), sqlx::Error> {
         // leave every other mode permanently empty. This also means a mode
         // added later gets seeded on the next start.
         let existing: i64 = sqlx::query_scalar(
-            "SELECT COUNT(*) FROM test_results WHERE user_id LIKE 'bot-%' AND mode_key = ?",
+            "SELECT COUNT(*) FROM test_results WHERE user_id LIKE 'bot-%' AND mode_key = $1",
         )
         .bind(*mode)
         .fetch_one(&state.db)
@@ -144,7 +144,7 @@ async fn seed_backlog(state: &AppState) -> Result<(), sqlx::Error> {
             let created = OffsetDateTime::now_utc() - time::Duration::hours(age_hours);
             sqlx::query(
                 "INSERT INTO test_results (id, user_id, mode_key, wpm, raw_wpm, accuracy, time_seconds, created_at, device_type, flagged)
-                 VALUES (?, ?, ?, ?, ?, ?, ?, ?, 'desktop', 0)",
+                 VALUES ($1, $2, $3, $4, $5, $6, $7, $8, 'desktop', FALSE)",
             )
             .bind(uuid::Uuid::new_v4().to_string())
             .bind(format!("bot-{name}"))

@@ -75,7 +75,7 @@ async fn submit_result(
 
     sqlx::query(
         "INSERT INTO test_results (id, user_id, mode_key, wpm, raw_wpm, accuracy, time_seconds, created_at, device_type, flagged)
-         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+         VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)",
     )
     .bind(uuid::Uuid::new_v4().to_string())
     .bind(&user.id)
@@ -120,7 +120,7 @@ async fn fetch_stats_summary(state: &AppState, user_id: &str) -> Result<MyStats,
                 COALESCE(AVG(wpm), 0) as average_wpm,
                 COALESCE(AVG(accuracy), 0) as average_accuracy,
                 COALESCE(MAX(wpm), 0) as best_wpm
-         FROM test_results WHERE user_id = ?",
+         FROM test_results WHERE user_id = $1",
     )
     .bind(user_id)
     .fetch_one(&state.db)
@@ -133,7 +133,7 @@ async fn fetch_stats_summary(state: &AppState, user_id: &str) -> Result<MyStats,
         "SELECT mode_key, wpm, created_at FROM (
             SELECT mode_key, wpm, created_at,
                    ROW_NUMBER() OVER (PARTITION BY mode_key ORDER BY wpm DESC) as rn
-            FROM test_results WHERE user_id = ?
+            FROM test_results WHERE user_id = $1
          ) WHERE rn = 1",
     )
     .bind(user_id)
@@ -187,7 +187,7 @@ async fn public_profile(State(state): State<Arc<AppState>>, Path(username): Path
     let row = sqlx::query(
         "SELECT users.id as id, users.created_at as created_at, cosmetics.value as flair_value
          FROM users LEFT JOIN cosmetics ON cosmetics.id = users.equipped_flair
-         WHERE users.username = ?",
+         WHERE users.username = $1",
     )
     .bind(&username)
     .fetch_optional(&state.db)
@@ -252,15 +252,15 @@ async fn leaderboard(State(state): State<Arc<AppState>>, Query(q): Query<Leaderb
             FROM test_results
             JOIN users ON users.id = test_results.user_id
             LEFT JOIN cosmetics ON cosmetics.id = users.equipped_flair
-            WHERE test_results.mode_key = ? AND test_results.flagged = 0
-              AND (? = 0 OR test_results.device_type = 'desktop')
-         ) WHERE rn = 1
+            WHERE test_results.mode_key = $1 AND NOT test_results.flagged
+              AND (NOT $2 OR test_results.device_type = 'desktop')
+         ) AS ranked WHERE rn = 1
          ORDER BY wpm DESC
-         LIMIT ?",
+         LIMIT $3",
     )
     .bind(&q.mode)
     .bind(desktop_only)
-    .bind(limit)
+    .bind(limit as i64)
     .fetch_all(&state.db)
     .await?;
 
@@ -273,7 +273,7 @@ async fn leaderboard(State(state): State<Arc<AppState>>, Query(q): Query<Leaderb
             date: row.try_get("created_at").unwrap_or_default(),
             device_type: row.try_get("device_type").unwrap_or_default(),
             flair: row.try_get::<Option<String>, _>("flair_value").unwrap_or(None),
-            is_bot: row.try_get::<i64, _>("is_bot").unwrap_or(0) != 0,
+            is_bot: row.try_get::<bool, _>("is_bot").unwrap_or(false),
         })
         .collect();
 

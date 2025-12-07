@@ -56,13 +56,13 @@ struct MyCosmetics {
 async fn my_cosmetics(State(state): State<Arc<AppState>>, jar: CookieJar) -> Result<impl IntoResponse, AppError> {
     let user = current_user(&state.db, &jar).await.ok_or(AppError::Unauthorized)?;
 
-    let owned_rows = sqlx::query("SELECT cosmetic_id FROM user_cosmetics WHERE user_id = ?")
+    let owned_rows = sqlx::query("SELECT cosmetic_id FROM user_cosmetics WHERE user_id = $1")
         .bind(&user.id)
         .fetch_all(&state.db)
         .await?;
     let owned: Vec<String> = owned_rows.into_iter().filter_map(|r| r.try_get("cosmetic_id").ok()).collect();
 
-    let equip_row = sqlx::query("SELECT equipped_caret, equipped_flair FROM users WHERE id = ?")
+    let equip_row = sqlx::query("SELECT equipped_caret, equipped_flair FROM users WHERE id = $1")
         .bind(&user.id)
         .fetch_one(&state.db)
         .await?;
@@ -88,7 +88,7 @@ async fn my_cosmetics(State(state): State<Arc<AppState>>, jar: CookieJar) -> Res
 async fn purchase(State(state): State<Arc<AppState>>, jar: CookieJar, Path(cosmetic_id): Path<String>) -> Result<impl IntoResponse, AppError> {
     let user = current_user(&state.db, &jar).await.ok_or(AppError::Unauthorized)?;
 
-    let exists = sqlx::query("SELECT id FROM cosmetics WHERE id = ?")
+    let exists = sqlx::query("SELECT id FROM cosmetics WHERE id = $1")
         .bind(&cosmetic_id)
         .fetch_optional(&state.db)
         .await?;
@@ -96,7 +96,9 @@ async fn purchase(State(state): State<Arc<AppState>>, jar: CookieJar, Path(cosme
         return Err(AppError::NotFound);
     }
 
-    sqlx::query("INSERT OR IGNORE INTO user_cosmetics (user_id, cosmetic_id, acquired_at) VALUES (?, ?, ?)")
+    // Postgres spells SQLite's INSERT OR IGNORE as an explicit conflict
+    // target; the pair is the table's primary key.
+    sqlx::query("INSERT INTO user_cosmetics (user_id, cosmetic_id, acquired_at) VALUES ($1, $2, $3) ON CONFLICT (user_id, cosmetic_id) DO NOTHING")
         .bind(&user.id)
         .bind(&cosmetic_id)
         .bind(format_timestamp(OffsetDateTime::now_utc()))
@@ -112,7 +114,7 @@ async fn equip(State(state): State<Arc<AppState>>, jar: CookieJar, Path(cosmetic
     let row = sqlx::query(
         "SELECT cosmetics.category as category FROM cosmetics
          JOIN user_cosmetics ON user_cosmetics.cosmetic_id = cosmetics.id
-         WHERE cosmetics.id = ? AND user_cosmetics.user_id = ?",
+         WHERE cosmetics.id = $1 AND user_cosmetics.user_id = $2",
     )
     .bind(&cosmetic_id)
     .bind(&user.id)
@@ -129,7 +131,7 @@ async fn equip(State(state): State<Arc<AppState>>, jar: CookieJar, Path(cosmetic
 
     // Column name comes from a hardcoded match above, never from request
     // input, so this is safe despite not being a bind parameter.
-    let query = format!("UPDATE users SET {column} = ? WHERE id = ?");
+    let query = format!("UPDATE users SET {column} = $1 WHERE id = $2");
     sqlx::query(&query).bind(&cosmetic_id).bind(&user.id).execute(&state.db).await?;
 
     Ok(axum::http::StatusCode::NO_CONTENT)
@@ -147,7 +149,7 @@ async fn unequip(State(state): State<Arc<AppState>>, jar: CookieJar, Json(body):
         "flair" => "equipped_flair",
         _ => return Err(AppError::InvalidInput("category must be 'caret' or 'flair'".into())),
     };
-    let query = format!("UPDATE users SET {column} = NULL WHERE id = ?");
+    let query = format!("UPDATE users SET {column} = NULL WHERE id = $1");
     sqlx::query(&query).bind(&user.id).execute(&state.db).await?;
     Ok(axum::http::StatusCode::NO_CONTENT)
 }

@@ -1,4 +1,26 @@
-# Migrate the server from SQLite to PostgreSQL
+# Migrate the server from SQLite to PostgreSQL - DONE
+
+Done on 2026-08-30. The server runs on Postgres 18: sqlx switched to the
+`postgres` feature, 95 placeholders renumbered to `$N`, `REAL` columns
+widened to `DOUBLE PRECISION` (Postgres REAL is float4 and will not decode
+into f64), the `flagged` and `is_bot` flags made real BOOLEANs, the
+leaderboard's derived table given the alias Postgres requires, and
+`INSERT OR IGNORE` rewritten as `ON CONFLICT DO NOTHING`. Integration tests
+run against a real database, each in its own throwaway schema, since
+Postgres has no in-memory mode.
+
+## Still open
+
+- **Timestamps are still TEXT.** They are RFC3339 and sort correctly as
+  text, so this is not a correctness problem, but `TIMESTAMPTZ` would let
+  the database do date arithmetic instead of the application.
+- **LISTEN/NOTIFY is unused.** Multiplayer rooms are still in-process, so
+  the server cannot yet run as more than one instance.
+
+---
+
+## Original note
+
 
 ## Why
 

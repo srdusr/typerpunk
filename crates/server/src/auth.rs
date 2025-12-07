@@ -79,10 +79,10 @@ pub(crate) fn format_timestamp(dt: OffsetDateTime) -> String {
     dt.format(&time::format_description::well_known::Rfc3339).expect("valid RFC3339 timestamp")
 }
 
-async fn create_session(db: &sqlx::SqlitePool, user_id: &str) -> Result<String, AppError> {
+async fn create_session(db: &sqlx::PgPool, user_id: &str) -> Result<String, AppError> {
     let session_id = uuid::Uuid::new_v4().to_string();
     let expires_at = OffsetDateTime::now_utc() + TimeDuration::days(SESSION_LIFETIME_DAYS);
-    sqlx::query("INSERT INTO sessions (id, user_id, expires_at) VALUES (?, ?, ?)")
+    sqlx::query("INSERT INTO sessions (id, user_id, expires_at) VALUES ($1, $2, $3)")
         .bind(&session_id)
         .bind(user_id)
         .bind(format_timestamp(expires_at))
@@ -102,12 +102,12 @@ fn session_cookie(id: String, secure: bool) -> Cookie<'static> {
 }
 
 /// Resolves the signed-in user from the session cookie, if any and unexpired.
-pub async fn current_user(db: &sqlx::SqlitePool, jar: &CookieJar) -> Option<UserView> {
+pub async fn current_user(db: &sqlx::PgPool, jar: &CookieJar) -> Option<UserView> {
     let session_id = jar.get(SESSION_COOKIE)?.value().to_string();
     let row = sqlx::query(
         "SELECT users.id as id, users.username as username, sessions.expires_at as expires_at
          FROM sessions JOIN users ON users.id = sessions.user_id
-         WHERE sessions.id = ?",
+         WHERE sessions.id = $1",
     )
     .bind(&session_id)
     .fetch_optional(db)
@@ -139,7 +139,7 @@ async fn register(
     validate_username(&creds.username)?;
     validate_password(&creds.password)?;
 
-    let existing = sqlx::query("SELECT id FROM users WHERE username = ?")
+    let existing = sqlx::query("SELECT id FROM users WHERE username = $1")
         .bind(&creds.username)
         .fetch_optional(&state.db)
         .await?;
@@ -149,7 +149,7 @@ async fn register(
 
     let user_id = uuid::Uuid::new_v4().to_string();
     let password_hash = hash_password(&creds.password)?;
-    sqlx::query("INSERT INTO users (id, username, password_hash, created_at) VALUES (?, ?, ?, ?)")
+    sqlx::query("INSERT INTO users (id, username, password_hash, created_at) VALUES ($1, $2, $3, $4)")
         .bind(&user_id)
         .bind(&creds.username)
         .bind(&password_hash)
@@ -166,8 +166,8 @@ async fn register(
 /// cookie-session login and the CLI-style token login below, so a
 /// nonexistent username always takes the same dummy-hash timing path
 /// regardless of which endpoint is asking.
-async fn authenticate(db: &sqlx::SqlitePool, creds: &Credentials) -> Result<UserView, AppError> {
-    let row = sqlx::query("SELECT id, username, password_hash FROM users WHERE username = ?")
+async fn authenticate(db: &sqlx::PgPool, creds: &Credentials) -> Result<UserView, AppError> {
+    let row = sqlx::query("SELECT id, username, password_hash FROM users WHERE username = $1")
         .bind(&creds.username)
         .fetch_optional(db)
         .await?;
@@ -223,7 +223,7 @@ async fn issue_token(
     }
     let user = authenticate(&state.db, &creds).await?;
     let token = uuid::Uuid::new_v4().to_string();
-    sqlx::query("INSERT INTO api_tokens (token, user_id, created_at) VALUES (?, ?, ?)")
+    sqlx::query("INSERT INTO api_tokens (token, user_id, created_at) VALUES ($1, $2, $3)")
         .bind(&token)
         .bind(&user.id)
         .bind(format_timestamp(OffsetDateTime::now_utc()))
@@ -234,11 +234,11 @@ async fn issue_token(
 
 /// Resolves a signed-in user from a bearer token (see api_tokens above),
 /// for clients with no cookie jar.
-pub async fn user_from_token(db: &sqlx::SqlitePool, token: &str) -> Option<UserView> {
+pub async fn user_from_token(db: &sqlx::PgPool, token: &str) -> Option<UserView> {
     let row = sqlx::query(
         "SELECT users.id as id, users.username as username
          FROM api_tokens JOIN users ON users.id = api_tokens.user_id
-         WHERE api_tokens.token = ?",
+         WHERE api_tokens.token = $1",
     )
     .bind(token)
     .fetch_optional(db)
@@ -262,11 +262,11 @@ const PRESENCE_WRITE_INTERVAL_SECS: i64 = 60;
 /// authenticated request: the WHERE clause skips the write unless the stored
 /// value is already stale, so it is one no-op UPDATE a minute per active user
 /// rather than one per request.
-async fn touch_last_seen(db: &sqlx::SqlitePool, user_id: &str) {
+async fn touch_last_seen(db: &sqlx::PgPool, user_id: &str) {
     let now = OffsetDateTime::now_utc();
     let cutoff = now - TimeDuration::seconds(PRESENCE_WRITE_INTERVAL_SECS);
     let _ = sqlx::query(
-        "UPDATE users SET last_seen = ? WHERE id = ? AND (last_seen IS NULL OR last_seen < ?)",
+        "UPDATE users SET last_seen = $1 WHERE id = $2 AND (last_seen IS NULL OR last_seen < $3)",
     )
     .bind(format_timestamp(now))
     .bind(user_id)
@@ -276,7 +276,7 @@ async fn touch_last_seen(db: &sqlx::SqlitePool, user_id: &str) {
 }
 
 pub async fn current_user_or_token(
-    db: &sqlx::SqlitePool,
+    db: &sqlx::PgPool,
     jar: &CookieJar,
     headers: &axum::http::HeaderMap,
 ) -> Option<UserView> {
@@ -296,7 +296,7 @@ pub async fn current_user_or_token(
 
 async fn logout(State(state): State<Arc<AppState>>, jar: CookieJar) -> Result<impl IntoResponse, AppError> {
     if let Some(cookie) = jar.get(SESSION_COOKIE) {
-        sqlx::query("DELETE FROM sessions WHERE id = ?")
+        sqlx::query("DELETE FROM sessions WHERE id = $1")
             .bind(cookie.value())
             .execute(&state.db)
             .await?;

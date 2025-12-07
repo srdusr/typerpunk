@@ -110,7 +110,7 @@ async fn callback(
     let expires_at = format_timestamp(OffsetDateTime::now_utc() + TimeDuration::seconds(token.expires_in));
 
     sqlx::query(
-        "INSERT INTO spotify_tokens (user_id, access_token, refresh_token, expires_at) VALUES (?, ?, ?, ?)
+        "INSERT INTO spotify_tokens (user_id, access_token, refresh_token, expires_at) VALUES ($1, $2, $3, $4)
          ON CONFLICT(user_id) DO UPDATE SET access_token = excluded.access_token, refresh_token = excluded.refresh_token, expires_at = excluded.expires_at",
     )
     .bind(&user.id)
@@ -125,7 +125,7 @@ async fn callback(
 }
 
 async fn get_valid_access_token(state: &AppState, user_id: &str) -> Result<Option<String>, AppError> {
-    let row = sqlx::query("SELECT access_token, refresh_token, expires_at FROM spotify_tokens WHERE user_id = ?")
+    let row = sqlx::query("SELECT access_token, refresh_token, expires_at FROM spotify_tokens WHERE user_id = $1")
         .bind(user_id)
         .fetch_optional(&state.db)
         .await?;
@@ -159,7 +159,7 @@ async fn get_valid_access_token(state: &AppState, user_id: &str) -> Result<Optio
 
     let new_refresh_token = refreshed.refresh_token.unwrap_or(refresh_token);
     let new_expires_at = format_timestamp(OffsetDateTime::now_utc() + TimeDuration::seconds(refreshed.expires_in));
-    sqlx::query("UPDATE spotify_tokens SET access_token = ?, refresh_token = ?, expires_at = ? WHERE user_id = ?")
+    sqlx::query("UPDATE spotify_tokens SET access_token = $1, refresh_token = $2, expires_at = $3 WHERE user_id = $4")
         .bind(&refreshed.access_token)
         .bind(&new_refresh_token)
         .bind(&new_expires_at)
