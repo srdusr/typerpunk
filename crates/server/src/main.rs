@@ -36,19 +36,42 @@ struct TextEntry {
 // falls back to a couple of plain sentences if the file isn't reachable
 // (e.g. the server binary run from somewhere other than the repo root),
 // so a room can still start rather than erroring on an empty pool.
+/// Shortest passage a multiplayer race will use.
+const MIN_RACE_TEXT_CHARS: usize = 120;
+
+fn fallback_race_texts() -> Vec<RaceText> {
+    vec![
+        RaceText {
+            text: "The quick brown fox jumps over the lazy dog, and the dog, being lazy, does not mind at all. Pack my box with five dozen liquor jugs.".to_string(),
+            attribution: None,
+        },
+    ]
+}
+
 fn load_race_texts() -> Vec<RaceText> {
     let path = std::env::var("TEXTS_JSON_PATH").unwrap_or_else(|_| "texts.json".to_string());
     match std::fs::read_to_string(&path).ok().and_then(|raw| serde_json::from_str::<Vec<TextEntry>>(&raw).ok()) {
-        Some(entries) if !entries.is_empty() => entries
-            .into_iter()
-            .map(|e| RaceText { text: e.content, attribution: e.attribution })
-            .collect(),
+        Some(entries) if !entries.is_empty() => {
+            let pool: Vec<RaceText> = entries
+                .into_iter()
+                // A race on a 22-character quote is over before anyone has
+                // their hands in position. The dataset is shared with single
+                // player, where a short quote is fine, so the floor is applied
+                // here rather than to the pack itself.
+                .filter(|e| e.content.chars().count() >= MIN_RACE_TEXT_CHARS)
+                .map(|e| RaceText { text: e.content, attribution: e.attribution })
+                .collect();
+            if pool.is_empty() {
+                tracing::warn!("no passage reached {MIN_RACE_TEXT_CHARS} characters - races will use the fallback pool");
+                fallback_race_texts()
+            } else {
+                tracing::info!("{} passages available for races", pool.len());
+                pool
+            }
+        }
         _ => {
             tracing::warn!("could not load race texts from {path} - using a small built-in fallback pool");
-            vec![
-                RaceText { text: "The quick brown fox jumps over the lazy dog.".to_string(), attribution: None },
-                RaceText { text: "Pack my box with five dozen liquor jugs.".to_string(), attribution: None },
-            ]
+            fallback_race_texts()
         }
     }
 }

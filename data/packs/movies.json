@@ -1,30 +1,137 @@
 [
-  {"category":"movies","attribution":"The Wizard of Oz (1939)","content":"Toto, I've a feeling we're not in Kansas anymore."},
-  {"category":"movies","attribution":"Casablanca (1942)","content":"Of all the gin joints in all the towns in all the world, she walks into mine."},
-  {"category":"movies","attribution":"Casablanca (1942)","content":"Louis, I think this is the beginning of a beautiful friendship."},
-  {"category":"movies","attribution":"Sunset Boulevard (1950)","content":"I am big. It's the pictures that got small."},
-  {"category":"movies","attribution":"Cool Hand Luke (1967)","content":"What we've got here is failure to communicate."},
-  {"category":"movies","attribution":"The Godfather (1972)","content":"I'm gonna make him an offer he can't refuse."},
-  {"category":"movies","attribution":"Jaws (1975)","content":"You're gonna need a bigger boat."},
-  {"category":"movies","attribution":"Network (1976)","content":"I'm as mad as hell, and I'm not going to take this anymore."},
-  {"category":"movies","attribution":"Apocalypse Now (1979)","content":"I love the smell of napalm in the morning."},
-  {"category":"movies","attribution":"The Empire Strikes Back (1980)","content":"Do. Or do not. There is no try."},
-  {"category":"movies","attribution":"Blade Runner (1982)","content":"All those moments will be lost in time, like tears in rain. Time to die."},
-  {"category":"movies","attribution":"Field of Dreams (1989)","content":"If you build it, he will come."},
-  {"category":"movies","attribution":"The Silence of the Lambs (1991)","content":"A census taker once tried to test me. I ate his liver with some fava beans and a nice chianti."},
-  {"category":"movies","attribution":"A League of Their Own (1992)","content":"There's no crying in baseball."},
-  {"category":"movies","attribution":"Jurassic Park (1993)","content":"Your scientists were so preoccupied with whether or not they could, they didn't stop to think if they should."},
-  {"category":"movies","attribution":"Forrest Gump (1994)","content":"My mama always said life was like a box of chocolates. You never know what you're gonna get."},
-  {"category":"movies","attribution":"The Shawshank Redemption (1994)","content":"Get busy living, or get busy dying."},
-  {"category":"movies","attribution":"The Usual Suspects (1995)","content":"The greatest trick the devil ever pulled was convincing the world he didn't exist."},
-  {"category":"movies","attribution":"The Matrix (1999)","content":"I'm trying to free your mind, Neo. But I can only show you the door. You're the one that has to walk through it."},
-  {"category":"movies","attribution":"Fight Club (1999)","content":"It's only after we've lost everything that we're free to do anything."},
-  {"category":"movies","attribution":"Gladiator (2000)","content":"What we do in life echoes in eternity."},
-  {"category":"movies","attribution":"The Lord of the Rings: The Fellowship of the Ring (2001)","content":"All we have to decide is what to do with the time that is given us."},
-  {"category":"movies","attribution":"Spider-Man (2002)","content":"With great power comes great responsibility."},
-  {"category":"movies","attribution":"The Dark Knight (2008)","content":"You either die a hero, or you live long enough to see yourself become the villain."},
-  {"category":"movies","attribution":"Inception (2010)","content":"You mustn't be afraid to dream a little bigger, darling."},
-  {"category":"movies","attribution":"Interstellar (2014)","content":"We used to look up at the sky and wonder at our place in the stars. Now we just look down and worry about our place in the dirt."},
-  {"category":"movies","attribution":"Mad Max: Fury Road (2015)","content":"Oh, what a day. What a lovely day!"},
-  {"category":"movies","attribution":"Arrival (2016)","content":"If you could see your whole life laid out in front of you, would you change things?"}
+  {
+    "category": "movies",
+    "attribution": "The Wizard of Oz (1939)",
+    "content": "Toto, I've a feeling we're not in Kansas anymore."
+  },
+  {
+    "category": "movies",
+    "attribution": "Casablanca (1942)",
+    "content": "Of all the gin joints in all the towns in all the world, she walks into mine."
+  },
+  {
+    "category": "movies",
+    "attribution": "Casablanca (1942)",
+    "content": "Louis, I think this is the beginning of a beautiful friendship."
+  },
+  {
+    "category": "movies",
+    "attribution": "Sunset Boulevard (1950)",
+    "content": "I am big. It's the pictures that got small."
+  },
+  {
+    "category": "movies",
+    "attribution": "Cool Hand Luke (1967)",
+    "content": "What we've got here is failure to communicate."
+  },
+  {
+    "category": "movies",
+    "attribution": "The Godfather (1972)",
+    "content": "I'm gonna make him an offer he can't refuse."
+  },
+  {
+    "category": "movies",
+    "attribution": "Jaws (1975)",
+    "content": "You're gonna need a bigger boat."
+  },
+  {
+    "category": "movies",
+    "attribution": "Network (1976)",
+    "content": "I'm as mad as hell, and I'm not going to take this anymore."
+  },
+  {
+    "category": "movies",
+    "attribution": "Apocalypse Now (1979)",
+    "content": "I love the smell of napalm in the morning."
+  },
+  {
+    "category": "movies",
+    "attribution": "The Empire Strikes Back (1980)",
+    "content": "Do. Or do not. There is no try."
+  },
+  {
+    "category": "movies",
+    "attribution": "Blade Runner (1982)",
+    "content": "All those moments will be lost in time, like tears in rain. Time to die."
+  },
+  {
+    "category": "movies",
+    "attribution": "Field of Dreams (1989)",
+    "content": "If you build it, he will come."
+  },
+  {
+    "category": "movies",
+    "attribution": "The Silence of the Lambs (1991)",
+    "content": "A census taker once tried to test me. I ate his liver with some fava beans and a nice chianti."
+  },
+  {
+    "category": "movies",
+    "attribution": "A League of Their Own (1992)",
+    "content": "There's no crying in baseball."
+  },
+  {
+    "category": "movies",
+    "attribution": "Jurassic Park (1993)",
+    "content": "Your scientists were so preoccupied with whether or not they could, they didn't stop to think if they should."
+  },
+  {
+    "category": "movies",
+    "attribution": "Forrest Gump (1994)",
+    "content": "My mama always said life was like a box of chocolates. You never know what you're gonna get."
+  },
+  {
+    "category": "movies",
+    "attribution": "The Shawshank Redemption (1994)",
+    "content": "Get busy living, or get busy dying."
+  },
+  {
+    "category": "movies",
+    "attribution": "The Usual Suspects (1995)",
+    "content": "The greatest trick the devil ever pulled was convincing the world he didn't exist."
+  },
+  {
+    "category": "movies",
+    "attribution": "The Matrix (1999)",
+    "content": "I'm trying to free your mind, Neo. But I can only show you the door. You're the one that has to walk through it."
+  },
+  {
+    "category": "movies",
+    "attribution": "Fight Club (1999)",
+    "content": "It's only after we've lost everything that we're free to do anything."
+  },
+  {
+    "category": "movies",
+    "attribution": "Gladiator (2000)",
+    "content": "What we do in life echoes in eternity."
+  },
+  {
+    "category": "movies",
+    "attribution": "Spider-Man (2002)",
+    "content": "With great power comes great responsibility."
+  },
+  {
+    "category": "movies",
+    "attribution": "The Dark Knight (2008)",
+    "content": "You either die a hero, or you live long enough to see yourself become the villain."
+  },
+  {
+    "category": "movies",
+    "attribution": "Inception (2010)",
+    "content": "You mustn't be afraid to dream a little bigger, darling."
+  },
+  {
+    "category": "movies",
+    "attribution": "Interstellar (2014)",
+    "content": "We used to look up at the sky and wonder at our place in the stars. Now we just look down and worry about our place in the dirt."
+  },
+  {
+    "category": "movies",
+    "attribution": "Mad Max: Fury Road (2015)",
+    "content": "Oh, what a day. What a lovely day!"
+  },
+  {
+    "category": "movies",
+    "attribution": "Arrival (2016)",
+    "content": "If you could see your whole life laid out in front of you, would you change things?"
+  }
 ]

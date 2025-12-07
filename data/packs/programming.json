@@ -180,5 +180,82 @@
     "attribution": "Shell",
     "content": "export PATH=\"$HOME/.local/bin:$PATH\" && command -v rg >/dev/null || echo missing",
     "explanation": "Prepending puts your own binaries ahead of the system ones. command -v is the portable test for whether something is installed."
+  },
+  {
+    "category": "programming",
+    "language": "shell",
+    "attribution": "Git",
+    "explanation": "Finds the commit that introduced a bug by bisecting history. Give it a known-good and known-bad commit and it halves the range each step.",
+    "content": "git bisect start HEAD v1.2.0 && git bisect run ./test.sh"
+  },
+  {
+    "category": "programming",
+    "language": "shell",
+    "attribution": "Git",
+    "explanation": "Who last touched each line of a range, which is how you find the person to ask rather than the person to blame.",
+    "content": "git log -L 40,60:src/parser.rs --oneline"
+  },
+  {
+    "category": "programming",
+    "language": "shell",
+    "attribution": "Git",
+    "explanation": "Recovers commits that are no longer reachable from any branch. A hard reset does not destroy them; it just stops pointing at them.",
+    "content": "git reflog --date=iso | head -20"
+  },
+  {
+    "category": "programming",
+    "language": "python",
+    "attribution": "Python",
+    "explanation": "zip pairs two sequences and stops at the shorter one. strict=True makes a length mismatch an error rather than silent truncation.",
+    "content": "for name, score in zip(names, scores, strict=True): print(f'{name}: {score:>5.1f}')"
+  },
+  {
+    "category": "programming",
+    "language": "python",
+    "attribution": "Python",
+    "explanation": "defaultdict removes the exists-check before every append, which is the most common shape of a grouping loop.",
+    "content": "groups = defaultdict(list); [groups[w[0]].append(w) for w in words]"
+  },
+  {
+    "category": "programming",
+    "language": "javascript",
+    "attribution": "JavaScript",
+    "explanation": "?? falls back only on null or undefined, unlike ||, which also fires on 0 and the empty string.",
+    "content": "const port = config.port ?? process.env.PORT ?? 8080;"
+  },
+  {
+    "category": "programming",
+    "language": "javascript",
+    "attribution": "JavaScript",
+    "explanation": "Promise.all runs them concurrently and rejects on the first failure; allSettled waits for every result instead.",
+    "content": "const [user, posts] = await Promise.all([getUser(id), getPosts(id)]);"
+  },
+  {
+    "category": "programming",
+    "language": "rust",
+    "attribution": "Rust",
+    "explanation": "The ? operator returns early on Err, converting the error type through From. It is what keeps error handling from nesting.",
+    "content": "let config: Config = toml::from_str(&fs::read_to_string(path)?)?;"
+  },
+  {
+    "category": "programming",
+    "language": "rust",
+    "attribution": "Rust",
+    "explanation": "entry().or_insert_with() looks the key up once. The obvious contains_key-then-insert hashes it twice.",
+    "content": "*counts.entry(word).or_insert(0) += 1;"
+  },
+  {
+    "category": "programming",
+    "language": "clike",
+    "attribution": "SQL",
+    "explanation": "A window function ranks rows within each partition without collapsing them, which a GROUP BY cannot do.",
+    "content": "SELECT user_id, wpm, RANK() OVER (PARTITION BY mode ORDER BY wpm DESC) AS rank FROM results;"
+  },
+  {
+    "category": "programming",
+    "language": "clike",
+    "attribution": "SQL",
+    "explanation": "EXPLAIN ANALYZE runs the query and reports what the planner actually did, not what it guessed it would do.",
+    "content": "EXPLAIN ANALYZE SELECT * FROM test_results WHERE mode_key = 'time-30' ORDER BY wpm DESC LIMIT 50;"
   }
 ]

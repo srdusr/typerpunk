@@ -1,17 +1,73 @@
 [
-  {"category":"philosophy","content":"Waste no more time arguing about what a good man should be. Be one.","attribution":"Marcus Aurelius, Meditations"},
-  {"category":"philosophy","content":"It's not what happens to you, but how you react to it that matters.","attribution":"Epictetus"},
-  {"category":"philosophy","content":"It is not that we have a short time to live, but that we waste a lot of it.","attribution":"Seneca, On the Shortness of Life"},
-  {"category":"philosophy","content":"The beginning is the most important part of the work.","attribution":"Plato, The Republic"},
-  {"category":"philosophy","content":"All men by nature desire to know.","attribution":"Aristotle, Metaphysics"},
-  {"category":"philosophy","content":"I think, therefore I am.","attribution":"Rene Descartes, Discourse on the Method"},
-  {"category":"philosophy","content":"It does not matter how slowly you go as long as you do not stop.","attribution":"Confucius, Analects"},
-  {"category":"philosophy","content":"A journey of a thousand miles begins with a single step.","attribution":"Lao Tzu, Tao Te Ching"},
-  {"category":"philosophy","content":"The only true wisdom is in knowing you know nothing.","attribution":"Socrates"},
-  {"category":"philosophy","content":"Stoicism is a school of ancient Greek philosophy that teaches the practice of virtue as the only true good, and encourages focusing only on what lies within one's own control.","attribution":"Philosophy"},
-  {"category":"philosophy","content":"Existentialism explores questions about individual freedom, choice, and meaning, arguing that people must create their own purpose in a universe that does not provide one automatically.","attribution":"Philosophy"},
-  {"category":"philosophy","content":"The Socratic method uses a series of questions and answers to expose contradictions in a person's beliefs, encouraging deeper critical thinking rather than simply providing answers.","attribution":"Philosophy"},
-  {"category":"philosophy","content":"The impediment to action advances action. What stands in the way becomes the way.","attribution":"Marcus Aurelius, Meditations"},
-  {"category":"philosophy","content":"Every new beginning comes from some other beginning's end.","attribution":"Seneca, Letters from a Stoic"},
-  {"category":"philosophy","content":"Utilitarianism holds that the right action is the one that produces the greatest good for the greatest number of people, judging morality by outcomes rather than intentions.","attribution":"Philosophy"}
+  {
+    "category": "philosophy",
+    "content": "Waste no more time arguing about what a good man should be. Be one.",
+    "attribution": "Marcus Aurelius, Meditations"
+  },
+  {
+    "category": "philosophy",
+    "content": "It's not what happens to you, but how you react to it that matters.",
+    "attribution": "Epictetus"
+  },
+  {
+    "category": "philosophy",
+    "content": "It is not that we have a short time to live, but that we waste a lot of it.",
+    "attribution": "Seneca, On the Shortness of Life"
+  },
+  {
+    "category": "philosophy",
+    "content": "The beginning is the most important part of the work.",
+    "attribution": "Plato, The Republic"
+  },
+  {
+    "category": "philosophy",
+    "content": "All men by nature desire to know.",
+    "attribution": "Aristotle, Metaphysics"
+  },
+  {
+    "category": "philosophy",
+    "content": "I think, therefore I am.",
+    "attribution": "Rene Descartes, Discourse on the Method"
+  },
+  {
+    "category": "philosophy",
+    "content": "It does not matter how slowly you go as long as you do not stop.",
+    "attribution": "Confucius, Analects"
+  },
+  {
+    "category": "philosophy",
+    "content": "A journey of a thousand miles begins with a single step.",
+    "attribution": "Lao Tzu, Tao Te Ching"
+  },
+  {
+    "category": "philosophy",
+    "content": "The only true wisdom is in knowing you know nothing.",
+    "attribution": "Socrates"
+  },
+  {
+    "category": "philosophy",
+    "content": "Stoicism is a school of ancient Greek philosophy that teaches the practice of virtue as the only true good, and encourages focusing only on what lies within one's own control."
+  },
+  {
+    "category": "philosophy",
+    "content": "Existentialism explores questions about individual freedom, choice, and meaning, arguing that people must create their own purpose in a universe that does not provide one automatically."
+  },
+  {
+    "category": "philosophy",
+    "content": "The Socratic method uses a series of questions and answers to expose contradictions in a person's beliefs, encouraging deeper critical thinking rather than simply providing answers."
+  },
+  {
+    "category": "philosophy",
+    "content": "The impediment to action advances action. What stands in the way becomes the way.",
+    "attribution": "Marcus Aurelius, Meditations"
+  },
+  {
+    "category": "philosophy",
+    "content": "Every new beginning comes from some other beginning's end.",
+    "attribution": "Seneca, Letters from a Stoic"
+  },
+  {
+    "category": "philosophy",
+    "content": "Utilitarianism holds that the right action is the one that produces the greatest good for the greatest number of people, judging morality by outcomes rather than intentions."
+  }
 ]
