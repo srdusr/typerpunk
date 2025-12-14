@@ -68,7 +68,7 @@ function wordListTierLabel(tier) {
 }
 
 export function renderMainMenu(root, props) {
-    const { onStartGame, onPickAndStart, onShowPrivacy, categories, selectedCategory, onSelectCategory, customText, onLoadCustom, onClearCustom, onStartCustom, onStartPassive, onShowStats, onShowPlaceholder, onShowAccount, onShowLeaderboard, onShowFriends, onShowMultiplayer, onShowLyrics, onShowStore, onSimulateTest } = props;
+    const { onStartGame, onPickAndStart, onShowPrivacy, onShowContribute, documents, onOpenDocument, onRemoveDocument, categories, selectedCategory, onSelectCategory, customText, onLoadCustom, onClearCustom, onStartCustom, onStartPassive, onShowStats, onShowPlaceholder, onShowAccount, onShowLeaderboard, onShowFriends, onShowMultiplayer, onShowLyrics, onShowStore, onSimulateTest } = props;
     const modes = ['random', 'words', 'time', 'zen', 'practice', ...categories, 'custom'];
     // The picker used to be one flat list of 18 entries mixing two unrelated
     // things: how a test is generated (Random/Words/Timed/Zen/Practice/Custom)
@@ -182,6 +182,19 @@ export function renderMainMenu(root, props) {
                     </label>
                     <span class="custom-file-name"></span>
                 </div>
+                ${documents && documents.length ? `
+                <div class="custom-library">
+                    <div class="settings-hint">Your documents</div>
+                    ${documents.map(d => `
+                        <div class="custom-doc" data-doc="${escapeHtml(d.id)}">
+                            <button class="custom-doc-open" data-action="open-doc" data-doc="${escapeHtml(d.id)}">
+                                <span class="custom-doc-name">${escapeHtml(d.name)}</span>
+                                <span class="custom-doc-progress">${Math.min(100, Math.round((d.position / Math.max(1, d.chunkCount)) * 100))}% &middot; ${d.chunkCount} segments</span>
+                            </button>
+                            <button class="custom-doc-remove" data-action="remove-doc" data-doc="${escapeHtml(d.id)}" aria-label="Remove" data-tooltip="Remove from your documents">&times;</button>
+                        </div>
+                    `).join('')}
+                </div>` : ''}
                 <div class="custom-panel-row">
                     <button class="menu-button small" data-action="use-pasted">Use this text</button>
                     <button class="menu-button small ghost" data-action="close-custom">Cancel</button>
@@ -212,7 +225,7 @@ export function renderMainMenu(root, props) {
 
     attachTooltips(root);
     const cleanupTheme = renderTopRail(root, { onShowAccount, onShowFriends });
-    const cleanupFooter = renderSiteFooter(root, { onShowPrivacy });
+    const cleanupFooter = renderSiteFooter(root, { onShowPrivacy, onShowContribute });
 
     // Friends-online lives in the top rail beside the Friends control.
 
@@ -305,6 +318,16 @@ export function renderMainMenu(root, props) {
         startBtn.click();
     };
     document.addEventListener('keydown', handleEnterToStart);
+
+    root.querySelectorAll('[data-action="open-doc"]').forEach(el => {
+        el.addEventListener('click', () => onOpenDocument(el.dataset.doc));
+    });
+    root.querySelectorAll('[data-action="remove-doc"]').forEach(el => {
+        el.addEventListener('click', e => {
+            e.stopPropagation();
+            onRemoveDocument(el.dataset.doc);
+        });
+    });
 
     root.querySelector('[data-action="stats"]').addEventListener('click', onShowStats);
 
@@ -505,12 +528,15 @@ export function renderMainMenu(root, props) {
                 errorBox.textContent = "That file doesn't look like text - try a .txt, .md, or code file.";
                 return;
             }
-            const { chunks, language, timed } = parseCustomContent(raw, name);
+            const { chunks, language, timed, markdown } = parseCustomContent(raw, name);
             if (chunks.length === 0) {
                 errorBox.textContent = 'Could not find any typeable text in that content.';
                 return;
             }
-            onLoadCustom({ name, chunks, language, timed });
+            // `raw` travels with it so the document can be stored and
+            // re-chunked later - switching a markdown file between prose and
+            // verbatim needs the original, not the chunks.
+            onLoadCustom({ name, chunks, language, timed, markdown, raw });
         } catch (err) {
             console.error('Failed to load custom text:', err);
             errorBox.textContent = 'Failed to read that file.';

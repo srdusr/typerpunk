@@ -10,6 +10,7 @@ mod rate_limit;
 mod spotify;
 mod state;
 mod stats;
+mod texts;
 
 use crate::state::RaceText;
 use axum::http::{HeaderValue, Method};
@@ -89,6 +90,7 @@ fn build_app(app_state: Arc<AppState>) -> Router {
         .merge(multiplayer::router())
         .merge(spotify::router())
         .merge(lyrics::router())
+        .merge(texts::router())
         .with_state(app_state)
 }
 

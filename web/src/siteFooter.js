@@ -39,13 +39,15 @@ async function share(result) {
 
 /// `result` is optional: with one, Share offers the score just achieved;
 /// without, it offers the site.
-export function renderSiteFooter(root, { result, onShowPrivacy } = {}) {
+export function renderSiteFooter(root, { result, onShowPrivacy, onShowContribute } = {}) {
     const wrap = document.createElement('div');
     wrap.className = 'site-footer';
     wrap.innerHTML = `
         <button class="site-footer-link" data-action="share" data-tooltip="${result ? 'Share this result' : 'Share TyperPunk'}">Share</button>
         <span class="site-footer-sep">·</span>
         <a class="site-footer-link" href="${LINKS.github}" target="_blank" rel="noopener noreferrer" data-tooltip="Source on GitHub">GitHub</a>
+        <span class="site-footer-sep">·</span>
+        <button class="site-footer-link" data-action="contribute" data-tooltip="Submit a passage for other people to type">Contribute</button>
         <span class="site-footer-sep">·</span>
         <button class="site-footer-link" data-action="privacy" data-tooltip="What this site stores">Privacy</button>
         <span class="site-footer-sep">·</span>
@@ -61,6 +63,7 @@ export function renderSiteFooter(root, { result, onShowPrivacy } = {}) {
         setTimeout(() => { shareBtn.textContent = 'Share'; }, 1800);
     });
     wrap.querySelector('[data-action="privacy"]').addEventListener('click', () => onShowPrivacy?.());
+    wrap.querySelector('[data-action="contribute"]').addEventListener('click', () => onShowContribute?.());
 
     return () => wrap.remove();
 }

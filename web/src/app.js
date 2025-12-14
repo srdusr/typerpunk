@@ -11,7 +11,10 @@ import { renderMultiplayerScreen } from './screens/multiplayerScreen.js';
 import { renderLyricsScreen } from './screens/lyricsScreen.js';
 import { renderPublicProfileScreen } from './screens/publicProfileScreen.js';
 import { renderStoreScreen } from './screens/storeScreen.js';
+import { renderContributeScreen } from './screens/contributeScreen.js';
 import { createGame, freeGame } from './game.js';
+import { api } from './api.js';
+import { saveDocument, setPosition, getDocument, listDocuments, removeDocument } from './customLibrary.js';
 import { getSettings } from './settings.js';
 import { generateWordStream, generateWeakKeyStream, wordCountForDuration } from './wordGenerator.js';
 import { getWeakChars } from './keyStats.js';
@@ -41,6 +44,22 @@ export function startApp(root, localTexts) {
     let session = { type: 'random', customIndex: 0 };
     let game = null;
     let cleanupScreen = null;
+
+    // Approved community submissions, merged on top of the bundled dataset.
+    // Best-effort: the app is fully usable on the packs it ships with, so a
+    // server that is down or unreachable must not delay or break startup.
+    api.get('/api/texts')
+        .then(items => {
+            if (!Array.isArray(items) || items.length === 0) return;
+            allTexts = allTexts.concat(items.map(t => ({
+                category: t.category,
+                content: t.content,
+                attribution: t.attribution || undefined,
+                language: t.language || undefined,
+            })));
+            categories = uniqueCategories(allTexts);
+        })
+        .catch(() => {});
 
     const onlineUrl = window.TYPERPUNK_TEXTS_URL;
     if (onlineUrl) {
@@ -114,8 +133,25 @@ export function startApp(root, localTexts) {
                 startGame();
             },
             customText,
+            // Documents are kept so a set of notes survives a reload - see
+            // customLibrary.js. Purely local; nothing is uploaded.
+            onOpenDocument: id => {
+                const doc = getDocument(id);
+                if (!doc) return;
+                const parsed = parseCustomContent(doc.raw, doc.name);
+                customText = { name: doc.name, docId: doc.id, ...parsed };
+                session = { type: 'custom', customIndex: Math.min(doc.position || 0, parsed.chunks.length - 1) };
+                startGame();
+            },
+            documents: listDocuments(),
+            onRemoveDocument: id => { removeDocument(id); showMainMenu(); },
             onLoadCustom: loaded => {
-                customText = loaded;
+                const doc = saveDocument({
+                    name: loaded.name,
+                    raw: loaded.raw ?? '',
+                    chunkCount: loaded.chunks.length,
+                });
+                customText = { ...loaded, docId: doc.id };
                 showMainMenu();
             },
             onClearCustom: () => {
@@ -136,6 +172,7 @@ export function startApp(root, localTexts) {
             onShowStore: showStore,
             onShowLyrics: showLyrics,
             onShowPrivacy: showPrivacy,
+            onShowContribute: showContribute,
             onSimulateTest: simulateTest,
         });
     }
@@ -175,6 +212,12 @@ export function startApp(root, localTexts) {
     // Written from what the code actually does, not from a template: this app
     // has no analytics, no third-party scripts and no npm runtime dependencies,
     // so there is genuinely very little to disclose.
+    function showContribute() {
+        teardown();
+        setScreen('contribute');
+        cleanupScreen = renderContributeScreen(root, { onBack: showMainMenu, onShowStats: showStats, onShowPlaceholder: showPlaceholder, onShowAccount: showAccount, onShowLeaderboard: showLeaderboard, onShowFriends: showFriends, onShowMultiplayer: showMultiplayer, onShowStore: showStore });
+    }
+
     function showPrivacy() {
         showPlaceholder('Privacy', [
             'On this device, in your browser: your theme, typing settings, personal bests, lifetime stats and per-key accuracy. Clearing site data removes all of it. Nothing here is sent anywhere unless you sign in.',
@@ -339,6 +382,7 @@ export function startApp(root, localTexts) {
         if (session.type === 'custom' && customText) {
             if (session.customIndex + 1 < customText.chunks.length) {
                 session.customIndex += 1;
+                if (customText.docId) setPosition(customText.docId, session.customIndex);
             } else {
                 showMainMenu();
                 return;
@@ -348,6 +392,13 @@ export function startApp(root, localTexts) {
     }
 
     function showEndScreen(result) {
+        // Record the segment as done as soon as it is finished, not when the
+        // next one is started. Closing the tab after finishing a segment
+        // otherwise lost it, and returning to a set of notes at the segment
+        // you had already typed is exactly the thing this is meant to avoid.
+        if (session.type === 'custom' && customText?.docId) {
+            setPosition(customText.docId, Math.min(session.customIndex + 1, customText.chunks.length));
+        }
         teardown();
         setScreen('end');
         cleanupScreen = renderEndScreen(root, {

@@ -2920,3 +2920,132 @@ body::-webkit-scrollbar, .app::-webkit-scrollbar, #root::-webkit-scrollbar {
     color: var(--primary-color);
     border-color: var(--primary-color);
 }
+
+/* Community submissions: the form, your own history, and the review queue. */
+.contribute-form { width: 100%; max-width: 34rem; }
+
+.contribute-count {
+    align-self: flex-end;
+    font-size: 0.7rem;
+    color: var(--sub-color);
+    font-family: 'JetBrains Mono', monospace;
+}
+
+.contribute-len.bad { color: var(--error-color); }
+
+.submission-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+    width: 100%;
+    max-width: 40rem;
+}
+
+.submission-row {
+    border: 1px solid var(--neutral-color);
+    border-radius: 8px;
+    padding: 0.75rem 0.9rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    text-align: left;
+}
+
+.submission-head {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--sub-color);
+}
+
+.submission-status { margin-left: auto; }
+.submission-status.status-approved { color: var(--primary-color); }
+.submission-status.status-rejected { color: var(--error-color); }
+.submission-status.status-pending { color: var(--warning-color); }
+
+.submission-content {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.85rem;
+    color: var(--text-color);
+    line-height: 1.5;
+}
+
+.submission-attribution,
+.submission-reason {
+    font-size: 0.75rem;
+    color: var(--sub-color);
+}
+
+.submission-reason { color: var(--error-color); }
+
+.submission-actions { display: flex; gap: 0.5rem; }
+
+/* Imported documents, kept between visits. Notes are worked through over
+   several sittings, so the list shows how far into each one you are. */
+.custom-library {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    width: 100%;
+    margin-bottom: 0.5rem;
+}
+
+.custom-doc {
+    display: flex;
+    align-items: stretch;
+    gap: 0.35rem;
+}
+
+.custom-doc-open {
+    flex: 1 1 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.15rem;
+    background: none;
+    border: 1px solid var(--neutral-color);
+    border-radius: 6px;
+    padding: 0.5rem 0.7rem;
+    color: var(--text-color);
+    font-family: inherit;
+    cursor: pointer;
+    text-align: left;
+    min-width: 0;
+}
+
+.custom-doc-open:hover {
+    border-color: var(--primary-color);
+}
+
+.custom-doc-name {
+    font-size: 0.85rem;
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.custom-doc-progress {
+    font-size: 0.7rem;
+    color: var(--sub-color);
+    font-family: 'JetBrains Mono', monospace;
+}
+
+.custom-doc-remove {
+    flex: 0 0 auto;
+    width: 2rem;
+    background: none;
+    border: 1px solid transparent;
+    border-radius: 6px;
+    color: var(--sub-color);
+    font-size: 1.1rem;
+    cursor: pointer;
+}
+
+.custom-doc-remove:hover {
+    color: var(--error-color);
+    border-color: color-mix(in srgb, var(--error-color) 45%, transparent);
+}

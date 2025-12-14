@@ -39,6 +39,9 @@ pub struct AppState {
     /// an open proxy unless it is bounded. Keyed by IP, since the endpoint is
     /// reachable without an account.
     pub lyrics_rate_limiter: RateLimiter,
+    /// Keyed by user: enough for someone contributing in a sitting, not
+    /// enough for a script to fill the moderation queue.
+    pub submission_rate_limiter: RateLimiter<String>,
     /// Set from COOKIE_SECURE. Off for plain-HTTP local dev, must be on
     /// behind TLS in production or browsers silently drop the cookie.
     pub cookie_secure: bool,
@@ -68,6 +71,7 @@ impl AppState {
             // rapid Words-10 sessions while still capping scripted spam.
             stats_rate_limiter: RateLimiter::new(60, Duration::from_secs(5 * 60)),
             lyrics_rate_limiter: RateLimiter::new(30, Duration::from_secs(60)),
+            submission_rate_limiter: RateLimiter::new(20, Duration::from_secs(60 * 60)),
             cookie_secure,
             rooms: new_registry(),
             race_texts,

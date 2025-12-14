@@ -65,6 +65,12 @@ function splitLong(str, maxLen = 400) {
     return parts;
 }
 
+/// Collapses the whitespace inside a chunk. The typing input is a single
+/// line, so a chunk containing a newline can never be finished.
+function flattenWhitespace(text) {
+    return text.replace(/\s+/g, ' ').trim();
+}
+
 export function chunkPlainText(raw) {
     const normalized = raw.replace(/\r\n/g, '\n').trim();
     if (!normalized) return [];
@@ -73,7 +79,7 @@ export function chunkPlainText(raw) {
     const chunks = [];
     for (const block of source) {
         for (const piece of splitLong(block)) {
-            const trimmed = piece.trim();
+            const trimmed = flattenWhitespace(piece);
             if (trimmed) chunks.push({ content: trimmed, time: null });
         }
     }
@@ -145,11 +151,86 @@ function parseLrc(raw) {
     return chunks;
 }
 
-export function parseCustomContent(raw, filename) {
+
+// Markdown notes are the most common thing someone brings to a typing app to
+// study: lecture notes, a cheatsheet, a page of documentation. Typed
+// verbatim, most of what you retype is punctuation - hashes, asterisks,
+// backticks and link brackets - rather than the material itself.
+//
+// `strip` removes the decoration and keeps the prose, which is the mode for
+// studying what the notes say. Left off, the file is typed exactly as
+// written, which is the mode for learning the syntax.
+export function chunkMarkdown(raw, { strip = true } = {}) {
+    const normalized = raw.replace(/\r\n/g, '\n').trim();
+    if (!normalized) return [];
+
+    // Fenced code blocks are extracted whole and never stripped: their
+    // punctuation is the point, and paragraph splitting would cut them apart.
+    const segments = [];
+    const fence = /```[^\n]*\n([\s\S]*?)```/g;
+    let last = 0;
+    let m;
+    while ((m = fence.exec(normalized)) !== null) {
+        if (m.index > last) segments.push({ text: normalized.slice(last, m.index), code: false });
+        segments.push({ text: m[1], code: true });
+        last = m.index + m[0].length;
+    }
+    if (last < normalized.length) segments.push({ text: normalized.slice(last), code: false });
+
+    const chunks = [];
+    for (const seg of segments) {
+        if (seg.code) {
+            // One line at a time: a code block is typed the way it is written.
+            for (const line of seg.text.split('\n')) {
+                const t = line.trim();
+                if (t) chunks.push({ content: t, time: null, code: true });
+            }
+            continue;
+        }
+        for (const block of seg.text.split(/\n\s*\n/)) {
+            let text = block.trim();
+            if (!text) continue;
+            if (strip) {
+                text = text
+                    .replace(/^\s{0,3}#{1,6}\s+/gm, '')            // heading markers
+                    .replace(/^\s{0,3}>\s?/gm, '')                  // block quotes
+                    .replace(/^\s*[-*+]\s+/gm, '')                  // bullet markers
+                    .replace(/^\s*\d+[.)]\s+/gm, '')                // ordered list markers
+                    .replace(/!\[([^\]]*)\]\([^)]*\)/g, '$1')       // images -> alt text
+                    .replace(/\[([^\]]+)\]\([^)]*\)/g, '$1')        // links -> label
+                    .replace(/`([^`]+)`/g, '$1')                    // inline code
+                    .replace(/(\*\*|__)(.*?)\1/g, '$2')             // bold
+                    .replace(/(\*|_)(.*?)\1/g, '$2')                // italics
+                    .replace(/^\s*([-*_]\s*){3,}$/gm, '')           // horizontal rules
+                    .replace(/\|/g, ' ')                            // table pipes
+                    .replace(/[ \t]+/g, ' ')
+                    .trim();
+            }
+            // A heading on its own becomes a one-word chunk that is not worth
+            // typing; fold it into nothing and let the paragraph follow.
+            if (!text || text.length < 3) continue;
+            for (const piece of splitLong(text)) {
+                const t = flattenWhitespace(piece);
+                if (t) chunks.push({ content: t, time: null });
+            }
+        }
+    }
+    return chunks;
+}
+
+export function parseCustomContent(raw, filename, options = {}) {
     const ext = (filename || '').split('.').pop().toLowerCase();
     if (ext === 'srt') return { chunks: parseSrt(raw), language: null, timed: true };
     if (ext === 'vtt') return { chunks: parseVtt(raw), language: null, timed: true };
     if (ext === 'lrc') return { chunks: parseLrc(raw), language: null, timed: true };
     const language = languageForFilename(filename);
+    if (ext === 'md' || ext === 'markdown') {
+        return {
+            chunks: chunkMarkdown(raw, { strip: options.stripMarkdown !== false }),
+            language: null,
+            timed: false,
+            markdown: true,
+        };
+    }
     return { chunks: chunkPlainText(raw), language, timed: false };
 }
