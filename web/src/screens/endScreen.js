@@ -102,7 +102,7 @@ export function renderEndScreen(root, { stats, text, attribution, explanation, s
                 <span></span><span>Racer</span><span>WPM</span><span>Acc</span><span>Time</span>
             </div>
         ` + list.map(r => `
-            <div class="mp-standings-row${r.me ? ' me' : ''}${r.place ? '' : ' racing'}" style="--racer-color: ${r.color || 'var(--primary-color)'}">
+            <div class="mp-standings-row${r.me ? ' me' : ''}${r.place ? '' : ' racing'}" data-racer-color="${r.color || 'var(--primary-color)'}">
                 <span class="mp-standings-place">${r.place ? r.place : '&middot;'}</span>
                 <span class="mp-standings-name">${escapeHtml(r.name)}${r.me ? ' (you)' : ''}</span>
                 <span class="mp-standings-wpm">${Math.round(r.wpm)}</span>
@@ -110,6 +110,11 @@ export function renderEndScreen(root, { stats, text, attribution, explanation, s
                 <span class="mp-standings-time">${r.place && r.time != null ? `${r.time.toFixed(1)}s` : 'racing'}</span>
             </div>
         `).join('');
+        // See multiplayerScreen.js: a style attribute is blocked by the CSP,
+        // the same property set through element.style is not.
+        standingsRows.querySelectorAll('[data-racer-color]').forEach(el => {
+            el.style.setProperty('--racer-color', el.dataset.racerColor);
+        });
     }
     if (standings && standings.length) paintStandings(standings);
     const offStandings = onStandingsUpdate ? onStandingsUpdate(paintStandings) : null;

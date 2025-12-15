@@ -3049,3 +3049,35 @@ body::-webkit-scrollbar, .app::-webkit-scrollbar, #root::-webkit-scrollbar {
     color: var(--error-color);
     border-color: color-mix(in srgb, var(--error-color) 45%, transparent);
 }
+
+/* Appointing moderators. Sits with the review queue because it is the same
+   job: deciding who looks after submitted passages. */
+.admin-search-form { width: 100%; max-width: 34rem; }
+
+.admin-user {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.5rem 0.75rem;
+    border: 1px solid var(--neutral-color);
+    border-radius: 6px;
+}
+
+.admin-user-name {
+    flex: 1 1 auto;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.85rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.admin-user-role {
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--primary-color);
+    border: 1px solid color-mix(in srgb, var(--primary-color) 45%, transparent);
+    border-radius: 4px;
+    padding: 0.1rem 0.35rem;
+}

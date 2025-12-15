@@ -1,3 +1,4 @@
+mod admin;
 mod anticheat;
 mod bot_results;
 mod auth;
@@ -22,6 +23,8 @@ use std::net::SocketAddr;
 use std::str::FromStr;
 use std::sync::Arc;
 use tower_http::cors::CorsLayer;
+use tower::ServiceBuilder;
+use tower_http::set_header::SetResponseHeaderLayer;
 use tower_http::trace::TraceLayer;
 
 #[derive(Deserialize)]
@@ -91,6 +94,7 @@ fn build_app(app_state: Arc<AppState>) -> Router {
         .merge(spotify::router())
         .merge(lyrics::router())
         .merge(texts::router())
+        .merge(admin::router())
         .with_state(app_state)
 }
 
@@ -118,9 +122,54 @@ async fn main() -> anyhow::Result<()> {
         .await?;
     sqlx::migrate!("./migrations").run(&db).await?;
 
+    // A deployment is only as safe as the configuration it starts with, and a
+    // warning in a log nobody reads is not a safeguard. With TYPERPUNK_ENV set
+    // to production these become refusals to start.
+    let production = std::env::var("TYPERPUNK_ENV").map(|v| v == "production").unwrap_or(false);
+    if production {
+        let mut problems = Vec::new();
+        if !cookie_secure {
+            problems.push("COOKIE_SECURE must be 1: without it the session cookie is sent over plain HTTP");
+        }
+        if database_url.contains("typerpunk_dev") || database_url.contains("@127.0.0.1/typerpunk") && std::env::var("DATABASE_URL").is_err() {
+            problems.push("DATABASE_URL is still the development default, password and all");
+        }
+        if frontend_origin.starts_with("http://") && !frontend_origin.contains("localhost") {
+            problems.push("FRONTEND_ORIGIN is http:// on a non-local host, so CORS would permit an unencrypted origin");
+        }
+        if !problems.is_empty() {
+            for p in &problems {
+                tracing::error!("refusing to start in production: {p}");
+            }
+            anyhow::bail!("unsafe production configuration; fix the errors above or unset TYPERPUNK_ENV");
+        }
+    }
+
     if !cookie_secure {
         tracing::warn!("COOKIE_SECURE is off - session cookies will be sent over plain HTTP. Set COOKIE_SECURE=1 behind TLS in production.");
     }
+
+    // Sent on every API response. The API serves JSON to a script, so the
+    // policy is narrow: it frames nothing, is framed by nothing, and loads
+    // nothing. The static server sends its own, wider policy for the page
+    // itself (see web/serve.mjs).
+    let security_headers = ServiceBuilder::new()
+        .layer(SetResponseHeaderLayer::overriding(
+            axum::http::header::X_CONTENT_TYPE_OPTIONS,
+            HeaderValue::from_static("nosniff"),
+        ))
+        .layer(SetResponseHeaderLayer::overriding(
+            axum::http::header::HeaderName::from_static("x-frame-options"),
+            HeaderValue::from_static("DENY"),
+        ))
+        .layer(SetResponseHeaderLayer::overriding(
+            axum::http::header::REFERRER_POLICY,
+            HeaderValue::from_static("no-referrer"),
+        ))
+        .layer(SetResponseHeaderLayer::overriding(
+            axum::http::header::CONTENT_SECURITY_POLICY,
+            HeaderValue::from_static("default-src 'none'; frame-ancestors 'none'"),
+        ));
 
     let cors = CorsLayer::new()
         .allow_origin(frontend_origin.parse::<HeaderValue>()?)
@@ -140,9 +189,13 @@ async fn main() -> anyhow::Result<()> {
 
     let race_texts = load_race_texts();
     let app_state = Arc::new(AppState::new(db, cookie_secure, race_texts, spotify_config, frontend_origin.clone()));
+    admin::bootstrap_admin(&app_state).await;
     bot_results::spawn(app_state.clone());
 
-    let app = build_app(app_state).layer(cors).layer(TraceLayer::new_for_http());
+    let app = build_app(app_state)
+        .layer(security_headers)
+        .layer(cors)
+        .layer(TraceLayer::new_for_http());
 
     let addr = SocketAddr::from(([0, 0, 0, 0], port));
     tracing::info!("typerpunk-server listening on {addr}");

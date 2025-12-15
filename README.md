@@ -1,87 +1,232 @@
 # TyperPunk
 
-Competitive typing in your terminal (CLI) and in the browser (Web): solo practice, live multiplayer races, code drills and adaptive weak-key training.
+Competitive typing for the terminal and the browser. It has solo practice,
+live multiplayer races, code and command drills, and a practice mode that
+targets the keys you personally get wrong.
 
-## Quick Start
+The web client and the terminal client share one Rust core, so both score a
+test the same way.
 
-- **CLI (Terminal UI)**
-  ```bash
-  # Clone and enter
-  git clone https://github.com/yourusername/typerpunk.git
-  cd typerpunk
+## Contents
 
-  # Install for CLI (builds TUI and optionally merges dataset packs)
-  ./install.sh
+- [What it does](#what-it-does)
+- [Running it](#running-it)
+- [Modes](#modes)
+- [Text packs](#text-packs)
+- [Server](#server)
+- [Deployment](#deployment)
+- [Development](#development)
+- [Security](#security)
+- [Licence](#licence)
 
-  # Run CLI
-  cargo run --package typerpunk-tui
-  ```
+## What it does
 
-- **Web**
-  ```bash
-  # From repo root: builds WASM and starts the static dev server
-  ./web/launch.sh
-  ```
-  Opens http://localhost:4173
+- Solo tests by word count, by time, or on a fixed passage.
+- Live races against other people, or against bots when nobody else is
+  around.
+- Code and command drills. Each one explains what the line does.
+- Practice mode, which generates text weighted toward the characters you
+  mistype or hesitate on.
+- Custom text. Import your own notes and work through them over several
+  sittings.
+- Accounts, personal bests, a leaderboard, and friends.
 
-## Dataset (shared by CLI and Web)
+## Running it
 
-- **Offline (recommended)**
-  - Add texts to `data/packs/*.json` with fields:
-    ```json
-    { "category": "programming", "content": "80-400 chars…", "attribution": "Author" }
-    ```
-  - Merge packs into the shared `texts.json` at repo root:
-    ```bash
-    node scripts/merge_packs.js
-    ```
+You need Rust and Node.js. The web client also needs `wasm-pack`, which
+`web/launch.sh` installs if it is missing.
 
-- **Online (optional, web only)**
-  - Host a `texts.json` and set a URL in the page (e.g., `web/index.html`):
-    ```html
-    <script>window.TYPERPUNK_TEXTS_URL = "https://your.cdn/path/to/texts.json";</script>
-    ```
-  - The web app uses the online dataset if reachable; otherwise it falls back to the bundled file.
+### Web client
 
-Notes:
-- `web/launch.sh` copies the root `texts.json` into `web/src/data/texts.json` for local dev.
-- A small fallback dataset is kept in `web/src/data/texts.json`.
-
-## CLI Keys
-
-- Start: Enter
-- Quit: Esc
-- Change category: Left/Right
-- Delete word: Ctrl+Backspace / Alt+Backspace / Ctrl+H / Ctrl+W
-
-## Scripts Scope
-
-- `install.sh`: CLI-focused (Rust toolchain, dataset merge via Node, builds TUI)
-- `web/launch.sh`: Web dev workflow (WASM build + zero-dependency static server)
-
-No npm packages are used anywhere in this repo. Node.js is used only as a
-runtime for small built-in-module-only scripts (`scripts/merge_packs.js`,
-`web/serve.mjs`); nothing is ever installed from the npm registry.
-
-## Repo Layout
-
-```
-typerpunk/
-├── Cargo.toml            # Workspace configuration
-├── crates/
-│   ├── core/            # Shared core functionality
-│   └── tui/             # Terminal UI implementation
-├── data/
-│   └── packs/           # Offline dataset packs
-├── web/                 # Web app (plain HTML/CSS/JS, no build step)
-│   ├── src/
-│   ├── index.html
-│   └── serve.mjs
-├── scripts/
-│   └── merge_packs.js   # Merge packs into texts.json
-└── README.md
+```bash
+./web/launch.sh
 ```
 
-## License
+This builds the WebAssembly core, merges the text packs, and serves the app
+on http://localhost:4173. There is no bundler and no npm dependency tree.
+Edit a file under `web/src/` and reload the page.
 
-MIT
+The multiplayer, account and leaderboard features need the server as well.
+See [Server](#server).
+
+### Terminal client
+
+```bash
+cargo run --package typerpunk-tui
+```
+
+`./install.sh` builds it and puts it on your path.
+
+## Modes
+
+| Mode | What it types |
+| --- | --- |
+| Random | A passage from any pack |
+| Words | A fixed number of common words |
+| Timed | As many words as you can before the clock runs out |
+| Zen | No timer and no word limit |
+| Practice | Words weighted toward your own weak keys |
+| Custom | Text you import, including markdown notes |
+| Lyrics | The song currently playing on Spotify |
+
+Alongside those are the text packs, listed below.
+
+Sixteen typing languages are available for the generated-word modes. This
+sets the vocabulary you type, not the language of the interface. The
+interface is English only. See `TODO-ui-languages.md`.
+
+## Text packs
+
+`data/packs/*.json` holds the passages. Each entry looks like this:
+
+```json
+{
+  "category": "quotes",
+  "content": "The best way out is always through.",
+  "attribution": "Robert Frost"
+}
+```
+
+`attribution` is optional. Leave it out for original prose rather than
+inventing a source. Code entries take two more fields:
+
+```json
+{
+  "category": "shell",
+  "language": "shell",
+  "content": "awk -F: '{print $1, $7}' /etc/passwd",
+  "attribution": "awk",
+  "explanation": "-F sets the field separator."
+}
+```
+
+`language` is one of `javascript`, `python`, `rust`, `clike` or `shell`, and
+selects the syntax highlighting. `explanation` is shown while you type in
+single player, and after the race in multiplayer.
+
+After editing a pack, rebuild the merged dataset:
+
+```bash
+node scripts/merge_packs.js
+```
+
+This writes `texts.json` and `web/src/data/texts.json`.
+
+Passages must be a single line. The typing input is one line, so a passage
+containing a newline cannot be finished.
+
+### Community submissions
+
+Signed-in users can submit passages from the Contribute screen. Nothing
+reaches other players until a moderator approves it. Approved passages are
+served from the database and merged over the bundled packs when the client
+starts.
+
+To fold approved submissions back into the repository:
+
+```bash
+node scripts/export_approved.js http://localhost:8787
+node scripts/merge_packs.js
+```
+
+The first administrator is named by `TYPERPUNK_ADMIN_USERNAME` at startup.
+Administrators appoint moderators from the Contribute screen.
+
+## Server
+
+`typerpunk-server` provides accounts, stats, the leaderboard, friends,
+multiplayer rooms and the Spotify integration. It needs PostgreSQL.
+
+```bash
+sudo -u postgres createuser --pwprompt typerpunk
+sudo -u postgres createdb -O typerpunk typerpunk
+sudo -u postgres createdb -O typerpunk typerpunk_test
+
+cp crates/server/.env.example crates/server/.env
+cargo run --package typerpunk-server
+```
+
+Migrations run at startup. Configuration is by environment variable; see
+`crates/server/.env.example` for the full list.
+
+| Variable | Purpose |
+| --- | --- |
+| `DATABASE_URL` | PostgreSQL connection string |
+| `PORT` | Listen port, default 8787 |
+| `FRONTEND_ORIGIN` | Origin allowed by CORS |
+| `COOKIE_SECURE` | Set to 1 behind TLS |
+| `TYPERPUNK_ENV` | Set to `production` to enforce the checks below |
+| `TYPERPUNK_ADMIN_USERNAME` | Account to make an administrator at startup |
+| `TEXTS_JSON_PATH` | Dataset the race passages come from |
+| `SPOTIFY_CLIENT_ID` | Spotify application ID, for Lyrics mode |
+| `SPOTIFY_CLIENT_SECRET` | Spotify application secret |
+
+## Deployment
+
+Put a reverse proxy in front. Serve `web/` as static files and route
+`/api/*` and `/ws/*` to the server. That makes the API same-origin, so no
+CORS configuration is needed in the browser.
+
+Set `TYPERPUNK_ENV=production`. The server then refuses to start if:
+
+- `COOKIE_SECURE` is not 1, which would send the session cookie in clear.
+- `DATABASE_URL` is still the development default.
+- `FRONTEND_ORIGIN` is `http://` on a host that is not local.
+
+A warning in a log nobody reads is not a safeguard, so these are refusals
+rather than warnings.
+
+Terminate TLS at the proxy and send HSTS from there. The application sets the
+other security headers itself.
+
+## Development
+
+```bash
+cargo test --workspace --exclude typerpunk-steam    # Rust
+cd web/tests && python3 run_all.py                  # browser
+```
+
+The browser tests drive the real application with Playwright. They need both
+servers running; see `web/tests/README.md`.
+
+`crates/steam` is a Bevy desktop client and is excluded from the default test
+run because it is slow to build.
+
+Repository layout:
+
+```
+crates/core      typing engine, shared by every client
+crates/wasm      WebAssembly bindings for the web client
+crates/tui       terminal client
+crates/server    HTTP and WebSocket server
+crates/steam     desktop client (Bevy)
+web/             web client, no build step
+data/packs/      text packs
+scripts/         dataset tools
+```
+
+### Terminal client parity
+
+The terminal client has accounts, the leaderboard and friends. Multiplayer
+racing is on hold there: it needs a WebSocket client and a live-updating race
+view, which is close to the size of the whole web multiplayer build.
+
+## Security
+
+- Passwords are hashed with Argon2. Sessions are HttpOnly, SameSite=Lax
+  cookies, and Secure when `COOKIE_SECURE` is set.
+- Every query is parameterised. Every value rendered into the page is
+  escaped, including imported file content and file names.
+- Custom text is read in the browser and never uploaded.
+- The Spotify and lyrics endpoints have fixed upstream hosts, so neither can
+  be pointed elsewhere. Both are rate limited.
+- The client sends a Content-Security-Policy that forbids inline script.
+- Dependencies are checked against the OSV database. The server build has no
+  known advisories.
+
+Report a security problem by opening an issue, or privately if it is
+exploitable.
+
+## Licence
+
+MIT. See [LICENSE](LICENSE).

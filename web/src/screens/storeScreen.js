@@ -31,7 +31,7 @@ export function renderStoreScreen(root, { onBack, onShowStats, onShowPlaceholder
         const owned = !signedOut && mine.owned.includes(item.id);
         const equipped = !signedOut && (mine.equipped_caret === item.id || mine.equipped_flair === item.id);
         const swatch = item.category === 'caret'
-            ? `<span class="store-swatch" style="background:${escapeHtml(item.value)}"></span>`
+            ? `<span class="store-swatch" data-swatch-colour="${escapeHtml(item.value)}"></span>`
             : `<span class="store-swatch store-flair-swatch">${FLAIR_ICONS[item.value] || ''}</span>`;
         return `
             <div class="leaderboard-row store-item-row">
@@ -72,6 +72,12 @@ export function renderStoreScreen(root, { onBack, onShowStats, onShowPlaceholder
             </div>
         `;
         root.querySelectorAll('[data-action="menu"]').forEach(el => el.addEventListener('click', onBack));
+        // The swatch colour comes from the catalogue, so it cannot be a class.
+        // Set through element.style because a style attribute is blocked by the
+        // Content-Security-Policy.
+        root.querySelectorAll('[data-swatch-colour]').forEach(el => {
+            el.style.background = el.dataset.swatchColour;
+        });
         attachTooltips(root);
         const cleanupTheme = renderTopRail(root, { onShowAccount, onShowFriends });
 

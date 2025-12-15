@@ -46,10 +46,15 @@ futures-util = "0.3"
 axum = { version = "0.7", features = ["ws"] }
 axum-extra = { version = "0.9", features = ["cookie"] }
 tower = "0.4"
-tower-http = { version = "0.5", features = ["cors", "trace"] }
-sqlx = { version = "0.7", features = ["runtime-tokio-rustls", "postgres", "time", "uuid"] }
+tower-http = { version = "0.5", features = ["cors", "trace", "set-header"] }
+# default-features off: the defaults pull the MySQL and SQLite drivers, and
+# with them rsa, which carries RUSTSEC-2023-0071. Only Postgres is used.
+sqlx = { version = "0.8", default-features = false, features = ["runtime-tokio-rustls", "postgres", "macros", "migrate", "time", "uuid"] }
 argon2 = "0.5"
-reqwest = { version = "0.11", default-features = false, features = ["json", "rustls-tls"] }
+# 0.12 moves to hyper 1.x, which brings h2 0.4 and rustls 0.23 with it.
+# 0.11 was the sole source of every remaining advisory in the server build:
+# h2 0.3, rustls-webpki 0.101, rustls-pemfile 1.0 and idna 0.3.
+reqwest = { version = "0.12", default-features = false, features = ["json", "rustls-tls"] }
 uuid = { version = "1.10", features = ["v4", "serde"] }
 time = { version = "0.3", features = ["serde"] }
 dashmap = "6.1"

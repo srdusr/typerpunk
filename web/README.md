@@ -1,67 +1,59 @@
-# TyperPunk Web
+# TyperPunk web client
 
-The TyperPunk web client, in plain HTML, CSS, and JavaScript, backed by the shared Rust/WASM game core. No npm packages, no bundler, no build step. This avoids pulling in the npm dependency tree entirely, which removes the main supply-chain attack surface a typical React/Vite frontend carries.
+Plain HTML, CSS and JavaScript, backed by the shared Rust core compiled to
+WebAssembly. There is no bundler, no build step and no npm dependency tree,
+which removes the supply chain a typical framework setup carries.
 
-Features:
+## Requirements
 
-- Real-time WPM and accuracy tracking
-- Ghost text typing interface
-- Light/dark mode support
-- Responsive design
-- Modern UI with cyberpunk-inspired theme
+- Rust and `cargo`, for the WebAssembly core.
+- `wasm-pack`. `launch.sh` installs it if it is missing.
+- Node.js, used only to run the dataset script and the static file server. No
+  packages are installed.
 
-## Prerequisites
-
-- Rust and `cargo` (for the WASM game core)
-- `wasm-pack` (installed automatically by `launch.sh` if missing)
-- Node.js (used only to run the zero-dependency dev server and dataset scripts; no npm packages are installed)
-
-## Getting Started
+## Running it
 
 ```bash
-# From repo root: builds WASM, merges the dataset, and starts the dev server
 ./web/launch.sh
 ```
 
-Opens http://localhost:4173
+This builds the WebAssembly module, merges the text packs, and serves the app
+on http://localhost:4173.
 
-## Project Structure
+Accounts, the leaderboard, friends and multiplayer need `typerpunk-server` as
+well. See the root README.
+
+## Layout
 
 ```
-web/
-├── src/
-│   ├── screens/        # Screen renderers (main menu, typing game, end screen)
-│   ├── app.js           # Top-level screen controller
-│   ├── game.js          # WASM game instance lifecycle
-│   ├── chart.js          # Canvas-based WPM/accuracy graph
-│   ├── stats.js          # WPM/accuracy calculation
-│   ├── theme.js           # Light/dark theme state
-│   ├── main.js            # Application entry point
-│   └── styles.css         # Global styles
-├── wasm/                # WASM bindings, copied here by launch.sh (gitignored)
-├── index.html           # HTML entry point
-└── serve.mjs            # Zero-dependency static file server
+src/screens/     one file per screen
+src/app.js       screen controller and routing
+src/game.js      WebAssembly game lifecycle
+src/chart.js     end screen graph
+src/stats.js     WPM and accuracy
+src/customText.js  importing and chunking your own text
+src/languages.js typing vocabularies
+src/styles.css   all styling
+wasm/            WebAssembly bindings, copied here by launch.sh, gitignored
+index.html       entry point
+serve.mjs        static file server
 ```
 
-## Development
+## Working on it
 
-The project uses:
+There is no build step. Edit a file under `src/` and reload the page.
 
-- Vanilla JavaScript (ES modules), no framework or bundler
-- The browser's native `<canvas>` API for the results graph
-- Node's built-in `http` module for local serving (`serve.mjs`)
-- Plain CSS for styling
+The one exception is the Rust core: changing `crates/core` or `crates/wasm`
+means running `launch.sh` again to rebuild the WebAssembly module.
 
-Because there is no build step, editing a file under `src/` and reloading the page is the whole workflow.
+`serve.mjs` sends the Content-Security-Policy. It forbids inline script, so
+new code belongs in a file rather than in a `<script>` block.
 
-## Contributing
+## Tests
 
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add some amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
+```bash
+cd web/tests && python3 run_all.py
+```
 
-## License
-
-This project is licensed under the MIT License - see the LICENSE file for details.
+These drive the real application with Playwright. Both servers must already
+be running. See `tests/README.md`.

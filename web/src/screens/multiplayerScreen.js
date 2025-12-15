@@ -26,6 +26,18 @@ function racerColors(players, myId) {
     return colors;
 }
 
+// A style="" attribute in markup is refused by the Content-Security-Policy;
+// the same property set through element.style is not. Markup carries the
+// value in a data attribute and this applies it.
+function applyInlineStyles(container) {
+    container.querySelectorAll('[data-racer-color]').forEach(el => {
+        el.style.setProperty('--racer-color', el.dataset.racerColor);
+    });
+    container.querySelectorAll('[data-percent]').forEach(el => {
+        el.style.width = `${el.dataset.percent}%`;
+    });
+}
+
 // No account required - a quick race with friends shouldn't need signing
 // in, so this only prefills the name field when one exists rather than
 // gating the whole feature behind it (unlike Friends/Leaderboard, which
@@ -166,11 +178,12 @@ export function renderMultiplayerScreen(root, { onBack, onFinish, onShowStats, o
         function paintPlayers() {
             const colors = racerColors(players, myId);
             listEl.innerHTML = players.map(p => `
-                <div class="leaderboard-row" style="--racer-color: ${colors[p.id]}">
+                <div class="leaderboard-row" data-racer-color="${colors[p.id]}">
                     <div class="leaderboard-name"><span class="mp-racer-dot"></span>${escapeHtml(p.name)}${p.id === myId ? ' (you)' : ''}</div>
                     <div class="leaderboard-acc">${p.ready ? 'Ready' : 'Not ready'}</div>
                 </div>
             `).join('');
+            applyInlineStyles(listEl);
         }
         paintPlayers();
 
@@ -251,12 +264,13 @@ export function renderMultiplayerScreen(root, { onBack, onFinish, onShowStats, o
                 const me = p.id === myId;
                 const prog = progressById[p.id] || {};
                 return `
-                <div class="mp-racer-row${me ? ' me' : ''}" style="--racer-color: ${colors[p.id]}">
+                <div class="mp-racer-row${me ? ' me' : ''}" data-racer-color="${colors[p.id]}">
                     <span class="mp-racer-name">${escapeHtml(p.name)}${me ? ' (you)' : ''}</span>
-                    <div class="mp-racer-bar"><div class="mp-racer-bar-fill" style="width:${prog.percent || 0}%"></div></div>
+                    <div class="mp-racer-bar"><div class="mp-racer-bar-fill" data-percent="${prog.percent || 0}"></div></div>
                     <span class="mp-racer-wpm">${Math.round(prog.wpm || 0)}</span>
                 </div>`;
             }).join('');
+            applyInlineStyles(opponents);
         }
         paintOpponents();
 

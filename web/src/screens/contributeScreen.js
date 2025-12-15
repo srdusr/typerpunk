@@ -24,6 +24,9 @@ export function renderContributeScreen(root, { onBack, onShowStats, onShowPlaceh
     let mine = [];
     let queue = [];
     let isModerator = false;
+    let isAdmin = false;
+    let roleHolders = [];
+    let userSearch = [];
     let cleanupInner = null;
 
     function statusLabel(s) {
@@ -39,6 +42,10 @@ export function renderContributeScreen(root, { onBack, onShowStats, onShowPlaceh
         // case rather than an error worth showing.
         try { queue = await api.get('/api/texts/queue'); isModerator = true; }
         catch { queue = []; isModerator = false; }
+        // Same shape: a 401 here means "not an administrator", which is the
+        // ordinary case for almost everyone.
+        try { roleHolders = await api.get('/api/admin/users'); isAdmin = true; }
+        catch { roleHolders = []; isAdmin = false; }
     }
 
     function submissionRow(s, moderating) {
@@ -88,6 +95,26 @@ export function renderContributeScreen(root, { onBack, onShowStats, onShowPlaceh
                         <div class="submission-list">${mine.map(s => submissionRow(s, false)).join('')}</div>
                     ` : ''}
 
+                    ${isAdmin ? `
+                        <h3>Moderators</h3>
+                        <div class="settings-hint">Moderators review submitted passages. An administrator's own role is managed by the server, not here.</div>
+                        <form class="account-form admin-search-form">
+                            <input class="account-input admin-search" type="text" placeholder="Find a user by name" autocomplete="off">
+                            <button class="menu-button small" type="submit">Search</button>
+                        </form>
+                        <div class="submission-list admin-user-list">
+                            ${(userSearch.length ? userSearch : roleHolders).map(u => `
+                                <div class="admin-user" data-username="${escapeHtml(u.username)}">
+                                    <span class="admin-user-name">${escapeHtml(u.username)}</span>
+                                    ${u.is_admin ? '<span class="admin-user-role">admin</span>' : ''}
+                                    ${u.is_moderator && !u.is_admin ? '<span class="admin-user-role">moderator</span>' : ''}
+                                    ${u.is_bot ? '<span class="admin-user-role">bot</span>' : ''}
+                                    ${u.is_admin ? '' : `<button class="menu-button small ${u.is_moderator ? 'quiet' : ''}" data-action="set-role" data-username="${escapeHtml(u.username)}" data-moderator="${u.is_moderator ? 'false' : 'true'}">${u.is_moderator ? 'Remove' : 'Make moderator'}</button>`}
+                                </div>
+                            `).join('') || '<div class="stats-empty">No moderators yet. Search for a user to appoint one.</div>'}
+                        </div>
+                    ` : ''}
+
                     ${isModerator ? `
                         <h3>Review queue${queue.length ? ` (${queue.length})` : ''}</h3>
                         ${queue.length
@@ -134,6 +161,28 @@ export function renderContributeScreen(root, { onBack, onShowStats, onShowPlaceh
                 }
             });
         }
+
+        const searchForm = root.querySelector('.admin-search-form');
+        if (searchForm) {
+            searchForm.addEventListener('submit', async e => {
+                e.preventDefault();
+                const q = searchForm.querySelector('.admin-search').value.trim();
+                try { userSearch = q ? await api.get(`/api/admin/users?q=${encodeURIComponent(q)}`) : []; }
+                catch { userSearch = []; }
+                render();
+            });
+        }
+        root.querySelectorAll('[data-action="set-role"]').forEach(btn => {
+            btn.addEventListener('click', async () => {
+                try {
+                    await api.post(`/api/admin/users/${encodeURIComponent(btn.dataset.username)}/role`,
+                                   { moderator: btn.dataset.moderator === 'true' });
+                } catch { /* reloading below shows whatever actually happened */ }
+                userSearch = [];
+                await load();
+                render();
+            });
+        });
 
         root.querySelectorAll('.submission-actions button').forEach(btn => {
             btn.addEventListener('click', async () => {
