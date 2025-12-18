@@ -102,7 +102,14 @@ fn build_app(app_state: Arc<AppState>) -> Router {
 async fn main() -> anyhow::Result<()> {
     // Ignored if absent - production deployments are expected to set real
     // env vars directly rather than ship a .env file.
-    let _ = dotenvy::dotenv();
+    // dotenvy searches upward from the working directory, so a plain call
+    // finds .env only when the server is started from crates/server. The
+    // usual thing is to run it from the repository root, so that location is
+    // tried too. Neither is required: every setting has a default or is read
+    // straight from the environment.
+    if dotenvy::dotenv().is_err() {
+        let _ = dotenvy::from_filename("crates/server/.env");
+    }
 
     tracing_subscriber::fmt()
         .with_env_filter(tracing_subscriber::EnvFilter::try_from_default_env().unwrap_or_else(|_| "info".into()))

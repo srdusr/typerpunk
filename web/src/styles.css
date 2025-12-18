@@ -12,6 +12,9 @@
     --header-offset: 3.5rem;
     /* App padding variable so we can compensate where needed */
     --app-padding: 1rem;
+    /* Room at the foot of every screen for the fixed footer and the corner
+       rails, so normal-flow content never ends up underneath them. */
+    --bottom-chrome: 5.5rem;
     --record-color: #ffd166;
     --warning-color: #ffb454;
     --player-2: #4ea3ff;
@@ -266,6 +269,7 @@ body {
     margin-top: calc(var(--header-offset) - var(--app-padding));
     min-height: calc(100vh - var(--header-offset));
     box-sizing: border-box;
+    padding-bottom: var(--bottom-chrome);
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -1571,7 +1575,7 @@ body {
        away first if a genuinely tall passage would otherwise force a
        scrollbar, so it never fights that logic, it just guarantees normal
        breathing room in the common case. */
-    padding-bottom: 2rem;
+    padding-bottom: var(--bottom-chrome);
     box-sizing: border-box;
 }
 
@@ -2039,7 +2043,7 @@ body::-webkit-scrollbar, .app::-webkit-scrollbar, #root::-webkit-scrollbar {
         width: 100% !important;
         overflow-x: auto !important;
         margin: 0 auto 1rem auto !important;
-        height: 160px !important;
+        height: 220px !important;
     }
     .end-screen-buttons {
         position: static !important;
@@ -2067,7 +2071,7 @@ body::-webkit-scrollbar, .app::-webkit-scrollbar, #root::-webkit-scrollbar {
         padding: 0 0.5rem !important;
     }
     .graph-container {
-        height: 180px !important;
+        height: 200px !important;
         padding: 0.5rem !important;
     }
     .endscreen-side-stat.wpm, .endscreen-side-stat.acc {
@@ -2397,7 +2401,7 @@ body::-webkit-scrollbar, .app::-webkit-scrollbar, #root::-webkit-scrollbar {
    title and the buttons where it competed with them for attention. */
 .menu-key-hint {
     position: fixed;
-    bottom: 1.25rem;
+    bottom: 3.25rem;
     left: 50%;
     transform: translateX(-50%);
     font-size: 0.75rem;
@@ -3080,4 +3084,69 @@ body::-webkit-scrollbar, .app::-webkit-scrollbar, #root::-webkit-scrollbar {
     border: 1px solid color-mix(in srgb, var(--primary-color) 45%, transparent);
     border-radius: 4px;
     padding: 0.1rem 0.35rem;
+}
+
+
+/* The end screen is a flex column, so every child shrinks by default once the
+   content is taller than the viewport. That squeezed the two things the
+   screen exists to show: on a 650px window the passage came out 80px tall and
+   the graph 120px, both unreadable, and the passage was clipped rather than
+   scrolled to. They keep their size now and the page scrolls instead, which
+   is the correct trade for a screen you read rather than one you act on. */
+.end-screen-text,
+.end-screen-graph-row,
+.end-screen-stat-row,
+.end-screen-attribution,
+.code-explainer,
+.mp-standings,
+.end-screen-buttons {
+    flex-shrink: 0;
+}
+
+/* Below this the chart stops carrying information. */
+.graph-container {
+    min-height: 180px;
+}
+
+@media (max-height: 600px) {
+    .graph-container {
+        min-height: 150px;
+    }
+}
+
+
+/* Bottom chrome on a narrow screen.
+   The footer is centred and grows to the full width once the links wrap, so
+   at 375px it ran straight through both corner rails and covered Play Again,
+   which made the button unclickable. Stacked instead: rails on the bottom
+   line, footer above them, keyboard hint above that, and the reserved space
+   grows to match. */
+@media (max-width: 700px) {
+    :root {
+        --bottom-chrome: 12rem;
+    }
+
+    .site-footer {
+        bottom: 4rem;
+        flex-wrap: wrap;
+        justify-content: center;
+        max-width: calc(100vw - 2rem);
+        row-gap: 0.2rem;
+    }
+
+    /* Clears the footer even when its links wrap onto a second line, which
+       they do below about 400px. */
+    .menu-key-hint {
+        bottom: 9.5rem;
+    }
+
+    /* The narrow-width rule above sets this to 0.5rem, which is what left the
+       content underneath the chrome in the first place. */
+    .end-screen {
+        padding-bottom: var(--bottom-chrome) !important;
+    }
+
+    .stats-screen {
+        padding-bottom: var(--bottom-chrome);
+    }
 }

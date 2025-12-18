@@ -240,12 +240,26 @@ export function renderMainMenu(root, props) {
         function position() {
             const rect = groupEl.getBoundingClientRect();
             const gap = 8;
-            const spaceBelow = window.innerHeight - rect.bottom - gap;
+            // Clear of the bottom edge: the corner rails and the footer live
+            // down there, and a panel that runs to the last pixel of the
+            // window reads as cut off rather than as a menu.
+            const bottomInset = 88;
+            const spaceBelow = window.innerHeight - rect.bottom - gap - bottomInset;
+            const spaceAbove = rect.top - gap - 16;
+
             popoverEl.style.left = `${rect.left}px`;
             popoverEl.style.width = `${rect.width}px`;
-            popoverEl.style.top = `${rect.bottom + gap}px`;
-            popoverEl.style.bottom = 'auto';
-            popoverEl.style.maxHeight = `${Math.max(100, spaceBelow)}px`;
+            // Opens upward when there is more room there, which is what a
+            // short window leaves.
+            if (spaceBelow < 220 && spaceAbove > spaceBelow) {
+                popoverEl.style.top = 'auto';
+                popoverEl.style.bottom = `${window.innerHeight - rect.top + gap}px`;
+                popoverEl.style.maxHeight = `${Math.max(140, spaceAbove)}px`;
+            } else {
+                popoverEl.style.top = `${rect.bottom + gap}px`;
+                popoverEl.style.bottom = 'auto';
+                popoverEl.style.maxHeight = `${Math.max(140, spaceBelow)}px`;
+            }
         }
         chevronEl.addEventListener('click', e => {
             e.stopPropagation();

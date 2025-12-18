@@ -165,46 +165,16 @@ export function renderEndScreen(root, { stats, text, attribution, explanation, s
     // passage happened to be on screen when it was measured. This claws the
     // room back in stages instead, each one only kicking in if the last
     // wasn't enough, so the page itself never needs to scroll to reach
-    // Play Again: shrink the graph down to a floor, then trim the button's
-    // top margin, and only as a last resort (a passage long enough that even
-    // both of those can't absorb it - realistically only reachable by
-    // pasting the full text-mode word buffer instead of actually typing it
-    // in the time given) let the passage preview itself scroll internally,
-    // which keeps every control below it reachable without the page
-    // scrolling. Runs once after layout settles.
-    requestAnimationFrame(() => {
-        const doc = document.documentElement;
-        // Re-measured after every stage rather than tracked as a running
-        // subtraction - margin-collapse and sub-pixel rounding meant an
-        // assumed "reduced height X means Y px less overflow" estimate
-        // drifted from the DOM's actual scrollHeight, consistently
-        // undershooting by a fixed amount however much was cut.
-        const overflowNow = () => doc.scrollHeight - doc.clientHeight;
-        if (overflowNow() <= 0) return;
-
-        const graphBox = root.querySelector('.graph-container');
-        const MIN_GRAPH_HEIGHT = 120;
-        const graphHeight = graphBox.getBoundingClientRect().height;
-        if (graphHeight > MIN_GRAPH_HEIGHT) {
-            const reduceBy = Math.min(overflowNow(), graphHeight - MIN_GRAPH_HEIGHT);
-            graphBox.style.height = `${graphHeight - reduceBy}px`;
-            redraw();
-        }
-        if (overflowNow() <= 0) return;
-
-        const buttons = root.querySelector('.end-screen-buttons');
-        const buttonsMargin = parseFloat(getComputedStyle(buttons).marginTop);
-        if (buttonsMargin > 8) {
-            const reduceBy = Math.min(overflowNow(), buttonsMargin - 8);
-            buttons.style.marginTop = `${buttonsMargin - reduceBy}px`;
-        }
-        if (overflowNow() <= 0) return;
-
-        const textBox = root.querySelector('.end-screen-text');
-        const textHeight = textBox.getBoundingClientRect().height;
-        textBox.style.maxHeight = `${Math.max(80, textHeight - overflowNow() - 4)}px`;
-        textBox.style.overflowY = 'auto';
-    });
+    // There was an auto-fit routine here that forced this screen into one
+    // viewport: it shrank the graph to a 120px floor, then trimmed the Play
+    // Again margin, then capped the passage box at 80px with its own
+    // scrollbar. On an ordinary laptop window that left the two things the
+    // screen exists to show - the passage you just typed and the graph of
+    // how you typed it - both too small to read, and the passage clipped
+    // rather than scrolled to.
+    //
+    // A results screen is read, not acted on under time pressure, so the
+    // page scrolls instead. Nothing is hidden and nothing is squeezed.
 
     const tooltip = document.createElement('div');
     tooltip.className = 'chart-tooltip';

@@ -179,6 +179,35 @@ rather than warnings.
 Terminate TLS at the proxy and send HSTS from there. The application sets the
 other security headers itself.
 
+### Secrets
+
+Every setting is read from the environment. Copy `crates/server/.env.example`
+to `crates/server/.env` for local work. That file is gitignored and is the
+only place a password or a client secret belongs.
+
+In production, prefer real environment variables to a file on disk. A systemd
+unit can take them from `EnvironmentFile=`, with the file owned by root and
+mode 600:
+
+```ini
+[Service]
+EnvironmentFile=/etc/typerpunk/env
+ExecStart=/usr/local/bin/typerpunk-server
+User=typerpunk
+```
+
+Container runtimes and hosting platforms have their own secret stores. The
+server reads plain environment variables in every case, so nothing in the
+application changes.
+
+Do not put a secret in `.env.example`, in a commit message, or in an issue.
+If one is exposed, rotate it: change the database password, restart the
+server, and invalidate sessions by clearing the `sessions` table.
+
+The first administrator is created by setting `TYPERPUNK_ADMIN_USERNAME` to an
+account that has already registered. Unset it afterwards. It exists to create
+the first administrator and to recover if the last one is removed.
+
 ## Development
 
 ```bash
