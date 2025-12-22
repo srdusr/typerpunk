@@ -1,4 +1,5 @@
 import { escapeHtml } from '../util.js';
+import { CLOSE_ICON } from './icons.js';
 import { renderCornerRail } from '../cornerRail.js';
 import { attachTooltips } from '../tooltip.js';
 import { renderTopRail } from '../topRail.js';
@@ -70,6 +71,7 @@ export function renderMultiplayerScreen(root, { onBack, onFinish, onShowStats, o
         let deviceFilter = 'everyone';
         root.innerHTML = `
             <div class="stats-screen">
+                <button class="screen-close" data-action="menu" aria-label="Close" data-tooltip="Close (Esc)">${CLOSE_ICON}</button>
                 <div class="logo" data-action="menu">TyperPunk</div>
                 <h2>Multiplayer</h2>
                 <div class="account-panel">
@@ -80,7 +82,7 @@ export function renderMultiplayerScreen(root, { onBack, onFinish, onShowStats, o
                     <div class="mp-divider"><span>or race friends</span></div>
 
                     <div class="mp-code-row">
-                        <input class="account-input" type="text" id="mp-room-code" placeholder="Enter a room code" maxlength="5" autocomplete="off" spellcheck="false">
+                        <input class="account-input" type="text" id="mp-room-code" placeholder="CODE" maxlength="5" autocomplete="off" spellcheck="false">
                         <button class="menu-button" data-action="join">Join</button>
                     </div>
                     <button class="menu-button ghost" data-action="create" data-tooltip="Opens an empty room and gives you a code to share.">Create a Room</button>
@@ -157,6 +159,7 @@ export function renderMultiplayerScreen(root, { onBack, onFinish, onShowStats, o
     function renderLobby(roomCode, auto = false) {
         root.innerHTML = `
             <div class="stats-screen">
+                <button class="screen-close" data-action="menu" aria-label="Close" data-tooltip="Close (Esc)">${CLOSE_ICON}</button>
                 <div class="logo" data-action="menu">TyperPunk</div>
                 <h2>${auto ? 'Finding a race' : `Room ${escapeHtml(roomCode)}`}</h2>
                 <div class="settings-hint">${auto

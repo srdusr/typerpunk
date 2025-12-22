@@ -2133,25 +2133,38 @@ body::-webkit-scrollbar, .app::-webkit-scrollbar, #root::-webkit-scrollbar {
     min-width: 0;
 }
 
-/* Sized to the five characters a room code actually is, rather than eating
-   whatever width was going. The Join button matches the field's height and
-   the weight of the other actions on the screen - as a `small ghost` it
-   read as an afterthought next to the field it belongs to. */
+/* A room code is five characters, so the field is sized for five characters.
+   Stretched across the row it was a 94px-tall box with a clipped placeholder,
+   twice the height of the name field directly above it and the largest
+   control on the screen for the smallest input on it.
+
+   align-items: center rather than stretch: stretch is what inflated it, and
+   nothing in this row wants to match its neighbour's height by growing. */
+.mp-code-row {
+    justify-content: center;
+    align-items: center;
+}
+
 .mp-code-row .account-input {
-    flex: 1 1 auto;
-    min-width: 0;
+    flex: 0 0 auto;
+    width: 9ch;
+    height: 2.75rem;
+    padding: 0 0.5rem;
     text-align: center;
     text-transform: uppercase;
-    letter-spacing: 3px;
+    letter-spacing: 2px;
     font-size: 1.1rem;
 }
 
 .mp-code-row .menu-button {
     flex: 0 0 auto;
     min-width: 0;
+    height: 2.75rem;
+    padding: 0 1.5rem;
+    font-size: 0.95rem;
     white-space: nowrap;
-    padding-left: 1.75rem;
-    padding-right: 1.75rem;
+    display: inline-flex;
+    align-items: center;
 }
 
 /* A labelled rule, so the two ways into a race read as alternatives rather
