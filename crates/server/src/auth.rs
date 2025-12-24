@@ -306,8 +306,17 @@ async fn logout(State(state): State<Arc<AppState>>, jar: CookieJar) -> Result<im
 }
 
 async fn me(State(state): State<Arc<AppState>>, jar: CookieJar) -> Result<impl IntoResponse, AppError> {
-    match current_user(&state.db, &jar).await {
-        Some(user) => Ok(Json(user)),
-        None => Err(AppError::Unauthorized),
-    }
+    let user = current_user(&state.db, &jar).await.ok_or(AppError::Unauthorized)?;
+    // Whether the ad slots are shown. Fetched here so the client has it with
+    // the identity rather than asking a second time.
+    let is_supporter: bool = sqlx::query_scalar("SELECT is_supporter FROM users WHERE id = $1")
+        .bind(&user.id)
+        .fetch_optional(&state.db)
+        .await?
+        .unwrap_or(false);
+    Ok(Json(serde_json::json!({
+        "id": user.id,
+        "username": user.username,
+        "is_supporter": is_supporter,
+    })))
 }

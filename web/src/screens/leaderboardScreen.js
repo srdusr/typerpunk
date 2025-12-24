@@ -89,7 +89,7 @@ export function renderLeaderboardScreen(root, { onBack, onShowPublicProfile, onS
     root.querySelectorAll('.leaderboard-modes [data-mode]').forEach(btn => {
         btn.addEventListener('click', () => {
             selectedMode = btn.dataset.mode;
-            root.querySelectorAll('.leaderboard-modes [data-mode]').forEach(b => b.classList.toggle('ghost', b !== btn));
+            root.querySelectorAll('.leaderboard-modes [data-mode]').forEach(b => b.classList.toggle('active', b === btn));
             load();
         });
     });
@@ -100,7 +100,6 @@ export function renderLeaderboardScreen(root, { onBack, onShowPublicProfile, onS
         deviceFilterBtn.textContent = `Devices: ${desktopOnly ? 'Desktop only' : 'All'}`;
         // A filter that is doing something should look like it is.
         deviceFilterBtn.classList.toggle('active', desktopOnly);
-        deviceFilterBtn.classList.toggle('ghost', !desktopOnly);
         load();
     });
 

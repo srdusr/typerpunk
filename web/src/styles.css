@@ -15,6 +15,17 @@
     /* Room at the foot of every screen for the fixed footer and the corner
        rails, so normal-flow content never ends up underneath them. */
     --bottom-chrome: 5.5rem;
+
+    /* Controls and the surfaces they sit on. The stylesheet had five radii
+       in use (0, 2, 4, 6, 8 and 999px) with no rule for which applied where,
+       so a button and its own input looked like different components. */
+    --radius: 4px;
+    --radius-panel: 8px;
+    --radius-pill: 999px;
+    /* One border weight. Buttons were 2px and inputs 1px, so a field and the
+       button next to it read as different weights of the same idea. The two
+       start buttons keep 2px, where it is doing real work. */
+    --border-width: 1px;
     --record-color: #ffd166;
     --warning-color: #ffb454;
     --player-2: #4ea3ff;
@@ -232,7 +243,7 @@ body {
     color: var(--primary-color);
     margin-bottom: 2rem;
     text-transform: uppercase;
-    letter-spacing: 4px;
+    letter-spacing: 2px;
 }
 
 .settings-row-group {
@@ -287,7 +298,7 @@ body {
     font-size: 1.8rem;
     color: var(--primary-color);
     text-transform: uppercase;
-    letter-spacing: 3px;
+    letter-spacing: 2px;
     margin: 1.5rem 0 1.5rem;
 }
 
@@ -306,8 +317,8 @@ body {
     flex-wrap: wrap;
     justify-content: center;
     gap: 1.5rem;
-    border: 1px solid var(--neutral-color);
-    border-radius: 8px;
+    border: var(--border-width) solid var(--neutral-color);
+    border-radius: var(--radius-panel);
     padding: 1.25rem 1rem;
     text-align: center;
 }
@@ -335,8 +346,8 @@ body {
     display: flex;
     align-items: center;
     gap: 1rem;
-    border: 1px solid var(--neutral-color);
-    border-radius: 6px;
+    border: var(--border-width) solid var(--neutral-color);
+    border-radius: var(--radius);
     padding: 0.6rem 1rem;
 }
 
@@ -376,8 +387,8 @@ body {
     display: flex;
     align-items: center;
     gap: 1rem;
-    border: 1px solid var(--neutral-color);
-    border-radius: 6px;
+    border: var(--border-width) solid var(--neutral-color);
+    border-radius: var(--radius);
     padding: 0.6rem 1rem;
 }
 
@@ -429,8 +440,8 @@ body {
     justify-content: center;
     width: 1.5rem;
     height: 1.5rem;
-    border-radius: 4px;
-    border: 1px solid var(--neutral-color);
+    border-radius: var(--radius);
+    border: var(--border-width) solid var(--neutral-color);
 }
 
 .store-flair-swatch {
@@ -453,7 +464,7 @@ body {
     letter-spacing: 0.05em;
     color: var(--warning-color);
     border: 1px solid color-mix(in srgb, var(--warning-color) 45%, transparent);
-    border-radius: 4px;
+    border-radius: var(--radius);
     padding: 0.1rem 0.35rem;
 }
 
@@ -474,7 +485,7 @@ body {
 .stats-placeholder {
     width: 100%;
     border: 1px dashed var(--neutral-color);
-    border-radius: 8px;
+    border-radius: var(--radius-panel);
     padding: 2rem 1rem;
     text-align: center;
     color: var(--sub-color);
@@ -484,8 +495,8 @@ body {
 .stats-chart {
     width: 100%;
     height: 200px;
-    border: 1px solid var(--neutral-color);
-    border-radius: 8px;
+    border: var(--border-width) solid var(--neutral-color);
+    border-radius: var(--radius-panel);
     padding: 0.5rem;
     box-sizing: border-box;
 }
@@ -543,8 +554,8 @@ body {
     font-size: 1.5rem;
     padding-top: 1.3rem;
     padding-bottom: 1.3rem;
-    border-width: 3px;
-    letter-spacing: 3px;
+    border-width: 2px;
+    letter-spacing: 2px;
 }
 
 /* Mode + rules for the Single Player button. Hidden (not removed) while the
@@ -601,8 +612,8 @@ body {
     align-items: flex-start;
     gap: 0.5rem;
     background: var(--background-color);
-    border: 1px solid var(--neutral-color);
-    border-radius: 8px;
+    border: var(--border-width) solid var(--neutral-color);
+    border-radius: var(--radius-panel);
     padding: 0.5rem;
     z-index: 10;
     max-height: calc(100vh - 2rem);
@@ -638,7 +649,7 @@ body {
     text-transform: uppercase;
     letter-spacing: 1px;
     padding: 0.45rem 0.7rem;
-    border-radius: 4px;
+    border-radius: var(--radius);
     cursor: pointer;
     text-align: left;
     flex-shrink: 0;
@@ -655,7 +666,8 @@ body {
 
 .menu-button {
     background: none;
-    border: 2px solid var(--primary-color);
+    border: var(--border-width) solid var(--primary-color);
+    border-radius: var(--radius);
     color: var(--text-color);
     padding: 1rem 2rem;
     font-size: 1.2rem;
@@ -686,19 +698,10 @@ body {
     min-width: 0;
 }
 
-/* Secondary actions. A dashed outline conventionally means "placeholder" or
-   "drop target", so Join / Create a Room / the leaderboard filter chips all
-   read as unfinished. Solid at reduced strength says "secondary" instead,
-   and still inverts to the filled state on hover like every other button. */
-.menu-button.ghost {
-    border-color: color-mix(in srgb, var(--primary-color) 45%, transparent);
-    color: var(--sub-color);
-}
-
-.menu-button.ghost:hover {
-    border-color: var(--primary-color);
-    color: var(--background-color);
-}
+/* Secondary actions. There used to be a .ghost modifier here as well, which
+   rendered identically to .quiet once the hierarchy was defined, so the two
+   were the same control under two names. .quiet is the one with a stated
+   role, and is defined with the rest of the hierarchy below. */
 
 .custom-hint {
     font-size: 0.8rem;
@@ -716,8 +719,8 @@ body {
     /* Tightened alongside the two-column split: .app is overflow:hidden, so
        anything past the viewport bottom is clipped rather than scrollable. */
     gap: 0.55rem;
-    border: 1px solid var(--neutral-color);
-    border-radius: 8px;
+    border: var(--border-width) solid var(--neutral-color);
+    border-radius: var(--radius-panel);
     padding: 0.85rem;
     margin: 1rem auto 0 auto;
     text-align: center;
@@ -750,8 +753,8 @@ body {
     align-items: center;
     gap: 0.35rem;
     background: transparent;
-    border: 1px solid var(--neutral-color);
-    border-radius: 6px;
+    border: var(--border-width) solid var(--neutral-color);
+    border-radius: var(--radius);
     padding: 0.5rem;
     cursor: pointer;
     font-family: inherit;
@@ -765,7 +768,7 @@ body {
     display: block;
     width: 100%;
     height: 1.5rem;
-    border-radius: 4px;
+    border-radius: var(--radius);
 }
 
 .theme-swatch-label {
@@ -787,8 +790,8 @@ body {
     display: flex;
     flex-direction: column;
     gap: 0.75rem;
-    border: 1px solid var(--neutral-color);
-    border-radius: 8px;
+    border: var(--border-width) solid var(--neutral-color);
+    border-radius: var(--radius-panel);
     padding: 1rem;
     margin: 1.5rem auto 0 auto;
 }
@@ -799,8 +802,8 @@ body {
     resize: vertical;
     background: transparent;
     color: var(--text-color);
-    border: 1px solid var(--neutral-color);
-    border-radius: 6px;
+    border: var(--border-width) solid var(--neutral-color);
+    border-radius: var(--radius);
     padding: 0.75rem;
     font-family: 'JetBrains Mono', monospace;
     font-size: 0.9rem;
@@ -868,8 +871,8 @@ body {
 .account-input {
     background: transparent;
     color: var(--text-color);
-    border: 1px solid var(--neutral-color);
-    border-radius: 6px;
+    border: var(--border-width) solid var(--neutral-color);
+    border-radius: var(--radius);
     padding: 0.65rem 0.75rem;
     font-family: 'JetBrains Mono', monospace;
     font-size: 0.9rem;
@@ -1007,7 +1010,7 @@ body {
     top: 1rem;
     right: 1rem;
     background: transparent;
-    border: 2px solid var(--primary-color);
+    border: var(--border-width) solid var(--primary-color);
     outline: none;
     box-shadow: none;
     color: var(--primary-color);
@@ -1020,7 +1023,7 @@ body {
     align-items: center;
     justify-content: center;
     z-index: 100;
-    border-radius: 4px;
+    border-radius: var(--radius);
     backdrop-filter: none !important;
     -webkit-backdrop-filter: none !important;
     appearance: none;
@@ -1062,7 +1065,7 @@ body {
    own, so it gets a visible button too. */
 .restart-toggle {
     background: transparent;
-    border: 2px solid var(--primary-color);
+    border: var(--border-width) solid var(--primary-color);
     outline: none;
     box-shadow: none;
     color: var(--primary-color);
@@ -1075,7 +1078,7 @@ body {
     align-items: center;
     justify-content: center;
     z-index: 100;
-    border-radius: 4px;
+    border-radius: var(--radius);
     font-size: 1.3rem;
     line-height: 1;
     appearance: none;
@@ -1095,7 +1098,7 @@ body {
    controls. */
 .zen-finish-button {
     background: transparent;
-    border: 2px solid var(--primary-color);
+    border: var(--border-width) solid var(--primary-color);
     outline: none;
     box-shadow: none;
     color: var(--primary-color);
@@ -1107,7 +1110,7 @@ body {
     align-items: center;
     justify-content: center;
     z-index: 100;
-    border-radius: 4px;
+    border-radius: var(--radius);
     font-family: inherit;
     font-size: 0.9rem;
     text-transform: uppercase;
@@ -1132,7 +1135,7 @@ body {
 .corner-icon-button {
     position: fixed;
     background: transparent;
-    border: 2px solid var(--primary-color);
+    border: var(--border-width) solid var(--primary-color);
     outline: none;
     box-shadow: none;
     color: var(--primary-color);
@@ -1145,7 +1148,7 @@ body {
     align-items: center;
     justify-content: center;
     z-index: 100;
-    border-radius: 4px;
+    border-radius: var(--radius);
     appearance: none;
 }
 
@@ -1232,8 +1235,8 @@ body {
     bottom: calc(100% + 0.6rem);
     left: 0;
     background: var(--background-color);
-    border: 1px solid var(--neutral-color);
-    border-radius: 8px;
+    border: var(--border-width) solid var(--neutral-color);
+    border-radius: var(--radius-panel);
     padding: 0.75rem;
     width: 280px;
 }
@@ -1243,8 +1246,8 @@ body {
     top: calc(100% + 0.6rem);
     right: 0;
     background: var(--background-color);
-    border: 1px solid var(--neutral-color);
-    border-radius: 8px;
+    border: var(--border-width) solid var(--neutral-color);
+    border-radius: var(--radius-panel);
     padding: 0.75rem;
     width: 320px;
 }
@@ -1401,7 +1404,7 @@ body {
 .text-display.code {
     text-align: left;
     background: rgba(127, 127, 127, 0.06);
-    border-radius: 8px;
+    border-radius: var(--radius-panel);
 }
 
 .text-display span.neutral.syn-keyword { color: var(--secondary-color); }
@@ -1591,7 +1594,7 @@ body {
 
 .end-screen-button {
     background: none;
-    border: 2px solid var(--primary-color);
+    border: var(--border-width) solid var(--primary-color);
     color: var(--text-color);
     padding: 1rem 2rem;
     font-size: 1.2rem;
@@ -1601,7 +1604,7 @@ body {
     text-transform: uppercase;
     letter-spacing: 2px;
     min-width: 250px;
-    border-radius: 8px;
+    border-radius: var(--radius-panel);
 }
 
 .end-screen-button:hover {
@@ -1627,7 +1630,7 @@ body {
        tint on a light background, light tint on a dark one) into
        transparent instead makes this actually visible in every theme. */
     background-color: color-mix(in srgb, var(--text-color) 18%, transparent);
-    border-radius: 2px;
+    border-radius: var(--radius);
 }
 
 .error-screen {
@@ -1757,7 +1760,7 @@ body {
     flex: 1 1 auto;
     height: 0.4rem;
     background: color-mix(in srgb, var(--neutral-color) 45%, transparent);
-    border-radius: 999px;
+    border-radius: var(--radius-pill);
     overflow: hidden;
 }
 
@@ -1771,18 +1774,6 @@ body {
     min-width: 2.5rem;
     text-align: left;
     font-family: 'JetBrains Mono', monospace;
-}
-
-/* Same colour key in the lobby list, so the mapping is learned before the
-   race starts rather than during it. */
-.leaderboard-row .mp-racer-dot {
-    display: inline-block;
-    width: 0.55rem;
-    height: 0.55rem;
-    border-radius: 2px;
-    margin-right: 0.5rem;
-    background: var(--racer-color, var(--primary-color));
-    flex-shrink: 0;
 }
 
 /* The one genuinely time-critical state in the app: seconds left to get your
@@ -1827,7 +1818,7 @@ body {
     background: color-mix(in srgb, var(--text-color) 10%, var(--background-color));
     color: var(--text-color);
     border: 1px solid var(--primary-color);
-    border-radius: 4px;
+    border-radius: var(--radius);
     padding: 0.4rem 0.6rem;
     font-size: 0.8rem;
     font-family: 'JetBrains Mono', monospace;
@@ -1846,7 +1837,7 @@ body {
     background: rgba(20, 20, 20, 0.95);
     color: #fff;
     border: 1px solid var(--primary-color);
-    border-radius: 4px;
+    border-radius: var(--radius);
     padding: 0.3rem 0.6rem;
     font-size: 0.8rem;
     font-family: 'JetBrains Mono', monospace;
@@ -1913,7 +1904,7 @@ body::-webkit-scrollbar, .app::-webkit-scrollbar, #root::-webkit-scrollbar {
     /* See .current's comment - a flat rgba(0,0,0,...) tint only darkens,
        so it did nothing at all against dark mode's pure-black background. */
     background: color-mix(in srgb, var(--text-color) 6%, transparent);
-    border-radius: 6px;
+    border-radius: var(--radius);
     /* Side padding matches .text-container's 2rem so the centred passage
        lands on the same left edge as it had on the typing screen. */
     padding: 1rem 2rem;
@@ -1946,7 +1937,7 @@ body::-webkit-scrollbar, .app::-webkit-scrollbar, #root::-webkit-scrollbar {
     height: 240px;
     position: relative;
     background: color-mix(in srgb, var(--text-color) 3%, transparent);
-    border-radius: 8px;
+    border-radius: var(--radius-panel);
 }
 
 .end-screen-graph-row.end-screen-time-row {
@@ -2275,8 +2266,8 @@ body::-webkit-scrollbar, .app::-webkit-scrollbar, #root::-webkit-scrollbar {
     top: calc(100% + 0.6rem);
     right: 0;
     background: var(--background-color);
-    border: 1px solid var(--neutral-color);
-    border-radius: 8px;
+    border: var(--border-width) solid var(--neutral-color);
+    border-radius: var(--radius-panel);
     padding: 0.5rem;
     width: 210px;
     display: flex;
@@ -2307,7 +2298,7 @@ body::-webkit-scrollbar, .app::-webkit-scrollbar, #root::-webkit-scrollbar {
     font-size: 0.9rem;
     text-align: left;
     padding: 0.4rem 0.6rem;
-    border-radius: 4px;
+    border-radius: var(--radius);
     cursor: pointer;
 }
 
@@ -2380,9 +2371,9 @@ body::-webkit-scrollbar, .app::-webkit-scrollbar, #root::-webkit-scrollbar {
     min-width: 1.05rem;
     height: 1.05rem;
     padding: 0 0.2rem;
-    border-radius: 0.55rem;
+    border-radius: var(--radius-pill);
     background: var(--background-color);
-    border: 1px solid var(--neutral-color);
+    border: var(--border-width) solid var(--neutral-color);
     color: var(--sub-color);
     font-family: 'JetBrains Mono', monospace;
     font-size: 0.6rem;
@@ -2578,7 +2569,7 @@ body::-webkit-scrollbar, .app::-webkit-scrollbar, #root::-webkit-scrollbar {
     gap: 0.75rem;
     padding: 0.4rem 0.75rem;
     border: 1px solid transparent;
-    border-radius: 6px;
+    border-radius: var(--radius);
     font-size: 0.85rem;
     color: var(--sub-color);
 }
@@ -2661,7 +2652,7 @@ body::-webkit-scrollbar, .app::-webkit-scrollbar, #root::-webkit-scrollbar {
 .custom-textarea:focus-visible {
     outline: none;
     box-shadow: 0 0 0 2px var(--background-color), 0 0 0 4px var(--primary-color);
-    border-radius: 6px;
+    border-radius: var(--radius);
 }
 
 /* Placeholders were inheriting the input's own text colour at whatever
@@ -2728,7 +2719,7 @@ body::-webkit-scrollbar, .app::-webkit-scrollbar, #root::-webkit-scrollbar {
 .mp-race-gate-label {
     font-size: 0.8rem;
     text-transform: uppercase;
-    letter-spacing: 3px;
+    letter-spacing: 2px;
     color: var(--sub-color);
 }
 
@@ -2744,7 +2735,7 @@ body::-webkit-scrollbar, .app::-webkit-scrollbar, #root::-webkit-scrollbar {
     margin-bottom: 1rem;
     padding: 0.75rem 1rem;
     border: 1px solid color-mix(in srgb, var(--primary-color) 35%, transparent);
-    border-radius: 8px;
+    border-radius: var(--radius-panel);
     font-size: 0.85rem;
     color: var(--sub-color);
 }
@@ -2765,7 +2756,7 @@ body::-webkit-scrollbar, .app::-webkit-scrollbar, #root::-webkit-scrollbar {
     border: none;
     color: var(--sub-color);
     cursor: pointer;
-    border-radius: 6px;
+    border-radius: var(--radius);
     transition: color 0.15s ease, background-color 0.15s ease;
 }
 
@@ -2802,8 +2793,8 @@ body::-webkit-scrollbar, .app::-webkit-scrollbar, #root::-webkit-scrollbar {
     gap: 0.15rem;
     min-width: 3.25rem;
     padding: 0.5rem 0.4rem;
-    border: 1px solid var(--neutral-color);
-    border-radius: 6px;
+    border: var(--border-width) solid var(--neutral-color);
+    border-radius: var(--radius);
 }
 
 .weak-key-char {
@@ -2840,8 +2831,8 @@ body::-webkit-scrollbar, .app::-webkit-scrollbar, #root::-webkit-scrollbar {
     text-transform: uppercase;
     letter-spacing: 0.05em;
     color: var(--sub-color);
-    border: 1px solid var(--neutral-color);
-    border-radius: 4px;
+    border: var(--border-width) solid var(--neutral-color);
+    border-radius: var(--radius);
     padding: 0.1rem 0.35rem;
 }
 
@@ -2883,7 +2874,7 @@ body::-webkit-scrollbar, .app::-webkit-scrollbar, #root::-webkit-scrollbar {
     color: var(--sub-color);
     text-decoration: none;
     cursor: pointer;
-    border-radius: 4px;
+    border-radius: var(--radius);
     transition: color 0.15s ease;
 }
 
@@ -2959,8 +2950,8 @@ body::-webkit-scrollbar, .app::-webkit-scrollbar, #root::-webkit-scrollbar {
 }
 
 .submission-row {
-    border: 1px solid var(--neutral-color);
-    border-radius: 8px;
+    border: var(--border-width) solid var(--neutral-color);
+    border-radius: var(--radius-panel);
     padding: 0.75rem 0.9rem;
     display: flex;
     flex-direction: column;
@@ -3023,8 +3014,8 @@ body::-webkit-scrollbar, .app::-webkit-scrollbar, #root::-webkit-scrollbar {
     align-items: flex-start;
     gap: 0.15rem;
     background: none;
-    border: 1px solid var(--neutral-color);
-    border-radius: 6px;
+    border: var(--border-width) solid var(--neutral-color);
+    border-radius: var(--radius);
     padding: 0.5rem 0.7rem;
     color: var(--text-color);
     font-family: inherit;
@@ -3056,7 +3047,7 @@ body::-webkit-scrollbar, .app::-webkit-scrollbar, #root::-webkit-scrollbar {
     width: 2rem;
     background: none;
     border: 1px solid transparent;
-    border-radius: 6px;
+    border-radius: var(--radius);
     color: var(--sub-color);
     font-size: 1.1rem;
     cursor: pointer;
@@ -3076,8 +3067,8 @@ body::-webkit-scrollbar, .app::-webkit-scrollbar, #root::-webkit-scrollbar {
     align-items: center;
     gap: 0.6rem;
     padding: 0.5rem 0.75rem;
-    border: 1px solid var(--neutral-color);
-    border-radius: 6px;
+    border: var(--border-width) solid var(--neutral-color);
+    border-radius: var(--radius);
 }
 
 .admin-user-name {
@@ -3095,7 +3086,7 @@ body::-webkit-scrollbar, .app::-webkit-scrollbar, #root::-webkit-scrollbar {
     letter-spacing: 1px;
     color: var(--primary-color);
     border: 1px solid color-mix(in srgb, var(--primary-color) 45%, transparent);
-    border-radius: 4px;
+    border-radius: var(--radius);
     padding: 0.1rem 0.35rem;
 }
 
@@ -3162,4 +3153,69 @@ body::-webkit-scrollbar, .app::-webkit-scrollbar, #root::-webkit-scrollbar {
     .stats-screen {
         padding-bottom: var(--bottom-chrome);
     }
+}
+
+/* Racer sprites. A race is easier to read as characters moving than as
+   coloured lines with names attached, and the sprite is the same for a given
+   player on every client because it comes from the server's player order. */
+.mp-racer-sprite {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.15rem;
+    height: 1.15rem;
+    flex-shrink: 0;
+    color: var(--racer-color, var(--primary-color));
+}
+
+.mp-racer-sprite svg {
+    width: 100%;
+    height: 100%;
+}
+
+.leaderboard-name .mp-racer-sprite {
+    margin-right: 0.5rem;
+    vertical-align: middle;
+}
+
+/* Reserved advertising space. See web/src/adSlot.js: this holds the space so
+   a later ad tag cannot push the page around when it loads. Nothing is
+   loaded into it today. */
+.ad-slot {
+    width: var(--ad-w);
+    height: var(--ad-h);
+    max-width: 100%;
+    margin: 1.25rem auto 0 auto;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: var(--border-width) dashed color-mix(in srgb, var(--neutral-color) 60%, transparent);
+    border-radius: var(--radius);
+    box-sizing: border-box;
+}
+
+/* Dashed and unfilled, which is the one place that convention is right: it is
+   a placeholder, and it should not be mistaken for content. */
+.ad-slot-label {
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: color-mix(in srgb, var(--sub-color) 70%, transparent);
+}
+
+@media (max-width: 768px) {
+    .ad-slot {
+        width: var(--ad-mobile-w);
+        height: var(--ad-mobile-h);
+    }
+}
+
+
+/* Holds the slot in the end screen's flex column without shrinking. */
+.end-screen-ad {
+    flex-shrink: 0;
+    width: 100%;
+    display: flex;
+    justify-content: center;
 }

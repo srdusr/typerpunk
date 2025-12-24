@@ -4,14 +4,16 @@ import { attachTooltips } from '../tooltip.js';
 import { renderTopRail } from '../topRail.js';
 import { api, ApiError } from '../api.js';
 import { getUser } from '../auth.js';
-import { FLAIR_ICONS, CLOSE_ICON } from './icons.js';
+import { FLAIR_ICONS, RACER_SPRITES, CLOSE_ICON } from './icons.js';
 
 function formatPrice(cents) {
     return `$${(cents / 100).toFixed(2)}`;
 }
 
 function categoryLabel(category) {
-    return category === 'caret' ? 'Caret Colors' : 'Flair';
+    if (category === 'caret') return 'Caret Colours';
+    if (category === 'sprite') return 'Race Sprites';
+    return 'Flair';
 }
 
 // Real purchase/equip flow against the catalog, but purchase is a stub --
@@ -30,17 +32,19 @@ export function renderStoreScreen(root, { onBack, onShowStats, onShowPlaceholder
         const signedOut = status === 'signed-out';
         const owned = !signedOut && mine.owned.includes(item.id);
         const equipped = !signedOut && (mine.equipped_caret === item.id || mine.equipped_flair === item.id);
+        // A caret is a colour, so the swatch is the colour itself; flair and
+        // sprites are drawings, so the swatch is the drawing.
         const swatch = item.category === 'caret'
             ? `<span class="store-swatch" data-swatch-colour="${escapeHtml(item.value)}"></span>`
-            : `<span class="store-swatch store-flair-swatch">${FLAIR_ICONS[item.value] || ''}</span>`;
+            : `<span class="store-swatch store-flair-swatch">${(item.category === 'sprite' ? RACER_SPRITES : FLAIR_ICONS)[item.value] || ''}</span>`;
         return `
             <div class="leaderboard-row store-item-row">
                 ${swatch}
                 <div class="leaderboard-name">${escapeHtml(item.name)}</div>
                 ${!owned ? `<div class="leaderboard-acc">${formatPrice(item.price_cents)}</div>` : ''}
                 ${owned
-                    ? `<button class="menu-button small${equipped ? '' : ' ghost'}" data-action="${equipped ? 'unequip' : 'equip'}" data-id="${item.id}" data-category="${item.category}" data-tooltip="${equipped ? 'Unequip - back to the default look' : `Replaces whichever ${categoryLabel(item.category).toLowerCase()} you have equipped now`}">${equipped ? 'Equipped' : 'Equip'}</button>`
-                    : `<button class="menu-button small${signedOut ? ' ghost' : ''}" data-action="${signedOut ? 'go-account' : 'buy'}" data-id="${item.id}"${signedOut ? ' data-tooltip="Sign in to buy this"' : ''}>Buy</button>`}
+                    ? `<button class="menu-button small${equipped ? ' active' : ' quiet'}" data-action="${equipped ? 'unequip' : 'equip'}" data-id="${item.id}" data-category="${item.category}" data-tooltip="${equipped ? 'Unequip - back to the default look' : `Replaces whichever ${categoryLabel(item.category).toLowerCase()} you have equipped now`}">${equipped ? 'Equipped' : 'Equip'}</button>`
+                    : `<button class="menu-button small${signedOut ? ' quiet' : ''}" data-action="${signedOut ? 'go-account' : 'buy'}" data-id="${item.id}"${signedOut ? ' data-tooltip="Sign in to buy this"' : ''}>Buy</button>`}
             </div>
         `;
     }
@@ -54,7 +58,7 @@ export function renderStoreScreen(root, { onBack, onShowStats, onShowPlaceholder
             ? `<div class="store-signin-note">Sign in to buy and equip these.
                  <button class="menu-button small" data-action="go-account">Sign In</button></div>`
             : '';
-        const categories = ['caret', 'flair'];
+        const categories = ['caret', 'flair', 'sprite'];
         return banner + categories.map(cat => {
             const items = catalog.filter(i => i.category === cat);
             if (items.length === 0) return '';

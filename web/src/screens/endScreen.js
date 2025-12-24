@@ -3,6 +3,7 @@ import { escapeHtml } from '../util.js';
 import { attachTooltips } from '../tooltip.js';
 import { onThemeChange } from '../theme.js';
 import { renderSiteFooter } from '../siteFooter.js';
+import { renderAdSlot } from '../adSlot.js';
 import { recordResult } from '../pb.js';
 import { recordTest } from '../profileStats.js';
 import { renderCornerRail } from '../cornerRail.js';
@@ -82,6 +83,7 @@ export function renderEndScreen(root, { stats, text, attribution, explanation, s
                 <div class="mp-standings-heading">Standings</div>
                 <div class="mp-standings-rows"></div>
             </div>` : ''}
+            <div class="end-screen-ad"></div>
             <div class="end-screen-buttons">
                 <button class="end-screen-button primary" data-action="again">Play Again</button>
             </div>
@@ -145,6 +147,9 @@ export function renderEndScreen(root, { stats, text, attribution, explanation, s
     const cleanupTheme = renderTopRail(root, { onShowAccount, onShowFriends });
     // Share here carries the result just achieved, not just the site.
     const cleanupFooter = renderSiteFooter(root, { result: stats, onShowPrivacy });
+    // Below the results and above Play Again: read after the run is over,
+    // never during it.
+    const cleanupAd = renderAdSlot(root.querySelector('.end-screen-ad'));
     root.querySelectorAll('[data-action="menu"]').forEach(el => el.addEventListener('click', onMainMenu));
     root.querySelector('[data-action="again"]').addEventListener('click', onPlayAgain);
 
@@ -234,6 +239,7 @@ export function renderEndScreen(root, { stats, text, attribution, explanation, s
         onLeaveRace?.();
         cleanupTheme();
         cleanupFooter();
+        cleanupAd();
         window.removeEventListener('resize', redraw);
         offTheme();
         canvas.removeEventListener('mousemove', handleMove);

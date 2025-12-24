@@ -114,3 +114,38 @@ export const CLOSE_ICON = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 
     <path d="M5 5L19 19"/>
     <path d="M19 5L5 19"/>
 </svg>`;
+
+// Racer sprites. One per player in a multiplayer race, so a bar is a
+// character rather than a coloured line with a name attached. Drawn in the
+// same angular language as the rest of this set: straight edges, flat fill,
+// no gradients, and they take their colour from the racer they belong to.
+//
+// Six of them, which is the room capacity, so no two racers in a full room
+// share a sprite.
+export const RACER_SPRITES = {
+    // A forward-leaning chevron, the fastest-reading shape in the set.
+    dart: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M3 4L17 12L3 20L7 12Z"/><rect x="19" y="10" width="3" height="4"/></svg>`,
+    // A blocky rocket.
+    rocket: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L16 8V16H8V8Z"/><path d="M8 16L5 21L9 19Z"/><path d="M16 16L19 21L15 19Z"/><rect x="10" y="6" width="4" height="4" fill="var(--background-color)"/></svg>`,
+    // A visored helmet.
+    helm: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M4 11L12 3L20 11V18H4Z"/><rect x="7" y="11" width="10" height="4" fill="var(--background-color)"/><rect x="4" y="18" width="16" height="3"/></svg>`,
+    // A hexagonal core.
+    core: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L20 7V17L12 22L4 17V7Z"/><rect x="9" y="9" width="6" height="6" fill="var(--background-color)"/></svg>`,
+    // A signal mast.
+    signal: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><rect x="11" y="8" width="2" height="14"/><path d="M4 3L8 7L4 11Z"/><path d="M20 3L16 7L20 11Z"/><rect x="8" y="6" width="8" height="2"/></svg>`,
+    // A pair of stacked blades.
+    blade: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M2 6H14L18 10H6Z"/><path d="M6 14H18L22 18H10Z"/></svg>`,
+};
+
+export const RACER_SPRITE_IDS = Object.keys(RACER_SPRITES);
+
+// Flair added alongside the original three. Same construction: flat fill,
+// straight edges, readable at 16px beside a username.
+Object.assign(FLAIR_ICONS, {
+    crown: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M3 7L7 12L12 5L17 12L21 7V19H3Z"/></svg>`,
+    circuit: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><rect x="9" y="9" width="6" height="6"/><rect x="11" y="2" width="2" height="6"/><rect x="11" y="16" width="2" height="6"/><rect x="2" y="11" width="6" height="2"/><rect x="16" y="11" width="6" height="2"/></svg>`,
+    eye: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M2 12L7 6H17L22 12L17 18H7Z"/><rect x="10" y="10" width="4" height="4" fill="var(--background-color)"/></svg>`,
+    shard: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L18 10L12 22L6 10Z"/></svg>`,
+    moth: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 4L4 8L6 16L12 13Z"/><path d="M12 4L20 8L18 16L12 13Z"/><rect x="11" y="4" width="2" height="16"/></svg>`,
+    reactor: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L21 20H3Z"/><rect x="10" y="12" width="4" height="5" fill="var(--background-color)"/></svg>`,
+});

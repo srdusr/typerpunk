@@ -51,6 +51,7 @@ struct MyCosmetics {
     owned: Vec<String>,
     equipped_caret: Option<String>,
     equipped_flair: Option<String>,
+    equipped_sprite: Option<String>,
 }
 
 async fn my_cosmetics(State(state): State<Arc<AppState>>, jar: CookieJar) -> Result<impl IntoResponse, AppError> {
@@ -62,7 +63,7 @@ async fn my_cosmetics(State(state): State<Arc<AppState>>, jar: CookieJar) -> Res
         .await?;
     let owned: Vec<String> = owned_rows.into_iter().filter_map(|r| r.try_get("cosmetic_id").ok()).collect();
 
-    let equip_row = sqlx::query("SELECT equipped_caret, equipped_flair FROM users WHERE id = $1")
+    let equip_row = sqlx::query("SELECT equipped_caret, equipped_flair, equipped_sprite FROM users WHERE id = $1")
         .bind(&user.id)
         .fetch_one(&state.db)
         .await?;
@@ -76,6 +77,7 @@ async fn my_cosmetics(State(state): State<Arc<AppState>>, jar: CookieJar) -> Res
         // into Option<String> correctly does. Found via a real NULL column
         // round-tripping as "" instead of JSON null.
         equipped_caret: equip_row.try_get::<Option<String>, _>("equipped_caret").unwrap_or(None),
+        equipped_sprite: equip_row.try_get::<Option<String>, _>("equipped_sprite").unwrap_or(None),
         equipped_flair: equip_row.try_get::<Option<String>, _>("equipped_flair").unwrap_or(None),
     }))
 }
@@ -126,6 +128,7 @@ async fn equip(State(state): State<Arc<AppState>>, jar: CookieJar, Path(cosmetic
     let column = match category.as_str() {
         "caret" => "equipped_caret",
         "flair" => "equipped_flair",
+        "sprite" => "equipped_sprite",
         _ => return Err(AppError::Internal(anyhow::anyhow!("unknown cosmetic category"))),
     };
 
@@ -147,7 +150,8 @@ async fn unequip(State(state): State<Arc<AppState>>, jar: CookieJar, Json(body):
     let column = match body.category.as_str() {
         "caret" => "equipped_caret",
         "flair" => "equipped_flair",
-        _ => return Err(AppError::InvalidInput("category must be 'caret' or 'flair'".into())),
+        "sprite" => "equipped_sprite",
+        _ => return Err(AppError::InvalidInput("category must be 'caret', 'flair' or 'sprite'".into())),
     };
     let query = format!("UPDATE users SET {column} = NULL WHERE id = $1");
     sqlx::query(&query).bind(&user.id).execute(&state.db).await?;

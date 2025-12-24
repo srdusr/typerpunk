@@ -43,7 +43,7 @@ export function renderFriendsScreen(root, { onBack, onShowFriends, onShowStats, 
                     <div class="leaderboard-row">
                         <div class="leaderboard-name">${escapeHtml(r.username)}</div>
                         <button class="menu-button small" data-action="accept" data-id="${r.friendship_id}">Accept</button>
-                        <button class="menu-button small ghost" data-action="decline" data-id="${r.friendship_id}">Decline</button>
+                        <button class="menu-button small quiet" data-action="decline" data-id="${r.friendship_id}">Decline</button>
                     </div>
                 `).join('')}
             </div>` : ''}
@@ -55,7 +55,7 @@ export function renderFriendsScreen(root, { onBack, onShowFriends, onShowStats, 
                     <div class="leaderboard-row">
                         <div class="leaderboard-name">${escapeHtml(r.username)}</div>
                         <div class="leaderboard-acc">Pending</div>
-                        <button class="menu-button small ghost" data-action="cancel" data-id="${r.friendship_id}">Cancel</button>
+                        <button class="menu-button small quiet" data-action="cancel" data-id="${r.friendship_id}">Cancel</button>
                     </div>
                 `).join('')}
             </div>` : ''}
@@ -66,7 +66,7 @@ export function renderFriendsScreen(root, { onBack, onShowFriends, onShowStats, 
                 ${data.friends.map(f => `
                     <div class="leaderboard-row">
                         <div class="leaderboard-name">${escapeHtml(f.username)}</div>
-                        <button class="menu-button small ghost" data-action="unfriend" data-id="${f.friendship_id}">Remove</button>
+                        <button class="menu-button small quiet" data-action="unfriend" data-id="${f.friendship_id}">Remove</button>
                     </div>
                 `).join('')}
             </div>` : `<div class="stats-empty">No friends yet - add one by username above.</div>`}

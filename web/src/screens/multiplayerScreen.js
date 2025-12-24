@@ -1,5 +1,5 @@
 import { escapeHtml } from '../util.js';
-import { CLOSE_ICON } from './icons.js';
+import { CLOSE_ICON, RACER_SPRITES, RACER_SPRITE_IDS } from './icons.js';
 import { renderCornerRail } from '../cornerRail.js';
 import { attachTooltips } from '../tooltip.js';
 import { renderTopRail } from '../topRail.js';
@@ -25,6 +25,18 @@ function racerColors(players, myId) {
         }
     }
     return colors;
+}
+
+// A sprite per racer, assigned from the server's own player order so every
+// client in the room draws the same person as the same character. Derived
+// rather than stored: the order is identical everywhere, and a race is short
+// enough that nobody needs to keep a sprite between rooms.
+function racerSprites(players) {
+    const sprites = {};
+    players.forEach((p, i) => {
+        sprites[p.id] = RACER_SPRITE_IDS[i % RACER_SPRITE_IDS.length];
+    });
+    return sprites;
 }
 
 // A style="" attribute in markup is refused by the Content-Security-Policy;
@@ -76,7 +88,7 @@ export function renderMultiplayerScreen(root, { onBack, onFinish, onShowStats, o
                 <h2>Multiplayer</h2>
                 <div class="account-panel">
                     <input class="account-input" type="text" id="mp-name" placeholder="Your name" value="${escapeHtml(getUser()?.username || '')}">
-                    <button class="menu-button small ghost" data-action="toggle-device-filter" data-tooltip="Who you get matched with, and the setting any room you open uses. Joining by code always uses that room's setting.">Match: Everyone</button>
+                    <button class="menu-button small quiet" data-action="toggle-device-filter" data-tooltip="Who you get matched with, and the setting any room you open uses. Joining by code always uses that room's setting.">Match: Everyone</button>
                     <button class="menu-button primary" data-action="quick" data-tooltip="Drops you straight into a race with whoever else is looking. No code to share.">Find a Race</button>
 
                     <div class="mp-divider"><span>or race friends</span></div>
@@ -85,7 +97,7 @@ export function renderMultiplayerScreen(root, { onBack, onFinish, onShowStats, o
                         <input class="account-input" type="text" id="mp-room-code" placeholder="CODE" maxlength="5" autocomplete="off" spellcheck="false">
                         <button class="menu-button" data-action="join">Join</button>
                     </div>
-                    <button class="menu-button ghost" data-action="create" data-tooltip="Opens an empty room and gives you a code to share.">Create a Room</button>
+                    <button class="menu-button quiet" data-action="create" data-tooltip="Opens an empty room and gives you a code to share.">Create a Room</button>
                     <div class="custom-error mp-error">${escapeHtml(landingError || '')}</div>
                 </div>
             </div>
@@ -168,7 +180,7 @@ export function renderMultiplayerScreen(root, { onBack, onFinish, onShowStats, o
                 <div class="mp-countdown" hidden></div>
                 <div class="leaderboard-list mp-player-list"></div>
                 <button class="menu-button" data-action="ready">Ready</button>
-                <button class="menu-button small ghost" data-action="leave">Leave Room</button>
+                <button class="menu-button small quiet" data-action="leave">Leave Room</button>
             </div>
         `;
         root.querySelector('[data-action="menu"]').addEventListener('click', () => { leaveRoom(); onBack(); });
@@ -180,9 +192,10 @@ export function renderMultiplayerScreen(root, { onBack, onFinish, onShowStats, o
         const listEl = root.querySelector('.mp-player-list');
         function paintPlayers() {
             const colors = racerColors(players, myId);
+            const sprites = racerSprites(players);
             listEl.innerHTML = players.map(p => `
                 <div class="leaderboard-row" data-racer-color="${colors[p.id]}">
-                    <div class="leaderboard-name"><span class="mp-racer-dot"></span>${escapeHtml(p.name)}${p.id === myId ? ' (you)' : ''}</div>
+                    <div class="leaderboard-name"><span class="mp-racer-sprite">${RACER_SPRITES[sprites[p.id]]}</span>${escapeHtml(p.name)}${p.id === myId ? ' (you)' : ''}</div>
                     <div class="leaderboard-acc">${p.ready ? 'Ready' : 'Not ready'}</div>
                 </div>
             `).join('');
@@ -200,7 +213,7 @@ export function renderMultiplayerScreen(root, { onBack, onFinish, onShowStats, o
                 connection.ready();
                 readyBtn.textContent = 'Waiting for players...';
                 readyBtn.disabled = true;
-                readyBtn.classList.add('ghost');
+                readyBtn.classList.add('quiet');
             }
         });
         const offPlayerList = connection.on('playerList', list => { players = list; paintPlayers(); });
@@ -232,7 +245,7 @@ export function renderMultiplayerScreen(root, { onBack, onFinish, onShowStats, o
             connection.ready();
             readyBtn.textContent = 'Waiting for players...';
             readyBtn.disabled = true;
-            readyBtn.classList.add('ghost');
+            readyBtn.classList.add('quiet');
         });
         root.querySelector('[data-action="leave"]').addEventListener('click', () => { leaveRoom(); renderLanding(); });
 
@@ -263,11 +276,13 @@ export function renderMultiplayerScreen(root, { onBack, onFinish, onShowStats, o
         // way theirs are.
         function paintOpponents() {
             const colors = racerColors(players, myId);
+            const sprites = racerSprites(players);
             opponents.innerHTML = players.map(p => {
                 const me = p.id === myId;
                 const prog = progressById[p.id] || {};
                 return `
                 <div class="mp-racer-row${me ? ' me' : ''}" data-racer-color="${colors[p.id]}">
+                    <span class="mp-racer-sprite">${RACER_SPRITES[sprites[p.id]]}</span>
                     <span class="mp-racer-name">${escapeHtml(p.name)}${me ? ' (you)' : ''}</span>
                     <div class="mp-racer-bar"><div class="mp-racer-bar-fill" data-percent="${prog.percent || 0}"></div></div>
                     <span class="mp-racer-wpm">${Math.round(prog.wpm || 0)}</span>

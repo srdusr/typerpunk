@@ -44,8 +44,8 @@ export function renderAccountScreen(root, { onBack, onShowAccount, onShowStats, 
         }
         return `
             <div class="account-tabs">
-                <button class="menu-button small${mode === 'login' ? '' : ' ghost'}" data-action="tab-login">Log In</button>
-                <button class="menu-button small${mode === 'register' ? '' : ' ghost'}" data-action="tab-register">Register</button>
+                <button class="menu-button small quiet${mode === 'login' ? ' active' : ''}" data-action="tab-login">Log In</button>
+                <button class="menu-button small quiet${mode === 'register' ? ' active' : ''}" data-action="tab-register">Register</button>
             </div>
             <form class="account-form">
                 <input class="account-input" type="text" name="username" placeholder="Username" autocomplete="username" required>

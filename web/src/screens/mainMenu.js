@@ -168,7 +168,7 @@ export function renderMainMenu(root, props) {
                 </div>
                 <div class="settings-hint">Dev</div>
                 <button class="menu-button small" data-action="simulate-test" data-tooltip="Jump straight to the end screen with fake results, no typing required.">Simulate Test &rarr; End Screen</button>
-                <button class="menu-button small ghost" data-action="close-settings">Close</button>
+                <button class="menu-button small quiet" data-action="close-settings">Close</button>
             </div>
 
             <div class="custom-panel" hidden>
@@ -197,7 +197,7 @@ export function renderMainMenu(root, props) {
                 </div>` : ''}
                 <div class="custom-panel-row">
                     <button class="menu-button small" data-action="use-pasted">Use this text</button>
-                    <button class="menu-button small ghost" data-action="close-custom">Cancel</button>
+                    <button class="menu-button small quiet" data-action="close-custom">Cancel</button>
                 </div>
                 <div class="custom-error"></div>
             </div>
