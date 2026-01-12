@@ -51,6 +51,7 @@ pub struct AppState {
     /// than per-room, since the pool itself never changes at runtime.
     pub race_texts: Vec<RaceText>,
     pub spotify: SpotifyConfig,
+    pub stripe: crate::billing::StripeConfig,
     pub frontend_origin: String,
     pub http: Client,
 }
@@ -61,10 +62,12 @@ impl AppState {
         cookie_secure: bool,
         race_texts: Vec<RaceText>,
         spotify: SpotifyConfig,
+        stripe: crate::billing::StripeConfig,
         frontend_origin: String,
     ) -> Self {
         Self {
             db,
+            stripe,
             auth_rate_limiter: RateLimiter::new(10, Duration::from_secs(5 * 60)),
             // A genuine player finishes a test at most every several
             // seconds; 60 submissions in 5 minutes is generous headroom for

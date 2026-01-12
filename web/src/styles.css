@@ -2740,6 +2740,133 @@ body::-webkit-scrollbar, .app::-webkit-scrollbar, #root::-webkit-scrollbar {
     color: var(--sub-color);
 }
 
+/* The supporter offer, above the catalogue. It is the one thing in the store
+   that is not cosmetic, so it does not sit in a category with the rest. */
+.store-supporter {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-bottom: 1.5rem;
+    padding: 0.9rem 1.1rem;
+    border: var(--border-width) solid color-mix(in srgb, var(--primary-color) 45%, transparent);
+    border-radius: var(--radius-panel);
+    background: color-mix(in srgb, var(--primary-color) 7%, transparent);
+    text-align: left;
+}
+
+.store-supporter.is-supporter {
+    border-color: color-mix(in srgb, var(--correct-color) 45%, transparent);
+    background: color-mix(in srgb, var(--correct-color) 7%, transparent);
+}
+
+.store-supporter-text {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+}
+
+.store-supporter-text strong {
+    color: var(--text-color);
+    font-size: 0.95rem;
+}
+
+.store-supporter-text span {
+    color: var(--sub-color);
+    font-size: 0.8rem;
+}
+
+/* Bundles. A card rather than a row: a bundle has to show what is inside it,
+   which a one-line row has no space for. */
+.bundle-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+    gap: 0.75rem;
+    margin-bottom: 1.5rem;
+}
+
+.bundle-card {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    padding: 0.9rem 1rem;
+    border: var(--border-width) solid var(--border-color);
+    border-radius: var(--radius-panel);
+    text-align: left;
+}
+
+.bundle-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.5rem;
+}
+
+.bundle-name {
+    color: var(--text-color);
+    font-size: 0.95rem;
+    font-weight: 600;
+}
+
+.bundle-saving {
+    color: var(--correct-color);
+    font-size: 0.75rem;
+    white-space: nowrap;
+}
+
+.bundle-description {
+    color: var(--sub-color);
+    font-size: 0.8rem;
+    line-height: 1.4;
+}
+
+.bundle-previews {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem;
+    margin: 0.15rem 0;
+}
+
+/* An item already owned is dimmed rather than hidden, so the bundle still
+   shows its full contents. */
+.bundle-preview-item.owned {
+    opacity: 0.35;
+}
+
+.bundle-foot {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    margin-top: auto;
+    padding-top: 0.25rem;
+}
+
+.bundle-prices {
+    display: flex;
+    align-items: baseline;
+    gap: 0.4rem;
+}
+
+.bundle-price {
+    color: var(--text-color);
+    font-size: 1.05rem;
+    font-weight: 600;
+}
+
+.bundle-full-price {
+    color: var(--sub-color);
+    font-size: 0.8rem;
+    text-decoration: line-through;
+}
+
+.bundle-owned,
+.bundle-note {
+    color: var(--sub-color);
+    font-size: 0.75rem;
+}
+
 /* Close, at the top-right of the content. Replaces the full-width "Back"
    button every screen carried at the bottom - a third way to do what the
    wordmark and Escape already did, and the least reachable of the three. */

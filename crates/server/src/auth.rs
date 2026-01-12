@@ -309,11 +309,19 @@ async fn me(State(state): State<Arc<AppState>>, jar: CookieJar) -> Result<impl I
     let user = current_user(&state.db, &jar).await.ok_or(AppError::Unauthorized)?;
     // Whether the ad slots are shown. Fetched here so the client has it with
     // the identity rather than asking a second time.
-    let is_supporter: bool = sqlx::query_scalar("SELECT is_supporter FROM users WHERE id = $1")
-        .bind(&user.id)
-        .fetch_optional(&state.db)
-        .await?
-        .unwrap_or(false);
+    // Derived from the expiry rather than read from the stored flag. A
+    // subscription that is only ever switched on never ends: nothing runs at
+    // midnight to switch it off, so the flag alone would make every supporter
+    // a supporter forever. Comparing against the expiry is self-correcting.
+    let is_supporter: bool = sqlx::query_scalar(
+        "SELECT is_supporter AND supporter_until IS NOT NULL AND supporter_until > $2
+         FROM users WHERE id = $1",
+    )
+    .bind(&user.id)
+    .bind(format_timestamp(OffsetDateTime::now_utc()))
+    .fetch_optional(&state.db)
+    .await?
+    .unwrap_or(false);
     Ok(Json(serde_json::json!({
         "id": user.id,
         "username": user.username,

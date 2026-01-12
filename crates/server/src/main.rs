@@ -1,5 +1,6 @@
 mod admin;
 mod anticheat;
+mod billing;
 mod bot_results;
 mod auth;
 mod cosmetics;
@@ -20,7 +21,6 @@ use axum::Router;
 use serde::Deserialize;
 use state::{AppState, SpotifyConfig};
 use std::net::SocketAddr;
-use std::str::FromStr;
 use std::sync::Arc;
 use tower_http::cors::CorsLayer;
 use tower::ServiceBuilder;
@@ -95,6 +95,7 @@ fn build_app(app_state: Arc<AppState>) -> Router {
         .merge(lyrics::router())
         .merge(texts::router())
         .merge(admin::router())
+        .merge(billing::router())
         .with_state(app_state)
 }
 
@@ -194,8 +195,16 @@ async fn main() -> anyhow::Result<()> {
         tracing::warn!("SPOTIFY_CLIENT_ID/SECRET not set - the Lyrics mode's Spotify connection will return 501 until configured.");
     }
 
+    let stripe_config = billing::StripeConfig {
+        secret_key: std::env::var("STRIPE_SECRET_KEY").unwrap_or_default(),
+        webhook_secret: std::env::var("STRIPE_WEBHOOK_SECRET").unwrap_or_default(),
+    };
+    if !stripe_config.is_configured() {
+        tracing::warn!("STRIPE_SECRET_KEY/STRIPE_WEBHOOK_SECRET not set - the store will return 501 on checkout until configured.");
+    }
+
     let race_texts = load_race_texts();
-    let app_state = Arc::new(AppState::new(db, cookie_secure, race_texts, spotify_config, frontend_origin.clone()));
+    let app_state = Arc::new(AppState::new(db, cookie_secure, race_texts, spotify_config, stripe_config, frontend_origin.clone()));
     admin::bootstrap_admin(&app_state).await;
     bot_results::spawn(app_state.clone());
 
@@ -275,6 +284,7 @@ mod tests {
                 attribution: None,
             }],
             SpotifyConfig::default(),
+            billing::StripeConfig::default(),
             "http://localhost:4173".to_string(),
         ));
         let app = build_app(app_state);

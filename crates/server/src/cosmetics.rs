@@ -1,4 +1,5 @@
 use crate::auth::{current_user, format_timestamp};
+use time::OffsetDateTime;
 use crate::error::AppError;
 use crate::state::AppState;
 use axum::extract::{Path, State};
@@ -9,13 +10,12 @@ use axum_extra::extract::cookie::CookieJar;
 use serde::{Deserialize, Serialize};
 use sqlx::Row;
 use std::sync::Arc;
-use time::OffsetDateTime;
 
 pub fn router() -> Router<Arc<AppState>> {
     Router::new()
         .route("/api/cosmetics", get(list_catalog))
         .route("/api/cosmetics/me", get(my_cosmetics))
-        .route("/api/cosmetics/:id/purchase", post(purchase))
+        .route("/api/cosmetics/bundles", get(list_bundles))
         .route("/api/cosmetics/:id/equip", post(equip))
         .route("/api/cosmetics/unequip", post(unequip))
 }
@@ -52,6 +52,43 @@ struct MyCosmetics {
     equipped_caret: Option<String>,
     equipped_flair: Option<String>,
     equipped_sprite: Option<String>,
+    is_supporter: bool,
+}
+
+/// Bundles, with the items each contains so the store can show what is in one
+/// and what the buyer already owns.
+async fn list_bundles(State(state): State<Arc<AppState>>) -> Result<impl IntoResponse, AppError> {
+    let rows = sqlx::query(
+        "SELECT b.id, b.name, b.description, b.price_cents,
+                COALESCE(SUM(c.price_cents), 0) AS full_price,
+                COALESCE(ARRAY_AGG(c.id ORDER BY c.id) FILTER (WHERE c.id IS NOT NULL), '{}') AS items
+         FROM bundles b
+         LEFT JOIN bundle_items bi ON bi.bundle_id = b.id
+         LEFT JOIN cosmetics c ON c.id = bi.cosmetic_id
+         GROUP BY b.id, b.name, b.description, b.price_cents, b.sort_order
+         ORDER BY b.sort_order",
+    )
+    .fetch_all(&state.db)
+    .await?;
+
+    let bundles: Vec<serde_json::Value> = rows
+        .iter()
+        .map(|r| {
+            let items: Vec<String> = r.try_get("items").unwrap_or_default();
+            serde_json::json!({
+                "id": r.try_get::<String, _>("id").unwrap_or_default(),
+                "name": r.try_get::<String, _>("name").unwrap_or_default(),
+                "description": r.try_get::<Option<String>, _>("description").unwrap_or(None),
+                "price_cents": r.try_get::<i32, _>("price_cents").unwrap_or(0),
+                // What the same items cost bought one at a time, so the store
+                // can show the saving rather than asserting one.
+                "full_price_cents": r.try_get::<i64, _>("full_price").unwrap_or(0),
+                "items": items,
+            })
+        })
+        .collect();
+
+    Ok(Json(bundles))
 }
 
 async fn my_cosmetics(State(state): State<Arc<AppState>>, jar: CookieJar) -> Result<impl IntoResponse, AppError> {
@@ -63,10 +100,17 @@ async fn my_cosmetics(State(state): State<Arc<AppState>>, jar: CookieJar) -> Res
         .await?;
     let owned: Vec<String> = owned_rows.into_iter().filter_map(|r| r.try_get("cosmetic_id").ok()).collect();
 
-    let equip_row = sqlx::query("SELECT equipped_caret, equipped_flair, equipped_sprite FROM users WHERE id = $1")
-        .bind(&user.id)
-        .fetch_one(&state.db)
-        .await?;
+    // is_supporter is computed from the expiry here for the same reason it is
+    // in /api/auth/me: the stored flag is set on payment and never cleared.
+    let equip_row = sqlx::query(
+        "SELECT equipped_caret, equipped_flair, equipped_sprite,
+                (is_supporter AND supporter_until IS NOT NULL AND supporter_until > $2) AS active_supporter
+         FROM users WHERE id = $1",
+    )
+    .bind(&user.id)
+    .bind(format_timestamp(OffsetDateTime::now_utc()))
+    .fetch_one(&state.db)
+    .await?;
 
     Ok(Json(MyCosmetics {
         owned,
@@ -79,35 +123,8 @@ async fn my_cosmetics(State(state): State<Arc<AppState>>, jar: CookieJar) -> Res
         equipped_caret: equip_row.try_get::<Option<String>, _>("equipped_caret").unwrap_or(None),
         equipped_sprite: equip_row.try_get::<Option<String>, _>("equipped_sprite").unwrap_or(None),
         equipped_flair: equip_row.try_get::<Option<String>, _>("equipped_flair").unwrap_or(None),
+        is_supporter: equip_row.try_get::<Option<bool>, _>("active_supporter").unwrap_or(None).unwrap_or(false),
     }))
-}
-
-// Stub: grants ownership immediately with no actual charge. Wiring a real
-// payment processor (Stripe or otherwise) needs the project owner's own
-// merchant account - same situation as the Spotify integration needing its
-// own developer credentials. This endpoint is the seam a real charge would
-// slot into later without changing the ownership/equip logic around it.
-async fn purchase(State(state): State<Arc<AppState>>, jar: CookieJar, Path(cosmetic_id): Path<String>) -> Result<impl IntoResponse, AppError> {
-    let user = current_user(&state.db, &jar).await.ok_or(AppError::Unauthorized)?;
-
-    let exists = sqlx::query("SELECT id FROM cosmetics WHERE id = $1")
-        .bind(&cosmetic_id)
-        .fetch_optional(&state.db)
-        .await?;
-    if exists.is_none() {
-        return Err(AppError::NotFound);
-    }
-
-    // Postgres spells SQLite's INSERT OR IGNORE as an explicit conflict
-    // target; the pair is the table's primary key.
-    sqlx::query("INSERT INTO user_cosmetics (user_id, cosmetic_id, acquired_at) VALUES ($1, $2, $3) ON CONFLICT (user_id, cosmetic_id) DO NOTHING")
-        .bind(&user.id)
-        .bind(&cosmetic_id)
-        .bind(format_timestamp(OffsetDateTime::now_utc()))
-        .execute(&state.db)
-        .await?;
-
-    Ok(axum::http::StatusCode::NO_CONTENT)
 }
 
 async fn equip(State(state): State<Arc<AppState>>, jar: CookieJar, Path(cosmetic_id): Path<String>) -> Result<impl IntoResponse, AppError> {

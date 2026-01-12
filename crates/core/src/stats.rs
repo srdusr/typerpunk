@@ -117,13 +117,12 @@ impl Stats {
         let mut best_streak_local = 0;
         let mut correct_chars = 0usize;
         let mut incorrect_chars = 0usize;
-        let mut total_words = 0usize;
         let mut correct_words = 0usize;
 
         // Tokenize by whitespace to count words
         let input_words: Vec<&str> = input.split_whitespace().collect();
         let target_words: Vec<&str> = target.split_whitespace().collect();
-        total_words = input_words.len();
+        let total_words = input_words.len();
         for (iw, tw) in input_words.iter().zip(target_words.iter()) {
             if *iw == *tw { correct_words += 1; }
         }

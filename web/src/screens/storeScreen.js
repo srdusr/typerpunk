@@ -16,37 +16,105 @@ function categoryLabel(category) {
     return 'Flair';
 }
 
-// Real purchase/equip flow against the catalog, but purchase is a stub --
-// it grants ownership immediately with no actual charge, since real payment
-// processing needs the project owner's own Stripe (or other processor)
-// account. Parked as a question rather than assumed: see nightshift
-// questions.
+// Buying sends the browser to the processor's own checkout page. Nothing is
+// granted here: the item appears once the processor's webhook reaches the
+// server. That is why every Buy button leaves the site rather than updating
+// in place.
 export function renderStoreScreen(root, { onBack, onShowStats, onShowPlaceholder, onShowAccount, onShowLeaderboard, onShowFriends, onShowMultiplayer }) {
     let catalog = [];
-    let mine = { owned: [], equipped_caret: null, equipped_flair: null };
+    let bundles = [];
+    let mine = { owned: [], equipped_caret: null, equipped_flair: null, equipped_sprite: null, is_supporter: false };
     let status = 'loading';
     let message = '';
     let stopped = false;
 
-    function itemMarkup(item) {
-        const signedOut = status === 'signed-out';
-        const owned = !signedOut && mine.owned.includes(item.id);
-        const equipped = !signedOut && (mine.equipped_caret === item.id || mine.equipped_flair === item.id);
+    function isOwned(id) {
+        return status !== 'signed-out' && mine.owned.includes(id);
+    }
+
+    function swatchFor(item) {
         // A caret is a colour, so the swatch is the colour itself; flair and
         // sprites are drawings, so the swatch is the drawing.
-        const swatch = item.category === 'caret'
-            ? `<span class="store-swatch" data-swatch-colour="${escapeHtml(item.value)}"></span>`
-            : `<span class="store-swatch store-flair-swatch">${(item.category === 'sprite' ? RACER_SPRITES : FLAIR_ICONS)[item.value] || ''}</span>`;
+        if (item.category === 'caret') {
+            return `<span class="store-swatch" data-swatch-colour="${escapeHtml(item.value)}"></span>`;
+        }
+        const set = item.category === 'sprite' ? RACER_SPRITES : FLAIR_ICONS;
+        return `<span class="store-swatch store-flair-swatch">${set[item.value] || ''}</span>`;
+    }
+
+    function itemMarkup(item) {
+        const signedOut = status === 'signed-out';
+        const owned = isOwned(item.id);
+        const equipped = !signedOut && (
+            mine.equipped_caret === item.id ||
+            mine.equipped_flair === item.id ||
+            mine.equipped_sprite === item.id
+        );
         return `
             <div class="leaderboard-row store-item-row">
-                ${swatch}
+                ${swatchFor(item)}
                 <div class="leaderboard-name">${escapeHtml(item.name)}</div>
-                ${!owned ? `<div class="leaderboard-acc">${formatPrice(item.price_cents)}</div>` : ''}
+                ${!owned ? `<div class="leaderboard-acc store-price">${formatPrice(item.price_cents)}</div>` : ''}
                 ${owned
-                    ? `<button class="menu-button small${equipped ? ' active' : ' quiet'}" data-action="${equipped ? 'unequip' : 'equip'}" data-id="${item.id}" data-category="${item.category}" data-tooltip="${equipped ? 'Unequip - back to the default look' : `Replaces whichever ${categoryLabel(item.category).toLowerCase()} you have equipped now`}">${equipped ? 'Equipped' : 'Equip'}</button>`
+                    ? `<button class="menu-button small${equipped ? ' active' : ' quiet'}" data-action="${equipped ? 'unequip' : 'equip'}" data-id="${item.id}" data-category="${item.category}" data-tooltip="${equipped ? 'Unequip, back to the default look' : `Replaces whichever ${categoryLabel(item.category).toLowerCase()} you have equipped now`}">${equipped ? 'Equipped' : 'Equip'}</button>`
                     : `<button class="menu-button small${signedOut ? ' quiet' : ''}" data-action="${signedOut ? 'go-account' : 'buy'}" data-id="${item.id}"${signedOut ? ' data-tooltip="Sign in to buy this"' : ''}>Buy</button>`}
             </div>
         `;
+    }
+
+    function bundleMarkup(b) {
+        const signedOut = status === 'signed-out';
+        const items = b.items || [];
+        const ownedCount = items.filter(isOwned).length;
+        const complete = items.length > 0 && ownedCount === items.length;
+        const saving = b.full_price_cents - b.price_cents;
+
+        // The contents are shown as their own swatches: a bundle you cannot
+        // see the inside of is a bundle nobody buys.
+        const previews = items
+            .map(id => catalog.find(c => c.id === id))
+            .filter(Boolean)
+            .map(item => `<span class="bundle-preview-item${isOwned(item.id) ? ' owned' : ''}" data-tooltip="${escapeHtml(item.name)}${isOwned(item.id) ? ' (owned)' : ''}">${swatchFor(item)}</span>`)
+            .join('');
+
+        return `
+            <div class="bundle-card">
+                <div class="bundle-head">
+                    <div class="bundle-name">${escapeHtml(b.name)}</div>
+                    ${saving > 0 ? `<div class="bundle-saving">Save ${formatPrice(saving)}</div>` : ''}
+                </div>
+                ${b.description ? `<div class="bundle-description">${escapeHtml(b.description)}</div>` : ''}
+                <div class="bundle-previews">${previews}</div>
+                <div class="bundle-foot">
+                    <div class="bundle-prices">
+                        <span class="bundle-price">${formatPrice(b.price_cents)}</span>
+                        ${saving > 0 ? `<span class="bundle-full-price">${formatPrice(b.full_price_cents)}</span>` : ''}
+                    </div>
+                    ${complete
+                        ? `<span class="bundle-owned">You own all of these</span>`
+                        : `<button class="menu-button small${signedOut ? ' quiet' : ' primary'}" data-action="${signedOut ? 'go-account' : 'buy-bundle'}" data-id="${escapeHtml(b.id)}"${signedOut ? ' data-tooltip="Sign in to buy this"' : ''}>Buy${ownedCount ? ` the other ${items.length - ownedCount}` : ''}</button>`}
+                </div>
+                ${ownedCount && !complete ? `<div class="bundle-note">You already own ${ownedCount} of these ${items.length}. The price does not change.</div>` : ''}
+            </div>`;
+    }
+
+    function supporterMarkup() {
+        if (status === 'signed-out') return '';
+        if (mine.is_supporter) {
+            return `<div class="store-supporter is-supporter">
+                        <div class="store-supporter-text">
+                            <strong>You are a supporter.</strong>
+                            <span>Thank you. The site runs without ads for you.</span>
+                        </div>
+                    </div>`;
+        }
+        return `<div class="store-supporter">
+                    <div class="store-supporter-text">
+                        <strong>Supporter</strong>
+                        <span>Removes the ad slot for 30 days and pays for the servers.</span>
+                    </div>
+                    <button class="menu-button small primary" data-action="buy-supporter">$3.00</button>
+                </div>`;
     }
 
     function bodyMarkup() {
@@ -58,12 +126,35 @@ export function renderStoreScreen(root, { onBack, onShowStats, onShowPlaceholder
             ? `<div class="store-signin-note">Sign in to buy and equip these.
                  <button class="menu-button small" data-action="go-account">Sign In</button></div>`
             : '';
+
+        const bundleSection = bundles.length
+            ? `<h3>Bundles</h3><div class="bundle-grid">${bundles.map(bundleMarkup).join('')}</div>`
+            : '';
+
         const categories = ['caret', 'flair', 'sprite'];
-        return banner + categories.map(cat => {
+        const itemSections = categories.map(cat => {
             const items = catalog.filter(i => i.category === cat);
             if (items.length === 0) return '';
             return `<h3>${categoryLabel(cat)}</h3><div class="leaderboard-list">${items.map(itemMarkup).join('')}</div>`;
-        }).join('') + `<div class="custom-error store-error"></div>`;
+        }).join('');
+
+        return banner + supporterMarkup() + bundleSection + itemSections
+             + `<div class="custom-error store-error"></div>`;
+    }
+
+    /// Starts a checkout and follows the redirect the server returns. A server
+    /// with no processor keys answers 501, which is reported rather than
+    /// leaving the button looking broken.
+    async function startCheckout(path, errorEl) {
+        try {
+            const data = await api.post(path);
+            if (data && data.url) window.location.assign(data.url);
+        } catch (err) {
+            if (!errorEl) return;
+            errorEl.textContent = err instanceof ApiError
+                ? err.message
+                : 'Could not start checkout. Try again.';
+        }
     }
 
     function render() {
@@ -85,21 +176,18 @@ export function renderStoreScreen(root, { onBack, onShowStats, onShowPlaceholder
         attachTooltips(root);
         const cleanupTheme = renderTopRail(root, { onShowAccount, onShowFriends });
 
-        const goAccount = root.querySelector('[data-action="go-account"]');
-        if (goAccount) goAccount.addEventListener('click', onShowAccount);
+        root.querySelectorAll('[data-action="go-account"]').forEach(el => el.addEventListener('click', onShowAccount));
 
         const errorEl = root.querySelector('.store-error');
         root.querySelectorAll('[data-action="buy"]').forEach(btn => {
-            btn.addEventListener('click', async () => {
-                try {
-                    await api.post(`/api/cosmetics/${btn.dataset.id}/purchase`);
-                    await loadMine();
-                    rerender();
-                } catch (err) {
-                    if (errorEl) errorEl.textContent = err instanceof ApiError ? err.message : 'Could not complete the purchase - try again.';
-                }
-            });
+            btn.addEventListener('click', () => startCheckout(`/api/billing/checkout/${encodeURIComponent(btn.dataset.id)}`, errorEl));
         });
+        root.querySelectorAll('[data-action="buy-bundle"]').forEach(btn => {
+            btn.addEventListener('click', () => startCheckout(`/api/billing/bundle/${encodeURIComponent(btn.dataset.id)}`, errorEl));
+        });
+        root.querySelector('[data-action="buy-supporter"]')
+            ?.addEventListener('click', () => startCheckout('/api/billing/supporter', errorEl));
+
         root.querySelectorAll('[data-action="equip"]').forEach(btn => {
             btn.addEventListener('click', async () => {
                 await api.post(`/api/cosmetics/${btn.dataset.id}/equip`).catch(() => {});
@@ -131,15 +219,19 @@ export function renderStoreScreen(root, { onBack, onShowStats, onShowPlaceholder
             catalog = await api.get('/api/cosmetics');
         } catch {
             status = 'error';
-            message = 'Could not load the store - try again.';
+            message = 'Could not load the store. Try again.';
+            return;
         }
+        // A store with no bundles is still a store, so this failing is not an
+        // error worth replacing the page with.
+        try { bundles = await api.get('/api/cosmetics/bundles'); } catch { bundles = []; }
     }
 
     async function loadMine() {
         if (!getUser()) {
-            // The catalogue still renders - only ownership needs an account.
+            // The catalogue still renders; only ownership needs an account.
             status = 'signed-out';
-            mine = { owned: [], equipped_caret: null, equipped_flair: null };
+            mine = { owned: [], equipped_caret: null, equipped_flair: null, equipped_sprite: null, is_supporter: false };
             return;
         }
         try {
@@ -147,7 +239,7 @@ export function renderStoreScreen(root, { onBack, onShowStats, onShowPlaceholder
             status = 'ok';
         } catch {
             status = 'error';
-            message = 'Could not load your cosmetics - try again.';
+            message = 'Could not load your cosmetics. Try again.';
         }
     }
 

@@ -160,6 +160,22 @@ Migrations run at startup. Configuration is by environment variable; see
 | `TEXTS_JSON_PATH` | Dataset the race passages come from |
 | `SPOTIFY_CLIENT_ID` | Spotify application ID, for Lyrics mode |
 | `SPOTIFY_CLIENT_SECRET` | Spotify application secret |
+| `STRIPE_SECRET_KEY` | Stripe API key, for the store |
+| `STRIPE_WEBHOOK_SECRET` | Signing secret for the Stripe webhook |
+
+### Store
+
+The store sells cosmetics and a supporter subscription. Checkout is hosted by
+Stripe: the buyer is redirected there, pays there, and returns. No card
+details reach this server.
+
+Nothing is granted at checkout. Stripe calls `/api/billing/webhook` when the
+payment succeeds, the server verifies the signature, and only then does the
+item appear. Set both Stripe variables. With either one missing, the store
+still displays but every checkout answers 501.
+
+Prices come from the `cosmetics` and `bundles` tables. The client sends an
+item id, never an amount.
 
 ## Deployment
 
