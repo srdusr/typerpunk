@@ -10,6 +10,10 @@ function formatPrice(cents) {
     return `$${(cents / 100).toFixed(2)}`;
 }
 
+// Enough to show what kind of thing is in a bundle without making one card
+// far taller than the others beside it.
+const MAX_PREVIEWS = 10;
+
 function categoryLabel(category) {
     if (category === 'caret') return 'Caret Colours';
     if (category === 'sprite') return 'Race Sprites';
@@ -70,12 +74,15 @@ export function renderStoreScreen(root, { onBack, onShowStats, onShowPlaceholder
         const saving = b.full_price_cents - b.price_cents;
 
         // The contents are shown as their own swatches: a bundle you cannot
-        // see the inside of is a bundle nobody buys.
-        const previews = items
-            .map(id => catalog.find(c => c.id === id))
-            .filter(Boolean)
+        // see the inside of is a bundle nobody buys. Capped, because The Lot
+        // holds every item and its 26 swatches made the card three rows
+        // taller than the one beside it, which then sat in dead space.
+        const resolved = items.map(id => catalog.find(c => c.id === id)).filter(Boolean);
+        const shown = resolved.slice(0, MAX_PREVIEWS);
+        const hidden = resolved.length - shown.length;
+        const previews = shown
             .map(item => `<span class="bundle-preview-item${isOwned(item.id) ? ' owned' : ''}" data-tooltip="${escapeHtml(item.name)}${isOwned(item.id) ? ' (owned)' : ''}">${swatchFor(item)}</span>`)
-            .join('');
+            .join('') + (hidden > 0 ? `<span class="bundle-preview-more">+${hidden}</span>` : '');
 
         return `
             <div class="bundle-card">

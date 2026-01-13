@@ -1,10 +1,36 @@
 """Shared helpers for the Playwright test suite. See README.md for how to
 run these tests and what needs to already be running.
 """
+import os
 import random
 import string
+import subprocess
 
 FRONTEND_URL = "http://localhost:4173"
+
+# Buying is a real payment now, so a test cannot get an item by clicking Buy.
+# Ownership is granted straight in the database instead, which is what a paid
+# webhook would have done.
+DATABASE_URL = os.environ.get(
+    "TYPERPUNK_TEST_DATABASE_URL",
+    "postgresql://typerpunk:typerpunk@localhost/typerpunk",
+)
+
+
+def grant_cosmetics(username, cosmetic_ids):
+    """Gives an account the named cosmetics without going through checkout."""
+    ids = ", ".join(f"'{cid}'" for cid in cosmetic_ids)
+    sql = (
+        "INSERT INTO user_cosmetics (user_id, cosmetic_id, acquired_at) "
+        "SELECT u.id, c.id, '2026-01-01T00:00:00Z' "
+        "FROM users u CROSS JOIN cosmetics c "
+        f"WHERE u.username = '{username}' AND c.id IN ({ids}) "
+        "ON CONFLICT (user_id, cosmetic_id) DO NOTHING"
+    )
+    subprocess.run(
+        ["psql", DATABASE_URL, "-v", "ON_ERROR_STOP=1", "-c", sql],
+        check=True, capture_output=True,
+    )
 
 
 def random_username(prefix="test"):

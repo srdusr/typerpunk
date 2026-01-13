@@ -25,7 +25,7 @@ struct Cosmetic {
     id: String,
     name: String,
     category: String,
-    price_cents: i64,
+    price_cents: i32,
     value: String,
 }
 
@@ -33,16 +33,22 @@ async fn list_catalog(State(state): State<Arc<AppState>>) -> Result<impl IntoRes
     let rows = sqlx::query("SELECT id, name, category, price_cents, value FROM cosmetics ORDER BY category, price_cents")
         .fetch_all(&state.db)
         .await?;
+    // Decode errors are returned, not defaulted away. price_cents was typed
+    // i64 against an INTEGER column, so sqlx refused every decode and
+    // unwrap_or_default turned the whole catalogue into $0.00 with nothing
+    // logged. A wrong price is worse than an error page.
     let items: Vec<Cosmetic> = rows
         .into_iter()
-        .map(|row| Cosmetic {
-            id: row.try_get("id").unwrap_or_default(),
-            name: row.try_get("name").unwrap_or_default(),
-            category: row.try_get("category").unwrap_or_default(),
-            price_cents: row.try_get("price_cents").unwrap_or_default(),
-            value: row.try_get("value").unwrap_or_default(),
+        .map(|row| {
+            Ok(Cosmetic {
+                id: row.try_get("id")?,
+                name: row.try_get("name")?,
+                category: row.try_get("category")?,
+                price_cents: row.try_get("price_cents")?,
+                value: row.try_get("value")?,
+            })
         })
-        .collect();
+        .collect::<Result<_, sqlx::Error>>()?;
     Ok(Json(items))
 }
 

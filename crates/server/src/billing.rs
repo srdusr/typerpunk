@@ -80,6 +80,15 @@ async fn create_session(
     amount_cents: i32,
 ) -> Result<String, AppError> {
     let stripe = require_stripe(state)?;
+
+    // Nothing is ever sold for nothing. A zero here would mean a price that
+    // failed to decode or a catalogue row that was never given one, and the
+    // result would be a session that grants the item without charging.
+    if amount_cents <= 0 {
+        tracing::error!("refusing to create a checkout session for {name} at {amount_cents} cents");
+        return Err(AppError::Internal(anyhow::anyhow!("could not start checkout")));
+    }
+
     let purchase_id = uuid::Uuid::new_v4().to_string();
 
     let success = format!("{}/?purchase=done", state.frontend_origin);
@@ -161,8 +170,8 @@ async fn checkout_cosmetic(
         .fetch_optional(&state.db)
         .await?
         .ok_or(AppError::NotFound)?;
-    let name: String = row.try_get("name").unwrap_or_default();
-    let price: i32 = row.try_get("price_cents").unwrap_or(0);
+    let name: String = row.try_get("name")?;
+    let price: i32 = row.try_get("price_cents")?;
 
     // Already owned: charging again would be taking money for nothing.
     let owned = sqlx::query("SELECT 1 FROM user_cosmetics WHERE user_id = $1 AND cosmetic_id = $2")
@@ -190,8 +199,8 @@ async fn checkout_bundle(
         .fetch_optional(&state.db)
         .await?
         .ok_or(AppError::NotFound)?;
-    let name: String = row.try_get("name").unwrap_or_default();
-    let price: i32 = row.try_get("price_cents").unwrap_or(0);
+    let name: String = row.try_get("name")?;
+    let price: i32 = row.try_get("price_cents")?;
 
     // A bundle whose every item is already owned has nothing to sell.
     let remaining: i64 = sqlx::query_scalar(

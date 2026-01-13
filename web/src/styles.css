@@ -376,6 +376,12 @@ body {
     margin-bottom: 0.5rem;
 }
 
+/* No width of its own, so it shrink-wrapped to 498px inside the 636px
+   content column and the table sat narrower than everything above it. */
+.leaderboard-results {
+    width: 100%;
+}
+
 .leaderboard-list {
     width: 100%;
     display: flex;
@@ -406,7 +412,13 @@ body {
     border: none;
     color: inherit;
     font: inherit;
-    padding: 0;
+    /* Vertical padding rather than none: at 21px tall this was under the
+       24x24 minimum target size, and it is the only way to reach a player's
+       profile. The negative inline margin keeps the text where it was so the
+       column still lines up with the rows above and below. */
+    padding: 0.25rem 0.35rem;
+    margin-left: -0.35rem;
+    border-radius: var(--radius);
     cursor: pointer;
 }
 
@@ -2729,10 +2741,16 @@ body::-webkit-scrollbar, .app::-webkit-scrollbar, #root::-webkit-scrollbar {
 .store-signin-note {
     display: flex;
     align-items: center;
-    justify-content: center;
+    /* Was shrink-to-fit at 415px inside a 700px panel whose item list is
+       636px, so the page had three different content widths stacked on top of
+       each other and this box read as misplaced. It matches the list now. */
+    width: 100%;
+    box-sizing: border-box;
+    justify-content: space-between;
+    text-align: left;
     gap: 1rem;
     flex-wrap: wrap;
-    margin-bottom: 1rem;
+    margin-bottom: 1.5rem;
     padding: 0.75rem 1rem;
     border: 1px solid color-mix(in srgb, var(--primary-color) 35%, transparent);
     border-radius: var(--radius-panel);
@@ -2740,9 +2758,47 @@ body::-webkit-scrollbar, .app::-webkit-scrollbar, #root::-webkit-scrollbar {
     color: var(--sub-color);
 }
 
+/* Store rows. These reuse .leaderboard-row for its border and spacing, but a
+   store row is a swatch, a name, a price and a control, not four columns of
+   text, so the parts that differ are set here.
+
+   The row was 93px tall for one line of content: .menu-button carries a
+   vertical margin meant for a stacked menu, and it applied here too. Twenty
+   six items came to roughly 2400px of scrolling. */
+.store-item-row {
+    padding: 0.45rem 1rem;
+}
+
+.store-item-row .menu-button.small {
+    margin: 0;
+    padding: 0.35rem 0.9rem;
+    font-size: 0.8rem;
+}
+
+/* Fixed width so the prices form a column instead of drifting with the length
+   of each number. */
+.store-price {
+    min-width: 4.5rem;
+    text-align: right;
+    color: var(--sub-color);
+    font-size: 0.85rem;
+}
+
+.store-item-row .leaderboard-name {
+    font-size: 0.9rem;
+}
+
+/* Equip and Buy sit in the same place in every row, so the control column has
+   one width whichever state a row is in. */
+.store-item-row .menu-button {
+    min-width: 5.5rem;
+}
+
 /* The supporter offer, above the catalogue. It is the one thing in the store
    that is not cosmetic, so it does not sit in a category with the rest. */
 .store-supporter {
+    width: 100%;
+    box-sizing: border-box;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -2777,9 +2833,16 @@ body::-webkit-scrollbar, .app::-webkit-scrollbar, #root::-webkit-scrollbar {
     font-size: 0.8rem;
 }
 
+.store-supporter .menu-button.small,
+.store-signin-note .menu-button.small {
+    margin: 0;
+}
+
 /* Bundles. A card rather than a row: a bundle has to show what is inside it,
    which a one-line row has no space for. */
 .bundle-grid {
+    width: 100%;
+    box-sizing: border-box;
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
     gap: 0.75rem;
@@ -2834,13 +2897,30 @@ body::-webkit-scrollbar, .app::-webkit-scrollbar, #root::-webkit-scrollbar {
     opacity: 0.35;
 }
 
+/* How many more the card did not have room to draw. */
+.bundle-preview-more {
+    display: flex;
+    align-items: center;
+    color: var(--sub-color);
+    font-size: 0.75rem;
+}
+
 .bundle-foot {
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: 0.75rem;
+    /* Pushed to the bottom so the buy control lines up across a row of cards
+       whose contents are different heights. The Lot holds 26 swatches and its
+       neighbour holds six. */
     margin-top: auto;
-    padding-top: 0.25rem;
+    padding-top: 0.5rem;
+}
+
+.bundle-foot .menu-button.small {
+    margin: 0;
+    padding: 0.35rem 0.9rem;
+    font-size: 0.8rem;
 }
 
 .bundle-prices {
@@ -2872,7 +2952,11 @@ body::-webkit-scrollbar, .app::-webkit-scrollbar, #root::-webkit-scrollbar {
    wordmark and Escape already did, and the least reachable of the three. */
 .screen-close {
     position: absolute;
-    top: 0;
+    /* The top rail is fixed to the viewport's top-right and is wide enough to
+       reach into the content column on any viewport narrower than about
+       1350px, which is most of them. At top: 0 the close button sat directly
+       underneath the rail's buttons. It starts below the rail instead. */
+    top: 1.5rem;
     right: 0;
     width: 2.25rem;
     height: 2.25rem;
@@ -3237,6 +3321,57 @@ body::-webkit-scrollbar, .app::-webkit-scrollbar, #root::-webkit-scrollbar {
 /* Below this the chart stops carrying information. */
 .graph-container {
     min-height: 180px;
+}
+
+
+/* The wordmark and the top rail are both fixed to the top of the viewport and
+   neither knew about the other. Measured at 390px: the wordmark ran to x=142
+   and the rail started at x=67, so they overlapped by 75px. Both give ground
+   here, and the close button drops below the rail rather than under it. */
+@media (max-width: 700px) {
+    .logo {
+        font-size: 0.95rem;
+        letter-spacing: 1px;
+    }
+
+    .top-rail {
+        gap: 0.35rem;
+    }
+
+    .top-rail-link {
+        font-size: 0.7rem;
+        padding: 0.5rem 0.2rem;
+    }
+
+    /* Sign Up goes. Sign In reaches the same screen, which offers both, so
+       the second link only costs width. */
+    .top-rail-link.accent {
+        display: none;
+    }
+
+    .screen-close {
+        top: 2.75rem;
+    }
+}
+
+
+/* The leaderboard row's columns all have fixed widths, which added up to a
+   hard minimum of 461px. Measured at 390px the row ran from x=-36 to x=426
+   and the date column was cut off the edge of the screen entirely. The date
+   is the least useful of the six, so it goes first and the rest fit. */
+@media (max-width: 700px) {
+    .leaderboard-date {
+        display: none;
+    }
+
+    .leaderboard-row {
+        gap: 0.6rem;
+        padding: 0.6rem 0.75rem;
+    }
+
+    .leaderboard-rank {
+        min-width: 1.75rem;
+    }
 }
 
 @media (max-height: 600px) {
