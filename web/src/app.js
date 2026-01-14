@@ -18,6 +18,7 @@ import { saveDocument, setPosition, getDocument, listDocuments, removeDocument }
 import { getSettings } from './settings.js';
 import { generateWordStream, generateWeakKeyStream, wordCountForDuration } from './wordGenerator.js';
 import { getWeakChars } from './keyStats.js';
+import { mountTopAdBanner } from './adSlot.js';
 
 const FALLBACK_TEXT = { category: 'general', content: 'The quick brown fox jumps over the lazy dog.', attribution: 'Traditional pangram' };
 
@@ -31,9 +32,61 @@ function pickRandom(arr) {
     return arr[Math.floor(Math.random() * arr.length)];
 }
 
+// A test that ends in twelve seconds measures nothing. The dataset holds a
+// lot of single-sentence entries - a 22 character quote, a 17 character
+// shell command - and picking one at random produced exactly that.
+const MIN_TEST_CHARS = 120;
+
+// Packs where several entries in a row make a better exercise than one. A
+// drill of three commands is how these are actually used, and each keeps its
+// own explanation.
+const CHAINED_CATEGORIES = new Set(['shell', 'sysadmin', 'programming', 'hacking']);
+
+// Enough long entries in a pack to insist on one. Below this the pack simply
+// has not got the material, and a short passage beats no passage.
+const ENOUGH_LONG = 5;
+
 function getRandomTextItem(items, category) {
     const pool = category && category !== 'random' ? items.filter(t => t.category === category) : items;
-    return pool.length ? pickRandom(pool) : FALLBACK_TEXT;
+    if (!pool.length) return FALLBACK_TEXT;
+
+    if (CHAINED_CATEGORIES.has(category)) return chainShortItems(pool);
+
+    // Prefer a passage worth timing, but only where the pack has enough of
+    // them that the same few would not come up every session.
+    const long = pool.filter(t => (t.content || '').length >= MIN_TEST_CHARS);
+    return pickRandom(long.length >= ENOUGH_LONG ? long : pool);
+}
+
+/// Joins consecutive entries from a pack until the result is long enough to
+/// be worth timing. Attributions and explanations are collected so the
+/// results screen can still say what each line was.
+function chainShortItems(pool) {
+    const first = pickRandom(pool);
+    if ((first.content || '').length >= MIN_TEST_CHARS) return first;
+
+    const chosen = [first];
+    const remaining = pool.filter(t => t !== first);
+    let total = (first.content || '').length;
+    while (total < MIN_TEST_CHARS && remaining.length) {
+        const next = remaining.splice(Math.floor(Math.random() * remaining.length), 1)[0];
+        chosen.push(next);
+        total += (next.content || '').length + 1;
+    }
+
+    const attributions = [...new Set(chosen.map(t => t.attribution).filter(Boolean))];
+    const explanations = chosen
+        .map(t => (t.explanation ? `${t.attribution || ''}${t.attribution ? ': ' : ''}${t.explanation}` : null))
+        .filter(Boolean);
+    return {
+        category: first.category,
+        // One line, because the typing input is one line. A space between
+        // commands keeps each one readable and typable as written.
+        content: chosen.map(t => t.content).join(' '),
+        attribution: attributions.join(', ') || 'Unknown',
+        language: first.language,
+        explanation: explanations.join('\n\n') || undefined,
+    };
 }
 
 export function startApp(root, localTexts) {
@@ -44,6 +97,7 @@ export function startApp(root, localTexts) {
     let session = { type: 'random', customIndex: 0 };
     let game = null;
     let cleanupScreen = null;
+    const adBanner = mountTopAdBanner();
 
     // Approved community submissions, merged on top of the bundled dataset.
     // Best-effort: the app is fully usable on the packs it ships with, so a
@@ -91,6 +145,7 @@ export function startApp(root, localTexts) {
     function setScreen(name, costly = () => false) {
         currentScreenName = name;
         escapeIsCostly = costly;
+        adBanner.setScreen(name);
     }
 
     function handleGlobalEscape(e) {
@@ -296,6 +351,7 @@ export function startApp(root, localTexts) {
         teardown();
         let content;
         let attribution;
+        let category;
         let explanation;
         let language;
         let progress;
@@ -338,6 +394,9 @@ export function startApp(root, localTexts) {
             const item = getRandomTextItem(allTexts, selectedCategory);
             content = item.content;
             attribution = item.attribution;
+            // Shown under the passage when it has no attribution of its own,
+            // so the results always say where the text came from.
+            category = item.category;
             // Code snippets highlight themselves; prose packs have no language
             // and fall through as plain text.
             language = item.language || undefined;
@@ -358,6 +417,7 @@ export function startApp(root, localTexts) {
             game,
             text: content,
             attribution,
+            category,
             explanation,
             language,
             progress,
@@ -401,9 +461,16 @@ export function startApp(root, localTexts) {
         }
         teardown();
         setScreen('end');
+        // A race carries standings; a solo run does not. Play Again used to
+        // call startGame() either way, so finishing a race and asking to play
+        // again dropped you into a single player test on your own. Going back
+        // through showMultiplayer queues for another race. The end screen's
+        // own cleanup calls onLeaveRace, so the old room is left before the
+        // next one is joined.
+        const wasRace = Array.isArray(result.standings) && result.standings.length > 0;
         cleanupScreen = renderEndScreen(root, {
             ...result,
-            onPlayAgain: playAgain,
+            onPlayAgain: wasRace ? showMultiplayer : playAgain,
             onMainMenu: showMainMenu,
             onShowStats: showStats,
             onShowPlaceholder: showPlaceholder,

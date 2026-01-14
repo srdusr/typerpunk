@@ -46,15 +46,18 @@
   },
   {
     "category": "philosophy",
-    "content": "Stoicism is a school of ancient Greek philosophy that teaches the practice of virtue as the only true good, and encourages focusing only on what lies within one's own control."
+    "content": "Stoicism is a school of ancient Greek philosophy that teaches the practice of virtue as the only true good, and encourages focusing only on what lies within one's own control.",
+    "attribution": "Unknown"
   },
   {
     "category": "philosophy",
-    "content": "Existentialism explores questions about individual freedom, choice, and meaning, arguing that people must create their own purpose in a universe that does not provide one automatically."
+    "content": "Existentialism explores questions about individual freedom, choice, and meaning, arguing that people must create their own purpose in a universe that does not provide one automatically.",
+    "attribution": "Unknown"
   },
   {
     "category": "philosophy",
-    "content": "The Socratic method uses a series of questions and answers to expose contradictions in a person's beliefs, encouraging deeper critical thinking rather than simply providing answers."
+    "content": "The Socratic method uses a series of questions and answers to expose contradictions in a person's beliefs, encouraging deeper critical thinking rather than simply providing answers.",
+    "attribution": "Unknown"
   },
   {
     "category": "philosophy",
@@ -68,6 +71,27 @@
   },
   {
     "category": "philosophy",
-    "content": "Utilitarianism holds that the right action is the one that produces the greatest good for the greatest number of people, judging morality by outcomes rather than intentions."
+    "content": "Utilitarianism holds that the right action is the one that produces the greatest good for the greatest number of people, judging morality by outcomes rather than intentions.",
+    "attribution": "Unknown"
+  },
+  {
+    "category": "philosophy",
+    "content": "The unexamined life is not worth living, but the over-examined life is not lived at all. Somewhere between acting without thought and thinking without acting is the narrow place where a person actually gets anywhere.",
+    "attribution": "Unknown"
+  },
+  {
+    "category": "philosophy",
+    "content": "A question is not made better by being harder to answer. Much of what passes for depth is a sentence arranged so that no evidence could settle it, which is not profundity but a way of never being wrong.",
+    "attribution": "Unknown"
+  },
+  {
+    "category": "philosophy",
+    "content": "Freedom and choice are not the same thing. More options can leave a person less able to act, because every additional alternative adds the cost of considering it and the regret of having passed it over.",
+    "attribution": "Unknown"
+  },
+  {
+    "category": "philosophy",
+    "content": "What we call a self is mostly a story told after the fact. The decision arrives first, the reason is assembled afterwards, and the account is convincing precisely because the same mind wrote both halves.",
+    "attribution": "Unknown"
   }
 ]

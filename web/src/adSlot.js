@@ -20,8 +20,13 @@ import { getUser, onAuthChange } from './auth.js';
 //      consent requirements with it. There is no consent mechanism here.
 //
 // Shown to signed-out visitors and to signed-in accounts without the
-// supporter flag. Never shown on the typing screen: interrupting somebody
-// mid-test is the one placement that would cost more than it earns.
+// supporter flag. Never shown while typing: interrupting somebody mid-test is
+// the one placement that would cost more than it earns.
+//
+// The slot sits across the top of the page, where a site's navigation bar
+// usually goes, and the header moves down to make room rather than being
+// covered. Screens that must not carry it call setAdBannerScreen with their
+// own name.
 
 const SIZES = {
     // Roughly a leaderboard unit, and a mobile banner below the breakpoint.
@@ -56,5 +61,49 @@ export function renderAdSlot(root, { size = 'banner', label = 'Advertisement' } 
     return () => {
         unsubscribe();
         wrap.remove();
+    };
+}
+
+
+// Screens the banner stays off. Typing and passive reading are both somebody
+// working through a text, and the race lobby leads straight into typing.
+const HIDDEN_ON = new Set(['typing', 'passive', 'multiplayer']);
+
+/// Mounts the top banner once, outside the screen root so that redrawing a
+/// screen does not reload it. Returns a function that takes the current
+/// screen name.
+export function mountTopAdBanner() {
+    const bar = document.createElement('div');
+    bar.className = 'ad-banner-top';
+    document.body.insertBefore(bar, document.body.firstChild);
+
+    const inner = document.createElement('div');
+    inner.className = 'ad-banner-inner';
+    bar.appendChild(inner);
+    const cleanupSlot = renderAdSlot(inner);
+
+    let screenName = 'menu';
+
+    function paint() {
+        const show = shouldShowAds() && !HIDDEN_ON.has(screenName);
+        bar.hidden = !show;
+        // The wordmark and the top rail are fixed to the top of the viewport
+        // and the content column is offset from it, so all three have to know
+        // the banner's height or the banner would sit on top of them.
+        document.documentElement.style.setProperty(
+            '--ad-banner-h', show ? 'var(--ad-banner-height)' : '0px');
+    }
+
+    paint();
+    const unsubscribe = onAuthChange(paint);
+
+    return {
+        setScreen(name) { screenName = name; paint(); },
+        cleanup() {
+            unsubscribe();
+            cleanupSlot();
+            bar.remove();
+            document.documentElement.style.removeProperty('--ad-banner-h');
+        },
     };
 }

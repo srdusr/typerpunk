@@ -1,25 +1,137 @@
 [
-  {"category":"literature","content":"It was the best of times, it was the worst of times.","attribution":"Charles Dickens, A Tale of Two Cities"},
-  {"category":"literature","content":"All we have to decide is what to do with the time that is given us.","attribution":"J.R.R. Tolkien, The Fellowship of the Ring"},
-  {"category":"literature","content":"Not all those who wander are lost.","attribution":"J.R.R. Tolkien"},
-  {"category":"literature","content":"It is a truth universally acknowledged, that a single man in possession of a good fortune, must be in want of a wife. However little known the feelings or views of such a man may be on his first entering a neighbourhood, this truth is so well fixed in the minds of the surrounding families.","attribution":"Jane Austen, Pride and Prejudice"},
-  {"category":"literature","content":"Call me Ishmael. Some years ago, never mind how long precisely, having little or no money in my purse, and nothing particular to interest me on shore, I thought I would sail about a little and see the watery part of the world.","attribution":"Herman Melville, Moby-Dick"},
-  {"category":"literature","content":"It was the best of times, it was the worst of times, it was the age of wisdom, it was the age of foolishness, it was the epoch of belief, it was the epoch of incredulity, it was the season of Light, it was the season of Darkness.","attribution":"Charles Dickens, A Tale of Two Cities"},
-  {"category":"literature","content":"Alice was beginning to get very tired of sitting by her sister on the bank, and of having nothing to do. Once or twice she had peeped into the book her sister was reading, but it had no pictures or conversations in it.","attribution":"Lewis Carroll, Alice's Adventures in Wonderland"},
-  {"category":"literature","content":"It was on a dreary night of November that I beheld the accomplishment of my toils. With an anxiety that almost amounted to agony, I collected the instruments of life around me, that I might infuse a spark of being into the lifeless thing that lay at my feet.","attribution":"Mary Shelley, Frankenstein"},
-  {"category":"literature","content":"To Sherlock Holmes she is always the woman. I have seldom heard him mention her under any other name. In his eyes she eclipses and predominates the whole of her sex.","attribution":"Arthur Conan Doyle, A Scandal in Bohemia"},
-  {"category":"literature","content":"I read that every known superstition in the world is gathered into the horseshoe of the Carpathians, as if it were the centre of some sort of imaginative whirlpool, and it made me uneasy in a way I could not explain.","attribution":"Bram Stoker, Dracula"},
-  {"category":"literature","content":"The studio was filled with the rich odour of roses, and when the light summer wind stirred amidst the trees of the garden, there came through the open door the heavy scent of the lilac, or the more delicate perfume of the pink-flowering thorn.","attribution":"Oscar Wilde, The Picture of Dorian Gray"},
-  {"category":"literature","content":"The Nellie, a cruising yawl, swung to her anchor without a flutter of the sails, and was at rest. The flood had made, the wind was nearly calm, and being bound down the river, the only thing for it was to come to and wait for the turn of the tide.","attribution":"Joseph Conrad, Heart of Darkness"},
-  {"category":"literature","content":"You don't know about me without you have read a book by the name of The Adventures of Tom Sawyer, but that ain't no matter. That book was made by Mr. Mark Twain, and he told the truth, mainly.","attribution":"Mark Twain, Adventures of Huckleberry Finn"},
-  {"category":"literature","content":"There was no possibility of taking a walk that day. We had been wandering, indeed, in the leafless shrubbery an hour in the morning, but since dinner the cold winter wind had brought with it clouds so sombre, and a rain so penetrating.","attribution":"Charlotte Bronte, Jane Eyre"},
-  {"category":"literature","content":"The Time Traveller, for so it will be convenient to speak of him, was expounding a recondite matter to us. His grey eyes shone and twinkled, and his usually pale face was flushed and animated.","attribution":"H.G. Wells, The Time Machine"},
-  {"category":"literature","content":"My father's family name being Pirrip, and my Christian name Philip, my infant tongue could make of both names nothing longer or more explicit than Pip. So, I called myself Pip, and came to be called Pip.","attribution":"Charles Dickens, Great Expectations"},
-  {"category":"literature","content":"In my younger and more vulnerable years my father gave me some advice that I've been turning over in my mind ever since. Whenever you feel like criticizing anyone, he told me, just remember that all the people in this world haven't had the advantages that you've had.","attribution":"F. Scott Fitzgerald, The Great Gatsby"},
-  {"category":"literature","content":"1801. I have just returned from a visit to my landlord, the solitary neighbour that I shall be troubled with. This is certainly a beautiful country. In all England, I do not believe that I could have fixed on a situation so completely removed from the stir of society.","attribution":"Emily Bronte, Wuthering Heights"},
-  {"category":"literature","content":"Christmas won't be Christmas without any presents, grumbled Jo, lying on the rug. It's so dreadful to be poor, sighed Meg, looking down at her old dress.","attribution":"Louisa May Alcott, Little Women"},
-  {"category":"literature","content":"The year 1866 was signalised by a remarkable incident, a mysterious and inexplicable phenomenon, which doubtless no one has yet forgotten. Ships had met with a huge thing, a long object, spindle-shaped, and at times phosphorescent.","attribution":"Jules Verne, Twenty Thousand Leagues Under the Sea"},
-  {"category":"literature","content":"Buck did not read the newspapers, or he would have known that trouble was brewing, not alone for himself, but for every tide-water dog, strong of muscle and with warm, long hair, from Puget Sound to San Diego.","attribution":"Jack London, The Call of the Wild"},
-  {"category":"literature","content":"A throng of bearded men, in sad-colored garments and gray, steeple-crowned hats, intermixed with women, some wearing hoods, and others bareheaded, was assembled in front of a wooden edifice.","attribution":"Nathaniel Hawthorne, The Scarlet Letter"},
-  {"category":"literature","content":"Mr. Sherlock Holmes, who was usually very late in the mornings, save upon those not infrequent occasions when he was up all night, was seated at the breakfast table.","attribution":"Arthur Conan Doyle, The Hound of the Baskervilles"}
+  {
+    "category": "literature",
+    "content": "It was the best of times, it was the worst of times.",
+    "attribution": "Charles Dickens, A Tale of Two Cities"
+  },
+  {
+    "category": "literature",
+    "content": "All we have to decide is what to do with the time that is given us.",
+    "attribution": "J.R.R. Tolkien, The Fellowship of the Ring"
+  },
+  {
+    "category": "literature",
+    "content": "Not all those who wander are lost.",
+    "attribution": "J.R.R. Tolkien"
+  },
+  {
+    "category": "literature",
+    "content": "It is a truth universally acknowledged, that a single man in possession of a good fortune, must be in want of a wife. However little known the feelings or views of such a man may be on his first entering a neighbourhood, this truth is so well fixed in the minds of the surrounding families.",
+    "attribution": "Jane Austen, Pride and Prejudice"
+  },
+  {
+    "category": "literature",
+    "content": "Call me Ishmael. Some years ago, never mind how long precisely, having little or no money in my purse, and nothing particular to interest me on shore, I thought I would sail about a little and see the watery part of the world.",
+    "attribution": "Herman Melville, Moby-Dick"
+  },
+  {
+    "category": "literature",
+    "content": "It was the best of times, it was the worst of times, it was the age of wisdom, it was the age of foolishness, it was the epoch of belief, it was the epoch of incredulity, it was the season of Light, it was the season of Darkness.",
+    "attribution": "Charles Dickens, A Tale of Two Cities"
+  },
+  {
+    "category": "literature",
+    "content": "Alice was beginning to get very tired of sitting by her sister on the bank, and of having nothing to do. Once or twice she had peeped into the book her sister was reading, but it had no pictures or conversations in it.",
+    "attribution": "Lewis Carroll, Alice's Adventures in Wonderland"
+  },
+  {
+    "category": "literature",
+    "content": "It was on a dreary night of November that I beheld the accomplishment of my toils. With an anxiety that almost amounted to agony, I collected the instruments of life around me, that I might infuse a spark of being into the lifeless thing that lay at my feet.",
+    "attribution": "Mary Shelley, Frankenstein"
+  },
+  {
+    "category": "literature",
+    "content": "To Sherlock Holmes she is always the woman. I have seldom heard him mention her under any other name. In his eyes she eclipses and predominates the whole of her sex.",
+    "attribution": "Arthur Conan Doyle, A Scandal in Bohemia"
+  },
+  {
+    "category": "literature",
+    "content": "I read that every known superstition in the world is gathered into the horseshoe of the Carpathians, as if it were the centre of some sort of imaginative whirlpool, and it made me uneasy in a way I could not explain.",
+    "attribution": "Bram Stoker, Dracula"
+  },
+  {
+    "category": "literature",
+    "content": "The studio was filled with the rich odour of roses, and when the light summer wind stirred amidst the trees of the garden, there came through the open door the heavy scent of the lilac, or the more delicate perfume of the pink-flowering thorn.",
+    "attribution": "Oscar Wilde, The Picture of Dorian Gray"
+  },
+  {
+    "category": "literature",
+    "content": "The Nellie, a cruising yawl, swung to her anchor without a flutter of the sails, and was at rest. The flood had made, the wind was nearly calm, and being bound down the river, the only thing for it was to come to and wait for the turn of the tide.",
+    "attribution": "Joseph Conrad, Heart of Darkness"
+  },
+  {
+    "category": "literature",
+    "content": "You don't know about me without you have read a book by the name of The Adventures of Tom Sawyer, but that ain't no matter. That book was made by Mr. Mark Twain, and he told the truth, mainly.",
+    "attribution": "Mark Twain, Adventures of Huckleberry Finn"
+  },
+  {
+    "category": "literature",
+    "content": "There was no possibility of taking a walk that day. We had been wandering, indeed, in the leafless shrubbery an hour in the morning, but since dinner the cold winter wind had brought with it clouds so sombre, and a rain so penetrating.",
+    "attribution": "Charlotte Bronte, Jane Eyre"
+  },
+  {
+    "category": "literature",
+    "content": "The Time Traveller, for so it will be convenient to speak of him, was expounding a recondite matter to us. His grey eyes shone and twinkled, and his usually pale face was flushed and animated.",
+    "attribution": "H.G. Wells, The Time Machine"
+  },
+  {
+    "category": "literature",
+    "content": "My father's family name being Pirrip, and my Christian name Philip, my infant tongue could make of both names nothing longer or more explicit than Pip. So, I called myself Pip, and came to be called Pip.",
+    "attribution": "Charles Dickens, Great Expectations"
+  },
+  {
+    "category": "literature",
+    "content": "In my younger and more vulnerable years my father gave me some advice that I've been turning over in my mind ever since. Whenever you feel like criticizing anyone, he told me, just remember that all the people in this world haven't had the advantages that you've had.",
+    "attribution": "F. Scott Fitzgerald, The Great Gatsby"
+  },
+  {
+    "category": "literature",
+    "content": "1801. I have just returned from a visit to my landlord, the solitary neighbour that I shall be troubled with. This is certainly a beautiful country. In all England, I do not believe that I could have fixed on a situation so completely removed from the stir of society.",
+    "attribution": "Emily Bronte, Wuthering Heights"
+  },
+  {
+    "category": "literature",
+    "content": "Christmas won't be Christmas without any presents, grumbled Jo, lying on the rug. It's so dreadful to be poor, sighed Meg, looking down at her old dress.",
+    "attribution": "Louisa May Alcott, Little Women"
+  },
+  {
+    "category": "literature",
+    "content": "The year 1866 was signalised by a remarkable incident, a mysterious and inexplicable phenomenon, which doubtless no one has yet forgotten. Ships had met with a huge thing, a long object, spindle-shaped, and at times phosphorescent.",
+    "attribution": "Jules Verne, Twenty Thousand Leagues Under the Sea"
+  },
+  {
+    "category": "literature",
+    "content": "Buck did not read the newspapers, or he would have known that trouble was brewing, not alone for himself, but for every tide-water dog, strong of muscle and with warm, long hair, from Puget Sound to San Diego.",
+    "attribution": "Jack London, The Call of the Wild"
+  },
+  {
+    "category": "literature",
+    "content": "A throng of bearded men, in sad-colored garments and gray, steeple-crowned hats, intermixed with women, some wearing hoods, and others bareheaded, was assembled in front of a wooden edifice.",
+    "attribution": "Nathaniel Hawthorne, The Scarlet Letter"
+  },
+  {
+    "category": "literature",
+    "content": "Mr. Sherlock Holmes, who was usually very late in the mornings, save upon those not infrequent occasions when he was up all night, was seated at the breakfast table.",
+    "attribution": "Arthur Conan Doyle, The Hound of the Baskervilles"
+  },
+  {
+    "category": "literature",
+    "content": "All happy families are alike; each unhappy family is unhappy in its own way. Everything was in confusion in the Oblonskys' house. The wife had discovered that the husband was carrying on an intrigue with a French girl.",
+    "attribution": "Leo Tolstoy, Anna Karenina"
+  },
+  {
+    "category": "literature",
+    "content": "It was a bright cold day in April, and the clocks were striking thirteen. Winston Smith, his chin nuzzled into his breast in an effort to escape the vile wind, slipped quickly through the glass doors of Victory Mansions.",
+    "attribution": "George Orwell, Nineteen Eighty-Four"
+  },
+  {
+    "category": "literature",
+    "content": "Happy families are all alike, and it is a melancholy fact that the world accepts this cheerfully. Nobody wants to hear the details of contentment, while every variety of misfortune finds an eager audience.",
+    "attribution": "Unknown"
+  },
+  {
+    "category": "literature",
+    "content": "There is no greater agony than bearing an untold story inside you. The words gather and press until they must come out, and the telling is not a relief so much as a surrender.",
+    "attribution": "Maya Angelou"
+  }
 ]

@@ -1,22 +1,127 @@
 [
-  {"category":"business","attribution":"Peter Drucker","content":"Management is doing things right; leadership is doing the right things."},
-  {"category":"business","attribution":"Peter Drucker","content":"There is nothing so useless as doing efficiently that which should not be done at all."},
-  {"category":"business","attribution":"Peter Drucker","content":"The purpose of business is to create and keep a customer."},
-  {"category":"business","attribution":"Adam Smith, The Wealth of Nations","content":"It is not from the benevolence of the butcher, the brewer, or the baker that we expect our dinner, but from their regard to their own interest."},
-  {"category":"business","attribution":"Adam Smith, The Wealth of Nations","content":"The real price of everything is the toil and trouble of acquiring it."},
-  {"category":"business","attribution":"John Maynard Keynes","content":"The market can remain irrational longer than you can remain solvent."},
-  {"category":"business","attribution":"Warren Buffett","content":"Price is what you pay. Value is what you get."},
-  {"category":"business","attribution":"Warren Buffett","content":"It takes twenty years to build a reputation and five minutes to ruin it."},
-  {"category":"business","attribution":"Clayton Christensen, The Innovator's Dilemma","content":"Disruptive technologies typically enable new markets to emerge, and they underperform established products in mainstream markets."},
-  {"category":"business","attribution":"W. Edwards Deming","content":"In God we trust; all others must bring data."},
-  {"category":"business","attribution":"W. Edwards Deming","content":"A bad system will beat a good person every time."},
-  {"category":"business","attribution":"Herbert Simon","content":"A wealth of information creates a poverty of attention."},
-  {"category":"business","attribution":"Michael Porter","content":"The essence of strategy is choosing what not to do."},
-  {"category":"business","attribution":"Andy Grove, Only the Paranoid Survive","content":"Success breeds complacency. Complacency breeds failure. Only the paranoid survive."},
-  {"category":"business","attribution":"Reid Hoffman","content":"If you are not embarrassed by the first version of your product, you have launched too late."},
-  {"category":"business","attribution":"Jeff Bezos","content":"Your brand is what other people say about you when you're not in the room."},
-  {"category":"business","attribution":"Conway's Law","content":"Organisations design systems which are copies of the communication structures of those organisations."},
-  {"category":"business","attribution":"Goodhart's Law","content":"When a measure becomes a target, it ceases to be a good measure."},
-  {"category":"business","attribution":"Parkinson's Law","content":"Work expands so as to fill the time available for its completion."},
-  {"category":"business","attribution":"Peter Thiel, Zero to One","content":"Every moment in business happens only once. The next Bill Gates will not build an operating system."}
+  {
+    "category": "business",
+    "attribution": "Peter Drucker",
+    "content": "Management is doing things right; leadership is doing the right things."
+  },
+  {
+    "category": "business",
+    "attribution": "Peter Drucker",
+    "content": "There is nothing so useless as doing efficiently that which should not be done at all."
+  },
+  {
+    "category": "business",
+    "attribution": "Peter Drucker",
+    "content": "The purpose of business is to create and keep a customer."
+  },
+  {
+    "category": "business",
+    "attribution": "Adam Smith, The Wealth of Nations",
+    "content": "It is not from the benevolence of the butcher, the brewer, or the baker that we expect our dinner, but from their regard to their own interest."
+  },
+  {
+    "category": "business",
+    "attribution": "Adam Smith, The Wealth of Nations",
+    "content": "The real price of everything is the toil and trouble of acquiring it."
+  },
+  {
+    "category": "business",
+    "attribution": "John Maynard Keynes",
+    "content": "The market can remain irrational longer than you can remain solvent."
+  },
+  {
+    "category": "business",
+    "attribution": "Warren Buffett",
+    "content": "Price is what you pay. Value is what you get."
+  },
+  {
+    "category": "business",
+    "attribution": "Warren Buffett",
+    "content": "It takes twenty years to build a reputation and five minutes to ruin it."
+  },
+  {
+    "category": "business",
+    "attribution": "Clayton Christensen, The Innovator's Dilemma",
+    "content": "Disruptive technologies typically enable new markets to emerge, and they underperform established products in mainstream markets."
+  },
+  {
+    "category": "business",
+    "attribution": "W. Edwards Deming",
+    "content": "In God we trust; all others must bring data."
+  },
+  {
+    "category": "business",
+    "attribution": "W. Edwards Deming",
+    "content": "A bad system will beat a good person every time."
+  },
+  {
+    "category": "business",
+    "attribution": "Herbert Simon",
+    "content": "A wealth of information creates a poverty of attention."
+  },
+  {
+    "category": "business",
+    "attribution": "Michael Porter",
+    "content": "The essence of strategy is choosing what not to do."
+  },
+  {
+    "category": "business",
+    "attribution": "Andy Grove, Only the Paranoid Survive",
+    "content": "Success breeds complacency. Complacency breeds failure. Only the paranoid survive."
+  },
+  {
+    "category": "business",
+    "attribution": "Reid Hoffman",
+    "content": "If you are not embarrassed by the first version of your product, you have launched too late."
+  },
+  {
+    "category": "business",
+    "attribution": "Jeff Bezos",
+    "content": "Your brand is what other people say about you when you're not in the room."
+  },
+  {
+    "category": "business",
+    "attribution": "Conway's Law",
+    "content": "Organisations design systems which are copies of the communication structures of those organisations."
+  },
+  {
+    "category": "business",
+    "attribution": "Goodhart's Law",
+    "content": "When a measure becomes a target, it ceases to be a good measure."
+  },
+  {
+    "category": "business",
+    "attribution": "Parkinson's Law",
+    "content": "Work expands so as to fill the time available for its completion."
+  },
+  {
+    "category": "business",
+    "attribution": "Peter Thiel, Zero to One",
+    "content": "Every moment in business happens only once. The next Bill Gates will not build an operating system."
+  },
+  {
+    "category": "business",
+    "content": "A process that depends on one person paying attention is not a process. It is that person, and it will fail on the first day they are unavailable, usually in a way nobody has planned for.",
+    "attribution": "Unknown"
+  },
+  {
+    "category": "business",
+    "content": "Cash and profit are different things, and businesses fail on the first while reporting the second. Revenue recognised this month may not arrive for ninety days, and wages will not wait that long.",
+    "attribution": "Unknown"
+  },
+  {
+    "category": "business",
+    "content": "The cost of a decision is not what it takes to make it, but what it takes to reverse it. Cheap, reversible choices should be made quickly; expensive, permanent ones deserve the time that quick decisions save.",
+    "attribution": "Unknown"
+  },
+  {
+    "category": "business",
+    "content": "Meetings expand to fill the people invited to them. Every additional attendee adds the cost of their hour and the temptation to justify their presence by speaking, which is why small rooms decide faster.",
+    "attribution": "Unknown"
+  },
+  {
+    "category": "business",
+    "content": "A price is a message about what something is worth, not merely what it costs to make. Setting it too low tells a buyer the thing is cheap, which is often harder to recover from than setting it too high.",
+    "attribution": "Unknown"
+  }
 ]

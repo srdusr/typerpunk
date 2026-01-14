@@ -1,22 +1,122 @@
 [
-  {"category":"history","attribution":"Abraham Lincoln, Gettysburg Address, 1863","content":"Four score and seven years ago our fathers brought forth on this continent a new nation, conceived in liberty."},
-  {"category":"history","attribution":"Abraham Lincoln, Gettysburg Address, 1863","content":"The world will little note nor long remember what we say here, but it can never forget what they did here."},
-  {"category":"history","attribution":"Winston Churchill, 1940","content":"We shall fight on the beaches, we shall fight on the landing grounds, we shall fight in the fields and in the streets."},
-  {"category":"history","attribution":"Winston Churchill, 1940","content":"Never in the field of human conflict was so much owed by so many to so few."},
-  {"category":"history","attribution":"Franklin D. Roosevelt, 1933","content":"The only thing we have to fear is fear itself: nameless, unreasoning, unjustified terror."},
-  {"category":"history","attribution":"Martin Luther King Jr., 1963","content":"I have a dream that my four little children will one day live in a nation where they will not be judged by the colour of their skin."},
-  {"category":"history","attribution":"Martin Luther King Jr., Letter from Birmingham Jail, 1963","content":"Injustice anywhere is a threat to justice everywhere."},
-  {"category":"history","attribution":"Nelson Mandela, 1964","content":"I have cherished the ideal of a democratic and free society in which all persons live together in harmony and with equal opportunities."},
-  {"category":"history","attribution":"Sojourner Truth, 1851","content":"I could work as much and eat as much as a man, when I could get it, and bear the lash as well. And ain't I a woman?"},
-  {"category":"history","attribution":"Frederick Douglass, 1857","content":"Power concedes nothing without a demand. It never did and it never will."},
-  {"category":"history","attribution":"Neil Armstrong, 1969","content":"That's one small step for a man, one giant leap for mankind."},
-  {"category":"history","attribution":"John F. Kennedy, 1962","content":"We choose to go to the moon in this decade and do the other things, not because they are easy, but because they are hard."},
-  {"category":"history","attribution":"Chief Joseph, Nez Perce, 1877","content":"I am tired of fighting. From where the sun now stands, I will fight no more forever."},
-  {"category":"history","attribution":"Emmeline Pankhurst, 1913","content":"You have to make more noise than anybody else, you have to fill all the papers more than anybody else."},
-  {"category":"history","attribution":"Mahatma Gandhi","content":"There are many causes that I am prepared to die for but no causes that I am prepared to kill for."},
-  {"category":"history","attribution":"Elie Wiesel, 1986","content":"We must always take sides. Neutrality helps the oppressor, never the victim. Silence encourages the tormentor."},
-  {"category":"history","attribution":"Susan B. Anthony, 1873","content":"It was we, the people, not we, the white male citizens, nor yet we, the male citizens, who formed this Union."},
-  {"category":"history","attribution":"Thucydides, History of the Peloponnesian War","content":"The strong do what they can and the weak suffer what they must."},
-  {"category":"history","attribution":"George Santayana, The Life of Reason","content":"Those who cannot remember the past are condemned to repeat it."},
-  {"category":"history","attribution":"Cicero","content":"To be ignorant of what occurred before you were born is to remain always a child."}
+  {
+    "category": "history",
+    "attribution": "Abraham Lincoln, Gettysburg Address, 1863",
+    "content": "Four score and seven years ago our fathers brought forth on this continent a new nation, conceived in liberty."
+  },
+  {
+    "category": "history",
+    "attribution": "Abraham Lincoln, Gettysburg Address, 1863",
+    "content": "The world will little note nor long remember what we say here, but it can never forget what they did here."
+  },
+  {
+    "category": "history",
+    "attribution": "Winston Churchill, 1940",
+    "content": "We shall fight on the beaches, we shall fight on the landing grounds, we shall fight in the fields and in the streets."
+  },
+  {
+    "category": "history",
+    "attribution": "Winston Churchill, 1940",
+    "content": "Never in the field of human conflict was so much owed by so many to so few."
+  },
+  {
+    "category": "history",
+    "attribution": "Franklin D. Roosevelt, 1933",
+    "content": "The only thing we have to fear is fear itself: nameless, unreasoning, unjustified terror."
+  },
+  {
+    "category": "history",
+    "attribution": "Martin Luther King Jr., 1963",
+    "content": "I have a dream that my four little children will one day live in a nation where they will not be judged by the colour of their skin."
+  },
+  {
+    "category": "history",
+    "attribution": "Martin Luther King Jr., Letter from Birmingham Jail, 1963",
+    "content": "Injustice anywhere is a threat to justice everywhere."
+  },
+  {
+    "category": "history",
+    "attribution": "Nelson Mandela, 1964",
+    "content": "I have cherished the ideal of a democratic and free society in which all persons live together in harmony and with equal opportunities."
+  },
+  {
+    "category": "history",
+    "attribution": "Sojourner Truth, 1851",
+    "content": "I could work as much and eat as much as a man, when I could get it, and bear the lash as well. And ain't I a woman?"
+  },
+  {
+    "category": "history",
+    "attribution": "Frederick Douglass, 1857",
+    "content": "Power concedes nothing without a demand. It never did and it never will."
+  },
+  {
+    "category": "history",
+    "attribution": "Neil Armstrong, 1969",
+    "content": "That's one small step for a man, one giant leap for mankind."
+  },
+  {
+    "category": "history",
+    "attribution": "John F. Kennedy, 1962",
+    "content": "We choose to go to the moon in this decade and do the other things, not because they are easy, but because they are hard."
+  },
+  {
+    "category": "history",
+    "attribution": "Chief Joseph, Nez Perce, 1877",
+    "content": "I am tired of fighting. From where the sun now stands, I will fight no more forever."
+  },
+  {
+    "category": "history",
+    "attribution": "Emmeline Pankhurst, 1913",
+    "content": "You have to make more noise than anybody else, you have to fill all the papers more than anybody else."
+  },
+  {
+    "category": "history",
+    "attribution": "Mahatma Gandhi",
+    "content": "There are many causes that I am prepared to die for but no causes that I am prepared to kill for."
+  },
+  {
+    "category": "history",
+    "attribution": "Elie Wiesel, 1986",
+    "content": "We must always take sides. Neutrality helps the oppressor, never the victim. Silence encourages the tormentor."
+  },
+  {
+    "category": "history",
+    "attribution": "Susan B. Anthony, 1873",
+    "content": "It was we, the people, not we, the white male citizens, nor yet we, the male citizens, who formed this Union."
+  },
+  {
+    "category": "history",
+    "attribution": "Thucydides, History of the Peloponnesian War",
+    "content": "The strong do what they can and the weak suffer what they must."
+  },
+  {
+    "category": "history",
+    "attribution": "George Santayana, The Life of Reason",
+    "content": "Those who cannot remember the past are condemned to repeat it."
+  },
+  {
+    "category": "history",
+    "attribution": "Cicero",
+    "content": "To be ignorant of what occurred before you were born is to remain always a child."
+  },
+  {
+    "category": "history",
+    "content": "Writing was invented for accounting before it was used for anything else. The earliest tablets record quantities of grain and livestock, and literature arrives centuries later, built on a tool made for keeping track of debts.",
+    "attribution": "Unknown"
+  },
+  {
+    "category": "history",
+    "content": "The printing press did not simply make books cheaper. It made two copies of a text identical, which meant that for the first time a scholar could cite a page number and expect another reader to find the same words there.",
+    "attribution": "Unknown"
+  },
+  {
+    "category": "history",
+    "content": "Roads outlast the empires that build them. Long after the administration that paid for it has gone, the route remains the easiest way through the landscape, and towns keep growing along a line drawn for reasons nobody remembers.",
+    "attribution": "Unknown"
+  },
+  {
+    "category": "history",
+    "content": "Standardised time is younger than the railway and was created by it. Before trains, every town kept its own noon by the sun, and the timetable is what forced a country to agree on a single clock.",
+    "attribution": "Unknown"
+  }
 ]

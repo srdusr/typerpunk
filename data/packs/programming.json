@@ -257,5 +257,75 @@
     "attribution": "SQL",
     "explanation": "EXPLAIN ANALYZE runs the query and reports what the planner actually did, not what it guessed it would do.",
     "content": "EXPLAIN ANALYZE SELECT * FROM test_results WHERE mode_key = 'time-30' ORDER BY wpm DESC LIMIT 50;"
+  },
+  {
+    "category": "programming",
+    "content": "const grouped = items.reduce((acc, item) => ({ ...acc, [item.type]: [...(acc[item.type] ?? []), item] }), {});",
+    "attribution": "JavaScript",
+    "explanation": "Groups a list by one field. The nullish coalescing operator supplies an empty array the first time a type is seen, so no separate initialisation step is needed.",
+    "language": "javascript"
+  },
+  {
+    "category": "programming",
+    "content": "let counts: HashMap<&str, usize> = text.split_whitespace().fold(HashMap::new(), |mut m, w| { *m.entry(w).or_insert(0) += 1; m });",
+    "attribution": "Rust",
+    "explanation": "entry returns a view into the slot for a key whether or not it exists. or_insert fills it on first sight, and the star dereferences that slot so it can be incremented in place.",
+    "language": "rust"
+  },
+  {
+    "category": "programming",
+    "content": "with open(path, encoding='utf-8') as fh: rows = [line.rstrip('\\n').split('\\t') for line in fh if line.strip()]",
+    "attribution": "Python",
+    "explanation": "The with block closes the file even if the loop raises. Naming the encoding matters: without it Python uses the machine's locale, so the same file can parse differently elsewhere.",
+    "language": "python"
+  },
+  {
+    "category": "programming",
+    "content": "impl fmt::Display for Error { fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result { write!(f, \"{}: {}\", self.kind, self.detail) } }",
+    "attribution": "Rust",
+    "explanation": "Implementing Display is what lets a type be printed with the plain brace form. The formatter carries the width and precision the caller asked for.",
+    "language": "rust"
+  },
+  {
+    "category": "programming",
+    "content": "export const debounce = (fn, ms) => { let t; return (...args) => { clearTimeout(t); t = setTimeout(() => fn(...args), ms); }; };",
+    "attribution": "JavaScript",
+    "explanation": "The timer handle lives in the closure, so every returned function keeps its own. Each call cancels the pending one, and only a pause longer than ms lets the work through.",
+    "language": "javascript"
+  },
+  {
+    "category": "programming",
+    "content": "SELECT u.name, COUNT(o.id) AS orders FROM users u LEFT JOIN orders o ON o.user_id = u.id GROUP BY u.id, u.name HAVING COUNT(o.id) > 5;",
+    "attribution": "SQL",
+    "explanation": "A LEFT JOIN keeps users with no orders, and HAVING filters on the aggregate, which WHERE cannot do because WHERE runs before the grouping.",
+    "language": "clike"
+  },
+  {
+    "category": "programming",
+    "content": "def chunked(seq, n): return [seq[i:i + n] for i in range(0, len(seq), n)]",
+    "attribution": "Python",
+    "explanation": "Slicing past the end of a sequence is not an error in Python, it simply returns what is there, so the final chunk needs no special case.",
+    "language": "python"
+  },
+  {
+    "category": "programming",
+    "content": "match value { Some(n) if n > 0 => n, Some(_) => 0, None => return Err(Error::Missing) }",
+    "attribution": "Rust",
+    "explanation": "The if after a pattern is a match guard. It narrows an arm without a nested conditional, and the compiler still checks that every case is covered.",
+    "language": "rust"
+  },
+  {
+    "category": "programming",
+    "content": "const sorted = [...items].sort((a, b) => a.score - b.score || a.name.localeCompare(b.name));",
+    "attribution": "JavaScript",
+    "explanation": "sort mutates, so the spread makes a copy first. The logical or supplies a second comparison used only when the scores are equal.",
+    "language": "javascript"
+  },
+  {
+    "category": "programming",
+    "content": "async fn fetch_all(urls: Vec<String>) -> Vec<Result<String, Error>> { futures::future::join_all(urls.into_iter().map(fetch)).await }",
+    "attribution": "Rust",
+    "explanation": "join_all drives every future at once on one task and waits for all of them, rather than awaiting each in turn, which would make the requests sequential.",
+    "language": "rust"
   }
 ]

@@ -37,7 +37,7 @@ pub enum ServerMessage {
     /// Sent once, just before the countdown begins, so every client can put
     /// the passage on screen and let players read it while they wait. Start
     /// still carries the text, for clients that do not use this.
-    RaceText { text: String, attribution: Option<String> },
+    RaceText { text: String, attribution: Option<String>, category: Option<String> },
     Countdown { seconds: u32 },
     Start { text: String },
     PlayerProgress { player_id: String, percent: f32, wpm: f32 },

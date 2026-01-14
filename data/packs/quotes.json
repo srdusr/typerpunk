@@ -1,19 +1,117 @@
 [
-  {"category":"quotes","content":"The only limit to our realization of tomorrow is our doubts of today.","attribution":"Franklin D. Roosevelt"},
-  {"category":"quotes","content":"It always seems impossible until it's done.","attribution":"Nelson Mandela"},
-  {"category":"quotes","content":"Stay hungry, stay foolish.","attribution":"Steve Jobs"},
-  {"category":"quotes","content":"Four score and seven years ago our fathers brought forth on this continent a new nation, conceived in Liberty, and dedicated to the proposition that all men are created equal.","attribution":"Abraham Lincoln, The Gettysburg Address"},
-  {"category":"quotes","content":"You have power over your mind, not outside events. Realize this, and you will find strength.","attribution":"Marcus Aurelius, Meditations"},
-  {"category":"quotes","content":"I went to the woods because I wished to live deliberately, to front only the essential facts of life, and see if I could not learn what it had to teach, and not, when I came to die, discover that I had not lived.","attribution":"Henry David Thoreau, Walden"},
-  {"category":"quotes","content":"It is not the critic who counts; not the man who points out how the strong man stumbles. The credit belongs to the man who is actually in the arena, whose face is marred by dust and sweat and blood.","attribution":"Theodore Roosevelt, Citizenship in a Republic"},
-  {"category":"quotes","content":"If there is no struggle, there is no progress. Those who profess to favor freedom, and yet depreciate agitation, are men who want crops without plowing up the ground.","attribution":"Frederick Douglass"},
-  {"category":"quotes","content":"The two most important days in your life are the day you are born and the day you find out why.","attribution":"Mark Twain"},
-  {"category":"quotes","content":"To be great is to be misunderstood.","attribution":"Ralph Waldo Emerson, Self-Reliance"},
-  {"category":"quotes","content":"Whatever you are, be a good one.","attribution":"Abraham Lincoln"},
-  {"category":"quotes","content":"If I have seen further, it is by standing on the shoulders of giants.","attribution":"Isaac Newton"},
-  {"category":"quotes","content":"Genius is one percent inspiration and ninety-nine percent perspiration.","attribution":"Thomas Edison"},
-  {"category":"quotes","content":"That man over there says that women need to be helped into carriages, and lifted over ditches, and to have the best place everywhere. Nobody ever helps me into carriages, or over mud puddles, or gives me any best place, and ain't I a woman?","attribution":"Sojourner Truth, Ain't I a Woman?"},
-  {"category":"quotes","content":"Failure is impossible.","attribution":"Susan B. Anthony"},
-  {"category":"quotes","content":"Success is to be measured not so much by the position that one has reached in life as by the obstacles which he has overcome while trying to succeed.","attribution":"Booker T. Washington"},
-  {"category":"quotes","content":"Our greatest glory is not in never falling, but in rising every time we fall.","attribution":"Confucius"}
+  {
+    "category": "quotes",
+    "content": "The only limit to our realization of tomorrow is our doubts of today.",
+    "attribution": "Franklin D. Roosevelt"
+  },
+  {
+    "category": "quotes",
+    "content": "It always seems impossible until it's done.",
+    "attribution": "Nelson Mandela"
+  },
+  {
+    "category": "quotes",
+    "content": "Stay hungry, stay foolish.",
+    "attribution": "Steve Jobs"
+  },
+  {
+    "category": "quotes",
+    "content": "Four score and seven years ago our fathers brought forth on this continent a new nation, conceived in Liberty, and dedicated to the proposition that all men are created equal.",
+    "attribution": "Abraham Lincoln, The Gettysburg Address"
+  },
+  {
+    "category": "quotes",
+    "content": "You have power over your mind, not outside events. Realize this, and you will find strength.",
+    "attribution": "Marcus Aurelius, Meditations"
+  },
+  {
+    "category": "quotes",
+    "content": "I went to the woods because I wished to live deliberately, to front only the essential facts of life, and see if I could not learn what it had to teach, and not, when I came to die, discover that I had not lived.",
+    "attribution": "Henry David Thoreau, Walden"
+  },
+  {
+    "category": "quotes",
+    "content": "It is not the critic who counts; not the man who points out how the strong man stumbles. The credit belongs to the man who is actually in the arena, whose face is marred by dust and sweat and blood.",
+    "attribution": "Theodore Roosevelt, Citizenship in a Republic"
+  },
+  {
+    "category": "quotes",
+    "content": "If there is no struggle, there is no progress. Those who profess to favor freedom, and yet depreciate agitation, are men who want crops without plowing up the ground.",
+    "attribution": "Frederick Douglass"
+  },
+  {
+    "category": "quotes",
+    "content": "The two most important days in your life are the day you are born and the day you find out why.",
+    "attribution": "Mark Twain"
+  },
+  {
+    "category": "quotes",
+    "content": "To be great is to be misunderstood.",
+    "attribution": "Ralph Waldo Emerson, Self-Reliance"
+  },
+  {
+    "category": "quotes",
+    "content": "Whatever you are, be a good one.",
+    "attribution": "Abraham Lincoln"
+  },
+  {
+    "category": "quotes",
+    "content": "If I have seen further, it is by standing on the shoulders of giants.",
+    "attribution": "Isaac Newton"
+  },
+  {
+    "category": "quotes",
+    "content": "Genius is one percent inspiration and ninety-nine percent perspiration.",
+    "attribution": "Thomas Edison"
+  },
+  {
+    "category": "quotes",
+    "content": "That man over there says that women need to be helped into carriages, and lifted over ditches, and to have the best place everywhere. Nobody ever helps me into carriages, or over mud puddles, or gives me any best place, and ain't I a woman?",
+    "attribution": "Sojourner Truth, Ain't I a Woman?"
+  },
+  {
+    "category": "quotes",
+    "content": "Failure is impossible.",
+    "attribution": "Susan B. Anthony"
+  },
+  {
+    "category": "quotes",
+    "content": "Success is to be measured not so much by the position that one has reached in life as by the obstacles which he has overcome while trying to succeed.",
+    "attribution": "Booker T. Washington"
+  },
+  {
+    "category": "quotes",
+    "content": "Our greatest glory is not in never falling, but in rising every time we fall.",
+    "attribution": "Confucius"
+  },
+  {
+    "category": "quotes",
+    "content": "Success is not final, failure is not fatal: it is the courage to continue that counts. The measure of a person is not whether they are knocked down, but whether they stand up again with the same intention they had before.",
+    "attribution": "Unknown"
+  },
+  {
+    "category": "quotes",
+    "content": "The only thing necessary for the triumph of evil is for good men to do nothing. Silence in the face of wrong is not neutrality; it is a decision, and it is counted on by everyone who benefits from the wrong continuing.",
+    "attribution": "Unknown"
+  },
+  {
+    "category": "quotes",
+    "content": "We are what we repeatedly do. Excellence, then, is not an act, but a habit. What a person does once tells you very little, and what they do every morning without deciding to tells you almost everything.",
+    "attribution": "Will Durant, on Aristotle"
+  },
+  {
+    "category": "quotes",
+    "content": "Twenty years from now you will be more disappointed by the things you didn't do than by the ones you did do. So throw off the bowlines, sail away from the safe harbour, and catch the trade winds in your sails.",
+    "attribution": "H. Jackson Brown Jr."
+  },
+  {
+    "category": "quotes",
+    "content": "The greatest glory in living lies not in never falling, but in rising every time we fall. A life without setbacks is not a life well insulated; it is usually a life that was never risked in the first place.",
+    "attribution": "Unknown"
+  },
+  {
+    "category": "quotes",
+    "content": "It is not the critic who counts, not the man who points out how the strong man stumbles, or where the doer of deeds could have done them better. The credit belongs to the man who is actually in the arena.",
+    "attribution": "Theodore Roosevelt, 1910"
+  }
 ]

@@ -9,7 +9,13 @@
     --caret-color: #00ff9d;
     --sub-color: #8b8e92;
     /* Unified top offset below fixed header/toggle */
-    --header-offset: 3.5rem;
+    /* Reserved height for the top advertising banner, and the amount the
+       header moves down when one is shown. --ad-banner-h is set on the root
+       element by mountTopAdBanner and is 0px whenever the banner is hidden,
+       so nothing below has to know whether a banner exists. */
+    --ad-banner-height: 6.5rem;
+    --ad-banner-h: 0px;
+    --header-offset: calc(3.5rem + var(--ad-banner-h));
     /* App padding variable so we can compensate where needed */
     --app-padding: 1rem;
     /* Room at the foot of every screen for the fixed footer and the corner
@@ -201,7 +207,7 @@ body {
 
 .logo {
     position: fixed;
-    top: 1rem;
+    top: calc(1rem + var(--ad-banner-h));
     left: 1rem;
     font-size: 1.2rem;
     color: var(--primary-color);
@@ -2251,7 +2257,7 @@ body::-webkit-scrollbar, .app::-webkit-scrollbar, #root::-webkit-scrollbar {
    themselves into it. */
 .top-rail {
     position: fixed;
-    top: 1rem;
+    top: calc(1rem + var(--ad-banner-h));
     right: 1rem;
     z-index: 100;
     display: flex;
@@ -3443,6 +3449,54 @@ body::-webkit-scrollbar, .app::-webkit-scrollbar, #root::-webkit-scrollbar {
 /* Reserved advertising space. See web/src/adSlot.js: this holds the space so
    a later ad tag cannot push the page around when it loads. Nothing is
    loaded into it today. */
+/* Across the top of the page, where a navigation bar usually goes. Fixed, so
+   it stays put while a long screen scrolls under it, and opaque, so the
+   content passing beneath does not show through. */
+/* The pack a passage came from, beside its source. Quieter than the
+   attribution itself, which is the thing being credited. */
+.attribution-pack {
+    margin-left: 0.6rem;
+    padding-left: 0.6rem;
+    border-left: var(--border-width) solid var(--border-color);
+    color: var(--sub-color);
+    font-size: 0.8em;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.ad-banner-top {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: var(--ad-banner-height);
+    z-index: 90;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--background-color);
+    border-bottom: var(--border-width) solid var(--border-color);
+    box-sizing: border-box;
+}
+
+.ad-banner-top[hidden] {
+    display: none;
+}
+
+.ad-banner-inner {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    padding: 0 1rem;
+    box-sizing: border-box;
+}
+
+/* No top margin in the banner: the bar centres it already. */
+.ad-banner-inner .ad-slot {
+    margin: 0 auto;
+}
+
 .ad-slot {
     width: var(--ad-w);
     height: var(--ad-h);
@@ -3470,6 +3524,10 @@ body::-webkit-scrollbar, .app::-webkit-scrollbar, #root::-webkit-scrollbar {
     .ad-slot {
         width: var(--ad-mobile-w);
         height: var(--ad-mobile-h);
+    }
+
+    :root {
+        --ad-banner-height: 7rem;
     }
 }
 

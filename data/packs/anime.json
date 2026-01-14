@@ -1,30 +1,167 @@
 [
-  {"category":"anime","attribution":"Fullmetal Alchemist","content":"A lesson without pain is meaningless. That's because you cannot gain something without sacrificing something else in return."},
-  {"category":"anime","attribution":"Fullmetal Alchemist","content":"Humankind cannot gain anything without first giving something in return. To obtain, something of equal value must be lost."},
-  {"category":"anime","attribution":"Neon Genesis Evangelion","content":"Anywhere can be paradise as long as you have the will to live."},
-  {"category":"anime","attribution":"Cowboy Bebop","content":"Whatever happens, happens."},
-  {"category":"anime","attribution":"Ghost in the Shell","content":"Overspecialize, and you breed in weakness. It's slow death."},
-  {"category":"anime","attribution":"Naruto","content":"Hard work is worthless for those that don't believe in themselves."},
-  {"category":"anime","attribution":"Naruto","content":"When people are protecting something truly special to them, they truly can become as strong as they can be."},
-  {"category":"anime","attribution":"One Piece","content":"If you don't take risks, you can't create a future."},
-  {"category":"anime","attribution":"One Piece","content":"When do you think people die? When they are forgotten."},
-  {"category":"anime","attribution":"Bleach","content":"We fear that which we cannot see."},
-  {"category":"anime","attribution":"Death Note","content":"This world is rotten, and those who are making it rot deserve to die."},
-  {"category":"anime","attribution":"Code Geass","content":"The only ones who should kill are those who are prepared to be killed."},
-  {"category":"anime","attribution":"Attack on Titan","content":"If you win, you live. If you lose, you die. If you don't fight, you can't win."},
-  {"category":"anime","attribution":"Attack on Titan","content":"The only thing we're allowed to do is to believe that we won't regret the choice we made."},
-  {"category":"anime","attribution":"Gurren Lagann","content":"Don't believe in yourself. Believe in me who believes in you."},
-  {"category":"anime","attribution":"Hunter x Hunter","content":"You should enjoy the little detours to the fullest, because that's where you'll find the things more important than what you want."},
-  {"category":"anime","attribution":"Steins;Gate","content":"No matter how much I struggle, there's always a price to pay for changing the past."},
-  {"category":"anime","attribution":"Mushishi","content":"Don't be afraid of things you don't understand. Just accept them as they are."},
-  {"category":"anime","attribution":"Spirited Away","content":"Once you've met someone, you never really forget them."},
-  {"category":"anime","attribution":"Princess Mononoke","content":"Life is suffering. It is hard. The world is cursed. But still, you find reasons to keep on living."},
-  {"category":"anime","attribution":"Howl's Moving Castle","content":"A heart's a heavy burden."},
-  {"category":"anime","attribution":"My Neighbor Totoro","content":"Trees and people used to be good friends."},
-  {"category":"anime","attribution":"Your Name","content":"I feel like I'm always searching for someone, or something."},
-  {"category":"anime","attribution":"March Comes in Like a Lion","content":"Even if you can't see it, the river keeps flowing under the ice."},
-  {"category":"anime","attribution":"Vinland Saga","content":"You have no enemies. Nobody has any enemies. There is nobody that you should hurt."},
-  {"category":"anime","attribution":"Mob Psycho 100","content":"If everyone is not special, maybe you can be what you want to be."},
-  {"category":"anime","attribution":"Fruits Basket","content":"When you look at someone's kindness, it's like looking at the sun."},
-  {"category":"anime","attribution":"A Silent Voice","content":"What I want more than anything is for you to live and help me live too."}
+  {
+    "category": "anime",
+    "attribution": "Fullmetal Alchemist",
+    "content": "A lesson without pain is meaningless. That's because you cannot gain something without sacrificing something else in return."
+  },
+  {
+    "category": "anime",
+    "attribution": "Fullmetal Alchemist",
+    "content": "Humankind cannot gain anything without first giving something in return. To obtain, something of equal value must be lost."
+  },
+  {
+    "category": "anime",
+    "attribution": "Neon Genesis Evangelion",
+    "content": "Anywhere can be paradise as long as you have the will to live."
+  },
+  {
+    "category": "anime",
+    "attribution": "Cowboy Bebop",
+    "content": "Whatever happens, happens."
+  },
+  {
+    "category": "anime",
+    "attribution": "Ghost in the Shell",
+    "content": "Overspecialize, and you breed in weakness. It's slow death."
+  },
+  {
+    "category": "anime",
+    "attribution": "Naruto",
+    "content": "Hard work is worthless for those that don't believe in themselves."
+  },
+  {
+    "category": "anime",
+    "attribution": "Naruto",
+    "content": "When people are protecting something truly special to them, they truly can become as strong as they can be."
+  },
+  {
+    "category": "anime",
+    "attribution": "One Piece",
+    "content": "If you don't take risks, you can't create a future."
+  },
+  {
+    "category": "anime",
+    "attribution": "One Piece",
+    "content": "When do you think people die? When they are forgotten."
+  },
+  {
+    "category": "anime",
+    "attribution": "Bleach",
+    "content": "We fear that which we cannot see."
+  },
+  {
+    "category": "anime",
+    "attribution": "Death Note",
+    "content": "This world is rotten, and those who are making it rot deserve to die."
+  },
+  {
+    "category": "anime",
+    "attribution": "Code Geass",
+    "content": "The only ones who should kill are those who are prepared to be killed."
+  },
+  {
+    "category": "anime",
+    "attribution": "Attack on Titan",
+    "content": "If you win, you live. If you lose, you die. If you don't fight, you can't win."
+  },
+  {
+    "category": "anime",
+    "attribution": "Attack on Titan",
+    "content": "The only thing we're allowed to do is to believe that we won't regret the choice we made."
+  },
+  {
+    "category": "anime",
+    "attribution": "Gurren Lagann",
+    "content": "Don't believe in yourself. Believe in me who believes in you."
+  },
+  {
+    "category": "anime",
+    "attribution": "Hunter x Hunter",
+    "content": "You should enjoy the little detours to the fullest, because that's where you'll find the things more important than what you want."
+  },
+  {
+    "category": "anime",
+    "attribution": "Steins;Gate",
+    "content": "No matter how much I struggle, there's always a price to pay for changing the past."
+  },
+  {
+    "category": "anime",
+    "attribution": "Mushishi",
+    "content": "Don't be afraid of things you don't understand. Just accept them as they are."
+  },
+  {
+    "category": "anime",
+    "attribution": "Spirited Away",
+    "content": "Once you've met someone, you never really forget them."
+  },
+  {
+    "category": "anime",
+    "attribution": "Princess Mononoke",
+    "content": "Life is suffering. It is hard. The world is cursed. But still, you find reasons to keep on living."
+  },
+  {
+    "category": "anime",
+    "attribution": "Howl's Moving Castle",
+    "content": "A heart's a heavy burden."
+  },
+  {
+    "category": "anime",
+    "attribution": "My Neighbor Totoro",
+    "content": "Trees and people used to be good friends."
+  },
+  {
+    "category": "anime",
+    "attribution": "Your Name",
+    "content": "I feel like I'm always searching for someone, or something."
+  },
+  {
+    "category": "anime",
+    "attribution": "March Comes in Like a Lion",
+    "content": "Even if you can't see it, the river keeps flowing under the ice."
+  },
+  {
+    "category": "anime",
+    "attribution": "Vinland Saga",
+    "content": "You have no enemies. Nobody has any enemies. There is nobody that you should hurt."
+  },
+  {
+    "category": "anime",
+    "attribution": "Mob Psycho 100",
+    "content": "If everyone is not special, maybe you can be what you want to be."
+  },
+  {
+    "category": "anime",
+    "attribution": "Fruits Basket",
+    "content": "When you look at someone's kindness, it's like looking at the sun."
+  },
+  {
+    "category": "anime",
+    "attribution": "A Silent Voice",
+    "content": "What I want more than anything is for you to live and help me live too."
+  },
+  {
+    "category": "anime",
+    "content": "People's lives don't end when they die. They end when they lose faith. A person who is remembered by someone still has something of themselves left in the world, and that is not nothing.",
+    "attribution": "Unknown"
+  },
+  {
+    "category": "anime",
+    "content": "Whatever you lose, you'll find it again. But what you throw away you'll never get back. That is the difference between a mistake and a decision, and most people learn it far too late.",
+    "attribution": "Unknown"
+  },
+  {
+    "category": "anime",
+    "content": "If you don't take risks, you can't create a future. Everyone wants the result without the part where it might not work, and that part is the whole of it. There is no other door in.",
+    "attribution": "Unknown"
+  },
+  {
+    "category": "anime",
+    "content": "A lesson without pain is meaningless. That's because you can't gain something without sacrificing something else in return. But once you've overcome it and made it your own, you will gain a heart strong enough not to be overcome by anything.",
+    "attribution": "Fullmetal Alchemist"
+  },
+  {
+    "category": "anime",
+    "content": "The world is not beautiful, and that in a way lends it a sort of beauty. A thing that had no flaw would have nothing to notice about it, and nobody would ever look twice.",
+    "attribution": "Unknown"
+  }
 ]

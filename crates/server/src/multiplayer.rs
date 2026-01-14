@@ -329,6 +329,7 @@ async fn start_race(room_arc: Arc<Mutex<Room>>, state: Arc<AppState>) {
             .unwrap_or_else(|| crate::state::RaceText {
                 text: String::new(),
                 attribution: None,
+                category: None,
             });
         room.text = Some(picked.text.clone());
         // Sent before the countdown so every client can put the passage on
@@ -339,6 +340,7 @@ async fn start_race(room_arc: Arc<Mutex<Room>>, state: Arc<AppState>) {
             &ServerMessage::RaceText {
                 text: picked.text.clone(),
                 attribution: picked.attribution.clone(),
+                category: picked.category.clone(),
             },
         )
         .await;

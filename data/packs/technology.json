@@ -1,24 +1,152 @@
 [
-  {"category":"technology","attribution":"Alan Kay","content":"The best way to predict the future is to invent it."},
-  {"category":"technology","attribution":"Alan Turing, Computing Machinery and Intelligence","content":"We can only see a short distance ahead, but we can see plenty there that needs to be done."},
-  {"category":"technology","attribution":"Grace Hopper","content":"The most damaging phrase in the language is: we've always done it this way."},
-  {"category":"technology","attribution":"Grace Hopper","content":"A ship in port is safe, but that's not what ships are built for."},
-  {"category":"technology","attribution":"Edsger Dijkstra","content":"Simplicity is prerequisite for reliability."},
-  {"category":"technology","attribution":"Edsger Dijkstra","content":"The question of whether a computer can think is no more interesting than the question of whether a submarine can swim."},
-  {"category":"technology","attribution":"Douglas Adams","content":"We are stuck with technology when what we really want is just stuff that works."},
-  {"category":"technology","attribution":"Arthur C. Clarke","content":"Any sufficiently advanced technology is indistinguishable from magic."},
-  {"category":"technology","attribution":"Melvin Kranzberg","content":"Technology is neither good nor bad; nor is it neutral."},
-  {"category":"technology","attribution":"Marshall McLuhan","content":"We shape our tools, and thereafter our tools shape us."},
-  {"category":"technology","attribution":"Bruce Schneier","content":"Security is a process, not a product."},
-  {"category":"technology","attribution":"Tim Berners-Lee","content":"The web as I envisaged it, we have not seen it yet. The future is still so much bigger than the past."},
-  {"category":"technology","attribution":"Vannevar Bush, As We May Think","content":"The human mind operates by association. With one item in its grasp, it snaps instantly to the next that is suggested."},
-  {"category":"technology","attribution":"Norbert Wiener","content":"We have modified our environment so radically that we must now modify ourselves to exist in this new environment."},
-  {"category":"technology","attribution":"Fred Brooks, The Mythical Man-Month","content":"Adding manpower to a late software project makes it later."},
-  {"category":"technology","attribution":"Fred Brooks, The Mythical Man-Month","content":"Plan to throw one away; you will, anyhow."},
-  {"category":"technology","attribution":"Butler Lampson","content":"All problems in computer science can be solved by another level of indirection."},
-  {"category":"technology","attribution":"Leslie Lamport","content":"A distributed system is one in which the failure of a computer you didn't know existed can render your own computer unusable."},
-  {"category":"technology","attribution":"Ken Thompson, Reflections on Trusting Trust","content":"You can't trust code that you did not totally create yourself."},
-  {"category":"technology","attribution":"Steve Jobs","content":"Design is not just what it looks like and feels like. Design is how it works."},
-  {"category":"technology","attribution":"Linus Torvalds","content":"Talk is cheap. Show me the code."},
-  {"category":"technology","attribution":"Kevlin Henney","content":"There is no code faster than no code."}
+  {
+    "category": "technology",
+    "attribution": "Alan Kay",
+    "content": "The best way to predict the future is to invent it."
+  },
+  {
+    "category": "technology",
+    "attribution": "Alan Turing, Computing Machinery and Intelligence",
+    "content": "We can only see a short distance ahead, but we can see plenty there that needs to be done."
+  },
+  {
+    "category": "technology",
+    "attribution": "Grace Hopper",
+    "content": "The most damaging phrase in the language is: we've always done it this way."
+  },
+  {
+    "category": "technology",
+    "attribution": "Grace Hopper",
+    "content": "A ship in port is safe, but that's not what ships are built for."
+  },
+  {
+    "category": "technology",
+    "attribution": "Edsger Dijkstra",
+    "content": "Simplicity is prerequisite for reliability."
+  },
+  {
+    "category": "technology",
+    "attribution": "Edsger Dijkstra",
+    "content": "The question of whether a computer can think is no more interesting than the question of whether a submarine can swim."
+  },
+  {
+    "category": "technology",
+    "attribution": "Douglas Adams",
+    "content": "We are stuck with technology when what we really want is just stuff that works."
+  },
+  {
+    "category": "technology",
+    "attribution": "Arthur C. Clarke",
+    "content": "Any sufficiently advanced technology is indistinguishable from magic."
+  },
+  {
+    "category": "technology",
+    "attribution": "Melvin Kranzberg",
+    "content": "Technology is neither good nor bad; nor is it neutral."
+  },
+  {
+    "category": "technology",
+    "attribution": "Marshall McLuhan",
+    "content": "We shape our tools, and thereafter our tools shape us."
+  },
+  {
+    "category": "technology",
+    "attribution": "Bruce Schneier",
+    "content": "Security is a process, not a product."
+  },
+  {
+    "category": "technology",
+    "attribution": "Tim Berners-Lee",
+    "content": "The web as I envisaged it, we have not seen it yet. The future is still so much bigger than the past."
+  },
+  {
+    "category": "technology",
+    "attribution": "Vannevar Bush, As We May Think",
+    "content": "The human mind operates by association. With one item in its grasp, it snaps instantly to the next that is suggested."
+  },
+  {
+    "category": "technology",
+    "attribution": "Norbert Wiener",
+    "content": "We have modified our environment so radically that we must now modify ourselves to exist in this new environment."
+  },
+  {
+    "category": "technology",
+    "attribution": "Fred Brooks, The Mythical Man-Month",
+    "content": "Adding manpower to a late software project makes it later."
+  },
+  {
+    "category": "technology",
+    "attribution": "Fred Brooks, The Mythical Man-Month",
+    "content": "Plan to throw one away; you will, anyhow."
+  },
+  {
+    "category": "technology",
+    "attribution": "Butler Lampson",
+    "content": "All problems in computer science can be solved by another level of indirection."
+  },
+  {
+    "category": "technology",
+    "attribution": "Leslie Lamport",
+    "content": "A distributed system is one in which the failure of a computer you didn't know existed can render your own computer unusable."
+  },
+  {
+    "category": "technology",
+    "attribution": "Ken Thompson, Reflections on Trusting Trust",
+    "content": "You can't trust code that you did not totally create yourself."
+  },
+  {
+    "category": "technology",
+    "attribution": "Steve Jobs",
+    "content": "Design is not just what it looks like and feels like. Design is how it works."
+  },
+  {
+    "category": "technology",
+    "attribution": "Linus Torvalds",
+    "content": "Talk is cheap. Show me the code."
+  },
+  {
+    "category": "technology",
+    "attribution": "Kevlin Henney",
+    "content": "There is no code faster than no code."
+  },
+  {
+    "category": "technology",
+    "content": "A program is read far more often than it is written, so the time spent making it clear is repaid to everyone who comes after, including the person who wrote it and has since forgotten why any of it is there.",
+    "attribution": "Unknown"
+  },
+  {
+    "category": "technology",
+    "content": "Caching is one of the two hard problems in computing, and naming things is the other. The difficulty is never storing the value; it is knowing the moment it stopped being true.",
+    "attribution": "Unknown"
+  },
+  {
+    "category": "technology",
+    "content": "Every abstraction leaks. The point is not to find one that does not, but to choose one whose leaks appear in places you can afford to look at, and to know in advance where those places are.",
+    "attribution": "Unknown"
+  },
+  {
+    "category": "technology",
+    "content": "A backup that has never been restored is not a backup. It is an untested assumption written to disk, and the first time anyone finds out whether it works will be the worst possible moment to learn.",
+    "attribution": "Unknown"
+  },
+  {
+    "category": "technology",
+    "content": "The network is not reliable, latency is not zero, bandwidth is not infinite, and the topology does not stay still. Every distributed system that ignores one of these eventually rediscovers it under load.",
+    "attribution": "Unknown"
+  },
+  {
+    "category": "technology",
+    "content": "Premature optimisation wastes effort, but so does the belief that performance can always be added later. Some decisions about data layout and interface shape are very expensive to reverse once anything depends on them.",
+    "attribution": "Unknown"
+  },
+  {
+    "category": "technology",
+    "content": "Security is a property of a whole system, not a feature bolted to the side of one. A perfect lock on a door in a wall made of paper protects nothing, and most real failures are of that shape.",
+    "attribution": "Unknown"
+  },
+  {
+    "category": "technology",
+    "content": "Version control does not exist to store code. It exists to answer the question of what changed and why, which is the only question that matters when something has broken and nobody remembers touching it.",
+    "attribution": "Unknown"
+  }
 ]

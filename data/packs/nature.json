@@ -1,22 +1,127 @@
 [
-  {"category":"nature","attribution":"John Muir","content":"In every walk with nature one receives far more than he seeks."},
-  {"category":"nature","attribution":"John Muir, My First Summer in the Sierra","content":"When we try to pick out anything by itself, we find it hitched to everything else in the universe."},
-  {"category":"nature","attribution":"John Muir","content":"The mountains are calling and I must go."},
-  {"category":"nature","attribution":"Rachel Carson, Silent Spring","content":"In nature nothing exists alone."},
-  {"category":"nature","attribution":"Rachel Carson, The Sense of Wonder","content":"Those who contemplate the beauty of the earth find reserves of strength that will endure as long as life lasts."},
-  {"category":"nature","attribution":"Henry David Thoreau, Walden","content":"I went to the woods because I wished to live deliberately, to front only the essential facts of life."},
-  {"category":"nature","attribution":"Henry David Thoreau, Walking","content":"In wildness is the preservation of the world."},
-  {"category":"nature","attribution":"Aldo Leopold, A Sand County Almanac","content":"A thing is right when it tends to preserve the integrity, stability and beauty of the biotic community."},
-  {"category":"nature","attribution":"Aldo Leopold, A Sand County Almanac","content":"There are some who can live without wild things, and some who cannot."},
-  {"category":"nature","attribution":"David Attenborough","content":"It seems to me that the natural world is the greatest source of excitement, of visual beauty, of intellectual interest."},
-  {"category":"nature","attribution":"David Attenborough","content":"No one will protect what they don't care about, and no one will care about what they have never experienced."},
-  {"category":"nature","attribution":"Ralph Waldo Emerson, Nature","content":"In the woods, we return to reason and faith. There I feel that nothing can befall me in life which nature cannot repair."},
-  {"category":"nature","attribution":"Mary Oliver","content":"Tell me, what is it you plan to do with your one wild and precious life?"},
-  {"category":"nature","attribution":"Wendell Berry","content":"The earth is what we all have in common."},
-  {"category":"nature","attribution":"Robin Wall Kimmerer, Braiding Sweetgrass","content":"In some Native languages the term for plants translates to those who take care of us."},
-  {"category":"nature","attribution":"Charles Darwin, The Voyage of the Beagle","content":"The land is one great wild, untidy, luxuriant hothouse, made by nature for herself."},
-  {"category":"nature","attribution":"Gerard Manley Hopkins, God's Grandeur","content":"There lives the dearest freshness deep down things."},
-  {"category":"nature","attribution":"Gary Snyder","content":"Nature is not a place to visit. It is home."},
-  {"category":"nature","attribution":"Edward Abbey, Desert Solitaire","content":"Wilderness is not a luxury but a necessity of the human spirit."},
-  {"category":"nature","attribution":"Chief Seattle","content":"The earth does not belong to us. We belong to the earth."}
+  {
+    "category": "nature",
+    "attribution": "John Muir",
+    "content": "In every walk with nature one receives far more than he seeks."
+  },
+  {
+    "category": "nature",
+    "attribution": "John Muir, My First Summer in the Sierra",
+    "content": "When we try to pick out anything by itself, we find it hitched to everything else in the universe."
+  },
+  {
+    "category": "nature",
+    "attribution": "John Muir",
+    "content": "The mountains are calling and I must go."
+  },
+  {
+    "category": "nature",
+    "attribution": "Rachel Carson, Silent Spring",
+    "content": "In nature nothing exists alone."
+  },
+  {
+    "category": "nature",
+    "attribution": "Rachel Carson, The Sense of Wonder",
+    "content": "Those who contemplate the beauty of the earth find reserves of strength that will endure as long as life lasts."
+  },
+  {
+    "category": "nature",
+    "attribution": "Henry David Thoreau, Walden",
+    "content": "I went to the woods because I wished to live deliberately, to front only the essential facts of life."
+  },
+  {
+    "category": "nature",
+    "attribution": "Henry David Thoreau, Walking",
+    "content": "In wildness is the preservation of the world."
+  },
+  {
+    "category": "nature",
+    "attribution": "Aldo Leopold, A Sand County Almanac",
+    "content": "A thing is right when it tends to preserve the integrity, stability and beauty of the biotic community."
+  },
+  {
+    "category": "nature",
+    "attribution": "Aldo Leopold, A Sand County Almanac",
+    "content": "There are some who can live without wild things, and some who cannot."
+  },
+  {
+    "category": "nature",
+    "attribution": "David Attenborough",
+    "content": "It seems to me that the natural world is the greatest source of excitement, of visual beauty, of intellectual interest."
+  },
+  {
+    "category": "nature",
+    "attribution": "David Attenborough",
+    "content": "No one will protect what they don't care about, and no one will care about what they have never experienced."
+  },
+  {
+    "category": "nature",
+    "attribution": "Ralph Waldo Emerson, Nature",
+    "content": "In the woods, we return to reason and faith. There I feel that nothing can befall me in life which nature cannot repair."
+  },
+  {
+    "category": "nature",
+    "attribution": "Mary Oliver",
+    "content": "Tell me, what is it you plan to do with your one wild and precious life?"
+  },
+  {
+    "category": "nature",
+    "attribution": "Wendell Berry",
+    "content": "The earth is what we all have in common."
+  },
+  {
+    "category": "nature",
+    "attribution": "Robin Wall Kimmerer, Braiding Sweetgrass",
+    "content": "In some Native languages the term for plants translates to those who take care of us."
+  },
+  {
+    "category": "nature",
+    "attribution": "Charles Darwin, The Voyage of the Beagle",
+    "content": "The land is one great wild, untidy, luxuriant hothouse, made by nature for herself."
+  },
+  {
+    "category": "nature",
+    "attribution": "Gerard Manley Hopkins, God's Grandeur",
+    "content": "There lives the dearest freshness deep down things."
+  },
+  {
+    "category": "nature",
+    "attribution": "Gary Snyder",
+    "content": "Nature is not a place to visit. It is home."
+  },
+  {
+    "category": "nature",
+    "attribution": "Edward Abbey, Desert Solitaire",
+    "content": "Wilderness is not a luxury but a necessity of the human spirit."
+  },
+  {
+    "category": "nature",
+    "attribution": "Chief Seattle",
+    "content": "The earth does not belong to us. We belong to the earth."
+  },
+  {
+    "category": "nature",
+    "content": "A forest is not a collection of trees. Fungal networks link roots across whole hillsides, carrying sugar and warning signals between individuals, so what looks like competition for light is also a system of exchange.",
+    "attribution": "Unknown"
+  },
+  {
+    "category": "nature",
+    "content": "Rivers do not run straight for long. Any slight bend sends faster water to the outer bank, which erodes, while the slower inner bank builds up, and the curve deepens until the river eventually cuts across it.",
+    "attribution": "Unknown"
+  },
+  {
+    "category": "nature",
+    "content": "Migration is navigation without a map. Birds crossing continents use the sun, the stars and the planet's magnetic field together, and a young bird making the journey for the first time often travels alone.",
+    "attribution": "Unknown"
+  },
+  {
+    "category": "nature",
+    "content": "Soil is alive. A single handful holds more organisms than there are people on the planet, and the fertility of a field is mostly a measure of how well that population is doing.",
+    "attribution": "Unknown"
+  },
+  {
+    "category": "nature",
+    "content": "Deserts are defined by rainfall, not by heat. The largest of them is covered in ice, receives almost no precipitation at all, and has stretches where no rain has been recorded in living memory.",
+    "attribution": "Unknown"
+  }
 ]

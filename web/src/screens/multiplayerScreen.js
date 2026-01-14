@@ -230,7 +230,7 @@ export function renderMultiplayerScreen(root, { onBack, onFinish, onShowStats, o
         // The passage arrives before the countdown so it can be read while the
         // numbers run. The race view is built here, with typing locked; Start
         // only unlocks it.
-        const offRaceText = connection.on('raceText', (text, attribution) => startRace(text, attribution));
+        const offRaceText = connection.on('raceText', (text, attribution, category) => startRace(text, attribution, category));
         const offStart = connection.on('start', () => releaseRace?.());
         // The server closes the connection right after an Error (e.g. a
         // desktop-only room rejecting a mobile joiner) - 'close' always
@@ -255,7 +255,7 @@ export function renderMultiplayerScreen(root, { onBack, onFinish, onShowStats, o
         };
     }
 
-    async function startRace(text, attribution) {
+    async function startRace(text, attribution, category) {
         teardownInner();
         try {
             game = await createGame();
@@ -337,7 +337,7 @@ export function renderMultiplayerScreen(root, { onBack, onFinish, onShowStats, o
         });
 
         const cleanupTyping = renderTypingGame(root, {
-            game, text, attribution, modeKey: undefined,
+            game, text, attribution, category, modeKey: undefined,
             multiplayer: { connection },
             onFinish: result => {
                 freeGame(game);

@@ -3,7 +3,6 @@ import { escapeHtml } from '../util.js';
 import { attachTooltips } from '../tooltip.js';
 import { onThemeChange } from '../theme.js';
 import { renderSiteFooter } from '../siteFooter.js';
-import { renderAdSlot } from '../adSlot.js';
 import { recordResult } from '../pb.js';
 import { recordTest } from '../profileStats.js';
 import { renderCornerRail } from '../cornerRail.js';
@@ -11,7 +10,7 @@ import { renderTopRail } from '../topRail.js';
 import { submitTestResult } from '../auth.js';
 import { detectDeviceType } from '../deviceDetect.js';
 
-export function renderEndScreen(root, { stats, text, attribution, explanation, standings, onShowPrivacy, onStandingsUpdate, onLeaveRace, userInput, charTimings, keypressHistory, modeKey, onPlayAgain, onMainMenu, onShowStats, onShowPlaceholder, onShowAccount, onShowLeaderboard, onShowFriends, onShowMultiplayer, onShowStore }) {
+export function renderEndScreen(root, { stats, text, attribution, category, explanation, standings, onShowPrivacy, onStandingsUpdate, onLeaveRace, userInput, charTimings, keypressHistory, modeKey, onPlayAgain, onMainMenu, onShowStats, onShowPlaceholder, onShowAccount, onShowLeaderboard, onShowFriends, onShowMultiplayer, onShowStore }) {
     // Monkeytype's four-way split. "Extra" is anything typed past the end of
     // the passage, "missed" is passage left untyped - neither is visible in
     // a plain correct/incorrect pair, and the two mean very different things
@@ -21,7 +20,13 @@ export function renderEndScreen(root, { stats, text, attribution, explanation, s
     const missedChars = Math.max(0, (text || '').length - typedLen);
     const graphPoints = buildGraphPoints(charTimings, stats, keypressHistory);
     const consistency = calculateConsistency(graphPoints);
-    const { isNewBest, previous } = recordResult(modeKey, stats.wpm);
+    const isRace = Array.isArray(standings) && standings.length > 0;
+    // A race has no mode of its own, so it had no modeKey, so recordResult
+    // never ran and PB was missing from the multiplayer results entirely.
+    // Every race shares one key: the passage is whatever the server dealt, so
+    // a per-passage best would never be beaten twice.
+    const pbKey = modeKey || (isRace ? 'multiplayer' : null);
+    const { isNewBest, previous } = recordResult(pbKey, stats.wpm);
     recordTest({ wpm: stats.wpm, accuracy: stats.accuracy, time: stats.time });
     // Same exclusion as recordResult above: custom text/Zen have no stable,
     // repeatable challenge, so there's no meaningful leaderboard entry for
@@ -48,7 +53,7 @@ export function renderEndScreen(root, { stats, text, attribution, explanation, s
     // nothing to have beaten yet, so it just silently becomes the baseline.
     // Sits under WPM alongside RAW, in the same label-over-value shape as
     // every other secondary figure rather than as a floating badge.
-    const pbLine = !modeKey || previous == null ? '' : isNewBest
+    const pbLine = !pbKey || previous == null ? '' : isNewBest
         ? '<div class="end-stat pb-new"><div class="stat-label">PB</div><div class="stat-value">NEW BEST</div></div>'
         : `<div class="end-stat"><div class="stat-label">PB</div><div class="stat-value">${Math.round(previous)}</div></div>`;
 
@@ -56,7 +61,7 @@ export function renderEndScreen(root, { stats, text, attribution, explanation, s
         <div class="end-screen">
             <div class="logo" data-action="menu">TyperPunk</div>
             <div class="end-screen-text"><div class="text-display"></div></div>
-            ${attribution ? `<div class="attribution end-screen-attribution">&mdash; ${escapeHtml(attribution)}</div>` : ''}
+            <div class="attribution end-screen-attribution">&mdash; ${escapeHtml(attribution || 'Unknown')}${category ? `<span class="attribution-pack">${escapeHtml(category)}</span>` : ''}</div>
             ${explanation ? `<div class="code-explainer"><span class="code-explainer-label">What this does</span>${escapeHtml(explanation)}</div>` : ''}
             <div class="end-screen-graph-row">
                 <div class="endscreen-side-stat wpm">
@@ -68,7 +73,7 @@ export function renderEndScreen(root, { stats, text, attribution, explanation, s
                 <div class="endscreen-side-stat acc">
                     <div class="end-stat headline"><div class="stat-label">ACC</div><div class="stat-value">${Math.round(stats.accuracy)}%</div></div>
                     <div class="end-stat"><div class="stat-label">ERR</div><div class="stat-value">${stats.incorrectChars}</div></div>
-                    <div class="end-stat"><div class="stat-label">CONSISTENCY</div><div class="stat-value">${consistency}%</div></div>
+                    <div class="end-stat"><div class="stat-label">CON</div><div class="stat-value">${consistency}%</div></div>
                 </div>
             </div>
             <div class="end-screen-stat-row">
@@ -83,7 +88,6 @@ export function renderEndScreen(root, { stats, text, attribution, explanation, s
                 <div class="mp-standings-heading">Standings</div>
                 <div class="mp-standings-rows"></div>
             </div>` : ''}
-            <div class="end-screen-ad"></div>
             <div class="end-screen-buttons">
                 <button class="end-screen-button primary" data-action="again">Play Again</button>
             </div>
@@ -149,7 +153,6 @@ export function renderEndScreen(root, { stats, text, attribution, explanation, s
     const cleanupFooter = renderSiteFooter(root, { result: stats, onShowPrivacy });
     // Below the results and above Play Again: read after the run is over,
     // never during it.
-    const cleanupAd = renderAdSlot(root.querySelector('.end-screen-ad'));
     root.querySelectorAll('[data-action="menu"]').forEach(el => el.addEventListener('click', onMainMenu));
     root.querySelector('[data-action="again"]').addEventListener('click', onPlayAgain);
 
@@ -239,7 +242,6 @@ export function renderEndScreen(root, { stats, text, attribution, explanation, s
         onLeaveRace?.();
         cleanupTheme();
         cleanupFooter();
-        cleanupAd();
         window.removeEventListener('resize', redraw);
         offTheme();
         canvas.removeEventListener('mousemove', handleMove);

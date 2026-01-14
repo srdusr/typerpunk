@@ -32,6 +32,8 @@ struct TextEntry {
     content: String,
     #[serde(default)]
     attribution: Option<String>,
+    #[serde(default)]
+    category: Option<String>,
 }
 
 // Every multiplayer room draws from this same pool so every player in a
@@ -48,6 +50,7 @@ fn fallback_race_texts() -> Vec<RaceText> {
         RaceText {
             text: "The quick brown fox jumps over the lazy dog, and the dog, being lazy, does not mind at all. Pack my box with five dozen liquor jugs.".to_string(),
             attribution: None,
+            category: Some("general".to_string()),
         },
     ]
 }
@@ -63,7 +66,7 @@ fn load_race_texts() -> Vec<RaceText> {
                 // player, where a short quote is fine, so the floor is applied
                 // here rather than to the pack itself.
                 .filter(|e| e.content.chars().count() >= MIN_RACE_TEXT_CHARS)
-                .map(|e| RaceText { text: e.content, attribution: e.attribution })
+                .map(|e| RaceText { text: e.content, attribution: e.attribution, category: e.category })
                 .collect();
             if pool.is_empty() {
                 tracing::warn!("no passage reached {MIN_RACE_TEXT_CHARS} characters - races will use the fallback pool");
@@ -282,6 +285,7 @@ mod tests {
             vec![RaceText {
                 text: "The quick brown fox jumps over the lazy dog.".to_string(),
                 attribution: None,
+                category: None,
             }],
             SpotifyConfig::default(),
             billing::StripeConfig::default(),

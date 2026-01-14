@@ -1,82 +1,162 @@
 [
   {
     "category": "general",
-    "content": "The quick brown fox jumps over the lazy dog."
+    "content": "The quick brown fox jumps over the lazy dog.",
+    "attribution": "Traditional pangram"
   },
   {
     "category": "general",
-    "content": "Simplicity is the soul of efficiency."
+    "content": "Simplicity is the soul of efficiency.",
+    "attribution": "Unknown"
   },
   {
     "category": "general",
-    "content": "The Pacific Ocean covers more of the planet than all the continents combined. It stretches from the icy waters near Antarctica to the Arctic Circle, and its deepest point, the Mariana Trench, plunges nearly eleven kilometers below the surface."
+    "content": "The Pacific Ocean covers more of the planet than all the continents combined. It stretches from the icy waters near Antarctica to the Arctic Circle, and its deepest point, the Mariana Trench, plunges nearly eleven kilometers below the surface.",
+    "attribution": "Unknown"
   },
   {
     "category": "general",
-    "content": "Honey never spoils if it is stored properly. Archaeologists have found pots of honey in ancient Egyptian tombs that are thousands of years old and still perfectly edible, preserved by its low moisture content and natural acidity."
+    "content": "Honey never spoils if it is stored properly. Archaeologists have found pots of honey in ancient Egyptian tombs that are thousands of years old and still perfectly edible, preserved by its low moisture content and natural acidity.",
+    "attribution": "Unknown"
   },
   {
     "category": "general",
-    "content": "A single bolt of lightning can heat the surrounding air to temperatures hotter than the surface of the sun. The rapid expansion of that superheated air is what produces the crack of thunder we hear moments later."
+    "content": "A single bolt of lightning can heat the surrounding air to temperatures hotter than the surface of the sun. The rapid expansion of that superheated air is what produces the crack of thunder we hear moments later.",
+    "attribution": "Unknown"
   },
   {
     "category": "general",
-    "content": "Octopuses have three hearts and blue blood. Two of the hearts pump blood to the gills, while the third circulates it to the rest of the body, and the blue color comes from a copper-based protein instead of iron."
+    "content": "Octopuses have three hearts and blue blood. Two of the hearts pump blood to the gills, while the third circulates it to the rest of the body, and the blue color comes from a copper-based protein instead of iron.",
+    "attribution": "Unknown"
   },
   {
     "category": "general",
-    "content": "The Great Wall of China was not built all at once. It was constructed and extended over many centuries by different dynasties, each adding new sections and rebuilding older ones to defend against invasions from the north."
+    "content": "The Great Wall of China was not built all at once. It was constructed and extended over many centuries by different dynasties, each adding new sections and rebuilding older ones to defend against invasions from the north.",
+    "attribution": "Unknown"
   },
   {
     "category": "general",
-    "content": "Bamboo is one of the fastest growing plants on Earth. Some species can grow nearly a meter in a single day under the right conditions, which is why it is used so widely in construction and manufacturing across Asia."
+    "content": "Bamboo is one of the fastest growing plants on Earth. Some species can grow nearly a meter in a single day under the right conditions, which is why it is used so widely in construction and manufacturing across Asia.",
+    "attribution": "Unknown"
   },
   {
     "category": "general",
-    "content": "A day on Venus is longer than its year. The planet rotates so slowly on its axis that it takes longer to spin around once than it does to complete an entire orbit around the sun."
+    "content": "A day on Venus is longer than its year. The planet rotates so slowly on its axis that it takes longer to spin around once than it does to complete an entire orbit around the sun.",
+    "attribution": "Unknown"
   },
   {
     "category": "general",
-    "content": "The invention of the printing press in the fifteenth century transformed how knowledge spread across Europe. Books that once took months to copy by hand could suddenly be reproduced by the hundreds, making literacy far more accessible."
+    "content": "The invention of the printing press in the fifteenth century transformed how knowledge spread across Europe. Books that once took months to copy by hand could suddenly be reproduced by the hundreds, making literacy far more accessible.",
+    "attribution": "Unknown"
   },
   {
     "category": "general",
-    "content": "Sharks existed long before trees. Fossil evidence suggests that sharks have been swimming in the oceans for more than four hundred million years, while the earliest trees did not appear until tens of millions of years later."
+    "content": "Sharks existed long before trees. Fossil evidence suggests that sharks have been swimming in the oceans for more than four hundred million years, while the earliest trees did not appear until tens of millions of years later.",
+    "attribution": "Unknown"
   },
   {
     "category": "general",
-    "content": "Antarctica is technically the largest desert on the planet. Despite being covered in ice, it receives very little precipitation each year, which is the defining characteristic of a desert rather than temperature alone."
+    "content": "Antarctica is technically the largest desert on the planet. Despite being covered in ice, it receives very little precipitation each year, which is the defining characteristic of a desert rather than temperature alone.",
+    "attribution": "Unknown"
   },
   {
     "category": "general",
-    "content": "The first computer programmer is widely considered to be Ada Lovelace, who wrote an algorithm for an early mechanical computer in the eighteen forties, decades before any machine capable of running it was ever built."
+    "content": "The first computer programmer is widely considered to be Ada Lovelace, who wrote an algorithm for an early mechanical computer in the eighteen forties, decades before any machine capable of running it was ever built.",
+    "attribution": "Unknown"
   },
   {
     "category": "general",
-    "content": "The human brain generates enough electricity to power a small light bulb. Billions of neurons firing electrical signals at once produce roughly the same wattage as a dim household lamp."
+    "content": "The human brain generates enough electricity to power a small light bulb. Billions of neurons firing electrical signals at once produce roughly the same wattage as a dim household lamp.",
+    "attribution": "Unknown"
   },
   {
     "category": "general",
-    "content": "The Eiffel Tower grows about six inches taller in the summer, as the iron structure expands slightly in the heat and contracts again once the weather cools."
+    "content": "The Eiffel Tower grows about six inches taller in the summer, as the iron structure expands slightly in the heat and contracts again once the weather cools.",
+    "attribution": "Unknown"
   },
   {
     "category": "general",
-    "content": "A group of flamingos is called a flamboyance. The birds get their pink color from the pigments in the shrimp and algae they eat."
+    "content": "A group of flamingos is called a flamboyance. The birds get their pink color from the pigments in the shrimp and algae they eat.",
+    "attribution": "Unknown"
   },
   {
     "category": "general",
-    "content": "Venus is the hottest planet in the solar system, even though Mercury sits closer to the sun. A thick blanket of carbon dioxide traps heat at the surface."
+    "content": "Venus is the hottest planet in the solar system, even though Mercury sits closer to the sun. A thick blanket of carbon dioxide traps heat at the surface.",
+    "attribution": "Unknown"
   },
   {
     "category": "general",
-    "content": "The shortest war in recorded history was fought between Britain and Zanzibar in 1896. It lasted around forty minutes before Zanzibar surrendered."
+    "content": "The shortest war in recorded history was fought between Britain and Zanzibar in 1896. It lasted around forty minutes before Zanzibar surrendered.",
+    "attribution": "Unknown"
   },
   {
     "category": "general",
-    "content": "Bananas are botanically classified as berries, while strawberries are not. The classification depends on how the fruit develops from the flower, not on taste or size."
+    "content": "Bananas are botanically classified as berries, while strawberries are not. The classification depends on how the fruit develops from the flower, not on taste or size.",
+    "attribution": "Unknown"
   },
   {
     "category": "general",
-    "content": "The Amazon rainforest produces roughly twenty percent of the oxygen found in the planet's atmosphere, earning it the nickname the lungs of the Earth."
+    "content": "The Amazon rainforest produces roughly twenty percent of the oxygen found in the planet's atmosphere, earning it the nickname the lungs of the Earth.",
+    "attribution": "Unknown"
+  },
+  {
+    "category": "general",
+    "content": "A keyboard layout is a compromise between the hand and the language. The arrangement most people use was settled long before anyone measured which fingers do the most work, and it has outlived every attempt to replace it because the cost of relearning falls on the typist rather than the designer.",
+    "attribution": "Unknown"
+  },
+  {
+    "category": "general",
+    "content": "Reading and typing pull in opposite directions. Reading rewards skipping ahead and guessing the shape of a word from its first letters, while typing punishes exactly that. The habit that makes someone a fast reader is often the one that makes them an inaccurate typist.",
+    "attribution": "Unknown"
+  },
+  {
+    "category": "general",
+    "content": "The gap between knowing where a key is and reaching it without thinking is measured in weeks, not minutes. Practice moves the work from the part of the mind that deliberates to the part that simply acts, and there is no way to hurry that transfer except by repetition.",
+    "attribution": "Unknown"
+  },
+  {
+    "category": "general",
+    "content": "Accuracy is cheaper than speed. Every mistake costs the keystroke that made it, the keystroke that deletes it and the one that replaces it, so a typist working at ninety percent accuracy is doing noticeably more work than the number alone suggests.",
+    "attribution": "Unknown"
+  },
+  {
+    "category": "general",
+    "content": "Rhythm matters more than raw pace. A steady stream of keystrokes at a moderate rate beats bursts of speed broken by pauses, because the pauses are where the errors gather and where the hands lose their place on the board.",
+    "attribution": "Unknown"
+  },
+  {
+    "category": "general",
+    "content": "The hardest characters to type are rarely the letters. Punctuation, capitals and digits all require a reach or a modifier, and they appear often enough in ordinary writing that avoiding them in practice leaves a real gap.",
+    "attribution": "Unknown"
+  },
+  {
+    "category": "general",
+    "content": "Screens changed how long a sentence needs to be. Print rewarded a long, wound clause that a reader could return to; a screen rewards a sentence that can be finished in one look. Neither is better writing, but they are not the same craft.",
+    "attribution": "Unknown"
+  },
+  {
+    "category": "general",
+    "content": "Every filing system fails the same way. It works while one person maintains it, it survives while that person explains it, and it collapses the week after they leave, because the rules lived in their head rather than in the structure.",
+    "attribution": "Unknown"
+  },
+  {
+    "category": "general",
+    "content": "A map is useful because of what it leaves out. A map that showed everything at full size would be the territory, and no easier to carry. The skill of making one is the skill of deciding what does not matter.",
+    "attribution": "Unknown"
+  },
+  {
+    "category": "general",
+    "content": "The most reliable machines are the ones with the fewest moving parts. Every joint is a place that wears, every hinge is a place that catches, and every additional component is one more thing that has to be right for the whole to work.",
+    "attribution": "Unknown"
+  },
+  {
+    "category": "general",
+    "content": "Habits are cheaper than decisions. Anything done the same way each time stops costing attention, which is why routine is not the enemy of good work but the thing that leaves enough attention over to do it.",
+    "attribution": "Unknown"
+  },
+  {
+    "category": "general",
+    "content": "Measurement changes what is measured. The moment a number becomes a target, effort moves toward the number rather than the thing it was standing in for, and the two drift apart until the number is worth nothing.",
+    "attribution": "Unknown"
   }
 ]

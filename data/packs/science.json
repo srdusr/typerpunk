@@ -1,24 +1,142 @@
 [
-  {"category":"science","attribution":"Carl Sagan, Cosmos","content":"The cosmos is within us. We are made of star-stuff. We are a way for the universe to know itself."},
-  {"category":"science","attribution":"Carl Sagan","content":"Somewhere, something incredible is waiting to be known."},
-  {"category":"science","attribution":"Carl Sagan, The Demon-Haunted World","content":"Extraordinary claims require extraordinary evidence."},
-  {"category":"science","attribution":"Richard Feynman","content":"The first principle is that you must not fool yourself, and you are the easiest person to fool."},
-  {"category":"science","attribution":"Richard Feynman","content":"I would rather have questions that can't be answered than answers that can't be questioned."},
-  {"category":"science","attribution":"Marie Curie","content":"Nothing in life is to be feared, it is only to be understood. Now is the time to understand more, so that we may fear less."},
-  {"category":"science","attribution":"Charles Darwin, On the Origin of Species","content":"There is grandeur in this view of life, with its several powers, having been originally breathed into a few forms or into one."},
-  {"category":"science","attribution":"Isaac Newton","content":"If I have seen further it is by standing on the shoulders of giants."},
-  {"category":"science","attribution":"Albert Einstein","content":"The most incomprehensible thing about the world is that it is comprehensible."},
-  {"category":"science","attribution":"Albert Einstein","content":"Imagination is more important than knowledge. Knowledge is limited. Imagination encircles the world."},
-  {"category":"science","attribution":"Niels Bohr","content":"An expert is a person who has made all the mistakes that can be made in a very narrow field."},
-  {"category":"science","attribution":"Werner Heisenberg","content":"What we observe is not nature itself, but nature exposed to our method of questioning."},
-  {"category":"science","attribution":"Ada Lovelace","content":"The Analytical Engine weaves algebraical patterns just as the Jacquard loom weaves flowers and leaves."},
-  {"category":"science","attribution":"Rosalind Franklin","content":"Science and everyday life cannot and should not be separated."},
-  {"category":"science","attribution":"Jane Goodall","content":"What you do makes a difference, and you have to decide what kind of difference you want to make."},
-  {"category":"science","attribution":"Neil deGrasse Tyson","content":"The good thing about science is that it's true whether or not you believe in it."},
-  {"category":"science","attribution":"Thomas Huxley","content":"The great tragedy of science: the slaying of a beautiful hypothesis by an ugly fact."},
-  {"category":"science","attribution":"Louis Pasteur","content":"In the fields of observation chance favours only the prepared mind."},
-  {"category":"science","attribution":"Stephen Hawking, A Brief History of Time","content":"The whole history of science has been the gradual realisation that events do not happen in an arbitrary manner."},
-  {"category":"science","attribution":"Stephen Hawking","content":"The greatest enemy of knowledge is not ignorance, it is the illusion of knowledge."},
-  {"category":"science","attribution":"Max Planck","content":"A new scientific truth does not triumph by convincing its opponents, but rather because its opponents eventually die."},
-  {"category":"science","attribution":"Barbara McClintock","content":"If you know you are on the right track, if you have this inner knowledge, then nobody can turn you off."}
+  {
+    "category": "science",
+    "attribution": "Carl Sagan, Cosmos",
+    "content": "The cosmos is within us. We are made of star-stuff. We are a way for the universe to know itself."
+  },
+  {
+    "category": "science",
+    "attribution": "Carl Sagan",
+    "content": "Somewhere, something incredible is waiting to be known."
+  },
+  {
+    "category": "science",
+    "attribution": "Carl Sagan, The Demon-Haunted World",
+    "content": "Extraordinary claims require extraordinary evidence."
+  },
+  {
+    "category": "science",
+    "attribution": "Richard Feynman",
+    "content": "The first principle is that you must not fool yourself, and you are the easiest person to fool."
+  },
+  {
+    "category": "science",
+    "attribution": "Richard Feynman",
+    "content": "I would rather have questions that can't be answered than answers that can't be questioned."
+  },
+  {
+    "category": "science",
+    "attribution": "Marie Curie",
+    "content": "Nothing in life is to be feared, it is only to be understood. Now is the time to understand more, so that we may fear less."
+  },
+  {
+    "category": "science",
+    "attribution": "Charles Darwin, On the Origin of Species",
+    "content": "There is grandeur in this view of life, with its several powers, having been originally breathed into a few forms or into one."
+  },
+  {
+    "category": "science",
+    "attribution": "Isaac Newton",
+    "content": "If I have seen further it is by standing on the shoulders of giants."
+  },
+  {
+    "category": "science",
+    "attribution": "Albert Einstein",
+    "content": "The most incomprehensible thing about the world is that it is comprehensible."
+  },
+  {
+    "category": "science",
+    "attribution": "Albert Einstein",
+    "content": "Imagination is more important than knowledge. Knowledge is limited. Imagination encircles the world."
+  },
+  {
+    "category": "science",
+    "attribution": "Niels Bohr",
+    "content": "An expert is a person who has made all the mistakes that can be made in a very narrow field."
+  },
+  {
+    "category": "science",
+    "attribution": "Werner Heisenberg",
+    "content": "What we observe is not nature itself, but nature exposed to our method of questioning."
+  },
+  {
+    "category": "science",
+    "attribution": "Ada Lovelace",
+    "content": "The Analytical Engine weaves algebraical patterns just as the Jacquard loom weaves flowers and leaves."
+  },
+  {
+    "category": "science",
+    "attribution": "Rosalind Franklin",
+    "content": "Science and everyday life cannot and should not be separated."
+  },
+  {
+    "category": "science",
+    "attribution": "Jane Goodall",
+    "content": "What you do makes a difference, and you have to decide what kind of difference you want to make."
+  },
+  {
+    "category": "science",
+    "attribution": "Neil deGrasse Tyson",
+    "content": "The good thing about science is that it's true whether or not you believe in it."
+  },
+  {
+    "category": "science",
+    "attribution": "Thomas Huxley",
+    "content": "The great tragedy of science: the slaying of a beautiful hypothesis by an ugly fact."
+  },
+  {
+    "category": "science",
+    "attribution": "Louis Pasteur",
+    "content": "In the fields of observation chance favours only the prepared mind."
+  },
+  {
+    "category": "science",
+    "attribution": "Stephen Hawking, A Brief History of Time",
+    "content": "The whole history of science has been the gradual realisation that events do not happen in an arbitrary manner."
+  },
+  {
+    "category": "science",
+    "attribution": "Stephen Hawking",
+    "content": "The greatest enemy of knowledge is not ignorance, it is the illusion of knowledge."
+  },
+  {
+    "category": "science",
+    "attribution": "Max Planck",
+    "content": "A new scientific truth does not triumph by convincing its opponents, but rather because its opponents eventually die."
+  },
+  {
+    "category": "science",
+    "attribution": "Barbara McClintock",
+    "content": "If you know you are on the right track, if you have this inner knowledge, then nobody can turn you off."
+  },
+  {
+    "category": "science",
+    "content": "The plural of anecdote is not data. A hundred stories that agree can still all be wrong in the same direction, which is exactly what happens when the way the stories were collected favours one answer.",
+    "attribution": "Unknown"
+  },
+  {
+    "category": "science",
+    "content": "An experiment that cannot fail proves nothing. The value of a test lies entirely in the outcome it rules out, so a prediction compatible with every result is not a prediction at all.",
+    "attribution": "Unknown"
+  },
+  {
+    "category": "science",
+    "content": "Correlation is evidence, not proof. Two things that move together may share a cause, may influence each other, or may simply have been measured over a stretch of time too short to tell the difference.",
+    "attribution": "Unknown"
+  },
+  {
+    "category": "science",
+    "content": "Light from the nearest star beyond our own takes over four years to arrive. Every point in the night sky is therefore a picture of the past, and the further away it is, the older the picture.",
+    "attribution": "Unknown"
+  },
+  {
+    "category": "science",
+    "content": "The second law of thermodynamics is the only physical law that distinguishes the future from the past. Every other equation runs equally well in either direction, which is why time is a stranger idea than it first appears.",
+    "attribution": "Unknown"
+  },
+  {
+    "category": "science",
+    "content": "Water is unusual in almost every way that matters to life. It expands as it freezes, dissolves more substances than any other common liquid, and holds heat well enough to keep an entire planet's temperature steady.",
+    "attribution": "Unknown"
+  }
 ]

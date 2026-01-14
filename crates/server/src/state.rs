@@ -24,6 +24,9 @@ impl SpotifyConfig {
 pub struct RaceText {
     pub text: String,
     pub attribution: Option<String>,
+    /// The pack it came from. Shown when a passage has no attribution of its
+    /// own, so the results screen says where the text is from either way.
+    pub category: Option<String>,
 }
 
 #[derive(Clone)]
