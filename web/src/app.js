@@ -153,7 +153,8 @@ export function startApp(root, localTexts) {
         // Let an open popover close itself first - one Escape should not both
         // dismiss a menu and navigate away from the screen behind it.
         const openPopover = document.querySelector(
-            '.mode-popover:not([hidden]), .rail-settings-panel:not([hidden]), .lang-popover:not([hidden]), .theme-gallery-popover:not([hidden])');
+            '.mode-popover:not([hidden]), .rail-settings-panel:not([hidden]), .settings-panel:not([hidden]), '
+            + '.custom-panel:not([hidden]), .lang-popover:not([hidden]), .theme-gallery-popover:not([hidden])');
         if (openPopover) {
             openPopover.hidden = true;
             return;

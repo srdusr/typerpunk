@@ -1,4 +1,5 @@
 import { escapeHtml } from '../util.js';
+import { logoLockup } from '../logo.js';
 import { renderCornerRail } from '../cornerRail.js';
 import { attachTooltips } from '../tooltip.js';
 import { renderTopRail } from '../topRail.js';
@@ -53,7 +54,7 @@ export function renderPublicProfileScreen(root, { username, onBack, onShowStats,
     root.innerHTML = `
         <div class="stats-screen">
             <button class="screen-close" data-action="menu" aria-label="Close" data-tooltip="Close (Esc)">${CLOSE_ICON}</button>
-                <div class="logo" data-action="menu">TyperPunk</div>
+                ${logoLockup()}
             <h2 class="public-profile-heading">${escapeHtml(username)}</h2>
             <div class="public-profile-body"></div>
         </div>

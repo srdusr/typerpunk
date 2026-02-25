@@ -1,4 +1,5 @@
 import { escapeHtml } from '../util.js';
+import { logoLockup } from '../logo.js';
 import { renderCornerRail } from '../cornerRail.js';
 import { attachTooltips } from '../tooltip.js';
 import { renderTopRail } from '../topRail.js';
@@ -72,7 +73,7 @@ export function renderContributeScreen(root, { onBack, onShowStats, onShowPlaceh
         root.innerHTML = `
             <div class="stats-screen">
                 <button class="screen-close" data-action="menu" aria-label="Close" data-tooltip="Close (Esc)">${CLOSE_ICON}</button>
-                <div class="logo" data-action="menu">TyperPunk</div>
+                ${logoLockup()}
                 <h2>Contribute a passage</h2>
                 ${!user ? `
                     <div class="stats-empty">Sign in to submit a passage. Everything submitted is reviewed before anyone types it.</div>

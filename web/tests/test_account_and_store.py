@@ -17,7 +17,10 @@ def run():
             page = browser.new_page(viewport={"width": 1280, "height": 900})
             username = random_username("store")
             register_and_login(page, username)
-            assert page.locator('.auth-control button').count() > 0
+            # Signed in, the identity control is the account's own avatar in
+            # the icon row. The Sign In and Sign Up links below it are gone.
+            assert page.locator('.rail-avatar').count() > 0, "no avatar after signing in"
+            assert page.locator('.auth-control button').count() == 0, "sign-in links still shown while signed in"
 
             page.click('[data-action="store"]')
             page.wait_for_selector(".store-item-row", timeout=10000)

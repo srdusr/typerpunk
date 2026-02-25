@@ -1,4 +1,5 @@
 import { escapeHtml } from '../util.js';
+import { logoLockup } from '../logo.js';
 import { CLOSE_ICON, RACER_SPRITES, RACER_SPRITE_IDS } from './icons.js';
 import { renderCornerRail } from '../cornerRail.js';
 import { attachTooltips } from '../tooltip.js';
@@ -84,7 +85,7 @@ export function renderMultiplayerScreen(root, { onBack, onFinish, onShowStats, o
         root.innerHTML = `
             <div class="stats-screen">
                 <button class="screen-close" data-action="menu" aria-label="Close" data-tooltip="Close (Esc)">${CLOSE_ICON}</button>
-                <div class="logo" data-action="menu">TyperPunk</div>
+                ${logoLockup()}
                 <h2>Multiplayer</h2>
                 <div class="account-panel">
                     <input class="account-input" type="text" id="mp-name" placeholder="Your name" value="${escapeHtml(getUser()?.username || '')}">
@@ -172,7 +173,7 @@ export function renderMultiplayerScreen(root, { onBack, onFinish, onShowStats, o
         root.innerHTML = `
             <div class="stats-screen">
                 <button class="screen-close" data-action="menu" aria-label="Close" data-tooltip="Close (Esc)">${CLOSE_ICON}</button>
-                <div class="logo" data-action="menu">TyperPunk</div>
+                ${logoLockup()}
                 <h2>${auto ? 'Finding a race' : `Room ${escapeHtml(roomCode)}`}</h2>
                 <div class="settings-hint">${auto
                     ? 'Racing whoever else is looking right now.'

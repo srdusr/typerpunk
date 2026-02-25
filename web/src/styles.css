@@ -15,7 +15,12 @@
        so nothing below has to know whether a banner exists. */
     --ad-banner-height: 6.5rem;
     --ad-banner-h: 0px;
-    --header-offset: calc(3.5rem + var(--ad-banner-h));
+    /* Set from the measured top rail by renderTopRail, because the rail is
+       one row signed in and two signed out. The fallback covers the moment
+       before the first measurement lands. */
+    --top-rail-h: 2.5rem;
+    /* Where content starts: below the banner, below the rail, plus a gap. */
+    --header-offset: calc(1rem + var(--top-rail-h) + 0.75rem + var(--ad-banner-h));
     /* App padding variable so we can compensate where needed */
     --app-padding: 1rem;
     /* Room at the foot of every screen for the fixed footer and the corner
@@ -205,17 +210,87 @@ body {
     overflow: hidden;
 }
 
+/* The mark and wordmark together, fixed at the top-left of every screen. */
 .logo {
     position: fixed;
     top: calc(1rem + var(--ad-banner-h));
     left: 1rem;
-    font-size: 1.2rem;
-    color: var(--primary-color);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 1.15rem;
     font-family: 'JetBrains Mono', monospace;
     text-transform: uppercase;
     letter-spacing: 2px;
     cursor: pointer;
-    transition: color 0.2s ease;
+    line-height: 1;
+}
+
+.logo-mark {
+    width: 1.5em;
+    height: 1.5em;
+    flex-shrink: 0;
+    overflow: visible;
+}
+
+.logo-mark-chevron,
+.logo-mark-baseline,
+.logo-mark-cursor {
+    stroke: var(--primary-color);
+    fill: var(--primary-color);
+}
+
+.logo-mark-chevron {
+    fill: none;
+}
+
+/* The offset copy underneath. Faint enough to read as a print misregistration
+   rather than a second chevron. */
+.logo-mark-ghost {
+    stroke: var(--secondary-color, var(--primary-color));
+    opacity: 0.55;
+}
+
+/* Plain inline, not a flex container. As inline-flex the two halves became
+   flex items, which blockifies them, and the name read as "TYPER" then
+   "PUNK" on separate lines to anything using innerText: a screen reader, a
+   copy-paste, or a test. */
+.logo-word {
+    display: inline;
+    white-space: nowrap;
+}
+
+.logo-word-a {
+    color: var(--text-color);
+}
+
+.logo-word-b {
+    color: var(--primary-color);
+}
+
+.logo:hover .logo-word-a {
+    color: var(--primary-color);
+}
+
+.logo:hover .logo-word-b {
+    color: var(--secondary-color, var(--primary-color));
+}
+
+/* The cursor blinks, at the same rate as the typing caret, because it is the
+   same idea. Anyone who has asked not to see motion gets it held still. */
+@keyframes logo-cursor-blink {
+    0%, 45% { opacity: 1; }
+    55%, 100% { opacity: 0.15; }
+}
+
+.logo-mark-cursor {
+    animation: logo-cursor-blink 1.6s steps(1, end) infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .logo-mark-cursor {
+        animation: none;
+    }
 }
 
 .logo:hover {
@@ -232,8 +307,10 @@ body {
        so on anything but a tall viewport the list ran past the bottom edge.
        Fixed higher, there's always real room underneath it. */
     justify-content: flex-start;
-    padding-top: 6rem;
-    height: 100vh;
+    /* Plus the banner, which is fixed over the top of the page. Without the
+       addition the title cleared it by 8px. */
+    padding-top: calc(6rem + var(--ad-banner-h));
+    min-height: 100vh;
     width: 100%;
     max-width: 700px;
     margin: 0 auto;
@@ -244,12 +321,23 @@ body {
     box-sizing: border-box;
 }
 
-.main-menu h1 {
-    font-size: 4rem;
-    color: var(--primary-color);
+/* The menu's own title is the full lockup at size. It is not fixed to the
+   corner like the one every other screen carries: the menu had both, so the
+   name appeared twice on the same screen. */
+.logo-hero {
+    position: static;
+    font-size: 3.25rem;
+    gap: 0.75rem;
     margin-bottom: 2rem;
-    text-transform: uppercase;
-    letter-spacing: 2px;
+    cursor: default;
+}
+
+.logo-hero:hover .logo-word-a {
+    color: var(--text-color);
+}
+
+.logo-hero:hover .logo-word-b {
+    color: var(--primary-color);
 }
 
 .settings-row-group {
@@ -721,11 +809,15 @@ body {
    were the same control under two names. .quiet is the one with a stated
    role, and is defined with the rest of the hierarchy below. */
 
+/* Left aligned, and as wide as the panel. Centred at 340px inside a 480px
+   panel it broke into three ragged lines that were harder to read than the
+   sentence deserved. */
 .custom-hint {
     font-size: 0.8rem;
-    color: var(--neutral-color);
-    text-align: center;
-    max-width: 340px;
+    line-height: 1.5;
+    color: var(--sub-color);
+    text-align: left;
+    width: 100%;
 }
 
 .settings-panel {
@@ -734,14 +826,60 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    /* Tightened alongside the two-column split: .app is overflow:hidden, so
-       anything past the viewport bottom is clipped rather than scrollable. */
     gap: 0.55rem;
     border: var(--border-width) solid var(--neutral-color);
     border-radius: var(--radius-panel);
     padding: 0.85rem;
     margin: 1rem auto 0 auto;
     text-align: center;
+}
+
+/* The settings controls are buttons, but .quiet removes their border, so a
+   panel of them read as a list of plain text labels with no sign that any of
+   it could be clicked. Inside this panel they keep an outline. */
+.settings-panel .menu-button.quiet,
+.custom-panel .menu-button.quiet {
+    border-color: var(--border-color);
+    color: var(--text-color);
+}
+
+.settings-panel .menu-button.quiet:hover,
+.custom-panel .menu-button.quiet:hover {
+    border-color: var(--primary-color);
+}
+
+/* The checkbox was the browser's default control in a panel where nothing
+   else was. */
+.settings-row {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.85rem;
+    color: var(--sub-color);
+    cursor: pointer;
+}
+
+.settings-row input[type="checkbox"] {
+    appearance: none;
+    width: 1rem;
+    height: 1rem;
+    margin: 0;
+    /* A dark border on a dark panel was invisible. This is a control, so it
+       has to look like one before it is checked, not only after. */
+    border: var(--border-width) solid var(--sub-color);
+    border-radius: 2px;
+    background: transparent;
+    cursor: pointer;
+    flex-shrink: 0;
+}
+
+.settings-row input[type="checkbox"]:checked {
+    background: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+.settings-row:hover input[type="checkbox"] {
+    border-color: var(--primary-color);
 }
 
 .settings-row {
@@ -802,6 +940,15 @@ body {
 .theme-swatch-preview[data-swatch="gruvbox"] { background: linear-gradient(90deg, #282828 60%, #fabd2f 60%); }
 .theme-swatch-preview[data-swatch="monokai"] { background: linear-gradient(90deg, #272822 60%, #a6e22e 60%); }
 
+/* A dialog says what it is. Both of these opened with no title at all. */
+.panel-title {
+    font-size: 1rem;
+    color: var(--text-color);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    text-align: left;
+}
+
 .custom-panel {
     width: 100%;
     max-width: 480px;
@@ -812,6 +959,52 @@ body {
     border-radius: var(--radius-panel);
     padding: 1rem;
     margin: 1.5rem auto 0 auto;
+}
+
+/* Both of these are dialogs, and neither was built as one.
+   
+   They sat in the menu's normal flow, below the Start buttons, which put the
+   settings panel at y=506 with a height of 437 on a 900px viewport: it ran
+   140px off the bottom, and .app is overflow:hidden so there was nothing to
+   scroll. Worse, neither had a background, so the fixed footer links rendered
+   through the middle of them and, being higher in the stacking order,
+   swallowed the clicks. Playwright could not press the settings panel's own
+   Close button: the footer intercepted every attempt.
+
+   Centred, opaque, above the fixed chrome, and scrolling internally when the
+   content is taller than the screen. */
+.settings-panel:not([hidden]),
+.custom-panel:not([hidden]) {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 120;
+    margin: 0;
+    max-height: min(82vh, 44rem);
+    overflow-y: auto;
+    background: var(--background-color);
+    border-color: var(--border-color);
+    box-sizing: border-box;
+    /* Dims the page behind without needing a separate backdrop element. */
+    box-shadow: 0 0 0 100vmax color-mix(in srgb, var(--background-color) 78%, transparent);
+}
+
+/* The settings controls are buttons, but .quiet removes their border, so a
+   panel of them read as a list of plain text labels with nothing to suggest
+   any of it could be clicked. Inside these panels they keep an outline. */
+.settings-panel .menu-button.quiet,
+.custom-panel .menu-button.quiet,
+.rail-settings-panel .menu-button.quiet {
+    border-color: var(--border-color);
+    color: var(--text-color);
+}
+
+.settings-panel .menu-button.quiet:hover,
+.custom-panel .menu-button.quiet:hover,
+.rail-settings-panel .menu-button.quiet:hover {
+    border-color: var(--primary-color);
+    color: var(--primary-color);
 }
 
 .custom-textarea {
@@ -1207,12 +1400,23 @@ body {
 /* How many friends are online, beside the Friends control in the top-right
    rail. Readable text rather than a corner badge, so it can say what it
    counts. */
+/* How many friends are online, under the Friends icon. A bare number: the
+   icon above it already says what is being counted. */
 .online-count {
-    font-size: 0.75rem;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    color: var(--primary-color);
+    min-width: 1.1rem;
+    padding: 0 0.25rem;
+    border-radius: var(--radius-pill, 999px);
+    background: var(--primary-color);
+    color: var(--background-color);
+    font-size: 0.65rem;
+    font-weight: 700;
+    line-height: 1.25;
+    text-align: center;
     white-space: nowrap;
+}
+
+.online-count[hidden] {
+    display: none;
 }
 
 .corner-rail-right {
@@ -1297,8 +1501,8 @@ body {
 
 /* Mobile adjustments */
 @media (max-width: 768px) {
-    .main-menu h1 {
-        font-size: 2.5rem;
+    .logo-hero {
+        font-size: 2.1rem;
         margin-bottom: 1.5rem;
     }
 
@@ -2260,9 +2464,19 @@ body::-webkit-scrollbar, .app::-webkit-scrollbar, #root::-webkit-scrollbar {
     top: calc(1rem + var(--ad-banner-h));
     right: 1rem;
     z-index: 100;
+    /* Two rows: the icons, and the sign-in links under them. As one row the
+       two text links made the rail 307px wide, which is what collided with
+       the wordmark on a phone. */
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 0.25rem;
+}
+
+.top-rail-icons {
     display: flex;
     flex-direction: row;
-    align-items: center;
+    align-items: flex-start;
     gap: 0.6rem;
 }
 
@@ -2339,7 +2553,43 @@ body::-webkit-scrollbar, .app::-webkit-scrollbar, #root::-webkit-scrollbar {
 .auth-control {
     display: flex;
     align-items: center;
-    gap: 0.4rem;
+    gap: 0.3rem;
+}
+
+.auth-control[hidden] {
+    display: none;
+}
+
+.top-rail-sep {
+    color: color-mix(in srgb, var(--sub-color) 55%, transparent);
+    font-size: 0.75rem;
+}
+
+/* Friends sits above its count, so the count does not widen the icon row. */
+.friends-control,
+.account-icon-control {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.15rem;
+}
+
+/* The account's own picture once signed in. There is no upload, so it is the
+   initial over a colour derived from the whole username. */
+.rail-avatar {
+    background: var(--avatar-colour, var(--primary-color));
+    border-color: transparent;
+    color: #fff;
+}
+
+.rail-avatar:hover {
+    border-color: var(--text-color);
+}
+
+.rail-avatar-initial {
+    font-size: 0.85rem;
+    font-weight: 700;
+    line-height: 1;
 }
 
 /* Text links, not bordered boxes - three outlined squares plus two outlined
@@ -2958,11 +3208,10 @@ body::-webkit-scrollbar, .app::-webkit-scrollbar, #root::-webkit-scrollbar {
    wordmark and Escape already did, and the least reachable of the three. */
 .screen-close {
     position: absolute;
-    /* The top rail is fixed to the viewport's top-right and is wide enough to
-       reach into the content column on any viewport narrower than about
-       1350px, which is most of them. At top: 0 the close button sat directly
-       underneath the rail's buttons. It starts below the rail instead. */
-    top: 1.5rem;
+    /* The content column already starts below the rail, so a small offset
+       inside it is enough. The rail's own height feeds --header-offset, which
+       is what puts this clear of it whether the rail has one row or two. */
+    top: 0.25rem;
     right: 0;
     width: 2.25rem;
     height: 2.25rem;
@@ -3340,7 +3589,7 @@ body::-webkit-scrollbar, .app::-webkit-scrollbar, #root::-webkit-scrollbar {
         letter-spacing: 1px;
     }
 
-    .top-rail {
+    .top-rail-icons {
         gap: 0.35rem;
     }
 
@@ -3349,14 +3598,8 @@ body::-webkit-scrollbar, .app::-webkit-scrollbar, #root::-webkit-scrollbar {
         padding: 0.5rem 0.2rem;
     }
 
-    /* Sign Up goes. Sign In reaches the same screen, which offers both, so
-       the second link only costs width. */
-    .top-rail-link.accent {
-        display: none;
-    }
-
     .screen-close {
-        top: 2.75rem;
+        top: 0.25rem;
     }
 }
 

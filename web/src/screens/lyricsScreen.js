@@ -1,4 +1,5 @@
 import { CLOSE_ICON } from './icons.js';
+import { logoLockup } from '../logo.js';
 import { renderCornerRail } from '../cornerRail.js';
 import { attachTooltips } from '../tooltip.js';
 import { renderTopRail } from '../topRail.js';
@@ -32,7 +33,7 @@ export function renderLyricsScreen(root, { onBack, onLyricsReady, onShowStats, o
         root.innerHTML = `
             <div class="stats-screen">
                 <button class="screen-close" data-action="menu" aria-label="Close" data-tooltip="Close (Esc)">${CLOSE_ICON}</button>
-                <div class="logo" data-action="menu">TyperPunk</div>
+                ${logoLockup()}
                 <h2>Lyrics</h2>
                 <div class="stats-placeholder">${escapeHtml(bodyText())}</div>
                 ${status === 'signed-out' ? `<button class="menu-button" data-action="go-account">Sign In</button>` : ''}

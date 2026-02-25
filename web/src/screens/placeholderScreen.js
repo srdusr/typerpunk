@@ -1,4 +1,5 @@
 import { CLOSE_ICON } from './icons.js';
+import { logoLockup } from '../logo.js';
 import { escapeHtml } from '../util.js';
 import { renderCornerRail } from '../cornerRail.js';
 import { attachTooltips } from '../tooltip.js';
@@ -13,7 +14,7 @@ export function renderPlaceholderScreen(root, { title, description, onBack, onSh
     root.innerHTML = `
         <div class="stats-screen">
             <button class="screen-close" data-action="menu" aria-label="Close" data-tooltip="Close (Esc)">${CLOSE_ICON}</button>
-                <div class="logo" data-action="menu">TyperPunk</div>
+                ${logoLockup()}
             <h2>${escapeHtml(title)}</h2>
             <div class="stats-placeholder prose">${escapeHtml(description)}</div>
         </div>

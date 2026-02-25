@@ -1,4 +1,5 @@
 import { buildGraphPoints, buildErrorPoints, drawChart, hitTestError, hitTestLine, calculateConsistency } from '../chart.js';
+import { logoLockup } from '../logo.js';
 import { escapeHtml } from '../util.js';
 import { attachTooltips } from '../tooltip.js';
 import { onThemeChange } from '../theme.js';
@@ -59,7 +60,7 @@ export function renderEndScreen(root, { stats, text, attribution, category, expl
 
     root.innerHTML = `
         <div class="end-screen">
-            <div class="logo" data-action="menu">TyperPunk</div>
+            ${logoLockup()}
             <div class="end-screen-text"><div class="text-display"></div></div>
             <div class="attribution end-screen-attribution">&mdash; ${escapeHtml(attribution || 'Unknown')}${category ? `<span class="attribution-pack">${escapeHtml(category)}</span>` : ''}</div>
             ${explanation ? `<div class="code-explainer"><span class="code-explainer-label">What this does</span>${escapeHtml(explanation)}</div>` : ''}

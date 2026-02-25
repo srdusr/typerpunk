@@ -1,4 +1,5 @@
 import { escapeHtml } from '../util.js';
+import { logoLockup } from '../logo.js';
 import { renderCornerRail } from '../cornerRail.js';
 import { attachTooltips } from '../tooltip.js';
 import { renderTopRail } from '../topRail.js';
@@ -49,7 +50,7 @@ export function renderLeaderboardScreen(root, { onBack, onShowPublicProfile, onS
     root.innerHTML = `
         <div class="stats-screen">
             <button class="screen-close" data-action="menu" aria-label="Close" data-tooltip="Close (Esc)">${CLOSE_ICON}</button>
-                <div class="logo" data-action="menu">TyperPunk</div>
+                ${logoLockup()}
             <h2>Leaderboard</h2>
             <div class="leaderboard-modes">
                 ${MODES.map(m => `<button class="menu-button small quiet${m.key === selectedMode ? ' active' : ''}" data-mode="${m.key}">${escapeHtml(m.label)}</button>`).join('')}

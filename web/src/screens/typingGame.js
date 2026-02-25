@@ -1,4 +1,5 @@
 import { calculateStats, emptyStats } from '../stats.js';
+import { logoLockup } from '../logo.js';
 import { escapeHtml } from '../util.js';
 import { highlightClasses } from '../customText.js';
 import { getSettings } from '../settings.js';
@@ -15,7 +16,7 @@ export function renderTypingGame(root, { game, text, attribution, category, expl
     const { hideLiveStats, caretBlink, blindMode } = getSettings();
     root.innerHTML = `
         <div class="typing-game${hideLiveStats ? ' hide-live-stats' : ''}${caretBlink ? '' : ' no-caret-blink'}">
-            <div class="logo" data-action="menu">TyperPunk</div>
+            ${logoLockup()}
             ${progress ? `<div class="segment-progress">${escapeHtml(progress)}</div>` : ''}
             <div class="text-container">
                 <div class="text-display${language ? ' code' : ''}"></div>

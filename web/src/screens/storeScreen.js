@@ -1,4 +1,5 @@
 import { escapeHtml } from '../util.js';
+import { logoLockup } from '../logo.js';
 import { renderCornerRail } from '../cornerRail.js';
 import { attachTooltips } from '../tooltip.js';
 import { renderTopRail } from '../topRail.js';
@@ -168,7 +169,7 @@ export function renderStoreScreen(root, { onBack, onShowStats, onShowPlaceholder
         root.innerHTML = `
             <div class="stats-screen">
                 <button class="screen-close" data-action="menu" aria-label="Close" data-tooltip="Close (Esc)">${CLOSE_ICON}</button>
-                <div class="logo" data-action="menu">TyperPunk</div>
+                ${logoLockup()}
                 <h2>Store</h2>
                 ${bodyMarkup()}
             </div>

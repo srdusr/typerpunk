@@ -1,4 +1,5 @@
 import { STATS_ICON, SETTINGS_ICON, CHEVRON_DOWN_ICON, LEADERBOARD_ICON, STORE_ICON } from './icons.js';
+import { logoLockup } from '../logo.js';
 import { parseCustomContent } from '../customText.js';
 import { escapeHtml } from '../util.js';
 import { getSettings, updateSettings } from '../settings.js';
@@ -7,6 +8,13 @@ import { attachTooltips } from '../tooltip.js';
 import { wordListTiers } from '../wordGenerator.js';
 import { renderTopRail } from '../topRail.js';
 import { renderSiteFooter } from '../siteFooter.js';
+
+/// Whether this is a development machine. The Dev controls below are shown
+/// only here: on a deployed site they are a way to fake a result.
+function isLocalDev() {
+    const h = window.location.hostname;
+    return h === 'localhost' || h === '127.0.0.1' || h === '[::1]' || h.endsWith('.local');
+}
 
 function label(m) {
     if (m === 'random') return 'Random';
@@ -111,7 +119,7 @@ export function renderMainMenu(root, props) {
 
     root.innerHTML = `
         <div class="main-menu">
-            <h1>TyperPunk</h1>
+            ${logoLockup({ tag: 'h1', className: 'logo logo-hero', action: null })}
             <div class="menu-options">
                 <div class="start-group sp-group">
                     <button class="menu-button start-main" data-action="pick-mode">Single Player</button>
@@ -166,14 +174,16 @@ export function renderMainMenu(root, props) {
                 </div>
                 </div>
                 </div>
+                ${isLocalDev() ? `
                 <div class="settings-hint">Dev</div>
-                <button class="menu-button small" data-action="simulate-test" data-tooltip="Jump straight to the end screen with fake results, no typing required.">Simulate Test &rarr; End Screen</button>
+                <button class="menu-button small" data-action="simulate-test" data-tooltip="Jump straight to the end screen with fake results, no typing required.">Simulate Test &rarr; End Screen</button>` : ''}
                 <button class="menu-button small quiet" data-action="close-settings">Close</button>
             </div>
 
             <div class="custom-panel" hidden>
-                <div class="custom-hint">Paste text, notes, code, subtitles (.srt/.vtt), or lyrics (.lrc) - typed in order, not randomized. Drag a file in, or:</div>
-                <textarea class="custom-textarea" placeholder="Paste text, notes, code, or lyrics here... (or drop a file anywhere in this box)"></textarea>
+                <div class="panel-title">Custom text</div>
+                <div class="custom-hint">Typed in the order you give it, not shuffled. Notes, code, subtitles (.srt, .vtt) and lyrics (.lrc) all work. Long documents are split into segments and keep your place between visits.</div>
+                <textarea class="custom-textarea" placeholder="Paste here, or drop a file anywhere in this box"></textarea>
                 <div class="custom-stats" hidden></div>
                 <div class="custom-panel-row">
                     <label class="menu-button small file-label">
@@ -201,8 +211,6 @@ export function renderMainMenu(root, props) {
                 </div>
                 <div class="custom-error"></div>
             </div>
-
-            <div class="logo">TyperPunk</div>
 
             <div class="menu-key-hint">Enter to start &middot; Esc for the menu</div>
 
@@ -462,7 +470,7 @@ export function renderMainMenu(root, props) {
         soundThemeBtn.textContent = `Sound: ${soundThemeLabel(next)}`;
     });
 
-    root.querySelector('[data-action="simulate-test"]').addEventListener('click', onSimulateTest);
+    root.querySelector('[data-action="simulate-test"]')?.addEventListener('click', onSimulateTest);
 
     const passiveBtn = root.querySelector('[data-action="start-passive"]');
     if (passiveBtn) passiveBtn.addEventListener('click', onStartPassive);

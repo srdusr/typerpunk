@@ -1,4 +1,5 @@
 import { CLOSE_ICON } from './icons.js';
+import { logoLockup } from '../logo.js';
 import { escapeHtml } from '../util.js';
 import { renderCornerRail } from '../cornerRail.js';
 import { attachTooltips } from '../tooltip.js';
@@ -61,7 +62,7 @@ export function renderAccountScreen(root, { onBack, onShowAccount, onShowStats, 
         root.innerHTML = `
             <div class="stats-screen">
                 <button class="screen-close" data-action="menu" aria-label="Close" data-tooltip="Close (Esc)">${CLOSE_ICON}</button>
-                <div class="logo" data-action="menu">TyperPunk</div>
+                ${logoLockup()}
                 <h2>Account</h2>
                 <div class="account-panel">${formMarkup(user)}</div>
             </div>

@@ -1,4 +1,5 @@
 import { CLOSE_ICON } from './icons.js';
+import { logoLockup } from '../logo.js';
 import { getProfileStats } from '../profileStats.js';
 import { getAllPersonalBests } from '../pb.js';
 import { getWeakCharDetails } from '../keyStats.js';
@@ -42,7 +43,7 @@ export function renderStatsScreen(root, { onBack, onShowPlaceholder, onShowAccou
     root.innerHTML = `
         <div class="stats-screen">
             <button class="screen-close" data-action="menu" aria-label="Close" data-tooltip="Close (Esc)">${CLOSE_ICON}</button>
-                <div class="logo" data-action="menu">TyperPunk</div>
+                ${logoLockup()}
             <h2>Stats</h2>
 
             ${profile.testsCompleted > 0 ? `

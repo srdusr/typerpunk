@@ -1,4 +1,5 @@
 import { getTheme, toggleTheme, onThemeChange } from '../theme.js';
+import { logoLockup } from '../logo.js';
 import { themeIcon } from './icons.js';
 import { escapeHtml } from '../util.js';
 
@@ -44,7 +45,7 @@ export function renderPassiveMode(root, { name, chunks, onExit }) {
 
     root.innerHTML = `
         <div class="passive-mode">
-            <div class="logo" data-action="menu">TyperPunk</div>
+            ${logoLockup()}
             <div class="passive-source">${escapeHtml(name)} · passive mode</div>
             <div class="passive-lines">
                 <div class="passive-line prev"></div>

@@ -1,4 +1,4 @@
-import { LANGUAGE_ICON, FRIENDS_ICON } from './screens/icons.js';
+import { LANGUAGE_ICON, FRIENDS_ICON, ACCOUNT_ICON } from './screens/icons.js';
 import { LANGUAGES, languageLabel } from './languages.js';
 import { getSettings, updateSettings } from './settings.js';
 import { renderThemeButton } from './themeButton.js';
@@ -14,12 +14,33 @@ import { escapeHtml } from './util.js';
 // navigation. Screens with their own top-right controls (the typing screen's
 // Restart and Zen Finish) pass them in as `extras` so everything shares one
 // row instead of each fixed-positioning itself into a collision.
+/// The letter shown on an account's avatar. Falls back to a dot rather than
+/// an empty circle for a name that starts with something unprintable.
+function initialOf(username) {
+    const ch = (username || '').trim()[0];
+    return ch ? ch.toUpperCase() : '\u00b7';
+}
+
+/// A stable colour per account, from a hash of the whole name rather than the
+/// first letter, so two people whose names start alike still look different.
+function avatarColour(username) {
+    let hash = 0;
+    for (const ch of username || '') hash = (hash * 31 + ch.codePointAt(0)) >>> 0;
+    return `hsl(${hash % 360} 65% 45%)`;
+}
+
 export function renderTopRail(root, { onShowAccount, onShowFriends, extras = [] } = {}) {
     const wrap = document.createElement('div');
     wrap.className = 'top-rail';
     root.appendChild(wrap);
 
-    for (const el of extras) wrap.appendChild(el);
+    // Row one holds every icon. Row two holds the sign-in links, which used
+    // to sit inline and made the row far wider than the icons needed.
+    const icons = document.createElement('div');
+    icons.className = 'top-rail-icons';
+    wrap.appendChild(icons);
+
+    for (const el of extras) icons.appendChild(el);
 
     const langGroup = document.createElement('div');
     langGroup.className = 'lang-group';
@@ -33,17 +54,25 @@ export function renderTopRail(root, { onShowAccount, onShowFriends, extras = [] 
             <div class="lang-note">Applies to Words, Timed, Zen and Practice.</div>
         </div>
     `;
-    wrap.appendChild(langGroup);
+    icons.appendChild(langGroup);
 
-    const cleanupTheme = renderThemeButton(wrap);
+    const cleanupTheme = renderThemeButton(icons);
 
     const friends = document.createElement('div');
     friends.className = 'friends-control';
     if (onShowFriends) {
+        // The count sits under the icon rather than beside it, so it does not
+        // widen the row and reads as a property of the button above it.
         friends.innerHTML = `<button class="corner-icon-button" data-action="rail-friends" aria-label="Friends" data-tooltip="Friends">${FRIENDS_ICON}</button>
                              <span class="online-count" data-badge="friends-online" hidden></span>`;
     }
-    wrap.appendChild(friends);
+    icons.appendChild(friends);
+
+    // The account control, immediately right of Friends: your identity and
+    // who it connects you to, in that order.
+    const accountIcon = document.createElement('div');
+    accountIcon.className = 'account-icon-control';
+    icons.appendChild(accountIcon);
 
     const auth = document.createElement('div');
     auth.className = 'auth-control';
@@ -76,17 +105,52 @@ export function renderTopRail(root, { onShowAccount, onShowFriends, extras = [] 
     // Identity ------------------------------------------------------------
     function paintAuth() {
         const user = getUser();
+
+        // Signed out it is a plain person icon; signed in it is the account's
+        // own picture. There is no avatar upload, so the picture is built
+        // from the name: the initial over a colour derived from the whole
+        // username, which gives every account a stable, distinct mark.
+        accountIcon.innerHTML = user
+            ? `<button class="corner-icon-button rail-avatar" data-action="account" aria-label="Your account" data-tooltip="Signed in as ${escapeHtml(user.username)}">
+                   <span class="rail-avatar-initial">${escapeHtml(initialOf(user.username))}</span>
+               </button>`
+            : `<button class="corner-icon-button" data-action="account" aria-label="Account" data-tooltip="Sign in to save stats and join the leaderboard">${ACCOUNT_ICON}</button>`;
+        const avatarBtn = accountIcon.querySelector('.rail-avatar');
+        if (avatarBtn) avatarBtn.style.setProperty('--avatar-colour', avatarColour(user.username));
+
+        // Signed in, the name is already on the avatar's tooltip, so the row
+        // below is only needed while signed out.
+        auth.hidden = !!user;
         auth.innerHTML = user
-            ? `<button class="top-rail-link signed-in" data-action="account" data-tooltip="Your account">${escapeHtml(user.username)}</button>`
+            ? ''
             : `<button class="top-rail-link" data-action="signin" data-tooltip="Sign in to save stats and join the leaderboard">Sign In</button>
+               <span class="top-rail-sep">|</span>
                <button class="top-rail-link accent" data-action="signup" data-tooltip="Create an account">Sign Up</button>`;
         attachTooltips(auth);
-        auth.querySelectorAll('button').forEach(btn => {
-            btn.addEventListener('click', () => onShowAccount?.());
-        });
+        attachTooltips(accountIcon);
+        [...auth.querySelectorAll('button'), ...accountIcon.querySelectorAll('button')]
+            .forEach(btn => btn.addEventListener('click', () => onShowAccount?.()));
     }
-    paintAuth();
-    const unsubscribeAuth = onAuthChange(paintAuth);
+    // The rail is one row when signed in and two when signed out, so its
+    // height is not a constant the stylesheet can hold. Everything that has to
+    // start below it - the content column, and the close button at that
+    // column's top-right - reads this. Without it the close button sat under
+    // the rail again the moment the rail grew a second row.
+    function publishHeight() {
+        const h = Math.round(wrap.getBoundingClientRect().height);
+        if (h > 0) document.documentElement.style.setProperty('--top-rail-h', `${h}px`);
+    }
+
+    function paintAuthAndMeasure() {
+        paintAuth();
+        // After layout, not during: the row has to exist before it can be
+        // measured.
+        requestAnimationFrame(publishHeight);
+    }
+
+    paintAuthAndMeasure();
+    const unsubscribeAuth = onAuthChange(paintAuthAndMeasure);
+    window.addEventListener('resize', publishHeight);
 
     // Friends ------------------------------------------------------------
     const friendsBtn = friends.querySelector('[data-action="rail-friends"]');
@@ -102,7 +166,7 @@ export function renderTopRail(root, { onShowAccount, onShowFriends, extras = [] 
         }
         if (!friendsOnlineEl) return;
         friendsOnlineEl.hidden = !friendsOnline;
-        friendsOnlineEl.textContent = `${friendsOnline} online`;
+        friendsOnlineEl.textContent = String(friendsOnline);
     }
     paintCounts(getCounts());
     const unsubscribeCounts = onCountsChange(paintCounts);
@@ -113,6 +177,7 @@ export function renderTopRail(root, { onShowAccount, onShowFriends, extras = [] 
     document.addEventListener('click', handleOutsideClick);
 
     return () => {
+        window.removeEventListener('resize', publishHeight);
         unsubscribeCounts();
         document.removeEventListener('click', handleOutsideClick);
         unsubscribeAuth();
