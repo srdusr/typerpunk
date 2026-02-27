@@ -31,6 +31,8 @@ import { getUser, onAuthChange } from './auth.js';
 const SIZES = {
     // Roughly a leaderboard unit, and a mobile banner below the breakpoint.
     banner: { w: 728, h: 90, mobileW: 320, mobileH: 100 },
+    // A wide skyscraper, the usual unit for a page margin.
+    skyscraper: { w: 160, h: 600, mobileW: 160, mobileH: 600 },
 };
 
 export function shouldShowAds() {
@@ -64,6 +66,34 @@ export function renderAdSlot(root, { size = 'banner', label = 'Advertisement' } 
     };
 }
 
+
+// The two page margins. They appear only where there is genuinely room for
+// them beside the content, which the stylesheet decides, and they are the
+// first thing dropped on a narrow window.
+export function mountSideAdRails() {
+    const rails = ['left', 'right'].map(side => {
+        const rail = document.createElement('div');
+        rail.className = `ad-rail ad-rail-${side}`;
+        document.body.appendChild(rail);
+        return { rail, cleanup: renderAdSlot(rail, { size: 'skyscraper' }) };
+    });
+
+    let screenName = 'menu';
+    function paint() {
+        const show = shouldShowAds() && !HIDDEN_ON.has(screenName);
+        for (const { rail } of rails) rail.hidden = !show;
+    }
+    paint();
+    const unsubscribe = onAuthChange(paint);
+
+    return {
+        setScreen(name) { screenName = name; paint(); },
+        cleanup() {
+            unsubscribe();
+            for (const { rail, cleanup } of rails) { cleanup(); rail.remove(); }
+        },
+    };
+}
 
 // Screens the banner stays off. Typing and passive reading are both somebody
 // working through a text, and the race lobby leads straight into typing.

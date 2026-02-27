@@ -8,6 +8,9 @@
     --neutral-color: #646669;
     --caret-color: #00ff9d;
     --sub-color: #8b8e92;
+    /* Panel and control outlines. Derived from the neutral so it tracks each
+       theme, rather than being a sixth colour to keep in step by hand. */
+    --border-color: color-mix(in srgb, var(--neutral-color) 55%, transparent);
     /* Unified top offset below fixed header/toggle */
     /* Reserved height for the top advertising banner, and the amount the
        header moves down when one is shown. --ad-banner-h is set on the root
@@ -1945,21 +1948,23 @@ body {
    left out the one bar you most need to see: your own. */
 .mp-racers {
     position: fixed;
-    top: 58%;
+    top: 56%;
     left: 50%;
     transform: translateX(-50%);
     z-index: 90;
     display: flex;
     flex-direction: column;
-    gap: 0.5rem;
-    width: min(680px, 80vw);
+    gap: 0.35rem;
+    /* Wider than it was. The field is the thing you look up at between
+       glances at the passage, so it gets the room. */
+    width: min(1040px, 94vw);
 }
 
 .mp-racer-row {
     display: flex;
     align-items: center;
-    gap: 0.75rem;
-    font-size: 0.8rem;
+    gap: 0.85rem;
+    font-size: 0.9rem;
     color: var(--racer-color, var(--sub-color));
 }
 
@@ -1970,32 +1975,61 @@ body {
 }
 
 .mp-racer-name {
-    min-width: 7rem;
-    max-width: 7rem;
+    min-width: 9rem;
+    max-width: 9rem;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
     text-align: right;
 }
 
-.mp-racer-bar {
+/* The track the sprite travels along. Tall enough to hold the sprite, with
+   the trail drawn behind it. */
+.mp-racer-track {
+    position: relative;
     flex: 1 1 auto;
-    height: 0.4rem;
-    background: color-mix(in srgb, var(--neutral-color) 45%, transparent);
-    border-radius: var(--radius-pill);
-    overflow: hidden;
+    height: 2rem;
+    border-bottom: var(--border-width) dashed color-mix(in srgb, var(--neutral-color) 45%, transparent);
 }
 
-.mp-racer-bar-fill {
-    height: 100%;
+/* How far this racer has come. Sits at the foot of the track, on the dashed
+   line, so the line reads as road ahead and the trail as road behind. */
+.mp-racer-trail {
+    position: absolute;
+    left: 0;
+    bottom: -1px;
+    height: 2px;
     background: var(--racer-color, var(--primary-color));
     transition: width 0.15s ease;
 }
 
+/* The sprite rides the track. The position is the fraction of the way along,
+   scaled by the room left after the sprite's own width, so at 100 percent the
+   sprite sits at the finish rather than overhanging it. */
+.mp-racer-sprite {
+    position: absolute;
+    bottom: 0.15rem;
+    left: calc(var(--p, 0) * (100% - 1.9rem));
+    width: 1.9rem;
+    height: 1.9rem;
+    transition: left 0.15s ease;
+}
+
+.mp-racer-row.me .mp-racer-sprite {
+    filter: drop-shadow(0 0 4px var(--racer-color, var(--primary-color)));
+}
+
+.mp-racer-percent,
 .mp-racer-wpm {
-    min-width: 2.5rem;
-    text-align: left;
+    min-width: 3rem;
+    text-align: right;
     font-family: 'JetBrains Mono', monospace;
+    font-variant-numeric: tabular-nums;
+}
+
+.mp-racer-percent {
+    color: var(--sub-color);
+    font-size: 0.8rem;
 }
 
 /* The one genuinely time-critical state in the app: seconds left to get your
@@ -3050,6 +3084,138 @@ body::-webkit-scrollbar, .app::-webkit-scrollbar, #root::-webkit-scrollbar {
     min-width: 5.5rem;
 }
 
+/* A postal address, shown to an administrator so an order can be packed. */
+.order-address {
+    margin: 0.4rem 0;
+    padding: 0.5rem 0.75rem;
+    border-left: 2px solid var(--border-color);
+    color: var(--text-color);
+    font-size: 0.8rem;
+    line-height: 1.5;
+    white-space: normal;
+}
+
+/* Physical goods. A card, like a bundle, because each one has a description,
+   possibly a size to pick, and a postage line. */
+.merch-note {
+    text-align: left;
+    width: 100%;
+    max-width: none;
+    margin-bottom: 0.75rem;
+}
+
+.merch-kind {
+    width: 100%;
+    text-align: left;
+    color: var(--sub-color);
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin: 0.75rem 0 0.4rem 0;
+}
+
+.merch-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+    gap: 0.75rem;
+    width: 100%;
+    margin-bottom: 0.75rem;
+    box-sizing: border-box;
+}
+
+.merch-card {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    padding: 0.9rem 1rem;
+    border: var(--border-width) solid var(--border-color);
+    border-radius: var(--radius-panel);
+    text-align: left;
+}
+
+.merch-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.5rem;
+}
+
+.merch-name {
+    color: var(--text-color);
+    font-size: 0.95rem;
+    font-weight: 600;
+}
+
+.merch-price {
+    color: var(--text-color);
+    font-size: 1rem;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.merch-description {
+    color: var(--sub-color);
+    font-size: 0.8rem;
+    line-height: 1.45;
+}
+
+.merch-variants {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem;
+}
+
+.merch-variant {
+    padding: 0.3rem 0.6rem;
+    border: var(--border-width) solid var(--border-color);
+    border-radius: var(--radius);
+    background: none;
+    color: var(--sub-color);
+    font-family: inherit;
+    font-size: 0.75rem;
+    cursor: pointer;
+}
+
+.merch-variant:hover {
+    border-color: var(--primary-color);
+    color: var(--text-color);
+}
+
+.merch-variant.active {
+    border-color: var(--primary-color);
+    background: var(--primary-color);
+    color: var(--background-color);
+}
+
+.merch-foot {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    margin-top: auto;
+    padding-top: 0.25rem;
+}
+
+.merch-foot .menu-button.small {
+    margin: 0;
+    padding: 0.35rem 0.9rem;
+    font-size: 0.8rem;
+}
+
+.merch-shipping {
+    color: var(--sub-color);
+    font-size: 0.72rem;
+}
+
+.merch-error:empty {
+    display: none;
+}
+
+.merch-error {
+    color: var(--error-color, var(--incorrect-color));
+    font-size: 0.75rem;
+}
+
 /* The supporter offer, above the catalogue. It is the one thing in the store
    that is not cosmetic, so it does not sit in a category with the rest. */
 .store-supporter {
@@ -3673,10 +3839,16 @@ body::-webkit-scrollbar, .app::-webkit-scrollbar, #root::-webkit-scrollbar {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 1.15rem;
-    height: 1.15rem;
     flex-shrink: 0;
     color: var(--racer-color, var(--primary-color));
+}
+
+/* Beside a name in a list, rather than on a track. */
+.leaderboard-name .mp-racer-sprite,
+.mp-standings-name .mp-racer-sprite {
+    position: static;
+    width: 1.15rem;
+    height: 1.15rem;
 }
 
 .mp-racer-sprite svg {
@@ -3752,6 +3924,41 @@ body::-webkit-scrollbar, .app::-webkit-scrollbar, #root::-webkit-scrollbar {
     border: var(--border-width) dashed color-mix(in srgb, var(--neutral-color) 60%, transparent);
     border-radius: var(--radius);
     box-sizing: border-box;
+}
+
+/* The page margins. Hidden by default and shown only on a window wide enough
+   to hold them beside the content without crowding it: the widest content
+   column is 1040px, and two 160px rails with gaps need 1424px before they fit
+   without pushing anything. Below that they simply do not exist. */
+.ad-rail {
+    display: none;
+}
+
+.ad-rail[hidden] {
+    display: none;
+}
+
+@media (min-width: 1424px) {
+    .ad-rail:not([hidden]) {
+        display: flex;
+        position: fixed;
+        top: 50%;
+        transform: translateY(-50%);
+        z-index: 80;
+        align-items: center;
+    }
+
+    .ad-rail-left:not([hidden]) {
+        left: 1.5rem;
+    }
+
+    .ad-rail-right:not([hidden]) {
+        right: 1.5rem;
+    }
+
+    .ad-rail .ad-slot {
+        margin: 0;
+    }
 }
 
 /* Dashed and unfilled, which is the one place that convention is right: it is

@@ -31,6 +31,13 @@ use std::sync::Arc;
 use subtle::ConstantTimeEq;
 use time::{Duration as TimeDuration, OffsetDateTime};
 
+/// Where physical orders can be sent. Kept short deliberately: every country
+/// added is one somebody has to be willing to post to and handle returns for.
+const SHIPPING_COUNTRIES: &[&str] = &[
+    "US", "CA", "GB", "IE", "AU", "NZ", "DE", "FR", "NL", "BE", "ES", "IT",
+    "SE", "NO", "DK", "FI", "PL", "PT", "AT", "CH", "ZA",
+];
+
 /// What the supporter subscription costs, and how long it lasts.
 const SUPPORTER_PRICE_CENTS: i32 = 300;
 const SUPPORTER_DAYS: i64 = 30;
@@ -43,6 +50,7 @@ pub fn router() -> Router<Arc<AppState>> {
     Router::new()
         .route("/api/billing/checkout/:cosmetic_id", post(checkout_cosmetic))
         .route("/api/billing/bundle/:bundle_id", post(checkout_bundle))
+        .route("/api/billing/merch/:merch_id", post(checkout_merch))
         .route("/api/billing/supporter", post(checkout_supporter))
         .route("/api/billing/webhook", post(webhook))
 }
@@ -76,6 +84,7 @@ async fn create_session(
     kind: &str,
     cosmetic_id: Option<&str>,
     bundle_id: Option<&str>,
+    merch: Option<(&str, Option<&str>, i32)>,
     name: &str,
     amount_cents: i32,
 ) -> Result<String, AppError> {
@@ -113,6 +122,35 @@ async fn create_session(
     if let Some(id) = cosmetic_id {
         form.push(("metadata[cosmetic_id]".into(), id.to_string()));
     }
+    if let Some((merch_id, variant, shipping_cents)) = merch {
+        form.push(("metadata[merch_id]".into(), merch_id.to_string()));
+        if let Some(v) = variant {
+            form.push(("metadata[merch_variant]".into(), v.to_string()));
+        }
+        // Stripe collects the address on its own page, so no postal detail is
+        // ever entered on this site or held by it before an order exists.
+        for (i, country) in SHIPPING_COUNTRIES.iter().enumerate() {
+            form.push((
+                format!("shipping_address_collection[allowed_countries][{i}]"),
+                (*country).to_string(),
+            ));
+        }
+        form.push(("phone_number_collection[enabled]".into(), "false".into()));
+        // Postage as its own line, so the buyer sees what it costs rather
+        // than finding it folded into the price.
+        if shipping_cents > 0 {
+            form.push(("line_items[1][quantity]".into(), "1".into()));
+            form.push(("line_items[1][price_data][currency]".into(), "usd".into()));
+            form.push((
+                "line_items[1][price_data][unit_amount]".into(),
+                shipping_cents.to_string(),
+            ));
+            form.push((
+                "line_items[1][price_data][product_data][name]".into(),
+                "Shipping".into(),
+            ));
+        }
+    }
 
     let res = state
         .http
@@ -140,15 +178,19 @@ async fn create_session(
     let session: Session = res.json().await.map_err(|e| AppError::Internal(e.into()))?;
 
     sqlx::query(
-        "INSERT INTO purchases (id, user_id, kind, cosmetic_id, bundle_id, amount_cents, currency, status, session_id, created_at)
-         VALUES ($1, $2, $3, $4, $5, $6, 'usd', 'pending', $7, $8)",
+        "INSERT INTO purchases (id, user_id, kind, cosmetic_id, bundle_id, merch_id, merch_variant,
+                                amount_cents, currency, status, session_id, created_at)
+         VALUES ($1, $2, $3, $4, $5, $6, $7, $8, 'usd', 'pending', $9, $10)",
     )
     .bind(&purchase_id)
     .bind(user_id)
     .bind(kind)
     .bind(cosmetic_id)
     .bind(bundle_id)
-    .bind(amount_cents)
+    .bind(merch.map(|(id, _, _)| id))
+    .bind(merch.and_then(|(_, v, _)| v))
+    // The recorded amount includes postage, because that is what was charged.
+    .bind(amount_cents + merch.map_or(0, |(_, _, s)| s))
     .bind(&session.id)
     .bind(format_timestamp(OffsetDateTime::now_utc()))
     .execute(&state.db)
@@ -183,7 +225,7 @@ async fn checkout_cosmetic(
         return Err(AppError::InvalidInput("you already own that".into()));
     }
 
-    let url = create_session(&state, &user.id, "cosmetic", Some(&cosmetic_id), None, &name, price).await?;
+    let url = create_session(&state, &user.id, "cosmetic", Some(&cosmetic_id), None, None, &name, price).await?;
     Ok(Json(serde_json::json!({ "url": url })))
 }
 
@@ -217,7 +259,69 @@ async fn checkout_bundle(
         return Err(AppError::InvalidInput("you already own everything in that bundle".into()));
     }
 
-    let url = create_session(&state, &user.id, "bundle", None, Some(&bundle_id), &name, price).await?;
+    let url = create_session(&state, &user.id, "bundle", None, Some(&bundle_id), None, &name, price).await?;
+    Ok(Json(serde_json::json!({ "url": url })))
+}
+
+#[derive(Deserialize)]
+struct MerchRequest {
+    #[serde(default)]
+    variant: Option<String>,
+}
+
+async fn checkout_merch(
+    State(state): State<Arc<AppState>>,
+    jar: CookieJar,
+    Path(merch_id): Path<String>,
+    Json(body): Json<MerchRequest>,
+) -> Result<impl IntoResponse, AppError> {
+    let user = current_user(&state.db, &jar).await.ok_or(AppError::Unauthorized)?;
+
+    let row = sqlx::query(
+        "SELECT name, price_cents, shipping_cents, variants, available FROM merch WHERE id = $1",
+    )
+    .bind(&merch_id)
+    .fetch_optional(&state.db)
+    .await?
+    .ok_or(AppError::NotFound)?;
+
+    let available: bool = row.try_get("available")?;
+    if !available {
+        return Err(AppError::InvalidInput("that item is not for sale".into()));
+    }
+
+    let name: String = row.try_get("name")?;
+    let price: i32 = row.try_get("price_cents")?;
+    let shipping: i32 = row.try_get("shipping_cents")?;
+    let variants: Vec<String> = row.try_get("variants").unwrap_or_default();
+
+    // The variant has to be one this item actually comes in. A request naming
+    // anything else is rejected rather than quietly posted as a medium.
+    let variant = match (&body.variant, variants.is_empty()) {
+        (_, true) => None,
+        (Some(v), false) if variants.iter().any(|allowed| allowed == v) => Some(v.clone()),
+        _ => {
+            return Err(AppError::InvalidInput(
+                "choose a size before buying".into(),
+            ))
+        }
+    };
+
+    let label = match &variant {
+        Some(v) => format!("{name} ({v})"),
+        None => name,
+    };
+    let url = create_session(
+        &state,
+        &user.id,
+        "merch",
+        None,
+        None,
+        Some((&merch_id, variant.as_deref(), shipping)),
+        &label,
+        price,
+    )
+    .await?;
     Ok(Json(serde_json::json!({ "url": url })))
 }
 
@@ -230,6 +334,7 @@ async fn checkout_supporter(
         &state,
         &user.id,
         "supporter",
+        None,
         None,
         None,
         "TyperPunk supporter, 30 days",
@@ -304,6 +409,58 @@ struct WebhookData {
 #[derive(Deserialize)]
 struct WebhookObject {
     id: String,
+    /// Present on a physical order. Stripe collected it on its own page, so
+    /// this is the first time the address reaches this server.
+    #[serde(default)]
+    shipping_details: Option<ShippingDetails>,
+}
+
+#[derive(Deserialize)]
+struct ShippingDetails {
+    #[serde(default)]
+    name: Option<String>,
+    #[serde(default)]
+    address: Option<ShippingAddress>,
+}
+
+#[derive(Deserialize)]
+struct ShippingAddress {
+    #[serde(default)]
+    line1: Option<String>,
+    #[serde(default)]
+    line2: Option<String>,
+    #[serde(default)]
+    city: Option<String>,
+    #[serde(default)]
+    state: Option<String>,
+    #[serde(default)]
+    postal_code: Option<String>,
+    #[serde(default)]
+    country: Option<String>,
+}
+
+impl ShippingDetails {
+    /// One readable block for whoever packs the parcel. Stored as text rather
+    /// than as columns because nothing queries the parts of an address, and
+    /// splitting it would only invite assumptions about how addresses work in
+    /// countries that do not work that way.
+    fn to_label(&self) -> String {
+        let a = self.address.as_ref();
+        [
+            self.name.clone(),
+            a.and_then(|a| a.line1.clone()),
+            a.and_then(|a| a.line2.clone()),
+            a.and_then(|a| a.city.clone()),
+            a.and_then(|a| a.state.clone()),
+            a.and_then(|a| a.postal_code.clone()),
+            a.and_then(|a| a.country.clone()),
+        ]
+        .into_iter()
+        .flatten()
+        .filter(|part| !part.trim().is_empty())
+        .collect::<Vec<_>>()
+        .join("\n")
+    }
 }
 
 async fn webhook(
@@ -393,6 +550,28 @@ async fn webhook(
                 .execute(&mut *tx)
                 .await?;
             }
+        }
+        "merch" => {
+            // Nothing is unlocked by buying a mug. What the payment produces
+            // is an order for somebody to pack, so the address is stored and
+            // shipped_at is left null until it goes out.
+            let address = event
+                .data
+                .object
+                .shipping_details
+                .as_ref()
+                .map(|d| d.to_label())
+                .filter(|a| !a.is_empty());
+            if address.is_none() {
+                // Worth knowing about: it means an order was paid for with
+                // nowhere to send it, which needs a human either way.
+                tracing::error!("paid merch order {purchase_id} arrived with no shipping address");
+            }
+            sqlx::query("UPDATE purchases SET shipping_address = $1 WHERE id = $2")
+                .bind(address)
+                .bind(&purchase_id)
+                .execute(&mut *tx)
+                .await?;
         }
         "supporter" => {
             // Extends from whichever is later, so renewing early does not

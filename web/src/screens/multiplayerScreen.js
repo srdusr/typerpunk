@@ -50,6 +50,12 @@ function applyInlineStyles(container) {
     container.querySelectorAll('[data-percent]').forEach(el => {
         el.style.width = `${el.dataset.percent}%`;
     });
+    // How far along the track a sprite has travelled, as a fraction. The
+    // stylesheet turns it into a position; a percentage on its own would put
+    // the sprite's left edge at the finish rather than the sprite itself.
+    container.querySelectorAll('[data-progress]').forEach(el => {
+        el.style.setProperty('--p', String(Math.max(0, Math.min(1, Number(el.dataset.progress) / 100)) || 0));
+    });
 }
 
 // No account required - a quick race with friends shouldn't need signing
@@ -281,11 +287,18 @@ export function renderMultiplayerScreen(root, { onBack, onFinish, onShowStats, o
             opponents.innerHTML = players.map(p => {
                 const me = p.id === myId;
                 const prog = progressById[p.id] || {};
+                const percent = Math.round(prog.percent || 0);
+                // The sprite rides the track rather than sitting beside it.
+                // A static icon next to a thin bar made the one thing a
+                // player owns and can see the least visible part of the race.
                 return `
                 <div class="mp-racer-row${me ? ' me' : ''}" data-racer-color="${colors[p.id]}">
-                    <span class="mp-racer-sprite">${RACER_SPRITES[sprites[p.id]]}</span>
                     <span class="mp-racer-name">${escapeHtml(p.name)}${me ? ' (you)' : ''}</span>
-                    <div class="mp-racer-bar"><div class="mp-racer-bar-fill" data-percent="${prog.percent || 0}"></div></div>
+                    <div class="mp-racer-track">
+                        <div class="mp-racer-trail" data-percent="${percent}"></div>
+                        <span class="mp-racer-sprite" data-progress="${percent}">${RACER_SPRITES[sprites[p.id]]}</span>
+                    </div>
+                    <span class="mp-racer-percent">${percent}%</span>
                     <span class="mp-racer-wpm">${Math.round(prog.wpm || 0)}</span>
                 </div>`;
             }).join('');

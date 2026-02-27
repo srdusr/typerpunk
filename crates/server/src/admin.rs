@@ -22,6 +22,8 @@ pub fn router() -> Router<Arc<AppState>> {
     Router::new()
         .route("/api/admin/users", get(list_users))
         .route("/api/admin/users/:username/role", post(set_role))
+        .route("/api/admin/orders", get(list_orders))
+        .route("/api/admin/orders/:id/shipped", post(mark_shipped))
 }
 
 #[derive(Debug, Serialize)]
@@ -151,4 +153,97 @@ async fn set_role(
         body.moderator
     );
     Ok(Json(serde_json::json!({ "username": username, "moderator": body.moderator })))
+}
+
+
+/// Paid merchandise that has not been posted yet.
+///
+/// Selling a physical object creates an obligation that no amount of code
+/// discharges: somebody has to pack it and take it to a post office. This is
+/// the list of what is owed, which without it lives only in the processor's
+/// dashboard.
+#[derive(Debug, Serialize)]
+struct OrderView {
+    id: String,
+    username: String,
+    item: String,
+    variant: Option<String>,
+    amount_cents: i32,
+    paid_at: Option<String>,
+    shipping_address: Option<String>,
+    shipped_at: Option<String>,
+}
+
+#[derive(Debug, Deserialize)]
+struct OrderQuery {
+    /// Include orders already posted. Off by default, because the useful
+    /// question is what still has to go out.
+    #[serde(default)]
+    all: bool,
+}
+
+async fn list_orders(
+    State(state): State<Arc<AppState>>,
+    jar: CookieJar,
+    headers: HeaderMap,
+    Query(q): Query<OrderQuery>,
+) -> Result<impl IntoResponse, AppError> {
+    require_admin(&state, &jar, &headers).await?;
+
+    let rows = sqlx::query(
+        "SELECT p.id, u.username, m.name AS item, p.merch_variant, p.amount_cents,
+                p.paid_at, p.shipping_address, p.shipped_at
+         FROM purchases p
+         JOIN users u ON u.id = p.user_id
+         LEFT JOIN merch m ON m.id = p.merch_id
+         WHERE p.kind = 'merch' AND p.status = 'paid'
+           AND ($1 OR p.shipped_at IS NULL)
+         ORDER BY p.paid_at ASC
+         LIMIT 200",
+    )
+    .bind(q.all)
+    .fetch_all(&state.db)
+    .await?;
+
+    let orders: Vec<OrderView> = rows
+        .iter()
+        .map(|r| OrderView {
+            id: r.try_get("id").unwrap_or_default(),
+            username: r.try_get("username").unwrap_or_default(),
+            item: r
+                .try_get::<Option<String>, _>("item")
+                .unwrap_or(None)
+                .unwrap_or_else(|| "(item removed)".to_string()),
+            variant: r.try_get("merch_variant").unwrap_or(None),
+            amount_cents: r.try_get("amount_cents").unwrap_or(0),
+            paid_at: r.try_get("paid_at").unwrap_or(None),
+            shipping_address: r.try_get("shipping_address").unwrap_or(None),
+            shipped_at: r.try_get("shipped_at").unwrap_or(None),
+        })
+        .collect();
+
+    Ok(Json(orders))
+}
+
+async fn mark_shipped(
+    State(state): State<Arc<AppState>>,
+    jar: CookieJar,
+    headers: HeaderMap,
+    Path(id): Path<String>,
+) -> Result<impl IntoResponse, AppError> {
+    require_admin(&state, &jar, &headers).await?;
+
+    let done = sqlx::query(
+        "UPDATE purchases SET shipped_at = $1
+         WHERE id = $2 AND kind = 'merch' AND status = 'paid' AND shipped_at IS NULL",
+    )
+    .bind(crate::auth::format_timestamp(time::OffsetDateTime::now_utc()))
+    .bind(&id)
+    .execute(&state.db)
+    .await?;
+
+    if done.rows_affected() == 0 {
+        return Err(AppError::NotFound);
+    }
+    Ok(axum::http::StatusCode::NO_CONTENT)
 }

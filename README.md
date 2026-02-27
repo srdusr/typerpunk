@@ -174,8 +174,22 @@ payment succeeds, the server verifies the signature, and only then does the
 item appear. Set both Stripe variables. With either one missing, the store
 still displays but every checkout answers 501.
 
-Prices come from the `cosmetics` and `bundles` tables. The client sends an
-item id, never an amount.
+Prices come from the `cosmetics`, `bundles` and `merch` tables. The client
+sends an item id, never an amount.
+
+Shirts, mugs and deskmats are sold from the same store. These need an address,
+which Stripe collects on its own checkout page, so no postal detail is entered
+on this site. Postage is charged as a separate line so the buyer can see it.
+
+A physical order unlocks nothing. It records an obligation to pack and post
+something. `/api/admin/orders` lists what has been paid for and not yet sent,
+with the address, and the Contribute screen shows the same list to an
+administrator. Mark an order posted there once it goes out. Nothing emails
+the buyer; that is still a manual step.
+
+Shipping is limited to the countries in `SHIPPING_COUNTRIES` in
+`crates/server/src/billing.rs`. Add to that list only where you are willing to
+post and handle returns.
 
 ## Deployment
 

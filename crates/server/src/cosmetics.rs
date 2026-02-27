@@ -16,6 +16,7 @@ pub fn router() -> Router<Arc<AppState>> {
         .route("/api/cosmetics", get(list_catalog))
         .route("/api/cosmetics/me", get(my_cosmetics))
         .route("/api/cosmetics/bundles", get(list_bundles))
+        .route("/api/merch", get(list_merch))
         .route("/api/cosmetics/:id/equip", post(equip))
         .route("/api/cosmetics/unequip", post(unequip))
 }
@@ -59,6 +60,34 @@ struct MyCosmetics {
     equipped_flair: Option<String>,
     equipped_sprite: Option<String>,
     is_supporter: bool,
+}
+
+/// What is for sale in the physical store.
+async fn list_merch(State(state): State<Arc<AppState>>) -> Result<impl IntoResponse, AppError> {
+    let rows = sqlx::query(
+        "SELECT id, name, description, price_cents, kind, variants, shipping_cents
+         FROM merch WHERE available ORDER BY sort_order",
+    )
+    .fetch_all(&state.db)
+    .await?;
+
+    let items: Vec<serde_json::Value> = rows
+        .iter()
+        .map(|r| {
+            let variants: Vec<String> = r.try_get("variants").unwrap_or_default();
+            serde_json::json!({
+                "id": r.try_get::<String, _>("id").unwrap_or_default(),
+                "name": r.try_get::<String, _>("name").unwrap_or_default(),
+                "description": r.try_get::<Option<String>, _>("description").unwrap_or(None),
+                "price_cents": r.try_get::<i32, _>("price_cents").unwrap_or(0),
+                "shipping_cents": r.try_get::<i32, _>("shipping_cents").unwrap_or(0),
+                "kind": r.try_get::<String, _>("kind").unwrap_or_default(),
+                "variants": variants,
+            })
+        })
+        .collect();
+
+    Ok(Json(items))
 }
 
 /// Bundles, with the items each contains so the store can show what is in one

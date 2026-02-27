@@ -15,6 +15,13 @@ function formatPrice(cents) {
 // far taller than the others beside it.
 const MAX_PREVIEWS = 10;
 
+function merchKindLabel(kind) {
+    if (kind === 'shirt') return 'Shirts';
+    if (kind === 'mug') return 'Mugs';
+    if (kind === 'deskmat') return 'Deskmats';
+    return 'Other';
+}
+
 function categoryLabel(category) {
     if (category === 'caret') return 'Caret Colours';
     if (category === 'sprite') return 'Race Sprites';
@@ -28,6 +35,9 @@ function categoryLabel(category) {
 export function renderStoreScreen(root, { onBack, onShowStats, onShowPlaceholder, onShowAccount, onShowLeaderboard, onShowFriends, onShowMultiplayer }) {
     let catalog = [];
     let bundles = [];
+    let merch = [];
+    // Size picked per item, so a shirt cannot be bought without one.
+    const chosenVariant = {};
     let mine = { owned: [], equipped_caret: null, equipped_flair: null, equipped_sprite: null, is_supporter: false };
     let status = 'loading';
     let message = '';
@@ -106,6 +116,35 @@ export function renderStoreScreen(root, { onBack, onShowStats, onShowPlaceholder
             </div>`;
     }
 
+    function merchMarkup(item) {
+        const signedOut = status === 'signed-out';
+        const needsVariant = (item.variants || []).length > 0;
+        const picked = chosenVariant[item.id];
+        return `
+            <div class="merch-card">
+                <div class="merch-head">
+                    <div class="merch-name">${escapeHtml(item.name)}</div>
+                    <div class="merch-price">${formatPrice(item.price_cents)}</div>
+                </div>
+                ${item.description ? `<div class="merch-description">${escapeHtml(item.description)}</div>` : ''}
+                ${needsVariant ? `
+                    <div class="merch-variants">
+                        ${item.variants.map(v => `
+                            <button class="merch-variant${picked === v ? ' active' : ''}" data-action="pick-variant"
+                                    data-id="${escapeHtml(item.id)}" data-variant="${escapeHtml(v)}">${escapeHtml(v)}</button>
+                        `).join('')}
+                    </div>` : ''}
+                <div class="merch-foot">
+                    <span class="merch-shipping">${item.shipping_cents ? `plus ${formatPrice(item.shipping_cents)} postage` : 'postage included'}</span>
+                    <button class="menu-button small${signedOut ? ' quiet' : ' primary'}"
+                            data-action="${signedOut ? 'go-account' : 'buy-merch'}"
+                            data-id="${escapeHtml(item.id)}"
+                            ${signedOut ? ' data-tooltip="Sign in to order"' : ''}>Order</button>
+                </div>
+                <div class="merch-error" data-error-for="${escapeHtml(item.id)}"></div>
+            </div>`;
+    }
+
     function supporterMarkup() {
         if (status === 'signed-out') return '';
         if (mine.is_supporter) {
@@ -139,6 +178,18 @@ export function renderStoreScreen(root, { onBack, onShowStats, onShowPlaceholder
             ? `<h3>Bundles</h3><div class="bundle-grid">${bundles.map(bundleMarkup).join('')}</div>`
             : '';
 
+        const merchKinds = ['shirt', 'mug', 'deskmat'];
+        const merchSections = merch.length
+            ? `<h3>Merch</h3>
+               <div class="settings-hint merch-note">Posted to 21 countries. Your address is entered on the payment page and never on this site.</div>`
+              + merchKinds.map(kind => {
+                    const items = merch.filter(m => m.kind === kind);
+                    if (!items.length) return '';
+                    return `<h4 class="merch-kind">${merchKindLabel(kind)}</h4>
+                            <div class="merch-grid">${items.map(merchMarkup).join('')}</div>`;
+                }).join('')
+            : '';
+
         const categories = ['caret', 'flair', 'sprite'];
         const itemSections = categories.map(cat => {
             const items = catalog.filter(i => i.category === cat);
@@ -146,16 +197,16 @@ export function renderStoreScreen(root, { onBack, onShowStats, onShowPlaceholder
             return `<h3>${categoryLabel(cat)}</h3><div class="leaderboard-list">${items.map(itemMarkup).join('')}</div>`;
         }).join('');
 
-        return banner + supporterMarkup() + bundleSection + itemSections
+        return banner + supporterMarkup() + bundleSection + itemSections + merchSections
              + `<div class="custom-error store-error"></div>`;
     }
 
     /// Starts a checkout and follows the redirect the server returns. A server
     /// with no processor keys answers 501, which is reported rather than
     /// leaving the button looking broken.
-    async function startCheckout(path, errorEl) {
+    async function startCheckout(path, errorEl, body) {
         try {
-            const data = await api.post(path);
+            const data = await api.post(path, body);
             if (data && data.url) window.location.assign(data.url);
         } catch (err) {
             if (!errorEl) return;
@@ -196,6 +247,29 @@ export function renderStoreScreen(root, { onBack, onShowStats, onShowPlaceholder
         root.querySelector('[data-action="buy-supporter"]')
             ?.addEventListener('click', () => startCheckout('/api/billing/supporter', errorEl));
 
+        root.querySelectorAll('[data-action="pick-variant"]').forEach(btn => {
+            btn.addEventListener('click', () => {
+                chosenVariant[btn.dataset.id] = btn.dataset.variant;
+                rerender();
+            });
+        });
+        root.querySelectorAll('[data-action="buy-merch"]').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const id = btn.dataset.id;
+                const item = merch.find(m => m.id === id);
+                const cardError = root.querySelector(`[data-error-for="${CSS.escape(id)}"]`);
+                // Checked here as well as on the server, so choosing a size is
+                // a click rather than a failed checkout.
+                if (item && (item.variants || []).length && !chosenVariant[id]) {
+                    if (cardError) cardError.textContent = 'Choose a size first.';
+                    return;
+                }
+                if (cardError) cardError.textContent = '';
+                startCheckout(`/api/billing/merch/${encodeURIComponent(id)}`, cardError || errorEl,
+                              { variant: chosenVariant[id] || null });
+            });
+        });
+
         root.querySelectorAll('[data-action="equip"]').forEach(btn => {
             btn.addEventListener('click', async () => {
                 await api.post(`/api/cosmetics/${btn.dataset.id}/equip`).catch(() => {});
@@ -233,6 +307,7 @@ export function renderStoreScreen(root, { onBack, onShowStats, onShowPlaceholder
         // A store with no bundles is still a store, so this failing is not an
         // error worth replacing the page with.
         try { bundles = await api.get('/api/cosmetics/bundles'); } catch { bundles = []; }
+        try { merch = await api.get('/api/merch'); } catch { merch = []; }
     }
 
     async function loadMine() {

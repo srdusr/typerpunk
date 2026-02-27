@@ -18,7 +18,7 @@ import { saveDocument, setPosition, getDocument, listDocuments, removeDocument }
 import { getSettings } from './settings.js';
 import { generateWordStream, generateWeakKeyStream, wordCountForDuration } from './wordGenerator.js';
 import { getWeakChars } from './keyStats.js';
-import { mountTopAdBanner } from './adSlot.js';
+import { mountTopAdBanner, mountSideAdRails } from './adSlot.js';
 
 const FALLBACK_TEXT = { category: 'general', content: 'The quick brown fox jumps over the lazy dog.', attribution: 'Traditional pangram' };
 
@@ -98,6 +98,7 @@ export function startApp(root, localTexts) {
     let game = null;
     let cleanupScreen = null;
     const adBanner = mountTopAdBanner();
+    const adRails = mountSideAdRails();
 
     // Approved community submissions, merged on top of the bundled dataset.
     // Best-effort: the app is fully usable on the packs it ships with, so a
@@ -146,6 +147,7 @@ export function startApp(root, localTexts) {
         currentScreenName = name;
         escapeIsCostly = costly;
         adBanner.setScreen(name);
+        adRails.setScreen(name);
     }
 
     function handleGlobalEscape(e) {

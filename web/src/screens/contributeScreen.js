@@ -28,6 +28,7 @@ export function renderContributeScreen(root, { onBack, onShowStats, onShowPlaceh
     let isAdmin = false;
     let roleHolders = [];
     let userSearch = [];
+    let orders = [];
     let cleanupInner = null;
 
     function statusLabel(s) {
@@ -47,6 +48,14 @@ export function renderContributeScreen(root, { onBack, onShowStats, onShowPlaceh
         // ordinary case for almost everyone.
         try { roleHolders = await api.get('/api/admin/users'); isAdmin = true; }
         catch { roleHolders = []; isAdmin = false; }
+        // Paid orders waiting to be posted. Only an administrator can see
+        // them, and they carry a postal address, so this is the one screen in
+        // the app that shows one.
+        if (isAdmin) {
+            try { orders = await api.get('/api/admin/orders'); } catch { orders = []; }
+        } else {
+            orders = [];
+        }
     }
 
     function submissionRow(s, moderating) {
@@ -114,6 +123,30 @@ export function renderContributeScreen(root, { onBack, onShowStats, onShowPlaceh
                                 </div>
                             `).join('') || '<div class="stats-empty">No moderators yet. Search for a user to appoint one.</div>'}
                         </div>
+                    ` : ''}
+
+                    ${isAdmin ? `
+                        <h3>Orders to post${orders.length ? ` (${orders.length})` : ''}</h3>
+                        <div class="settings-hint">Paid and not yet posted. Marking one sent does not notify the buyer.</div>
+                        ${orders.length ? `
+                            <div class="submission-list">
+                                ${orders.map(o => `
+                                    <div class="submission-row order-row" data-order="${escapeHtml(o.id)}">
+                                        <div class="submission-head">
+                                            <span class="submission-category">${escapeHtml(o.item)}${o.variant ? ` &middot; ${escapeHtml(o.variant)}` : ''}</span>
+                                            <span class="submission-by">for ${escapeHtml(o.username)}</span>
+                                            <span class="submission-status">$${(o.amount_cents / 100).toFixed(2)}</span>
+                                        </div>
+                                        <div class="order-address">${o.shipping_address
+                                            ? escapeHtml(o.shipping_address).replace(/\n/g, '<br>')
+                                            : 'No address recorded. Check the payment processor before posting.'}</div>
+                                        <div class="submission-actions">
+                                            <button class="menu-button small primary" data-action="mark-shipped" data-order="${escapeHtml(o.id)}">Mark posted</button>
+                                        </div>
+                                    </div>
+                                `).join('')}
+                            </div>
+                        ` : '<div class="stats-empty">Nothing waiting to go out.</div>'}
                     ` : ''}
 
                     ${isModerator ? `
@@ -185,7 +218,16 @@ export function renderContributeScreen(root, { onBack, onShowStats, onShowPlaceh
             });
         });
 
-        root.querySelectorAll('.submission-actions button').forEach(btn => {
+        root.querySelectorAll('[data-action="mark-shipped"]').forEach(btn => {
+            btn.addEventListener('click', async () => {
+                try { await api.post(`/api/admin/orders/${encodeURIComponent(btn.dataset.order)}/shipped`); }
+                catch { /* reloading below shows what actually happened */ }
+                await load();
+                render();
+            });
+        });
+
+        root.querySelectorAll('.submission-actions button:not([data-action="mark-shipped"])').forEach(btn => {
             btn.addEventListener('click', async () => {
                 const row = btn.closest('.submission-row');
                 const decision = btn.dataset.action === 'approve' ? 'approve' : 'reject';
