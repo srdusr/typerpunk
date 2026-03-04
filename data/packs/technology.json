@@ -148,5 +148,15 @@
     "category": "technology",
     "content": "Version control does not exist to store code. It exists to answer the question of what changed and why, which is the only question that matters when something has broken and nobody remembers touching it.",
     "attribution": "Unknown"
+  },
+  {
+    "category": "technology",
+    "content": "There are only two hard things in computer science: cache invalidation, naming things, and off-by-one errors. The joke survives because all three are the same problem wearing different clothes. Each is about the gap between a model in someone's head and the thing the model stands for, and each becomes visible only at the boundary where one part of a system hands something to another. Nothing inside a function is ever hard in this way.",
+    "attribution": "Unknown"
+  },
+  {
+    "category": "technology",
+    "content": "The first rule of distributed systems is not to build one. The second is that if you must, assume every message may arrive twice, out of order, or not at all, and design so that none of those is a special case. Systems that treat delivery as reliable do not fail gracefully when it is not; they fail at three in the morning, in a way that takes a week to reproduce, and the fix is almost always the design that was rejected at the start for being too complicated.",
+    "attribution": "Unknown"
   }
 ]

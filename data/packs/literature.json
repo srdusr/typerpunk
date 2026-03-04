@@ -133,5 +133,30 @@
     "category": "literature",
     "content": "There is no greater agony than bearing an untold story inside you. The words gather and press until they must come out, and the telling is not a relief so much as a surrender.",
     "attribution": "Maya Angelou"
+  },
+  {
+    "category": "literature",
+    "content": "It was the best of times, it was the worst of times, it was the age of wisdom, it was the age of foolishness, it was the epoch of belief, it was the epoch of incredulity, it was the season of Light, it was the season of Darkness, it was the spring of hope, it was the winter of despair, we had everything before us, we had nothing before us, we were all going direct to Heaven, we were all going direct the other way.",
+    "attribution": "Charles Dickens, A Tale of Two Cities"
+  },
+  {
+    "category": "literature",
+    "content": "Call me Ishmael. Some years ago, never mind how long precisely, having little or no money in my purse, and nothing particular to interest me on shore, I thought I would sail about a little and see the watery part of the world. It is a way I have of driving off the spleen and regulating the circulation. Whenever I find myself growing grim about the mouth, whenever it is a damp, drizzly November in my soul, then I account it high time to get to sea as soon as I can.",
+    "attribution": "Herman Melville, Moby-Dick"
+  },
+  {
+    "category": "literature",
+    "content": "There was no possibility of taking a walk that day. We had been wandering, indeed, in the leafless shrubbery an hour in the morning; but since dinner the cold winter wind had brought with it clouds so sombre, and a rain so penetrating, that further outdoor exercise was now out of the question. I was glad of it: I never liked long walks, especially on chilly afternoons.",
+    "attribution": "Charlotte Bronte, Jane Eyre"
+  },
+  {
+    "category": "literature",
+    "content": "The sun shone, having no alternative, on the nothing new. Murphy sat out of it, as though he were free, in a mew in West Brompton. Here for what might have been six months he had eaten, drunk, slept, and put his clothes on and off, in a medium-sized cage of north-western aspect commanding an unbroken view of medium-sized cages of south-eastern aspect.",
+    "attribution": "Samuel Beckett, Murphy"
+  },
+  {
+    "category": "literature",
+    "content": "Whether I shall turn out to be the hero of my own life, or whether that station will be held by anybody else, these pages must show. To begin my life with the beginning of my life, I record that I was born on a Friday, at twelve o'clock at night. It was remarked that the clock began to strike, and I began to cry, simultaneously.",
+    "attribution": "Charles Dickens, David Copperfield"
   }
 ]

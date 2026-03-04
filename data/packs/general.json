@@ -158,5 +158,25 @@
     "category": "general",
     "content": "Measurement changes what is measured. The moment a number becomes a target, effort moves toward the number rather than the thing it was standing in for, and the two drift apart until the number is worth nothing.",
     "attribution": "Unknown"
+  },
+  {
+    "category": "general",
+    "content": "Learning to type well is mostly learning to stop watching your own hands. The eyes want to check, and every check costs the place in the text, so the first weeks of practice feel slower than the hunt-and-peck they replace. What changes is not the speed of any single keystroke but the number of decisions made per word. A trained hand does not decide where a letter is; it has already moved. That is why progress arrives in steps rather than a slope, and why a bad week is usually a week of watching.",
+    "attribution": "Unknown"
+  },
+  {
+    "category": "general",
+    "content": "The most useful thing about a fixed layout is that it is fixed. Whatever its faults, and it has several, the arrangement of letters on a keyboard has not changed in a century, which means the skill transfers to every machine you will ever sit at. A better layout that only you use is worth less than a worse one everybody shares. This is true of far more than keyboards, and it is the reason so many obviously improvable standards survive every attempt to improve them.",
+    "attribution": "Unknown"
+  },
+  {
+    "category": "general",
+    "content": "Errors cluster. Watch anyone type for a minute and the mistakes will not be spread evenly across the passage: they gather at the same letter pairs, the same reaches, the same moment attention wanders after a long word. This is good news, because a cluster can be practised directly while a general weakness cannot. The fastest way to get better is rarely to type more; it is to find the six combinations responsible for most of the damage and drill those until they stop being decisions.",
+    "attribution": "Unknown"
+  },
+  {
+    "category": "general",
+    "content": "Speed and accuracy are not a trade-off in the way people assume. Below a certain accuracy the corrections cost more time than the extra pace ever earned, so the fastest sustainable rate is not the fastest possible one. Most typists asked to slow down and stop making mistakes end up finishing sooner, which is a surprising result until you count the keystrokes rather than the seconds, at which point it becomes obvious and slightly embarrassing.",
+    "attribution": "Unknown"
   }
 ]
