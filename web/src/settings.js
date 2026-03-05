@@ -19,7 +19,11 @@ let settings = {
     caretBlink: true,
     hideLiveStats: false,
     blindMode: false,
-    soundTheme: 'off',
+    // On by default. A browser will not start an audio context before a user
+    // gesture, and the first keystroke is one, so the first tone plays with
+    // the first character typed rather than being swallowed. Anyone who does
+    // not want it has the speaker in the top rail.
+    soundTheme: 'mech',
     wordListTier: 'common',
     // Which vocabulary the generated-word modes draw from (see languages.js).
     language: 'en',

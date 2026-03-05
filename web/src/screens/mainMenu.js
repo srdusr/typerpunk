@@ -62,12 +62,6 @@ function looksLikeText(str) {
 
 const WORD_COUNTS = [10, 25, 50, 100];
 const TIME_DURATIONS = [15, 30, 60, 120];
-const SOUND_THEMES = ['off', 'click', 'mech'];
-function soundThemeLabel(theme) {
-    if (theme === 'click') return 'Click';
-    if (theme === 'mech') return 'Mechanical';
-    return 'Off';
-}
 
 function wordListTierLabel(tier) {
     if (tier === 'extended') return 'Extended';
@@ -170,7 +164,6 @@ export function renderMainMenu(root, props) {
                     <button class="menu-button small quiet" data-action="toggle-live-stats" data-tooltip="Show WPM/ACC while you type, or only reveal them on the end screen.">Live Stats: ${settings.hideLiveStats ? 'Off' : 'On'}</button>
                     <button class="menu-button small quiet" data-action="toggle-caret-blink" data-tooltip="Make the current-character caret blink, or keep it solid.">Blink Caret: ${settings.caretBlink ? 'On' : 'Off'}</button>
                     <button class="menu-button small quiet" data-action="toggle-blind-mode" data-tooltip="Hide correct/incorrect coloring while typing - only revealed on the end screen.">Blind Mode: ${settings.blindMode ? 'On' : 'Off'}</button>
-                    <button class="menu-button small quiet" data-action="cycle-sound-theme" data-tooltip="Play a sound on each keystroke. Click to cycle.">Sound: ${escapeHtml(soundThemeLabel(settings.soundTheme))}</button>
                 </div>
                 </div>
                 </div>
@@ -211,6 +204,8 @@ export function renderMainMenu(root, props) {
                 </div>
                 <div class="custom-error"></div>
             </div>
+
+            ${logoLockup({ className: 'logo logo-corner', action: null })}
 
             <div class="menu-key-hint">Enter to start &middot; Esc for the menu</div>
 
@@ -461,13 +456,6 @@ export function renderMainMenu(root, props) {
         const next = !getSettings().blindMode;
         updateSettings({ blindMode: next });
         blindModeBtn.textContent = `Blind Mode: ${next ? 'On' : 'Off'}`;
-    });
-    const soundThemeBtn = root.querySelector('[data-action="cycle-sound-theme"]');
-    soundThemeBtn.addEventListener('click', () => {
-        const current = getSettings().soundTheme;
-        const next = SOUND_THEMES[(SOUND_THEMES.indexOf(current) + 1) % SOUND_THEMES.length];
-        updateSettings({ soundTheme: next });
-        soundThemeBtn.textContent = `Sound: ${soundThemeLabel(next)}`;
     });
 
     root.querySelector('[data-action="simulate-test"]')?.addEventListener('click', onSimulateTest);

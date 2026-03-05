@@ -1,4 +1,4 @@
-import { LANGUAGE_ICON, FRIENDS_ICON, ACCOUNT_ICON } from './screens/icons.js';
+import { LANGUAGE_ICON, FRIENDS_ICON, ACCOUNT_ICON, SOUND_ON_ICON, SOUND_OFF_ICON } from './screens/icons.js';
 import { LANGUAGES, languageLabel } from './languages.js';
 import { getSettings, updateSettings } from './settings.js';
 import { renderThemeButton } from './themeButton.js';
@@ -57,6 +57,12 @@ export function renderTopRail(root, { onShowAccount, onShowFriends, extras = [] 
     icons.appendChild(langGroup);
 
     const cleanupTheme = renderThemeButton(icons);
+
+    // Keystroke sound. It was a line inside the settings dialog and off by
+    // default, so the usual way to discover it was to be told it existed.
+    const sound = document.createElement('div');
+    sound.className = 'sound-control';
+    icons.appendChild(sound);
 
     const friends = document.createElement('div');
     friends.className = 'friends-control';
@@ -151,6 +157,29 @@ export function renderTopRail(root, { onShowAccount, onShowFriends, extras = [] 
     paintAuthAndMeasure();
     const unsubscribeAuth = onAuthChange(paintAuthAndMeasure);
     window.addEventListener('resize', publishHeight);
+
+    // Sound ---------------------------------------------------------------
+    // On by default, set to the mechanical tone. The speaker here is how it
+    // gets turned off, which is why it is in the rail rather than buried in
+    // the settings dialog where it used to live.
+    const SOUND_THEMES = ['off', 'click', 'mech'];
+    const SOUND_LABELS = { off: 'Off', click: 'Click', mech: 'Mechanical' };
+
+    function paintSound() {
+        const current = getSettings().soundTheme || 'off';
+        const on = current !== 'off';
+        sound.innerHTML = `<button class="corner-icon-button${on ? ' active' : ''}" data-action="rail-sound"
+                aria-label="Keystroke sound: ${SOUND_LABELS[current]}"
+                data-tooltip="Keystroke sound: ${SOUND_LABELS[current]}. Click to cycle.">${on ? SOUND_ON_ICON : SOUND_OFF_ICON}</button>`;
+        attachTooltips(sound);
+        sound.querySelector('button').addEventListener('click', () => {
+            const now = getSettings().soundTheme || 'off';
+            const next = SOUND_THEMES[(SOUND_THEMES.indexOf(now) + 1) % SOUND_THEMES.length];
+            updateSettings({ soundTheme: next });
+            paintSound();
+        });
+    }
+    paintSound();
 
     // Friends ------------------------------------------------------------
     const friendsBtn = friends.querySelector('[data-action="rail-friends"]');

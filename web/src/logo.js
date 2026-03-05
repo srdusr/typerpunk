@@ -1,10 +1,14 @@
 // The TyperPunk mark.
 //
-// The mark is a prompt: a chevron, a baseline, and a block cursor resting on
-// it. It says "text being entered at a terminal" without spelling anything
-// out, and it stays legible at 16 pixels, which a more detailed drawing would
-// not. The chevron is drawn twice, the lower copy offset and in the secondary
-// colour, which is the one deliberate stylistic note.
+// The mark is a shell prompt: a chevron and the underscore cursor that sits
+// after it, waiting for input. Two shapes, nothing else. It reads at 16
+// pixels, which is the only size that really has to work, and it is the
+// gesture anyone who has used a terminal recognises without being told.
+//
+// An earlier version stacked a chevron, a full-width baseline and a large
+// filled block, plus an offset ghost copy of the chevron behind it. Five
+// shapes in a 32 pixel square is a drawing, not a mark: the parts crowded
+// each other and none of them read.
 //
 // Everything is drawn in currentColor and the theme's own variables, so the
 // mark follows the palette rather than carrying its own.
@@ -12,13 +16,11 @@
 /// The mark on its own, for a favicon, a tab, or anywhere the name is already
 /// present. Sized by its container.
 export const LOGO_MARK = `
-<svg class="logo-mark" viewBox="0 0 32 32" aria-hidden="true" focusable="false">
-    <g fill="none" stroke-width="3" stroke-linecap="square" stroke-linejoin="miter">
-        <polyline class="logo-mark-ghost" points="7,10 13,16 7,22" />
-        <polyline class="logo-mark-chevron" points="7,9 13,15 7,21" />
+<svg class="logo-mark" viewBox="0 0 28 28" aria-hidden="true" focusable="false">
+    <g class="logo-mark-chevron" fill="none" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="4,7 11,14 4,21" />
     </g>
-    <rect class="logo-mark-baseline" x="6" y="24" width="20" height="2.5" />
-    <rect class="logo-mark-cursor" x="16" y="15" width="9" height="9" />
+    <rect class="logo-mark-cursor" x="15" y="17.6" width="9" height="3.4" rx="0.6" />
 </svg>`;
 
 /// Mark and wordmark together. The wordmark is split so the two halves of the
@@ -34,13 +36,11 @@ export function logoLockup({ tag = 'div', className = 'logo', action = 'menu' } 
 /// The same mark as a standalone SVG document, for the favicon. Colours are
 /// literal here because a favicon is rendered outside the page and cannot
 /// read its variables.
-export function faviconDataUri({ accent = '#00ff9d', ghost = '#00e5ff', background = '#000000' } = {}) {
-    const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">`
-        + `<rect width="32" height="32" fill="${background}"/>`
-        + `<polyline points="7,10 13,16 7,22" fill="none" stroke="${ghost}" stroke-width="3" stroke-linecap="square"/>`
-        + `<polyline points="7,9 13,15 7,21" fill="none" stroke="${accent}" stroke-width="3" stroke-linecap="square"/>`
-        + `<rect x="6" y="24" width="20" height="2.5" fill="${accent}"/>`
-        + `<rect x="16" y="15" width="9" height="9" fill="${accent}"/>`
+export function faviconDataUri({ accent = '#00ff9d', background = '#000000' } = {}) {
+    const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 28 28">`
+        + `<rect width="28" height="28" fill="${background}"/>`
+        + `<polyline points="4,7 11,14 4,21" fill="none" stroke="${accent}" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>`
+        + `<rect x="15" y="17.6" width="9" height="3.4" rx="0.6" fill="${accent}"/>`
         + `</svg>`;
     return `data:image/svg+xml,${encodeURIComponent(svg)}`;
 }

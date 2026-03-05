@@ -29,8 +29,12 @@ import { getUser, onAuthChange } from './auth.js';
 // own name.
 
 const SIZES = {
-    // Roughly a leaderboard unit, and a mobile banner below the breakpoint.
-    banner: { w: 728, h: 90, mobileW: 320, mobileH: 100 },
+    // A full banner, and the mobile banner below the breakpoint. Both are
+    // standard units. The taller 728x90 leaderboard was used first and is the
+    // more common desktop size, but at 90px it was deeper than the icon rail
+    // beside it, so it set how far down the whole page started. At 60px it is
+    // shorter than the rail and costs the layout nothing.
+    banner: { w: 468, h: 60, mobileW: 320, mobileH: 50 },
     // A wide skyscraper, the usual unit for a page margin.
     skyscraper: { w: 160, h: 600, mobileW: 160, mobileH: 600 },
 };

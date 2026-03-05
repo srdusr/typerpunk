@@ -149,3 +149,18 @@ Object.assign(FLAIR_ICONS, {
     moth: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 4L4 8L6 16L12 13Z"/><path d="M12 4L20 8L18 16L12 13Z"/><rect x="11" y="4" width="2" height="16"/></svg>`,
     reactor: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L21 20H3Z"/><rect x="10" y="12" width="4" height="5" fill="var(--background-color)"/></svg>`,
 });
+
+// A speaker, and the same speaker with the waves struck through. Two icons
+// rather than one that changes colour: whether sound is on has to be readable
+// at a glance without comparing it to anything.
+export const SOUND_ON_ICON = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <polygon points="4,9 8,9 13,5 13,19 8,15 4,15" fill="currentColor" stroke="none"/>
+    <path d="M16.5 8.5a5 5 0 0 1 0 7"/>
+    <path d="M19 6a8.5 8.5 0 0 1 0 12"/>
+</svg>`;
+
+export const SOUND_OFF_ICON = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <polygon points="4,9 8,9 13,5 13,19 8,15 4,15" fill="currentColor" stroke="none"/>
+    <line x1="16" y1="9" x2="21" y2="15"/>
+    <line x1="21" y1="9" x2="16" y2="15"/>
+</svg>`;

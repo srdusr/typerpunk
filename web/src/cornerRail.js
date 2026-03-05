@@ -2,12 +2,6 @@ import { STATS_ICON, SETTINGS_ICON, LEADERBOARD_ICON, STORE_ICON } from './scree
 import { attachTooltips } from './tooltip.js';
 import { getSettings, updateSettings } from './settings.js';
 
-const SOUND_THEMES = ['off', 'click', 'mech'];
-function soundThemeLabel(theme) {
-    if (theme === 'click') return 'Click';
-    if (theme === 'mech') return 'Mechanical';
-    return 'Off';
-}
 
 // The icon rails, in the same places on every screen - the main menu builds
 // the identical clusters inline (see mainMenu.js) because it owns its own
@@ -31,7 +25,6 @@ export function renderCornerRail(root, { onShowStats, onShowPlaceholder, onShowL
                     <button class="menu-button small quiet" data-action="rail-toggle-live-stats" data-tooltip="Show WPM/ACC while you type, or only reveal them on the end screen.">Live Stats: ${settings.hideLiveStats ? 'Off' : 'On'}</button>
                     <button class="menu-button small quiet" data-action="rail-toggle-caret-blink" data-tooltip="Make the current-character caret blink, or keep it solid.">Blink Caret: ${settings.caretBlink ? 'On' : 'Off'}</button>
                     <button class="menu-button small quiet" data-action="rail-toggle-blind-mode" data-tooltip="Hide correct/incorrect coloring while typing - only revealed on the end screen.">Blind Mode: ${settings.blindMode ? 'On' : 'Off'}</button>
-                    <button class="menu-button small quiet" data-action="rail-cycle-sound-theme" data-tooltip="Play a sound on each keystroke. Click to cycle.">Sound: ${soundThemeLabel(settings.soundTheme)}</button>
                 </div>
             </div>
         </div>
@@ -77,13 +70,6 @@ export function renderCornerRail(root, { onShowStats, onShowPlaceholder, onShowL
         const next = !getSettings().blindMode;
         updateSettings({ blindMode: next });
         blindModeBtn.textContent = `Blind Mode: ${next ? 'On' : 'Off'}`;
-    });
-    const soundThemeBtn = left.querySelector('[data-action="rail-cycle-sound-theme"]');
-    soundThemeBtn.addEventListener('click', () => {
-        const current = getSettings().soundTheme;
-        const next = SOUND_THEMES[(SOUND_THEMES.indexOf(current) + 1) % SOUND_THEMES.length];
-        updateSettings({ soundTheme: next });
-        soundThemeBtn.textContent = `Sound: ${soundThemeLabel(next)}`;
     });
 
     const leaderboardBtn = right.querySelector('[data-action="rail-leaderboard"]');
