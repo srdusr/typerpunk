@@ -17,3 +17,7 @@
 # Python bytecode from the Playwright test suite
 __pycache__/
 *.pyc
+
+# Working notes from the nightshift runs. Kept on disk, not published: they
+# are a log of how the work got done, not part of the project.
+/.nightshift/
