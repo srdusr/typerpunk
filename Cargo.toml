@@ -51,6 +51,11 @@ tower-http = { version = "0.5", features = ["cors", "trace", "set-header"] }
 # with them rsa, which carries RUSTSEC-2023-0071. Only Postgres is used.
 sqlx = { version = "0.8", default-features = false, features = ["runtime-tokio-rustls", "postgres", "macros", "migrate", "time", "uuid"] }
 argon2 = "0.5"
+# Already in the tree through argon2; declared directly because the Stripe
+# webhook signature check needs them by name.
+hmac = "0.12"
+sha2 = "0.10"
+subtle = "2.6"
 # 0.12 moves to hyper 1.x, which brings h2 0.4 and rustls 0.23 with it.
 # 0.11 was the sole source of every remaining advisory in the server build:
 # h2 0.3, rustls-webpki 0.101, rustls-pemfile 1.0 and idna 0.3.
