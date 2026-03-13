@@ -3133,6 +3133,24 @@ body::-webkit-scrollbar, .app::-webkit-scrollbar, #root::-webkit-scrollbar {
     white-space: normal;
 }
 
+/* Stands in for a buy control while there is no server to buy through. A
+   label, not a button: there is nothing for a press to do. */
+.store-soon {
+    padding: 0.35rem 0.9rem;
+    border: var(--border-width) dashed var(--border-color);
+    border-radius: var(--radius);
+    color: var(--sub-color);
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    white-space: nowrap;
+}
+
+.store-offline-note {
+    justify-content: center;
+    text-align: center;
+}
+
 /* Physical goods. A card, like a bundle, because each one has a description,
    possibly a size to pick, and a postage line. */
 .merch-note {

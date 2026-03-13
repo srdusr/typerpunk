@@ -1,0 +1,331 @@
+{
+  "cosmetics": [
+    {
+      "id": "caret-crimson",
+      "name": "Crimson Caret",
+      "category": "caret",
+      "price_cents": 149,
+      "value": "#ff3b5c"
+    },
+    {
+      "id": "caret-amber",
+      "name": "Amber Caret",
+      "category": "caret",
+      "price_cents": 149,
+      "value": "#ffb703"
+    },
+    {
+      "id": "caret-cyan",
+      "name": "Cyan Caret",
+      "category": "caret",
+      "price_cents": 149,
+      "value": "#00e5ff"
+    },
+    {
+      "id": "caret-magenta",
+      "name": "Magenta Caret",
+      "category": "caret",
+      "price_cents": 149,
+      "value": "#ff2fb0"
+    },
+    {
+      "id": "caret-ice",
+      "name": "Ice Caret",
+      "category": "caret",
+      "price_cents": 179,
+      "value": "#7dd3fc"
+    },
+    {
+      "id": "caret-violet",
+      "name": "Violet Caret",
+      "category": "caret",
+      "price_cents": 179,
+      "value": "#a855f7"
+    },
+    {
+      "id": "caret-lime",
+      "name": "Lime Caret",
+      "category": "caret",
+      "price_cents": 179,
+      "value": "#a3e635"
+    },
+    {
+      "id": "caret-ember",
+      "name": "Ember Caret",
+      "category": "caret",
+      "price_cents": 199,
+      "value": "#fb923c"
+    },
+    {
+      "id": "caret-bone",
+      "name": "Bone Caret",
+      "category": "caret",
+      "price_cents": 199,
+      "value": "#e7e5e4"
+    },
+    {
+      "id": "caret-signal",
+      "name": "Signal Caret",
+      "category": "caret",
+      "price_cents": 349,
+      "value": "#22d3ee"
+    },
+    {
+      "id": "caret-void",
+      "name": "Void Caret",
+      "category": "caret",
+      "price_cents": 349,
+      "value": "#6b21a8"
+    },
+    {
+      "id": "flair-bolt",
+      "name": "Bolt",
+      "category": "flair",
+      "price_cents": 129,
+      "value": "bolt"
+    },
+    {
+      "id": "flair-star",
+      "name": "Star",
+      "category": "flair",
+      "price_cents": 129,
+      "value": "star"
+    },
+    {
+      "id": "flair-shard",
+      "name": "Shard",
+      "category": "flair",
+      "price_cents": 129,
+      "value": "shard"
+    },
+    {
+      "id": "flair-eye",
+      "name": "Eye",
+      "category": "flair",
+      "price_cents": 179,
+      "value": "eye"
+    },
+    {
+      "id": "flair-circuit",
+      "name": "Circuit",
+      "category": "flair",
+      "price_cents": 179,
+      "value": "circuit"
+    },
+    {
+      "id": "flair-skull",
+      "name": "Skull",
+      "category": "flair",
+      "price_cents": 199,
+      "value": "skull"
+    },
+    {
+      "id": "flair-moth",
+      "name": "Moth",
+      "category": "flair",
+      "price_cents": 249,
+      "value": "moth"
+    },
+    {
+      "id": "flair-crown",
+      "name": "Crown",
+      "category": "flair",
+      "price_cents": 249,
+      "value": "crown"
+    },
+    {
+      "id": "flair-reactor",
+      "name": "Reactor",
+      "category": "flair",
+      "price_cents": 299,
+      "value": "reactor"
+    },
+    {
+      "id": "sprite-signal",
+      "name": "Signal",
+      "category": "sprite",
+      "price_cents": 249,
+      "value": "signal"
+    },
+    {
+      "id": "sprite-dart",
+      "name": "Dart",
+      "category": "sprite",
+      "price_cents": 249,
+      "value": "dart"
+    },
+    {
+      "id": "sprite-blade",
+      "name": "Blade",
+      "category": "sprite",
+      "price_cents": 299,
+      "value": "blade"
+    },
+    {
+      "id": "sprite-helm",
+      "name": "Helm",
+      "category": "sprite",
+      "price_cents": 299,
+      "value": "helm"
+    },
+    {
+      "id": "sprite-core",
+      "name": "Core",
+      "category": "sprite",
+      "price_cents": 349,
+      "value": "core"
+    },
+    {
+      "id": "sprite-rocket",
+      "name": "Rocket",
+      "category": "sprite",
+      "price_cents": 399,
+      "value": "rocket"
+    }
+  ],
+  "bundles": [
+    {
+      "id": "bundle-starter",
+      "name": "Starter Kit",
+      "description": "A caret, a flair and a sprite to make a profile your own.",
+      "price_cents": 399,
+      "full_price_cents": 527,
+      "items": [
+        "caret-cyan",
+        "flair-bolt",
+        "sprite-dart"
+      ]
+    },
+    {
+      "id": "bundle-neon",
+      "name": "Neon Set",
+      "description": "The brightest carets in the store, together.",
+      "price_cents": 549,
+      "full_price_cents": 826,
+      "items": [
+        "caret-cyan",
+        "caret-lime",
+        "caret-magenta",
+        "caret-signal"
+      ]
+    },
+    {
+      "id": "bundle-racer",
+      "name": "Racer Set",
+      "description": "Every race sprite.",
+      "price_cents": 1299,
+      "full_price_cents": 1844,
+      "items": [
+        "sprite-blade",
+        "sprite-core",
+        "sprite-dart",
+        "sprite-helm",
+        "sprite-rocket",
+        "sprite-signal"
+      ]
+    },
+    {
+      "id": "bundle-everything",
+      "name": "The Lot",
+      "description": "Every cosmetic currently in the store.",
+      "price_cents": 3499,
+      "full_price_cents": 5814,
+      "items": [
+        "caret-amber",
+        "caret-bone",
+        "caret-crimson",
+        "caret-cyan",
+        "caret-ember",
+        "caret-ice",
+        "caret-lime",
+        "caret-magenta",
+        "caret-signal",
+        "caret-violet",
+        "caret-void",
+        "flair-bolt",
+        "flair-circuit",
+        "flair-crown",
+        "flair-eye",
+        "flair-moth",
+        "flair-reactor",
+        "flair-shard",
+        "flair-skull",
+        "flair-star",
+        "sprite-blade",
+        "sprite-core",
+        "sprite-dart",
+        "sprite-helm",
+        "sprite-rocket",
+        "sprite-signal"
+      ]
+    }
+  ],
+  "merch": [
+    {
+      "id": "shirt-mark",
+      "name": "Mark T-Shirt",
+      "description": "The TyperPunk mark, printed small on the left chest.",
+      "price_cents": 2600,
+      "shipping_cents": 600,
+      "kind": "shirt",
+      "variants": [
+        "S",
+        "M",
+        "L",
+        "XL",
+        "2XL"
+      ]
+    },
+    {
+      "id": "shirt-layout",
+      "name": "Home Row T-Shirt",
+      "description": "ASDF JKL; across the chest, set in the same face the app types in.",
+      "price_cents": 2800,
+      "shipping_cents": 600,
+      "kind": "shirt",
+      "variants": [
+        "S",
+        "M",
+        "L",
+        "XL",
+        "2XL"
+      ]
+    },
+    {
+      "id": "mug-prompt",
+      "name": "Prompt Mug",
+      "description": "The mark on one side, a blinking block cursor on the other. 11oz.",
+      "price_cents": 1600,
+      "shipping_cents": 700,
+      "kind": "mug",
+      "variants": []
+    },
+    {
+      "id": "mug-wpm",
+      "name": "WPM Mug",
+      "description": "Reads \"measured in words per minute, drunk in cups per hour\". 11oz.",
+      "price_cents": 1600,
+      "shipping_cents": 700,
+      "kind": "mug",
+      "variants": []
+    },
+    {
+      "id": "deskmat-track",
+      "name": "Race Deskmat",
+      "description": "The race track across 900x400mm, stitched edge, rubber base.",
+      "price_cents": 3800,
+      "shipping_cents": 900,
+      "kind": "deskmat",
+      "variants": []
+    },
+    {
+      "id": "deskmat-mark",
+      "name": "Mark Deskmat",
+      "description": "The mark bottom-right on plain black. 900x400mm, stitched edge.",
+      "price_cents": 3600,
+      "shipping_cents": 900,
+      "kind": "deskmat",
+      "variants": []
+    }
+  ]
+}

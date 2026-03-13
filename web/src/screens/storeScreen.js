@@ -36,12 +36,28 @@ export function renderStoreScreen(root, { onBack, onShowStats, onShowPlaceholder
     let catalog = [];
     let bundles = [];
     let merch = [];
+    // True when the catalogue came from the bundled copy, which means there
+    // is no server to buy through.
+    let offline = false;
     // Size picked per item, so a shirt cannot be bought without one.
     const chosenVariant = {};
     let mine = { owned: [], equipped_caret: null, equipped_flair: null, equipped_sprite: null, is_supporter: false };
     let status = 'loading';
     let message = '';
     let stopped = false;
+
+    /// The buy control for a card. Offline it is an inert label: sending
+    /// someone to the account screen would be sending them to another screen
+    /// that needs the server they have not got.
+    function buyControl(action, id, label, extraClass) {
+        if (offline) {
+            return `<span class="store-soon" data-tooltip="The shop opens when accounts do">Soon</span>`;
+        }
+        const signedOut = status === 'signed-out';
+        return `<button class="menu-button small${signedOut ? ' quiet' : extraClass || ''}"
+                data-action="${signedOut ? 'go-account' : action}" data-id="${escapeHtml(id)}"
+                ${signedOut ? ' data-tooltip="Sign in to buy this"' : ''}>${label}</button>`;
+    }
 
     function isOwned(id) {
         return status !== 'signed-out' && mine.owned.includes(id);
@@ -72,7 +88,7 @@ export function renderStoreScreen(root, { onBack, onShowStats, onShowPlaceholder
                 ${!owned ? `<div class="leaderboard-acc store-price">${formatPrice(item.price_cents)}</div>` : ''}
                 ${owned
                     ? `<button class="menu-button small${equipped ? ' active' : ' quiet'}" data-action="${equipped ? 'unequip' : 'equip'}" data-id="${item.id}" data-category="${item.category}" data-tooltip="${equipped ? 'Unequip, back to the default look' : `Replaces whichever ${categoryLabel(item.category).toLowerCase()} you have equipped now`}">${equipped ? 'Equipped' : 'Equip'}</button>`
-                    : `<button class="menu-button small${signedOut ? ' quiet' : ''}" data-action="${signedOut ? 'go-account' : 'buy'}" data-id="${item.id}"${signedOut ? ' data-tooltip="Sign in to buy this"' : ''}>Buy</button>`}
+                    : buyControl('buy', item.id, 'Buy')}
             </div>
         `;
     }
@@ -110,7 +126,7 @@ export function renderStoreScreen(root, { onBack, onShowStats, onShowPlaceholder
                     </div>
                     ${complete
                         ? `<span class="bundle-owned">You own all of these</span>`
-                        : `<button class="menu-button small${signedOut ? ' quiet' : ' primary'}" data-action="${signedOut ? 'go-account' : 'buy-bundle'}" data-id="${escapeHtml(b.id)}"${signedOut ? ' data-tooltip="Sign in to buy this"' : ''}>Buy${ownedCount ? ` the other ${items.length - ownedCount}` : ''}</button>`}
+                        : buyControl('buy-bundle', b.id, `Buy${ownedCount ? ` the other ${items.length - ownedCount}` : ''}`, ' primary')}
                 </div>
                 ${ownedCount && !complete ? `<div class="bundle-note">You already own ${ownedCount} of these ${items.length}. The price does not change.</div>` : ''}
             </div>`;
@@ -136,17 +152,14 @@ export function renderStoreScreen(root, { onBack, onShowStats, onShowPlaceholder
                     </div>` : ''}
                 <div class="merch-foot">
                     <span class="merch-shipping">${item.shipping_cents ? `plus ${formatPrice(item.shipping_cents)} postage` : 'postage included'}</span>
-                    <button class="menu-button small${signedOut ? ' quiet' : ' primary'}"
-                            data-action="${signedOut ? 'go-account' : 'buy-merch'}"
-                            data-id="${escapeHtml(item.id)}"
-                            ${signedOut ? ' data-tooltip="Sign in to order"' : ''}>Order</button>
+                    ${buyControl('buy-merch', item.id, 'Order', ' primary')}
                 </div>
                 <div class="merch-error" data-error-for="${escapeHtml(item.id)}"></div>
             </div>`;
     }
 
     function supporterMarkup() {
-        if (status === 'signed-out') return '';
+        if (offline || status === 'signed-out') return '';
         if (mine.is_supporter) {
             return `<div class="store-supporter is-supporter">
                         <div class="store-supporter-text">
@@ -169,10 +182,12 @@ export function renderStoreScreen(root, { onBack, onShowStats, onShowPlaceholder
         if (status === 'error') return `<div class="stats-empty">${escapeHtml(message)}</div>`;
 
         const signedOut = status === 'signed-out';
-        const banner = signedOut
-            ? `<div class="store-signin-note">Sign in to buy and equip these.
-                 <button class="menu-button small" data-action="go-account">Sign In</button></div>`
-            : '';
+        const banner = offline
+            ? `<div class="store-signin-note store-offline-note">The shop is not open yet. Everything below is what will be in it.</div>`
+            : signedOut
+                ? `<div class="store-signin-note">Sign in to buy and equip these.
+                     <button class="menu-button small" data-action="go-account">Sign In</button></div>`
+                : '';
 
         const bundleSection = bundles.length
             ? `<h3>Bundles</h3><div class="bundle-grid">${bundles.map(bundleMarkup).join('')}</div>`
@@ -296,21 +311,49 @@ export function renderStoreScreen(root, { onBack, onShowStats, onShowPlaceholder
         cleanup = render();
     }
 
+    /// The catalogue that ships with the client. Used when the server cannot
+    /// be reached, so the store shows what is in it rather than a heading over
+    /// an empty page, which reads as a fault rather than as a shop.
+    ///
+    /// Regenerate with `node scripts/export_store.js` after changing prices or
+    /// adding items. The same arrangement as the text packs: bundled here,
+    /// served from the database, and the served copy wins.
+    async function loadBundledCatalog() {
+        const res = await fetch(new URL('../data/store.json', import.meta.url), { cache: 'no-cache' });
+        if (!res.ok) throw new Error(`store.json ${res.status}`);
+        return res.json();
+    }
+
     async function loadCatalog() {
         try {
             catalog = await api.get('/api/cosmetics');
+            // Neither of these is worth failing the page over.
+            try { bundles = await api.get('/api/cosmetics/bundles'); } catch { bundles = []; }
+            try { merch = await api.get('/api/merch'); } catch { merch = []; }
+            return;
+        } catch {
+            // Fall through to what shipped with the client.
+        }
+
+        try {
+            const bundled = await loadBundledCatalog();
+            catalog = bundled.cosmetics || [];
+            bundles = bundled.bundles || [];
+            merch = bundled.merch || [];
+            offline = true;
         } catch {
             status = 'error';
             message = 'Could not load the store. Try again.';
-            return;
         }
-        // A store with no bundles is still a store, so this failing is not an
-        // error worth replacing the page with.
-        try { bundles = await api.get('/api/cosmetics/bundles'); } catch { bundles = []; }
-        try { merch = await api.get('/api/merch'); } catch { merch = []; }
     }
 
     async function loadMine() {
+        if (offline) {
+            // Nothing is owned or equippable without a server, and the buttons
+            // say so rather than failing when pressed.
+            status = 'signed-out';
+            return;
+        }
         if (!getUser()) {
             // The catalogue still renders; only ownership needs an account.
             status = 'signed-out';
